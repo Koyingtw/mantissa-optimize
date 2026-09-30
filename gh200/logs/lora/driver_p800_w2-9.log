@@ -1,0 +1,22 @@
+01:52:02 variant=bits2-nearest job=1922 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-nearest-seed1234-p800-w2-9
+variant=bits2-nearest status=success converged_at=5376 ttt_min=40.33 evals=[(1536, 0.9497), (1920, 0.9433), (2304, 0.9385), (2688, 0.9385), (3072, 0.9324), (3456, 0.9312), (3840, 0.9286), (4224, 0.9277), (4608, 0.9265), (4992, 0.9254), (5376, 0.9228)]
+02:34:42 variant=bits2-stochastic job=1959 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-stochastic-seed1234-p800-w2-9
+variant=bits2-stochastic status=success converged_at=4224 ttt_min=31.56 evals=[(1536, 0.9463), (1920, 0.9433), (2304, 0.94), (2688, 0.9363), (3072, 0.9317), (3456, 0.929), (3840, 0.9272), (4224, 0.9239)]
+03:08:18 第二個 seed（5678）：原生與截斷 2 位
+03:08:18 variant=bits3 job=1990 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits3-seed5678-p800-w2-9
+variant=bits3 status=success converged_at=3072 ttt_min=22.74 evals=[(1536, 0.9393), (1920, 0.9338), (2304, 0.9329), (2688, 0.9271), (3072, 0.9225)]
+03:33:18 variant=bits2-trunc job=1993 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-trunc-seed5678-p800-w2-9
+variant=bits2-trunc status=success converged_at=4224 ttt_min=31.56 evals=[(1536, 0.9491), (1920, 0.9473), (2304, 0.9409), (2688, 0.9365), (3072, 0.9333), (3456, 0.9294), (3840, 0.9284), (4224, 0.9248)]
+04:24:19 all variants done
+04:24:19 seed 1234：只截 MLP、只截注意力
+04:24:19 variant=bits2-trunc-mlp job=1997 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-trunc-mlp-seed1234-p800-w2-9
+07:59:14 variant=bits2-trunc-mlp job=2011 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-trunc-mlp-seed1234-p800-w2-9
+/tmp/lora_runs_seedB.sh: line 44: /nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-trunc-mlp-seed1234-p800-w2-9/slurm-1997.out: No such file or directory
+variant=bits2-trunc-mlp status=no run_stop converged_at=- ttt=- evals=[]
+09:21:33 variant=bits2-trunc-self_attention job=2020 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-trunc-self_attention-seed1234-p800-w2-9
+variant=bits2-trunc-self_attention status=success converged_at=3840 ttt_min=28.59 evals=[(1536, 0.9428), (1920, 0.941), (2304, 0.9353), (2688, 0.9334), (3072, 0.9282), (3456, 0.9272), (3840, 0.923)]
+09:52:03 all variants done
+variant=bits2-trunc-mlp status=success converged_at=4224 ttt_min=31.26 evals=[(1536, 0.9464), (1920, 0.9441), (2304, 0.9362), (2688, 0.9352), (3072, 0.9318), (3456, 0.9313), (3840, 0.9272), (4224, 0.9246)]
+09:52:06 variant=bits2-trunc-self_attention job=2027 run_dir=/nfs/home/koying/mlperf-llama2-70b-lora/runs/a3-bits2-trunc-self_attention-seed1234-p800-w2-9
+variant=bits2-trunc-self_attention status=success converged_at=3840 ttt_min=31.54 evals=[(1536, 0.9425), (1920, 0.9437), (2304, 0.9339), (2688, 0.9312), (3072, 0.9294), (3456, 0.929), (3840, 0.925), (4224, 0.9224)]
+10:25:36 all variants done

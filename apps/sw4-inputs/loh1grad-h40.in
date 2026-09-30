@@ -1,0 +1,18 @@
+# SW4 代表性輸入（mantissa-optimize）：LOH.1 幾何（30x30x17 km，層 + 半空間）
+# 但材料帶深度梯度（vp/vs/rho 隨深度線性變化）→ mu、lambda、rho 為完整尾數，
+# 模擬真實 3D 速度模型（rfile/pfile）的情況。單顆 GH200、彈性、無衰減、Cartesian 網格。
+fileio path=out-loh1grad-h40 verbose=1
+grid h=40 x=30000 y=30000 z=17000
+time t=9
+supergrid gp=30
+
+# 半空間（z >= 1000 m）：深度 1000 m 處 vp=6000 vs=3464 rho=2700，往下線性增加
+block vp=5900 vs=3400 rho=2690 vpgrad=0.1 vsgrad=0.064 rhograd=0.01 z1=1000
+# 上層（z < 1000 m）
+block vp=3800 vs=1800 rho=2580 vpgrad=0.2 vsgrad=0.2 rhograd=0.02 z2=1000
+
+source x=15000 y=15000 z=2000 mxy=1e18 t0=0.36 freq=16.6667 type=Gaussian
+
+rec x=15600 y=15800 z=0 file=sta01 usgsformat=1
+rec x=21000 y=23000 z=0 file=sta10 usgsformat=1
+rec x=8000 y=11000 z=3000 file=sta20 usgsformat=1

@@ -1,0 +1,18 @@
+job=1745 host=work3 app=pyscf case=168_Valinomycin variants=[stats 40:trunc 36:trunc 36:nearest 32:nearest] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=stats pass=A t_begin=1790695153.332222251
+    RESULT converged=True E=-3795.5392524230 Eh  scf_cycles=12  wall=90.70s
+=== END tdp=1000 variant=stats pass=A t_begin=1790695153.332222251 t_end=1790695245.832675094
+=== RUN tdp=1000 variant=40:trunc pass=A t_begin=1790695280.936646110
+    RESULT converged=True E=-3795.5392484361 Eh  scf_cycles=12  wall=94.30s
+=== END tdp=1000 variant=40:trunc pass=A t_begin=1790695280.936646110 t_end=1790695377.029039582
+=== RUN tdp=1000 variant=36:trunc pass=A t_begin=1790695417.145664153
+    RESULT converged=True E=-3795.5392512043 Eh  scf_cycles=12  wall=94.17s
+=== END tdp=1000 variant=36:trunc pass=A t_begin=1790695417.145664153 t_end=1790695513.106256008
+=== RUN tdp=1000 variant=36:nearest pass=A t_begin=1790695553.222916097
+    RESULT converged=True E=-3795.5392533619 Eh  scf_cycles=12  wall=94.26s
+=== END tdp=1000 variant=36:nearest pass=A t_begin=1790695553.222916097 t_end=1790695649.283923011
+=== RUN tdp=1000 variant=32:nearest pass=A t_begin=1790695689.401276726
+    RESULT converged=True E=-3795.5392641843 Eh  scf_cycles=12  wall=94.25s
+=== END tdp=1000 variant=32:nearest pass=A t_begin=1790695689.401276726 t_end=1790695785.440169710
+=== ALL DONE

@@ -1,0 +1,261 @@
+job=1670 bench=hpl nodes=8 hosts=work4,work5,work6,work7,work10,work11,work12,work13 P=2 Q=4 N=262144 NB=1024 variants=[53:53 36:36 28:28] tdps=[1000 800 700 600 500 400] repeat=1 cooldown=30 start_temp=45
+rocHPL=28e1d24 rocHPL-MxP=7de9b5b
+TDP 1000 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== COOL waited=30s hottest=28C
+=== RUN tdp=1000 variant=53:53 pass=A t_begin=1790673734.975901175
+CUDA communication streams use high priority -5
+Final Score:    3.7602e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=1000 variant=53:53 pass=A t_begin=1790673734.975901175 t_end=1790673772.701358907
+=== COOL waited=55s hottest=32C
+=== RUN tdp=1000 variant=36:36 pass=A t_begin=1790673827.794263960
+CUDA communication streams use high priority -5
+Final Score:    3.7862e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=1000 variant=36:36 pass=A t_begin=1790673827.794263960 t_end=1790673865.019164126
+=== COOL waited=30s hottest=37C
+=== RUN tdp=1000 variant=28:28 pass=A t_begin=1790673895.038489199
+CUDA communication streams use high priority -5
+Final Score:    3.7876e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=1000 variant=28:28 pass=A t_begin=1790673895.038489199 t_end=1790673932.163804595
+=== COOL waited=30s hottest=39C
+=== RUN tdp=1000 variant=28:28 pass=B t_begin=1790673962.183904063
+CUDA communication streams use high priority -5
+Final Score:    3.7890e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=1000 variant=28:28 pass=B t_begin=1790673962.183904063 t_end=1790673999.308756391
+=== COOL waited=30s hottest=41C
+=== RUN tdp=1000 variant=36:36 pass=B t_begin=1790674029.328625462
+CUDA communication streams use high priority -5
+Final Score:    3.7877e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=1000 variant=36:36 pass=B t_begin=1790674029.328625462 t_end=1790674066.453564415
+=== COOL waited=65s hottest=40C
+=== RUN tdp=1000 variant=53:53 pass=B t_begin=1790674131.576211032
+CUDA communication streams use high priority -5
+Final Score:    3.7588e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=1000 variant=53:53 pass=B t_begin=1790674131.576211032 t_end=1790674169.000822627
+TDP 800 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== COOL waited=30s hottest=37C
+=== RUN tdp=800 variant=53:53 pass=A t_begin=1790674202.884641173
+CUDA communication streams use high priority -5
+Final Score:    3.5161e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=800 variant=53:53 pass=A t_begin=1790674202.884641173 t_end=1790674242.509991207
+=== COOL waited=30s hottest=40C
+=== RUN tdp=800 variant=36:36 pass=A t_begin=1790674272.530978643
+CUDA communication streams use high priority -5
+Final Score:    3.6317e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=800 variant=36:36 pass=A t_begin=1790674272.530978643 t_end=1790674311.056095649
+=== COOL waited=30s hottest=43C
+=== RUN tdp=800 variant=28:28 pass=A t_begin=1790674341.077665544
+CUDA communication streams use high priority -5
+Final Score:    3.7091e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=800 variant=28:28 pass=A t_begin=1790674341.077665544 t_end=1790674378.902587766
+=== COOL waited=65s hottest=31C
+=== RUN tdp=800 variant=28:28 pass=B t_begin=1790674444.027799674
+CUDA communication streams use high priority -5
+Final Score:    3.7143e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=800 variant=28:28 pass=B t_begin=1790674444.027799674 t_end=1790674481.853260132
+=== COOL waited=30s hottest=37C
+=== RUN tdp=800 variant=36:36 pass=B t_begin=1790674511.874473583
+CUDA communication streams use high priority -5
+Final Score:    3.6355e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=800 variant=36:36 pass=B t_begin=1790674511.874473583 t_end=1790674550.399729276
+=== COOL waited=30s hottest=40C
+=== RUN tdp=800 variant=53:53 pass=B t_begin=1790674580.419933614
+CUDA communication streams use high priority -5
+Final Score:    3.5139e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=800 variant=53:53 pass=B t_begin=1790674580.419933614 t_end=1790674620.046943125
+TDP 700 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== COOL waited=60s hottest=40C
+=== RUN tdp=700 variant=53:53 pass=A t_begin=1790674683.975283855
+CUDA communication streams use high priority -5
+Final Score:    3.3178e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=700 variant=53:53 pass=A t_begin=1790674683.975283855 t_end=1790674726.002090970
+=== COOL waited=30s hottest=36C
+=== RUN tdp=700 variant=36:36 pass=A t_begin=1790674756.022655274
+CUDA communication streams use high priority -5
+Final Score:    3.4575e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=700 variant=36:36 pass=A t_begin=1790674756.022655274 t_end=1790674796.249116174
+=== COOL waited=30s hottest=39C
+=== RUN tdp=700 variant=28:28 pass=A t_begin=1790674826.269814237
+CUDA communication streams use high priority -5
+Final Score:    3.5447e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=700 variant=28:28 pass=A t_begin=1790674826.269814237 t_end=1790674865.595073046
+=== COOL waited=30s hottest=44C
+=== RUN tdp=700 variant=28:28 pass=B t_begin=1790674895.615675621
+CUDA communication streams use high priority -5
+Final Score:    3.5426e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=700 variant=28:28 pass=B t_begin=1790674895.615675621 t_end=1790674935.041372292
+=== COOL waited=60s hottest=31C
+=== RUN tdp=700 variant=36:36 pass=B t_begin=1790674995.153726267
+CUDA communication streams use high priority -5
+Final Score:    3.4610e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=700 variant=36:36 pass=B t_begin=1790674995.153726267 t_end=1790675035.380406459
+=== COOL waited=30s hottest=36C
+=== RUN tdp=700 variant=53:53 pass=B t_begin=1790675065.401423875
+CUDA communication streams use high priority -5
+Final Score:    3.3134e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=700 variant=53:53 pass=B t_begin=1790675065.401423875 t_end=1790675107.229005083
+TDP 600 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== COOL waited=30s hottest=40C
+=== RUN tdp=600 variant=53:53 pass=A t_begin=1790675141.090393183
+CUDA communication streams use high priority -5
+Final Score:    3.0512e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=600 variant=53:53 pass=A t_begin=1790675141.090393183 t_end=1790675186.120488259
+=== COOL waited=55s hottest=31C
+=== RUN tdp=600 variant=36:36 pass=A t_begin=1790675241.219488923
+CUDA communication streams use high priority -5
+Final Score:    3.2007e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=600 variant=36:36 pass=A t_begin=1790675241.219488923 t_end=1790675284.347869779
+=== COOL waited=30s hottest=36C
+=== RUN tdp=600 variant=28:28 pass=A t_begin=1790675314.369422989
+CUDA communication streams use high priority -5
+Final Score:    3.2922e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=600 variant=28:28 pass=A t_begin=1790675314.369422989 t_end=1790675356.396796067
+=== COOL waited=30s hottest=40C
+=== RUN tdp=600 variant=28:28 pass=B t_begin=1790675386.417392641
+CUDA communication streams use high priority -5
+Final Score:    3.2920e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=600 variant=28:28 pass=B t_begin=1790675386.417392641 t_end=1790675428.444584728
+=== COOL waited=60s hottest=31C
+=== RUN tdp=600 variant=36:36 pass=B t_begin=1790675488.558310685
+CUDA communication streams use high priority -5
+Final Score:    3.2009e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=600 variant=36:36 pass=B t_begin=1790675488.558310685 t_end=1790675531.685868699
+=== COOL waited=30s hottest=36C
+=== RUN tdp=600 variant=53:53 pass=B t_begin=1790675561.707253524
+CUDA communication streams use high priority -5
+Final Score:    3.0540e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=600 variant=53:53 pass=B t_begin=1790675561.707253524 t_end=1790675606.636248866
+TDP 500 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== COOL waited=60s hottest=31C
+=== RUN tdp=500 variant=53:53 pass=A t_begin=1790675670.597413788
+CUDA communication streams use high priority -5
+Final Score:    2.7637e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=500 variant=53:53 pass=A t_begin=1790675670.597413788 t_end=1790675719.928886427
+=== COOL waited=30s hottest=36C
+=== RUN tdp=500 variant=36:36 pass=A t_begin=1790675749.949706871
+CUDA communication streams use high priority -5
+Final Score:    2.8845e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=500 variant=36:36 pass=A t_begin=1790675749.949706871 t_end=1790675797.280202280
+=== COOL waited=60s hottest=30C
+=== RUN tdp=500 variant=28:28 pass=A t_begin=1790675857.393443702
+CUDA communication streams use high priority -5
+Final Score:    2.9621e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=500 variant=28:28 pass=A t_begin=1790675857.393443702 t_end=1790675903.622635142
+=== COOL waited=30s hottest=35C
+=== RUN tdp=500 variant=28:28 pass=B t_begin=1790675933.644354621
+CUDA communication streams use high priority -5
+Final Score:    2.9603e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=500 variant=28:28 pass=B t_begin=1790675933.644354621 t_end=1790675979.873394192
+=== COOL waited=60s hottest=30C
+=== RUN tdp=500 variant=36:36 pass=B t_begin=1790676039.987156468
+CUDA communication streams use high priority -5
+Final Score:    2.8878e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=500 variant=36:36 pass=B t_begin=1790676039.987156468 t_end=1790676087.517385388
+=== COOL waited=30s hottest=35C
+=== RUN tdp=500 variant=53:53 pass=B t_begin=1790676117.539232716
+CUDA communication streams use high priority -5
+Final Score:    2.7632e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=500 variant=53:53 pass=B t_begin=1790676117.539232716 t_end=1790676166.670275993
+TDP 400 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== COOL waited=55s hottest=30C
+=== RUN tdp=400 variant=53:53 pass=A t_begin=1790676225.728029722
+CUDA communication streams use high priority -5
+Final Score:    2.2845e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=400 variant=53:53 pass=A t_begin=1790676225.728029722 t_end=1790676284.263753306
+=== COOL waited=30s hottest=43C
+=== RUN tdp=400 variant=36:36 pass=A t_begin=1790676314.286344920
+CUDA communication streams use high priority -5
+Final Score:    2.4727e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=400 variant=36:36 pass=A t_begin=1790676314.286344920 t_end=1790676368.719785774
+=== COOL waited=30s hottest=44C
+=== RUN tdp=400 variant=28:28 pass=A t_begin=1790676398.741716717
+CUDA communication streams use high priority -5
+Final Score:    2.5551e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=400 variant=28:28 pass=A t_begin=1790676398.741716717 t_end=1790676451.474402980
+=== COOL waited=30s hottest=33C
+=== RUN tdp=400 variant=28:28 pass=B t_begin=1790676481.497203676
+CUDA communication streams use high priority -5
+Final Score:    2.5550e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=400 variant=28:28 pass=B t_begin=1790676481.497203676 t_end=1790676534.330162628
+=== COOL waited=30s hottest=44C
+=== RUN tdp=400 variant=36:36 pass=B t_begin=1790676564.351750760
+CUDA communication streams use high priority -5
+Final Score:    2.4720e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=400 variant=36:36 pass=B t_begin=1790676564.351750760 t_end=1790676618.785426204
+=== COOL waited=30s hottest=43C
+=== RUN tdp=400 variant=53:53 pass=B t_begin=1790676648.807729690
+CUDA communication streams use high priority -5
+Final Score:    2.2814e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=400 variant=53:53 pass=B t_begin=1790676648.807729690 t_end=1790676707.343972313
+=== ALL DONE

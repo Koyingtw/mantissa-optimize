@@ -1,0 +1,35 @@
+name, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 32, 1980 MHz
+=== RUN tag=single MANT_BITS=<unset> MANT_ROUND=<unset> BIN=ex1_bench.build-cuda ARGS=-n 112 -o 3 -rep 4 -matvec 500
+Options used:
+   --nx 112
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 4
+   --fixed-its 0
+   --matvec 500
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=112 p=3 NE=1404928 ndofs=38272753 amp=0.05 kappa=var mass=0
+[SETUP] size=38272753 ess=677378 setup_time=8.471 s
+[CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+[MATVEC] count=500 time=4.092 s  per=8.1839 ms  4.677 GDOF/s  ||y||=8.2262001811043997e-05
+[SOLVE] rep=0 its=1700 converged=1 final_norm=1.6939548470539989e-12 time=16.830 s
+[SOLVE] rep=1 its=1700 converged=1 final_norm=1.6939548470539989e-12 time=16.829 s
+[SOLVE] rep=2 its=1700 converged=1 final_norm=1.6939548470539989e-12 time=16.853 s
+[SOLVE] rep=3 its=1700 converged=1 final_norm=1.6939548470539989e-12 time=16.827 s
+[TIME] solves=4 total_its=6800 solve_time=67.338 s  per_it=9.9026 ms  3.865 GDOF/s(CG it)
+[RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+[RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+[TIME] wall_total=79.971 s
+ELAPSED 80.34 s  MAXRSS 8054464 KB
+GPU samples=161 meanPower=584.4W maxPower=661.1W meanUtil=88.8%
+GPU busy(util>=50%) samples=143 (71.5s) meanPower=641.4W maxPower=661.1W meanSM=1980MHz meanUtil=100.0%

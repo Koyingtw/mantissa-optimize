@@ -1,0 +1,28 @@
++ module load nvhpc/26.5
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ CUDA=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ SRC=/nfs/home/koying/mantissa-optimize/apps/mfem
++ BENCH=/nfs/home/koying/mantissa-optimize/apps/mfem-bench
++ BDIR=build-cuda-orig
++ cd /nfs/home/koying/mantissa-optimize/apps/mfem
++ nvcc --version
++ tail -2
+Cuda compilation tools, release 13.2, V13.2.78
+Build cuda_13.2.r13.2/compiler.37668154_0
++ g++ --version
++ head -1
+g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0
++ '[' -z 1 ']'
++ cd /nfs/home/koying/mantissa-optimize/apps/mfem-bench
++ make -f /nfs/home/koying/mantissa-optimize/apps/mfem-bench/Makefile MFEM_BUILD=/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda-orig OUT=ex1_bench.build-cuda-orig
+nvcc  -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++ -I/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda-orig  -lineinfo ex1_bench.cpp -o ex1_bench.build-cuda-orig -L/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda-orig -lmfem -lcusparse -lcublas -lrt
++ ls -l /nfs/home/koying/mantissa-optimize/apps/mfem-bench/ex1_bench.build-cuda-orig
+-rwxrwxr-x+ 1 koying koying 59406552 Sep 30 02:31 /nfs/home/koying/mantissa-optimize/apps/mfem-bench/ex1_bench.build-cuda-orig

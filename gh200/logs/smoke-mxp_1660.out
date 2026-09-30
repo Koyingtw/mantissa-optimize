@@ -1,0 +1,560 @@
+job=1660 bench=mxp nodes=1 hosts=work5 P=1 Q=1 N=65536 NB=4096 variants=[7 0] tdps=[1000] repeat=1
+rocHPL=28e1d24 rocHPL-MxP=7de9b5b
+TDP 1000 set on work5
+=== RUN tdp=1000 variant=7 pass=A t_begin=1790672125.125400167
+ ****** HPL MxP Settings ****** 
+   --nprow =  1 
+   --npcol =  1 
+   --order = column 
+   --n     = 65536 
+   --nb    = 4096 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 7 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 65536
+   nb     = 4096
+   nprow  = 1
+   npcol  = 1
+local matrix: 65536 x 65536 fp16 = 8.0 GiB
+estimated LU allocation: 10.6 GiB/GPU (free after RCCL init 94.0 GiB)
+gpu mem after A alloc: free 86.0 / 95.1 GiB
+matgen: 0.08 s
+LU panel transport: RCCL
+[0;31m Prog=  17.60% N_left=    61440 Time=     0.07 Time_left=       0.34 iTF=     459.77 TF=   459.77 iTF_per=   459.77 TF_per=   459.77[0m
+[0;31m Prog=  33.01% N_left=    57344 Time=     0.11 Time_left=       0.21 iTF=     862.43 TF=   587.87 iTF_per=   862.43 TF_per=   587.87[0m
+[0;31m Prog=  46.36% N_left=    53248 Time=     0.14 Time_left=       0.16 iTF=     697.26 TF=   615.69 iTF_per=   697.26 TF_per=   615.69[0m
+[0;31m Prog=  57.81% N_left=    49152 Time=     0.18 Time_left=       0.13 iTF=     581.54 TF=   608.61 iTF_per=   581.54 TF_per=   608.61[0m
+[0;31m Prog=  67.50% N_left=    45056 Time=     0.20 Time_left=       0.10 iTF=     707.48 TF=   621.07 iTF_per=   707.48 TF_per=   621.07[0m
+[0;31m Prog=  75.59% N_left=    40960 Time=     0.23 Time_left=       0.07 iTF=     664.03 TF=   625.40 iTF_per=   664.03 TF_per=   625.40[0m
+[0;31m Prog=  82.20% N_left=    36864 Time=     0.24 Time_left=       0.05 iTF=     853.20 TF=   639.13 iTF_per=   853.20 TF_per=   639.13[0m
+[0;31m Prog=  87.50% N_left=    32768 Time=     0.26 Time_left=       0.04 iTF=     632.22 TF=   638.71 iTF_per=   632.22 TF_per=   638.71[0m
+[0;31m Prog=  91.63% N_left=    28672 Time=     0.27 Time_left=       0.02 iTF=     614.23 TF=   637.57 iTF_per=   614.23 TF_per=   637.57[0m
+[0;31m Prog=  94.73% N_left=    24576 Time=     0.28 Time_left=       0.02 iTF=     587.78 TF=   635.80 iTF_per=   587.78 TF_per=   635.80[0m
+[0;31m Prog=  96.95% N_left=    20480 Time=     0.29 Time_left=       0.01 iTF=     560.46 TF=   633.85 iTF_per=   560.46 TF_per=   633.85[0m
+[0;31m Prog=  98.44% N_left=    16384 Time=     0.29 Time_left=       0.00 iTF=     519.83 TF=   631.76 iTF_per=   519.83 TF_per=   631.76[0m
+[0;31m Prog=  99.34% N_left=    12288 Time=     0.30 Time_left=       0.00 iTF=     460.06 TF=   629.62 iTF_per=   460.06 TF_per=   629.62[0m
+[0;31m Prog=  99.80% N_left=     8192 Time=     0.30 Time_left=       0.00 iTF=     374.03 TF=   627.63 iTF_per=   374.03 TF_per=   627.63[0m
+[0;31m Prog=  99.98% N_left=     4096 Time=     0.30 Time_left=       0.00 iTF=     277.26 TF=   626.27 iTF_per=   277.26 TF_per=   626.27[0m
+LU: 0.300 s (625.2 TFLOPS fp-agnostic)
+2026-09-29 08:55:27.543
+Solver iteration  0, L-infinite residual = 1.69936224e-05
+Solver Richardson  1, L-infinite residual = 1.92118099e-10
+  gmres it 1  prec.res 1.238e-05
+Solver iteration  1, L-infinite residual = 1.92365512e-10
+  scaled residual check: 17.4301  (it 1)
+  gmres it 2  prec.res 1.538e-10
+Solver iteration  2, L-infinite residual = 8.84697871e-12
+  scaled residual check: 0.8016  (it 2)
+  IR breakdown: inverses 0.006 s, matvec 0.054 s, precond 0.138 s, other 0.007 s
+2026-09-29 08:55:27.751
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    8.846979E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    3.306343E+04
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    3.075462E-05
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999763E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    8.016191E-01 ...... PASSED
+    N = 65536, NB = 4096, NPROW = 1, NPCOL = 1, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 3.7160e+05, per GPU =  371603.54[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.2519e+05, per GPU =  625191.76[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END tdp=1000 variant=7 pass=A t_begin=1790672125.125400167 t_end=1790672128.932171449
+=== RUN tdp=1000 variant=0 pass=A t_begin=1790672128.934659110
+ ****** HPL MxP Settings ****** 
+   --nprow =  1 
+   --npcol =  1 
+   --order = column 
+   --n     = 65536 
+   --nb    = 4096 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 0  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 65536
+   nb     = 4096
+   nprow  = 1
+   npcol  = 1
+local matrix: 65536 x 65536 fp16 = 8.0 GiB
+estimated LU allocation: 10.6 GiB/GPU (free after RCCL init 94.0 GiB)
+gpu mem after A alloc: free 86.0 / 95.1 GiB
+matgen: 0.08 s
+LU panel transport: RCCL
+[0;31m Prog=  17.60% N_left=    61440 Time=     0.07 Time_left=       0.32 iTF=     487.05 TF=   487.05 iTF_per=   487.05 TF_per=   487.05[0m
+[0;31m Prog=  33.01% N_left=    57344 Time=     0.10 Time_left=       0.20 iTF=     961.67 TF=   632.81 iTF_per=   961.67 TF_per=   632.81[0m
+[0;31m Prog=  46.36% N_left=    53248 Time=     0.13 Time_left=       0.15 iTF=     765.39 TF=   666.04 iTF_per=   765.39 TF_per=   666.04[0m
+[0;31m Prog=  57.81% N_left=    49152 Time=     0.16 Time_left=       0.12 iTF=     625.81 TF=   657.67 iTF_per=   625.81 TF_per=   657.67[0m
+[0;31m Prog=  67.50% N_left=    45056 Time=     0.19 Time_left=       0.09 iTF=     788.87 TF=   673.76 iTF_per=   788.87 TF_per=   673.76[0m
+[0;31m Prog=  75.59% N_left=    40960 Time=     0.21 Time_left=       0.07 iTF=     749.26 TF=   681.10 iTF_per=   749.26 TF_per=   681.10[0m
+[0;31m Prog=  82.20% N_left=    36864 Time=     0.22 Time_left=       0.05 iTF=     950.56 TF=   697.00 iTF_per=   950.56 TF_per=   697.00[0m
+[0;31m Prog=  87.50% N_left=    32768 Time=     0.24 Time_left=       0.03 iTF=     700.45 TF=   697.21 iTF_per=   700.45 TF_per=   697.21[0m
+[0;31m Prog=  91.63% N_left=    28672 Time=     0.25 Time_left=       0.02 iTF=     677.58 TF=   696.30 iTF_per=   677.58 TF_per=   696.30[0m
+[0;31m Prog=  94.73% N_left=    24576 Time=     0.26 Time_left=       0.01 iTF=     648.96 TF=   694.64 iTF_per=   648.96 TF_per=   694.64[0m
+[0;31m Prog=  96.95% N_left=    20480 Time=     0.26 Time_left=       0.01 iTF=     604.08 TF=   692.26 iTF_per=   604.08 TF_per=   692.26[0m
+[0;31m Prog=  98.44% N_left=    16384 Time=     0.27 Time_left=       0.00 iTF=     557.79 TF=   689.75 iTF_per=   557.79 TF_per=   689.75[0m
+[0;31m Prog=  99.34% N_left=    12288 Time=     0.27 Time_left=       0.00 iTF=     491.83 TF=   687.23 iTF_per=   491.83 TF_per=   687.23[0m
+[0;31m Prog=  99.80% N_left=     8192 Time=     0.27 Time_left=       0.00 iTF=     396.15 TF=   684.89 iTF_per=   396.15 TF_per=   684.89[0m
+[0;31m Prog=  99.98% N_left=     4096 Time=     0.27 Time_left=       0.00 iTF=     288.77 TF=   683.29 iTF_per=   288.77 TF_per=   683.29[0m
+LU: 0.275 s (682.0 TFLOPS fp-agnostic)
+2026-09-29 08:55:31.060
+Solver iteration  0, L-infinite residual = 2.82322014e-03
+Solver Richardson  1, L-infinite residual = 5.85835309e-06
+  gmres it 1  prec.res 2.059e-03
+Solver iteration  1, L-infinite residual = 5.86054720e-06
+  scaled residual check: 531019.8362  (it 1)
+  gmres it 2  prec.res 4.245e-06
+Solver iteration  2, L-infinite residual = 1.61537542e-08
+  scaled residual check: 1463.6814  (it 2)
+  gmres it 3  prec.res 8.746e-09
+Solver iteration  3, L-infinite residual = 1.32876860e-09
+  scaled residual check: 120.3989  (it 3)
+  gmres it 4  prec.res 1.806e-11
+Solver iteration  4, L-infinite residual = 1.33248729e-09
+  scaled residual check: 120.7358  (it 4)
+  gmres it 5  prec.res 3.724e-14
+Solver iteration  5, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 5)
+  gmres it 6  prec.res 8.810e-17
+Solver iteration  6, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 6)
+  gmres it 7  prec.res 4.378e-17
+Solver iteration  7, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 7)
+  gmres it 8  prec.res 4.378e-17
+Solver iteration  8, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 8)
+  gmres it 9  prec.res 4.378e-17
+Solver iteration  9, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 9)
+  gmres it 10  prec.res 4.378e-17
+Solver iteration 10, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 10)
+  gmres it 11  prec.res 4.378e-17
+Solver iteration 11, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 11)
+  gmres it 12  prec.res 4.378e-17
+Solver iteration 12, L-infinite residual = 1.33251321e-09
+  scaled residual check: 120.7382  (it 12)
+  gmres it 13  prec.res 3.959e-17
+Solver iteration 13, L-infinite residual = 1.40202827e-09
+  scaled residual check: 127.0369  (it 13)
+  gmres it 14  prec.res 3.235e-17
+Solver iteration 14, L-infinite residual = 1.51874158e-09
+  scaled residual check: 137.6122  (it 14)
+  gmres it 15  prec.res 3.235e-17
+Solver iteration 15, L-infinite residual = 1.51874302e-09
+  scaled residual check: 137.6123  (it 15)
+  gmres it 16  prec.res 3.235e-17
+Solver iteration 16, L-infinite residual = 1.51874296e-09
+  scaled residual check: 137.6123  (it 16)
+  gmres it 17  prec.res 3.235e-17
+Solver iteration 17, L-infinite residual = 1.51874296e-09
+  scaled residual check: 137.6123  (it 17)
+  gmres it 18  prec.res 3.235e-17
+Solver iteration 18, L-infinite residual = 1.51874308e-09
+  scaled residual check: 137.6123  (it 18)
+  gmres it 19  prec.res 3.235e-17
+Solver iteration 19, L-infinite residual = 1.51874663e-09
+  scaled residual check: 137.6127  (it 19)
+  gmres it 20  prec.res 1.659e-17
+Solver iteration 20, L-infinite residual = 1.64301134e-09
+  scaled residual check: 148.8722  (it 20)
+  gmres it 21  prec.res 1.083e-17
+Solver iteration 21, L-infinite residual = 1.65824882e-09
+  scaled residual check: 150.2529  (it 21)
+  gmres it 22  prec.res 1.083e-17
+Solver iteration 22, L-infinite residual = 1.69016690e-09
+  scaled residual check: 153.1449  (it 22)
+  gmres it 23  prec.res 1.083e-17
+Solver iteration 23, L-infinite residual = 1.77308668e-09
+  scaled residual check: 160.6583  (it 23)
+  gmres it 24  prec.res 1.083e-17
+Solver iteration 24, L-infinite residual = 1.71410275e-09
+  scaled residual check: 155.3138  (it 24)
+  gmres it 25  prec.res 1.083e-17
+Solver iteration 25, L-infinite residual = 1.70273584e-09
+  scaled residual check: 154.2838  (it 25)
+  gmres it 26  prec.res 1.083e-17
+Solver iteration 26, L-infinite residual = 1.73022718e-09
+  scaled residual check: 156.7748  (it 26)
+  gmres it 27  prec.res 1.083e-17
+Solver iteration 27, L-infinite residual = 1.71960163e-09
+  scaled residual check: 155.8120  (it 27)
+  gmres it 28  prec.res 1.083e-17
+Solver iteration 28, L-infinite residual = 1.64594832e-09
+  scaled residual check: 149.1383  (it 28)
+  gmres it 29  prec.res 1.083e-17
+Solver iteration 29, L-infinite residual = 1.69211722e-09
+  scaled residual check: 153.3217  (it 29)
+  gmres it 30  prec.res 1.083e-17
+Solver iteration 30, L-infinite residual = 1.65146558e-09
+  scaled residual check: 149.6382  (it 30)
+  gmres it 31  prec.res 1.083e-17
+Solver iteration 31, L-infinite residual = 1.63650893e-09
+  scaled residual check: 148.2830  (it 31)
+  gmres it 32  prec.res 1.083e-17
+Solver iteration 32, L-infinite residual = 1.70664483e-09
+  scaled residual check: 154.6380  (it 32)
+  gmres it 33  prec.res 1.083e-17
+Solver iteration 33, L-infinite residual = 1.64058866e-09
+  scaled residual check: 148.6527  (it 33)
+  gmres it 34  prec.res 8.748e-18
+Solver iteration 34, L-infinite residual = 1.68021341e-09
+  scaled residual check: 152.2431  (it 34)
+  gmres it 35  prec.res 8.637e-18
+Solver iteration 35, L-infinite residual = 1.67827979e-09
+  scaled residual check: 152.0679  (it 35)
+  gmres it 36  prec.res 8.637e-18
+Solver iteration 36, L-infinite residual = 1.63863384e-09
+  scaled residual check: 148.4756  (it 36)
+  gmres it 37  prec.res 8.637e-18
+Solver iteration 37, L-infinite residual = 1.63454983e-09
+  scaled residual check: 148.1055  (it 37)
+  gmres it 38  prec.res 8.637e-18
+Solver iteration 38, L-infinite residual = 1.67871717e-09
+  scaled residual check: 152.1075  (it 38)
+  gmres it 39  prec.res 8.637e-18
+Solver iteration 39, L-infinite residual = 1.65980985e-09
+  scaled residual check: 150.3943  (it 39)
+  gmres it 40  prec.res 8.637e-18
+Solver iteration 40, L-infinite residual = 1.68065950e-09
+  scaled residual check: 152.2835  (it 40)
+  gmres it 41  prec.res 8.210e-18
+Solver iteration 41, L-infinite residual = 1.62890057e-09
+  scaled residual check: 147.5936  (it 41)
+  gmres it 42  prec.res 8.190e-18
+Solver iteration 42, L-infinite residual = 1.74394499e-09
+  scaled residual check: 158.0177  (it 42)
+  gmres it 43  prec.res 8.190e-18
+Solver iteration 43, L-infinite residual = 1.60514613e-09
+  scaled residual check: 145.4413  (it 43)
+  gmres it 44  prec.res 8.190e-18
+Solver iteration 44, L-infinite residual = 1.69943132e-09
+  scaled residual check: 153.9844  (it 44)
+  gmres it 45  prec.res 8.190e-18
+Solver iteration 45, L-infinite residual = 1.59634678e-09
+  scaled residual check: 144.6440  (it 45)
+  gmres it 46  prec.res 8.190e-18
+Solver iteration 46, L-infinite residual = 1.58734992e-09
+  scaled residual check: 143.8288  (it 46)
+  gmres it 47  prec.res 8.190e-18
+Solver iteration 47, L-infinite residual = 1.66795877e-09
+  scaled residual check: 151.1327  (it 47)
+  gmres it 48  prec.res 8.186e-18
+Solver iteration 48, L-infinite residual = 1.68738484e-09
+  scaled residual check: 152.8929  (it 48)
+  gmres it 49  prec.res 8.184e-18
+Solver iteration 49, L-infinite residual = 1.66131453e-09
+  scaled residual check: 150.5307  (it 49)
+  gmres it 50  prec.res 8.184e-18
+Solver iteration 50, L-infinite residual = 1.69475645e-09
+  scaled residual check: 153.5608  (it 50)
+Solver iteration 50, L-infinite residual = 1.69475645e-09
+Solver Richardson  1, L-infinite residual = 1.81216153e-12
+  IR breakdown: inverses 0.006 s, matvec 0.932 s, precond 1.819 s, other 0.041 s
+2026-09-29 08:55:33.862
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    1.812162E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    3.306343E+04
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    3.075462E-05
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999763E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    1.641988E-01 ...... PASSED
+    N = 65536, NB = 4096, NPROW = 1, NPCOL = 1, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 6.1065e+04, per GPU =   61065.02[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.8200e+05, per GPU =  681996.04[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END tdp=1000 variant=0 pass=A t_begin=1790672128.934659110 t_end=1790672134.942362389
+=== RUN tdp=1000 variant=0 pass=B t_begin=1790672134.944806339
+ ****** HPL MxP Settings ****** 
+   --nprow =  1 
+   --npcol =  1 
+   --order = column 
+   --n     = 65536 
+   --nb    = 4096 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 0  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 65536
+   nb     = 4096
+   nprow  = 1
+   npcol  = 1
+local matrix: 65536 x 65536 fp16 = 8.0 GiB
+estimated LU allocation: 10.6 GiB/GPU (free after RCCL init 94.0 GiB)
+gpu mem after A alloc: free 86.0 / 95.1 GiB
+matgen: 0.08 s
+LU panel transport: RCCL
+[0;31m Prog=  17.60% N_left=    61440 Time=     0.07 Time_left=       0.32 iTF=     488.76 TF=   488.76 iTF_per=   488.76 TF_per=   488.76[0m
+[0;31m Prog=  33.01% N_left=    57344 Time=     0.10 Time_left=       0.20 iTF=     971.76 TF=   636.39 iTF_per=   971.76 TF_per=   636.39[0m
+[0;31m Prog=  46.36% N_left=    53248 Time=     0.13 Time_left=       0.15 iTF=     776.53 TF=   671.28 iTF_per=   776.53 TF_per=   671.28[0m
+[0;31m Prog=  57.81% N_left=    49152 Time=     0.16 Time_left=       0.12 iTF=     626.47 TF=   661.91 iTF_per=   626.47 TF_per=   661.91[0m
+[0;31m Prog=  67.50% N_left=    45056 Time=     0.19 Time_left=       0.09 iTF=     785.79 TF=   677.24 iTF_per=   785.79 TF_per=   677.24[0m
+[0;31m Prog=  75.59% N_left=    40960 Time=     0.21 Time_left=       0.07 iTF=     746.94 TF=   684.06 iTF_per=   746.94 TF_per=   684.06[0m
+[0;31m Prog=  82.20% N_left=    36864 Time=     0.22 Time_left=       0.05 iTF=     945.29 TF=   699.62 iTF_per=   945.29 TF_per=   699.62[0m
+[0;31m Prog=  87.50% N_left=    32768 Time=     0.23 Time_left=       0.03 iTF=     696.46 TF=   699.43 iTF_per=   696.46 TF_per=   699.43[0m
+[0;31m Prog=  91.63% N_left=    28672 Time=     0.25 Time_left=       0.02 iTF=     678.39 TF=   698.45 iTF_per=   678.39 TF_per=   698.45[0m
+[0;31m Prog=  94.73% N_left=    24576 Time=     0.26 Time_left=       0.01 iTF=     646.35 TF=   696.62 iTF_per=   646.35 TF_per=   696.62[0m
+[0;31m Prog=  96.95% N_left=    20480 Time=     0.26 Time_left=       0.01 iTF=     603.13 TF=   694.15 iTF_per=   603.13 TF_per=   694.15[0m
+[0;31m Prog=  98.44% N_left=    16384 Time=     0.27 Time_left=       0.00 iTF=     556.39 TF=   691.56 iTF_per=   556.39 TF_per=   691.56[0m
+[0;31m Prog=  99.34% N_left=    12288 Time=     0.27 Time_left=       0.00 iTF=     488.41 TF=   688.95 iTF_per=   488.41 TF_per=   688.95[0m
+[0;31m Prog=  99.80% N_left=     8192 Time=     0.27 Time_left=       0.00 iTF=     395.22 TF=   686.58 iTF_per=   395.22 TF_per=   686.58[0m
+[0;31m Prog=  99.98% N_left=     4096 Time=     0.27 Time_left=       0.00 iTF=     288.58 TF=   684.97 iTF_per=   288.58 TF_per=   684.97[0m
+LU: 0.274 s (683.7 TFLOPS fp-agnostic)
+2026-09-29 08:55:37.065
+Solver iteration  0, L-infinite residual = 2.82322014e-03
+Solver Richardson  1, L-infinite residual = 5.85835309e-06
+  gmres it 1  prec.res 2.059e-03
+Solver iteration  1, L-infinite residual = 5.86054720e-06
+  scaled residual check: 531019.8362  (it 1)
+  gmres it 2  prec.res 4.245e-06
+Solver iteration  2, L-infinite residual = 1.61537542e-08
+  scaled residual check: 1463.6814  (it 2)
+  gmres it 3  prec.res 8.746e-09
+Solver iteration  3, L-infinite residual = 1.32876860e-09
+  scaled residual check: 120.3989  (it 3)
+  gmres it 4  prec.res 1.806e-11
+Solver iteration  4, L-infinite residual = 1.33248729e-09
+  scaled residual check: 120.7358  (it 4)
+  gmres it 5  prec.res 3.724e-14
+Solver iteration  5, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 5)
+  gmres it 6  prec.res 8.810e-17
+Solver iteration  6, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 6)
+  gmres it 7  prec.res 4.378e-17
+Solver iteration  7, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 7)
+  gmres it 8  prec.res 4.378e-17
+Solver iteration  8, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 8)
+  gmres it 9  prec.res 4.378e-17
+Solver iteration  9, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 9)
+  gmres it 10  prec.res 4.378e-17
+Solver iteration 10, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 10)
+  gmres it 11  prec.res 4.378e-17
+Solver iteration 11, L-infinite residual = 1.33251277e-09
+  scaled residual check: 120.7381  (it 11)
+  gmres it 12  prec.res 4.378e-17
+Solver iteration 12, L-infinite residual = 1.33251321e-09
+  scaled residual check: 120.7382  (it 12)
+  gmres it 13  prec.res 3.959e-17
+Solver iteration 13, L-infinite residual = 1.40202827e-09
+  scaled residual check: 127.0369  (it 13)
+  gmres it 14  prec.res 3.235e-17
+Solver iteration 14, L-infinite residual = 1.51874158e-09
+  scaled residual check: 137.6122  (it 14)
+  gmres it 15  prec.res 3.235e-17
+Solver iteration 15, L-infinite residual = 1.51874302e-09
+  scaled residual check: 137.6123  (it 15)
+  gmres it 16  prec.res 3.235e-17
+Solver iteration 16, L-infinite residual = 1.51874296e-09
+  scaled residual check: 137.6123  (it 16)
+  gmres it 17  prec.res 3.235e-17
+Solver iteration 17, L-infinite residual = 1.51874296e-09
+  scaled residual check: 137.6123  (it 17)
+  gmres it 18  prec.res 3.235e-17
+Solver iteration 18, L-infinite residual = 1.51874308e-09
+  scaled residual check: 137.6123  (it 18)
+  gmres it 19  prec.res 3.235e-17
+Solver iteration 19, L-infinite residual = 1.51874663e-09
+  scaled residual check: 137.6127  (it 19)
+  gmres it 20  prec.res 1.659e-17
+Solver iteration 20, L-infinite residual = 1.64301134e-09
+  scaled residual check: 148.8722  (it 20)
+  gmres it 21  prec.res 1.083e-17
+Solver iteration 21, L-infinite residual = 1.65824882e-09
+  scaled residual check: 150.2529  (it 21)
+  gmres it 22  prec.res 1.083e-17
+Solver iteration 22, L-infinite residual = 1.69016690e-09
+  scaled residual check: 153.1449  (it 22)
+  gmres it 23  prec.res 1.083e-17
+Solver iteration 23, L-infinite residual = 1.77308668e-09
+  scaled residual check: 160.6583  (it 23)
+  gmres it 24  prec.res 1.083e-17
+Solver iteration 24, L-infinite residual = 1.71410275e-09
+  scaled residual check: 155.3138  (it 24)
+  gmres it 25  prec.res 1.083e-17
+Solver iteration 25, L-infinite residual = 1.70273584e-09
+  scaled residual check: 154.2838  (it 25)
+  gmres it 26  prec.res 1.083e-17
+Solver iteration 26, L-infinite residual = 1.73022718e-09
+  scaled residual check: 156.7748  (it 26)
+  gmres it 27  prec.res 1.083e-17
+Solver iteration 27, L-infinite residual = 1.71960163e-09
+  scaled residual check: 155.8120  (it 27)
+  gmres it 28  prec.res 1.083e-17
+Solver iteration 28, L-infinite residual = 1.64594832e-09
+  scaled residual check: 149.1383  (it 28)
+  gmres it 29  prec.res 1.083e-17
+Solver iteration 29, L-infinite residual = 1.69211722e-09
+  scaled residual check: 153.3217  (it 29)
+  gmres it 30  prec.res 1.083e-17
+Solver iteration 30, L-infinite residual = 1.65146558e-09
+  scaled residual check: 149.6382  (it 30)
+  gmres it 31  prec.res 1.083e-17
+Solver iteration 31, L-infinite residual = 1.63650893e-09
+  scaled residual check: 148.2830  (it 31)
+  gmres it 32  prec.res 1.083e-17
+Solver iteration 32, L-infinite residual = 1.70664483e-09
+  scaled residual check: 154.6380  (it 32)
+  gmres it 33  prec.res 1.083e-17
+Solver iteration 33, L-infinite residual = 1.64058866e-09
+  scaled residual check: 148.6527  (it 33)
+  gmres it 34  prec.res 8.748e-18
+Solver iteration 34, L-infinite residual = 1.68021341e-09
+  scaled residual check: 152.2431  (it 34)
+  gmres it 35  prec.res 8.637e-18
+Solver iteration 35, L-infinite residual = 1.67827979e-09
+  scaled residual check: 152.0679  (it 35)
+  gmres it 36  prec.res 8.637e-18
+Solver iteration 36, L-infinite residual = 1.63863384e-09
+  scaled residual check: 148.4756  (it 36)
+  gmres it 37  prec.res 8.637e-18
+Solver iteration 37, L-infinite residual = 1.63454983e-09
+  scaled residual check: 148.1055  (it 37)
+  gmres it 38  prec.res 8.637e-18
+Solver iteration 38, L-infinite residual = 1.67871717e-09
+  scaled residual check: 152.1075  (it 38)
+  gmres it 39  prec.res 8.637e-18
+Solver iteration 39, L-infinite residual = 1.65980985e-09
+  scaled residual check: 150.3943  (it 39)
+  gmres it 40  prec.res 8.637e-18
+Solver iteration 40, L-infinite residual = 1.68065950e-09
+  scaled residual check: 152.2835  (it 40)
+  gmres it 41  prec.res 8.210e-18
+Solver iteration 41, L-infinite residual = 1.62890057e-09
+  scaled residual check: 147.5936  (it 41)
+  gmres it 42  prec.res 8.190e-18
+Solver iteration 42, L-infinite residual = 1.74394499e-09
+  scaled residual check: 158.0177  (it 42)
+  gmres it 43  prec.res 8.190e-18
+Solver iteration 43, L-infinite residual = 1.60514613e-09
+  scaled residual check: 145.4413  (it 43)
+  gmres it 44  prec.res 8.190e-18
+Solver iteration 44, L-infinite residual = 1.69943132e-09
+  scaled residual check: 153.9844  (it 44)
+  gmres it 45  prec.res 8.190e-18
+Solver iteration 45, L-infinite residual = 1.59634678e-09
+  scaled residual check: 144.6440  (it 45)
+  gmres it 46  prec.res 8.190e-18
+Solver iteration 46, L-infinite residual = 1.58734992e-09
+  scaled residual check: 143.8288  (it 46)
+  gmres it 47  prec.res 8.190e-18
+Solver iteration 47, L-infinite residual = 1.66795877e-09
+  scaled residual check: 151.1327  (it 47)
+  gmres it 48  prec.res 8.186e-18
+Solver iteration 48, L-infinite residual = 1.68738484e-09
+  scaled residual check: 152.8929  (it 48)
+  gmres it 49  prec.res 8.184e-18
+Solver iteration 49, L-infinite residual = 1.66131453e-09
+  scaled residual check: 150.5307  (it 49)
+  gmres it 50  prec.res 8.184e-18
+Solver iteration 50, L-infinite residual = 1.69475645e-09
+  scaled residual check: 153.5608  (it 50)
+Solver iteration 50, L-infinite residual = 1.69475645e-09
+Solver Richardson  1, L-infinite residual = 1.81216153e-12
+  IR breakdown: inverses 0.006 s, matvec 0.932 s, precond 1.820 s, other 0.042 s
+2026-09-29 08:55:39.869
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    1.812162E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    3.306343E+04
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    3.075462E-05
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999763E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    1.641988E-01 ...... PASSED
+    N = 65536, NB = 4096, NPROW = 1, NPCOL = 1, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 6.1038e+04, per GPU =   61037.68[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.8366e+05, per GPU =  683664.24[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END tdp=1000 variant=0 pass=B t_begin=1790672134.944806339 t_end=1790672140.952483282
+=== RUN tdp=1000 variant=7 pass=B t_begin=1790672140.954920447
+ ****** HPL MxP Settings ****** 
+   --nprow =  1 
+   --npcol =  1 
+   --order = column 
+   --n     = 65536 
+   --nb    = 4096 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 7 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 65536
+   nb     = 4096
+   nprow  = 1
+   npcol  = 1
+local matrix: 65536 x 65536 fp16 = 8.0 GiB
+estimated LU allocation: 10.6 GiB/GPU (free after RCCL init 94.0 GiB)
+gpu mem after A alloc: free 86.0 / 95.1 GiB
+matgen: 0.08 s
+LU panel transport: RCCL
+[0;31m Prog=  17.60% N_left=    61440 Time=     0.07 Time_left=       0.32 iTF=     481.39 TF=   481.39 iTF_per=   481.39 TF_per=   481.39[0m
+[0;31m Prog=  33.01% N_left=    57344 Time=     0.10 Time_left=       0.21 iTF=     864.56 TF=   606.93 iTF_per=   864.56 TF_per=   606.93[0m
+[0;31m Prog=  46.36% N_left=    53248 Time=     0.14 Time_left=       0.16 iTF=     701.27 TF=   631.40 iTF_per=   701.27 TF_per=   631.40[0m
+[0;31m Prog=  57.81% N_left=    49152 Time=     0.18 Time_left=       0.13 iTF=     574.69 TF=   619.29 iTF_per=   574.69 TF_per=   619.29[0m
+[0;31m Prog=  67.50% N_left=    45056 Time=     0.20 Time_left=       0.10 iTF=     720.14 TF=   632.00 iTF_per=   720.14 TF_per=   632.00[0m
+[0;31m Prog=  75.59% N_left=    40960 Time=     0.22 Time_left=       0.07 iTF=     671.60 TF=   636.01 iTF_per=   671.60 TF_per=   636.01[0m
+[0;31m Prog=  82.20% N_left=    36864 Time=     0.24 Time_left=       0.05 iTF=     851.15 TF=   649.22 iTF_per=   851.15 TF_per=   649.22[0m
+[0;31m Prog=  87.50% N_left=    32768 Time=     0.25 Time_left=       0.04 iTF=     623.87 TF=   647.62 iTF_per=   623.87 TF_per=   647.62[0m
+[0;31m Prog=  91.63% N_left=    28672 Time=     0.27 Time_left=       0.02 iTF=     608.59 TF=   645.76 iTF_per=   608.59 TF_per=   645.76[0m
+[0;31m Prog=  94.73% N_left=    24576 Time=     0.28 Time_left=       0.02 iTF=     592.48 TF=   643.86 iTF_per=   592.48 TF_per=   643.86[0m
+[0;31m Prog=  96.95% N_left=    20480 Time=     0.28 Time_left=       0.01 iTF=     552.23 TF=   641.43 iTF_per=   552.23 TF_per=   641.43[0m
+[0;31m Prog=  98.44% N_left=    16384 Time=     0.29 Time_left=       0.00 iTF=     511.35 TF=   638.97 iTF_per=   511.35 TF_per=   638.97[0m
+[0;31m Prog=  99.34% N_left=    12288 Time=     0.29 Time_left=       0.00 iTF=     453.53 TF=   636.60 iTF_per=   453.53 TF_per=   636.60[0m
+[0;31m Prog=  99.80% N_left=     8192 Time=     0.30 Time_left=       0.00 iTF=     370.87 TF=   634.49 iTF_per=   370.87 TF_per=   634.49[0m
+[0;31m Prog=  99.98% N_left=     4096 Time=     0.30 Time_left=       0.00 iTF=     274.48 TF=   633.07 iTF_per=   274.48 TF_per=   633.07[0m
+LU: 0.297 s (632.0 TFLOPS fp-agnostic)
+2026-09-29 08:55:43.102
+Solver iteration  0, L-infinite residual = 1.69936224e-05
+Solver Richardson  1, L-infinite residual = 1.92118099e-10
+  gmres it 1  prec.res 1.238e-05
+Solver iteration  1, L-infinite residual = 1.92365457e-10
+  scaled residual check: 17.4301  (it 1)
+  gmres it 2  prec.res 1.538e-10
+Solver iteration  2, L-infinite residual = 8.84697871e-12
+  scaled residual check: 0.8016  (it 2)
+  IR breakdown: inverses 0.006 s, matvec 0.054 s, precond 0.138 s, other 0.003 s
+2026-09-29 08:55:43.306
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    8.846979E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    3.306343E+04
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    3.075462E-05
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999763E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    8.016191E-01 ...... PASSED
+    N = 65536, NB = 4096, NPROW = 1, NPCOL = 1, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 3.7682e+05, per GPU =  376818.34[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.3196e+05, per GPU =  631956.88[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END tdp=1000 variant=7 pass=B t_begin=1790672140.954920447 t_end=1790672144.461275044
+=== ALL DONE

@@ -1,0 +1,48 @@
+name, power.limit [W], enforced.power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 900.00 W, 1980 MHz
+=== orig  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:53.148192068
+lmp exit 1
+=== orig end 02:55:55.135521719
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719145e+00
+Loop time of 0.000124095 on 1 procs for 0 steps with 256000 atoms
+=== orig2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:55.139116037
+lmp exit 1
+=== orig2 end 02:55:57.107857523
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719147e+00
+Loop time of 0.000128256 on 1 procs for 0 steps with 256000 atoms
+=== mod  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:57.111363042
+lmp exit 1
+=== mod end 02:55:59.087927050
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719145e+00
+Loop time of 0.000117056 on 1 procs for 0 steps with 256000 atoms
+=== mod2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:59.091513977
+lmp exit 1
+=== mod2 end 02:56:01.074763199
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719145e+00
+Loop time of 0.000117087 on 1 procs for 0 steps with 256000 atoms
+=== trunc36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=trunc  start 02:56:01.078263310
+lmp exit 1
+=== trunc36 end 02:56:03.061376758
+[MANT] PairLJCutKokkos params(1,1) lj1..lj4,offset: MANT_BITS=36 MANT_ROUND=trunc values=5 changed=4 max_rel_change=7.937e-12
+         0   1.440000000000000e+00 -7.450704858519114e+00  0.000000000000000e+00 -5.290713296019113e+00 -5.643205745694949e+00
+Loop time of 0.000117312 on 1 procs for 0 steps with 256000 atoms
+=== near36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=nearest  start 02:56:03.064874597
+lmp exit 1
+=== near36 end 02:56:05.040262866
+[MANT] PairLJCutKokkos params(1,1) lj1..lj4,offset: MANT_BITS=36 MANT_ROUND=nearest values=5 changed=4 max_rel_change=5.292e-12
+         0   1.440000000000000e+00 -7.450704858617677e+00  0.000000000000000e+00 -5.290713296117676e+00 -5.643205745694948e+00
+Loop time of 0.000115583 on 1 procs for 0 steps with 256000 atoms
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_npyio_impl.py", line 1381, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_npyio_impl.py", line 1011, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_datasource.py", line 192, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_datasource.py", line 529, in open
+    raise FileNotFoundError(f"{path} not found.")
+FileNotFoundError: lj_x2_1977.orig.dump not found.

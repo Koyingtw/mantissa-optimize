@@ -1,0 +1,36 @@
+name, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 54, 1980 MHz
+=== RUN tag=single MANT_BITS=<unset> MANT_ROUND=<unset> BIN=ex1_bench.build-cuda ARGS=-n 112 -o 3 -rep 1
+Options used:
+   --nx 112
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 0
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=112 p=3 NE=1404928 ndofs=38272753 amp=0.05 kappa=var mass=0
+[SETUP] size=38272753 ess=677378 setup_time=8.299 s
+[CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+[SOLVE] rep=0 its=1700 converged=1 final_norm=1.6939548470539989e-12 time=16.893 s
+[TIME] solves=1 total_its=1700 solve_time=16.893 s  per_it=9.9373 ms  3.851 GDOF/s(CG it)
+[RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+[RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+[TIME] wall_total=25.273 s
+Collecting data...
+Generating '/tmp/nsys-koying/nsys-report-297a.qdstrm'
+Press Ctrl-C to stop symbol files downloading
+[1/1] [0%                          ] mfem_nsys_1964_single.nsys-rep[1/1] [0%                          ] mfem_nsys_1964_single.nsys-rep[1/1] [14%                         ] mfem_nsys_1964_single.nsys-rep[1/1] [=15%                        ] mfem_nsys_1964_single.nsys-rep[1/1] [=16%                        ] mfem_nsys_1964_single.nsys-rep[1/1] [=17%                        ] mfem_nsys_1964_single.nsys-rep[1/1] [===24%                      ] mfem_nsys_1964_single.nsys-rep[1/1] [====28%                     ] mfem_nsys_1964_single.nsys-rep[1/1] [======35%                   ] mfem_nsys_1964_single.nsys-rep[1/1] [=========43%                ] mfem_nsys_1964_single.nsys-rep[1/1] [===========50%              ] mfem_nsys_1964_single.nsys-rep[1/1] [===========51%              ] mfem_nsys_1964_single.nsys-rep[1/1] [===========53%              ] mfem_nsys_1964_single.nsys-rep[1/1] [============55%             ] mfem_nsys_1964_single.nsys-rep[1/1] [============57%             ] mfem_nsys_1964_single.nsys-rep[1/1] [=============59%            ] mfem_nsys_1964_single.nsys-rep[1/1] [==============61%           ] mfem_nsys_1964_single.nsys-rep[1/1] [==============64%           ] mfem_nsys_1964_single.nsys-rep[1/1] [===============66%          ] mfem_nsys_1964_single.nsys-rep[1/1] [========================100%] mfem_nsys_1964_single.nsys-rep[1/1] [========================100%] mfem_nsys_1964_single.nsys-rep
+Generated:
+	/nfs/home/koying/mantissa-optimize/apps/logs/mfem_nsys_1964_single.nsys-rep
+GPU samples=94 meanPower=308.2W maxPower=662.5W meanUtil=36.2%
+GPU busy(util>=50%) samples=34 (17.0s) meanPower=643.7W maxPower=662.5W meanSM=1980MHz meanUtil=100.0%

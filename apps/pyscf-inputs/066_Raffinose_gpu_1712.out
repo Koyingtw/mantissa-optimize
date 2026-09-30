@@ -1,0 +1,222 @@
+/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/lib/cutensor.py:154: UserWarning: using cupy as the tensor contraction engine.
+  warnings.warn(f'using {contract_engine} as the tensor contraction engine.')
+#INFO: **** input file is /nfs/home/koying/mantissa-optimize/apps/pyscf-inputs/mp2_test.py ****
+# 用法: python mp2_test.py <xyz> [basis]   (GPU: DF-RHF + DF-MP2，DF-MP2 幾乎全是 DGEMM)
+import sys, time, os
+import cupy
+from pyscf import gto
+from gpu4pyscf import scf
+from gpu4pyscf.mp import dfmp2
+basis = sys.argv[2] if len(sys.argv) > 2 else 'def2-tzvp'
+mol = gto.M(atom=sys.argv[1], basis=basis, verbose=4, max_memory=200000)
+print(f"natm={mol.natm} nao={mol.nao} nelec={mol.nelectron} basis={basis}")
+mf = scf.RHF(mol).density_fit(); mf.conv_tol = 1e-10
+t0 = time.perf_counter(); ehf = mf.kernel(); cupy.cuda.Device().synchronize(); t1 = time.perf_counter()
+print(f"RESULT_HF converged={mf.converged} E={ehf:.10f} Eh wall={t1-t0:.2f}s")
+pt = dfmp2.DFMP2(mf)
+t2 = time.perf_counter(); ecorr, _ = pt.kernel(); cupy.cuda.Device().synchronize(); t3 = time.perf_counter()
+print(f"RESULT_MP2 Ecorr={float(ecorr):.10f} Etot={float(ehf+ecorr):.10f} Eh wall={t3-t2:.2f}s")
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='work3', release='7.0.0-1016-nvidia-64k', version='#16-Ubuntu SMP PREEMPT_DYNAMIC Thu Jul 23 01:20:35 UTC 2026', machine='aarch64')  Threads 72
+Python 3.12.14 (main, Sep  1 2026, 14:15:30) [Clang 22.1.3 ]
+numpy 2.5.3  scipy 1.18.1  h5py 3.16.0
+Date: Tue Sep 29 12:24:01 2026
+PySCF version 2.14.0
+PySCF path  /nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/pyscf/__init__.py
+CUDA Environment
+    CuPy 14.2.0
+    CUDA Path /nfs/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux
+    CUDA Build Version 13020
+    CUDA Driver Version 13030
+    CUDA Runtime Version 13020
+CUDA toolkit
+    cuSolver (12, 2, 0)
+    cuBLAS 130401
+    cuTENSOR None
+Device info
+    Device name b'NVIDIA GH200 480GB'
+    Device global memory 95.00 GB
+    CuPy memory fraction 0.9
+    Num. Devices 1
+GPU4PySCF 1.8.1
+GPU4PySCF path  /nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf
+
+[CONFIG] conf_file None
+[INPUT] verbose = 4
+[INPUT] num. atoms = 66
+[INPUT] num. electrons = 268
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 0
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT] Symbol           X                Y                Z      unit          X                Y                Z       unit  Magmom
+[INPUT]  1 C     -1.429589370000  -1.016582490000   2.448312650000 AA   -2.701532379890  -1.921062489128   4.626640375808 Bohr   0.0
+[INPUT]  2 C     -1.541494630000  -0.279435950000   1.129359130000 AA   -2.913002673188  -0.528057414858   2.134179451977 Bohr   0.0
+[INPUT]  3 C     -2.952439120000   1.471295010000   2.224925500000 AA   -5.579301336252   2.780344617339   4.204499842561 Bohr   0.0
+[INPUT]  4 C     -2.841343240000   0.734002800000   3.543888100000 AA   -5.369360549484   1.387064266664   6.696977925105 Bohr   0.0
+[INPUT]  5 C     -1.557972420000  -0.067422350000   3.622106840000 AA   -2.944141183426  -0.127409776175   6.844789921514 Bohr   0.0
+[INPUT]  6 H     -0.664978200000   0.410857330000   1.012834390000 AA   -1.256626676806   0.776407829970   1.913979606641 Bohr   0.0
+[INPUT]  7 H     -0.443146890000  -1.546441940000   2.499942310000 AA   -0.837426255053  -2.922351734141   4.724206293113 Bohr   0.0
+[INPUT]  8 H     -3.938136460000   2.002518350000   2.173505540000 AA   -7.441999350564   3.784211240916   4.107330200825 Bohr   0.0
+[INPUT]  9 H     -3.718651560000   0.044599880000   3.660180430000 AA   -7.027233001087   0.084281558388   6.916738579193 Bohr   0.0
+[INPUT] 10 H     -0.681334480000   0.632382650000   3.633277960000 AA   -1.287535566423   1.195030014427   6.865900278818 Bohr   0.0
+[INPUT] 11 O     -1.924992040000   2.462799290000   2.146364820000 AA   -3.637707747568   4.654016157873   4.056041673201 Bohr   0.0
+[INPUT] 12 C     -1.460763010000   4.675206480000   3.082588180000 AA   -2.760442021795   8.834859822992   5.825247415021 Bohr   0.0
+[INPUT] 13 C     -1.651929060000   4.605936160000   4.584320620000 AA   -3.121693500610   8.703957889631   8.663110438996 Bohr   0.0
+[INPUT] 14 H     -0.741173340000   5.433883320000   2.855651680000 AA   -1.400614623429  10.268551267642   5.396399582354 Bohr   0.0
+[INPUT] 15 C     -3.376584730000   6.276678680000   2.913186310000 AA   -6.380820376088  11.861203677097   5.505124275732 Bohr   0.0
+[INPUT] 16 C     -2.265412790000   5.883670740000   5.119705080000 AA   -4.281009732187  11.118526305717   9.674840439744 Bohr   0.0
+[INPUT] 17 H     -2.317473100000   3.738668480000   4.835805790000 AA   -4.379389460047   7.065059497744   9.138348534686 Bohr   0.0
+[INPUT] 18 C     -3.566360400000   6.209212060000   4.414723330000 AA   -6.739444417494  11.733710242746   8.342618009428 Bohr   0.0
+[INPUT] 19 H     -4.366000550000   6.454261270000   2.417196190000 AA   -8.250545299200  12.196786136687   4.567838788442 Bohr   0.0
+[INPUT] 20 H     -1.543500690000   6.730756220000   4.979137350000 AA   -2.916793577177  12.719285867013   9.409205928093 Bohr   0.0
+[INPUT] 21 H     -4.329584690000   5.424294040000   4.659137540000 AA   -8.181729297210  10.250430154711   8.804493927280 Bohr   0.0
+[INPUT] 22 O     -2.529523880000   7.382695760000   2.590519090000 AA   -4.780107358747  13.951273047388   4.895371600558 Bohr   0.0
+[INPUT] 23 C     -3.319002860000   8.448666240000   2.056356300000 AA   -6.272006412048  15.965665311459   3.885950221524 Bohr   0.0
+[INPUT] 24 C     -3.264584550000   9.663012630000   2.972027240000 AA   -6.169170709986  18.260447408913   5.616317518347 Bohr   0.0
+[INPUT] 25 C     -2.805238150000  10.854348140000   2.143907830000 AA   -5.301131817682  20.511745245282   4.051398635011 Bohr   0.0
+[INPUT] 26 H     -4.269116580000   9.861201750000   3.422673200000 AA   -8.067461130040  18.634970566582   6.467914961889 Bohr   0.0
+[INPUT] 27 C     -2.450494360000  10.348681180000   0.752910700000 AA   -4.630763210191  19.556173180641   1.422795019255 Bohr   0.0
+[INPUT] 28 H     -1.921498280000  11.347641460000   2.620479630000 AA   -3.631105498023  21.443934519160   4.951988815702 Bohr   0.0
+[INPUT] 29 H     -3.016264040000  10.917393870000  -0.026977880000 AA   -5.699912954974  20.630884408305  -0.050980804621 Bohr   0.0
+[INPUT] 30 C     -4.763560050000   7.927548550000   1.941070260000 AA   -9.001823872419  14.980895598693   3.668091179938 Bohr   0.0
+[INPUT] 31 H     -4.782663130000   7.067143930000   1.305272360000 AA   -9.037923461755  13.354966510582   2.466607278365 Bohr   0.0
+[INPUT] 32 H     -5.125310180000   7.661459940000   2.912272450000 AA   -9.685432543645  14.478061000927   5.503397330616 Bohr   0.0
+[INPUT] 33 O     -2.825808980000   0.520717000000   1.051507670000 AA   -5.340005052537   0.984012518405   1.987061514180 Bohr   0.0
+[INPUT] 34 C     -0.938494270000   3.317327600000   2.577612630000 AA   -1.773497139774   6.268840629461   4.870981925920 Bohr   0.0
+[INPUT] 35 H     -0.777271150000   3.367761570000   1.521031580000 AA   -1.468829598026   6.364147020135   2.874333113014 Bohr   0.0
+[INPUT] 36 H     -0.016531990000   3.084914760000   3.068397540000 AA   -0.031240933394   5.829644014028   5.798430991889 Bohr   0.0
+[INPUT] 37 C     -1.492243130000  -1.289853140000  -0.031774540000 AA   -2.819930826964  -2.437469175510  -0.060045178334 Bohr   0.0
+[INPUT] 38 H     -0.581451070000  -1.848993440000   0.020378520000 AA   -1.098783277135  -3.494091207717   0.038509821624 Bohr   0.0
+[INPUT] 39 H     -2.325264150000  -1.957466930000   0.040805160000 AA   -4.394112410770  -3.699076395593   0.077110576869 Bohr   0.0
+[INPUT] 40 C     -0.951637740000  10.561758330000   0.470728200000 AA   -1.798334698400  19.958830637544   0.889547377109 Bohr   0.0
+[INPUT] 41 H     -0.666039550000   9.992167890000  -0.388864960000 AA   -1.258632337629  18.882460702773  -0.734848273840 Bohr   0.0
+[INPUT] 42 H     -0.380343250000  10.241356660000   1.316816480000 AA   -0.718744575827  19.353359231390   2.488422503514 Bohr   0.0
+[INPUT] 43 O     -1.550446620000  -0.588603440000  -1.276668600000 AA   -2.929919482558  -1.112299297577  -2.412554005832 Bohr   0.0
+[INPUT] 44 H     -1.401185650000  -1.203856200000  -1.998323080000 AA   -2.647857128171  -2.274958511360  -3.776283329597 Bohr   0.0
+[INPUT] 45 O     -2.455429510000  -2.009819050000   2.525986000000 AA   -4.640089292075  -3.798007564434   4.773421734486 Bohr   0.0
+[INPUT] 46 H     -2.078145820000  -2.836684510000   2.835098480000 AA   -3.927126446710  -5.360556825696   5.357559663371 Bohr   0.0
+[INPUT] 47 O     -1.530667400000  -0.810100980000   4.843819940000 AA   -2.892542173800  -1.530868985442   9.153493083307 Bohr   0.0
+[INPUT] 48 H     -0.619988420000  -0.984246700000   5.092691500000 AA   -1.171608314202  -1.859956702007   9.623792171900 Bohr   0.0
+[INPUT] 49 O     -2.886469870000   1.672261390000   4.622097000000 AA   -5.454637521109   3.160116035784   8.734497451174 Bohr   0.0
+[INPUT] 50 H     -3.422919550000   1.316444110000   5.334287850000 AA   -6.468380495919   2.487718826197  10.080343106095 Bohr   0.0
+[INPUT] 51 O     -0.390509840000   4.377900950000   5.218135650000 AA   -0.737956646548   8.273033795973   9.860847259329 Bohr   0.0
+[INPUT] 52 H     -0.439077550000   4.652724120000   6.136674380000 AA   -0.829736316945   8.792374319958  11.596633893835 Bohr   0.0
+[INPUT] 53 O     -2.502067900000   5.749474040000   6.523587410000 AA   -4.728223076066  10.864931295897  12.327793554561 Bohr   0.0
+[INPUT] 54 H     -2.245427280000   6.559316600000   6.970678710000 AA   -4.243242591827  12.395311938313  13.172673664236 Bohr   0.0
+[INPUT] 55 O     -4.069062240000   7.460482700000   4.890656780000 AA   -7.689413217409  14.098269060056   9.242001883447 Bohr   0.0
+[INPUT] 56 H     -4.763573270000   7.302835330000   5.534397210000 AA   -9.001848854599  13.800358706498  10.458494991457 Bohr   0.0
+[INPUT] 57 O     -2.762358240000   4.999284660000   2.377895250000 AA   -5.220100531536   9.447278826139   4.493570775404 Bohr   0.0
+[INPUT] 58 O     -5.595943310000   8.949154100000   1.385768350000 AA  -10.574800264492  16.911450295529   2.618722653590 Bohr   0.0
+[INPUT] 59 H     -6.489985760000   8.614362130000   1.284761270000 AA  -12.264295638727  16.278785163525   2.427846935748 Bohr   0.0
+[INPUT] 60 O     -2.795718170000   8.867660130000   0.689768340000 AA   -5.283141662770  16.757449011425   1.303473251996 Bohr   0.0
+[INPUT] 61 O     -2.357572250000   9.429760030000   4.052685330000 AA   -4.455165871375  17.819663877070   7.658465342743 Bohr   0.0
+[INPUT] 62 H     -2.228282800000  10.244293730000   4.544029490000 AA   -4.210844220079  19.358909489299   8.586971238047 Bohr   0.0
+[INPUT] 63 O     -3.842927110000  11.835198150000   2.066223280000 AA   -7.262079754566  22.365283133459   3.904596111401 Bohr   0.0
+[INPUT] 64 H     -3.457597420000  12.713434570000   2.108905960000 AA   -6.533912172803  24.024909439878   3.985254686863 Bohr   0.0
+[INPUT] 65 O     -0.705035910000  11.949044290000   0.226750350000 AA   -1.332324777884  22.580421158398   0.428496060149 Bohr   0.0
+[INPUT] 66 H      0.042589430000  12.041824510000  -0.368269130000 AA    0.080482358501  22.755750363975  -0.695927795832 Bohr   0.0
+
+nuclear repulsion = 4167.9936646291
+number of shells = 502
+number of NR pGTOs = 1820
+number of NR cGTOs = 1246
+basis = def2-tzvp
+ecp = {}
+CPU time:         9.32
+natm=66 nao=1246 nelec=268 basis=def2-tzvp
+
+
+******** <class 'gpu4pyscf.df.df_jk.DFRHF'> ********
+method = DFRHF
+initial guess = minao
+damping factor = None
+level_shift factor = None
+DIIS = <class 'gpu4pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+diis_damp = 0
+SCF conv_tol = 1e-10
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = False
+Set gradient conv threshold to 1e-05
+init E= -1905.58883672774
+  HOMO = -0.248916728021326  LUMO = 0.053071911833126  gap/eV = 8.21753
+cycle= 1 E= -1897.46727873027  delta_E= 8.12  |g|=  2.1  |ddm|= 7.07
+  HOMO = -0.358785392734281  LUMO = 0.0791101573320595  gap/eV = 11.91574
+cycle= 2 E= -1898.12791300724  delta_E= -0.661  |g|= 1.37  |ddm|= 3.96
+  HOMO = -0.379023683219465  LUMO = 0.108069362850583  gap/eV = 13.25448
+cycle= 3 E= -1898.45449117158  delta_E= -0.327  |g|= 0.204  |ddm|= 1.51
+  HOMO = -0.37625262174696  LUMO = 0.112643585845548  gap/eV = 13.30354
+cycle= 4 E= -1898.46617413293  delta_E= -0.0117  |g|= 0.0573  |ddm|= 0.327
+  HOMO = -0.378921678051568  LUMO = 0.112112653850205  gap/eV = 13.36172
+cycle= 5 E= -1898.46702042902  delta_E= -0.000846  |g|= 0.0216  |ddm|= 0.104
+  HOMO = -0.379090107947529  LUMO = 0.111969290030972  gap/eV = 13.36241
+cycle= 6 E= -1898.4671281912  delta_E= -0.000108  |g|= 0.00508  |ddm|= 0.0482
+  HOMO = -0.378859844356984  LUMO = 0.112047738912125  gap/eV = 13.35828
+cycle= 7 E= -1898.46714080917  delta_E= -1.26e-05  |g|= 0.00162  |ddm|= 0.0252
+  HOMO = -0.379025406718542  LUMO = 0.112049694682511  gap/eV = 13.36283
+cycle= 8 E= -1898.46714208441  delta_E= -1.28e-06  |g|= 0.000618  |ddm|= 0.00784
+  HOMO = -0.379013931739029  LUMO = 0.112047328872424  gap/eV = 13.36246
+cycle= 9 E= -1898.46714225934  delta_E= -1.75e-07  |g|= 0.000189  |ddm|= 0.0025
+  HOMO = -0.378995168641826  LUMO = 0.112048425767129  gap/eV = 13.36198
+cycle= 10 E= -1898.46714227112  delta_E= -1.18e-08  |g|= 6.77e-05  |ddm|= 0.00039
+  HOMO = -0.379001597713805  LUMO = 0.112047939695072  gap/eV = 13.36214
+cycle= 11 E= -1898.4671422731  delta_E= -1.97e-09  |g|= 1.95e-05  |ddm|= 0.000197
+  HOMO = -0.379000338169718  LUMO = 0.112047574502875  gap/eV = 13.36209
+cycle= 12 E= -1898.46714227328  delta_E= -1.87e-10  |g|= 8.92e-06  |ddm|= 5.4e-05
+  HOMO = -0.379000609481687  LUMO = 0.11204747532242  gap/eV = 13.36210
+cycle= 13 E= -1898.46714227332  delta_E= -3.18e-11  |g|= 3.17e-06  |ddm|= 2.48e-05
+converged SCF energy = -1898.46714227332
+RESULT_HF converged=True E=-1898.4671422733 Eh wall=6.27s
+Traceback (most recent call last):
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-inputs/mp2_test.py", line 14, in <module>
+    t2 = time.perf_counter(); ecorr, _ = pt.kernel(); cupy.cuda.Device().synchronize(); t3 = time.perf_counter()
+                                         ^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/mp/dfmp2.py", line 198, in kernel
+    self._kernel_impl(*args, **kwargs)
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/mp/dfmp2.py", line 74, in kernel
+    result = dfmp2_drivers.dfmp2_kernel_one_gpu(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/mp/dfmp2_drivers.py", line 81, in dfmp2_kernel_one_gpu
+    cderi_ovl_gpu = get_j3c_ovl(mol, intopt, [occ_coeff], [vir_coeff], [cderi_ovl_gpu], log=log)[0]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/mp/dfmp2_addons.py", line 935, in get_j3c_ovl_gpu_bdiv
+    get_j3c_ovl_cart_bdiv_gpu(intopt, occ_coeff_set, vir_coeff_set, j3c_ovl_cart_set, aux_batch_size, log=log)
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/mp/dfmp2_addons.py", line 785, in get_j3c_ovl_cart_bdiv_gpu
+    contract('uvP, ui -> ivP', j3c_expand_pair, occ_coeff_cart, out=j3c_obx_sorted)
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/lib/cutensor.py", line 157, in contract
+    return _contract_einsum(pattern, a, b, alpha, beta, out, einsum)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/lib/cutensor.py", line 60, in _contract_einsum
+    out[:] = einsum(pattern, a, b)
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/linalg/_einsum.py", line 672, in einsum
+    arr_out, sub_out = reduced_binary_einsum(
+                       ^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/linalg/_einsum.py", line 417, in reduced_binary_einsum
+    arr_out = cupy.matmul(tmp0, tmp1).reshape(shapes_out)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/_core/_gufuncs.py", line 685, in __call__
+    result = self._try_fastcall_func(
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/linalg/_product.py", line 47, in _try_fastcall_matmul
+    return _core.matmul(a, b, out=out)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "cupy/_core/_routines_linalg.pyx", line 821, in cupy._core._routines_linalg.matmul
+  File "cupy/_core/_routines_linalg.pyx", line 972, in cupy._core._routines_linalg.matmul
+  File "cupy/_core/core.pyx", line 176, in cupy._core.core.ndarray.__new__
+  File "cupy/_core/core.pyx", line 282, in cupy._core.core._ndarray_base._init
+  File "cupy/cuda/memory.pyx", line 904, in cupy.cuda.memory.alloc
+  File "/nfs/home/koying/mantissa-optimize/apps/gpu4pyscf/gpu4pyscf/lib/cupy_helper.py", line 1223, in malloc
+    return cuda_malloc(size)
+           ^^^^^^^^^^^^^^^^^
+  File "cupy/cuda/memory.pyx", line 769, in cupy.cuda.memory._malloc
+  File "cupy/cuda/memory.pyx", line 770, in cupy.cuda.memory._malloc
+  File "cupy/cuda/memory.pyx", line 119, in cupy.cuda.memory.Memory.__init__
+  File "cupy_backends/cuda/api/runtime.pyx", line 519, in cupy_backends.cuda.api.runtime.malloc
+  File "cupy_backends/cuda/api/runtime.pyx", line 146, in cupy_backends.cuda.api.runtime.check_status
+cupy_backends.cuda.api.runtime.CUDARuntimeError: cudaErrorMemoryAllocation: out of memory

@@ -1,0 +1,30 @@
+job=1730 host=work3 app=pyscf case=168_Valinomycin variants=[stats copy 44:trunc 36:trunc 28:trunc 20:trunc 12:trunc 28:nearest 20:nearest] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=stats pass=A t_begin=1790685729.803411731
+    RESULT converged=True E=-3795.5392524244 Eh  scf_cycles=16  wall=113.44s
+=== END tdp=1000 variant=stats pass=A t_begin=1790685729.803411731 t_end=1790685845.045035528
+=== RUN tdp=1000 variant=copy pass=A t_begin=1790685850.071579502
+    RESULT converged=True E=-3795.5392524244 Eh  scf_cycles=16  wall=123.80s
+=== END tdp=1000 variant=copy pass=A t_begin=1790685850.071579502 t_end=1790685975.624144890
+=== RUN tdp=1000 variant=44:trunc pass=A t_begin=1790685980.650472770
+    RESULT converged=True E=-3795.5392524353 Eh  scf_cycles=16  wall=123.88s
+=== END tdp=1000 variant=44:trunc pass=A t_begin=1790685980.650472770 t_end=1790686106.318926746
+=== RUN tdp=1000 variant=36:trunc pass=A t_begin=1790686111.345273857
+    RESULT converged=False E=-3795.5392511945 Eh  scf_cycles=100  wall=652.36s
+=== END tdp=1000 variant=36:trunc pass=A t_begin=1790686111.345273857 t_end=1790686765.460883389
+=== RUN tdp=1000 variant=28:trunc pass=A t_begin=1790686770.487398003
+    RESULT converged=False E=-3795.5308268167 Eh  scf_cycles=100  wall=652.71s
+=== END tdp=1000 variant=28:trunc pass=A t_begin=1790686770.487398003 t_end=1790687424.955441316
+=== RUN tdp=1000 variant=20:trunc pass=A t_begin=1790687429.981777247
+    RESULT converged=False E=38145.9135487182 Eh  scf_cycles=100  wall=652.65s
+=== END tdp=1000 variant=20:trunc pass=A t_begin=1790687429.981777247 t_end=1790688084.395617019
+=== RUN tdp=1000 variant=12:trunc pass=A t_begin=1790688084.408683985
+    RESULT converged=False E=7771774498.6545124054 Eh  scf_cycles=100  wall=652.98s
+=== END tdp=1000 variant=12:trunc pass=A t_begin=1790688084.408683985 t_end=1790688739.095748692
+=== RUN tdp=1000 variant=28:nearest pass=A t_begin=1790688739.109001096
+    RESULT converged=False E=-3795.5345976871 Eh  scf_cycles=100  wall=652.74s
+=== END tdp=1000 variant=28:nearest pass=A t_begin=1790688739.109001096 t_end=1790689393.530659755
+=== RUN tdp=1000 variant=20:nearest pass=A t_begin=1790689393.544330618
+    RESULT converged=False E=82697.7394148127 Eh  scf_cycles=100  wall=652.91s
+=== END tdp=1000 variant=20:nearest pass=A t_begin=1790689393.544330618 t_end=1790690048.121098466
+=== ALL DONE

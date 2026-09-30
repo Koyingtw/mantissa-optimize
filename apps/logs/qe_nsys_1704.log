@@ -1,0 +1,24 @@
+Warning: ieee_divide_by_zero is signaling
+Warning: ieee_inexact is signaling
+FORTRAN STOP
+!    total energy              =  -11427.09402216 Ry
+     convergence has been achieved in  28 iterations
+     PWSCF        :   1m23.42s CPU   1m20.04s WALL
+ERROR: Report 'cublas_api_sum' could not be found.
+
+GPU kernel total = 43.45 s ; BLAS-like kernels (gemm/gemv/trsm/...) = 17.63 s = 40.6% of GPU kernel time
+wall = 20.04 s ; BLAS kernels / wall = 88.0%
+Top 12 kernels:
+     7.998s  18.4% n=  10060 [BLAS] sm90_xmma_gemm_cf64cf64_f64f64_cf64_nn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5
+     6.526s  15.0% n=   4996 [BLAS] sm90_xmma_gemm_cf64cf64_f64f64_cf64_cn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5
+     5.104s  11.7% n=  16313        void regular_fft<(unsigned int)200, EPT<(unsigned int)5, (unsigned int)8>, (unsigned int)8, (unsigned int)2, (
+     3.795s   8.7% n=  16313        void regular_fft<(unsigned int)64, EPT<(unsigned int)8>, (unsigned int)32, (unsigned int)4, (padding_t)6, (twi
+     3.732s   8.6% n=  16313        void vector_fft<(unsigned int)125, EPT<(unsigned int)5>, (unsigned int)8, (unsigned int)4, (padding_t)14, (twi
+     1.701s   3.9% n=   6692        vloc_psi_k_acc_212_gpu
+     1.596s   3.7% n=   6844        fft_scalar_cufft_cfft3d_gpu_586_gpu
+     1.495s   3.4% n=   4514        void sytrd4_gpu<sytrd_params<double2, (int)32, (int)8, (int)1024, (int)32, (int)1, (int)1, (int)2>>(int, T1::d
+     1.149s   2.6% n=   9592        fft_helper_subroutines_fftx_c2psi_k_477_gpu
+     0.967s   2.2% n=   1991        void sytrd4_gpu<sytrd_params<double2, (int)32, (int)8, (int)2048, (int)32, (int)1, (int)1, (int)2>>(int, T1::d
+     0.733s   1.7% n=   2656        void sytrd4_gpu<sytrd_params<double2, (int)32, (int)8, (int)512, (int)32, (int)1, (int)1, (int)2>>(int, T1::da
+     0.682s   1.6% n=    129 [BLAS] sm90_xmma_gemm_cf64cf64_f64f64_cf64_cn_n_tilesize64x64x32_stage3_warpsize4x2x1_tensor16x8x16_execute_kernel__5
+head: cannot open 'nsys_ausurf_conv_1704_cublas_api_sum.csv' for reading: No such file or directory

@@ -1,0 +1,102 @@
+ERROR: CUFFT_INTERNAL_ERROR /opt/cp2k/src/pw/gpu/../../offload/offload_fft.h 199
+
+Program received signal SIGABRT: Process abort signal.
+
+Backtrace for this error:
+ERROR: CUFFT_INTERNAL_ERROR /opt/cp2k/src/pw/gpu/../../offload/offload_fft.h 199
+
+Program received signal SIGABRT: Process abort signal.
+
+Backtrace for this error:
+#0  0xffffd595d08b in ???
+#1  0xffffd595c047 in ???
+#2  0xfffff7fb0a57 in ???
+#0  0xffffd595d08b in ???
+#1  0xffffd595c047 in ???
+#2  0xfffff7fb0a57 in ???
+#3  0xffffd566f1f0 in __pthread_kill_implementation
+	at ./nptl/pthread_kill.c:44
+#4  0xffffd562a67b in __GI_raise
+	at ../sysdeps/posix/raise.c:26
+#3  0xffffd566f1f0 in __pthread_kill_implementation
+	at ./nptl/pthread_kill.c:44
+#4  0xffffd562a67b in __GI_raise
+	at ../sysdeps/posix/raise.c:26
+#5  0xffffd561712f in __GI_abort
+	at ./stdlib/abort.c:79
+#5  0xffffd561712f in __GI_abort
+	at ./stdlib/abort.c:79
+#6  0xaaaaacd0fb7f in offload_fftPlanMany
+	at /opt/cp2k/src/pw/gpu/../../offload/offload_fft.h:199
+#7  0xaaaaacd0fb7f in fft_1d
+	at /opt/cp2k/src/pw/gpu/pw_gpu_internal.c:173
+#6  0xaaaaacd0fb7f in offload_fftPlanMany
+	at /opt/cp2k/src/pw/gpu/../../offload/offload_fft.h:199
+#7  0xaaaaacd0fb7f in fft_1d
+	at /opt/cp2k/src/pw/gpu/pw_gpu_internal.c:173
+#8  0xaaaaacd10957 in pw_gpu_cff
+	at /opt/cp2k/src/pw/gpu/pw_gpu_internal.c:305
+#8  0xaaaaacd10957 in pw_gpu_cff
+	at /opt/cp2k/src/pw/gpu/pw_gpu_internal.c:305
+#9  0xaaaaacc58d27 in pw_gpu_cff
+	at /opt/cp2k/src/pw/pw_gpu.F:579
+#10  0xaaaaacc58d27 in __pw_gpu_MOD_pw_gpu_r3dc1d_3d_ps
+	at /opt/cp2k/src/pw/pw_gpu.F:350
+#9  0xaaaaacc58d27 in pw_gpu_cff
+	at /opt/cp2k/src/pw/pw_gpu.F:579
+#10  0xaaaaacc58d27 in __pw_gpu_MOD_pw_gpu_r3dc1d_3d_ps
+	at /opt/cp2k/src/pw/pw_gpu.F:350
+#11  0xaaaaacc12d7f in __pw_methods_MOD_fft_wrap_pw1pw2_r3d_c1d_rs_gs
+	at /opt/cp2k/src/pw/pw_methods.F:1383
+#11  0xaaaaacc12d7f in __pw_methods_MOD_fft_wrap_pw1pw2_r3d_c1d_rs_gs
+	at /opt/cp2k/src/pw/pw_methods.F:1383
+#12  0xaaaaab1655e3 in __qs_collocate_density_MOD_calculate_rho_core_c1d_gs
+	at /opt/cp2k/src/qs_collocate_density.F:916
+#12  0xaaaaab1655e3 in __qs_collocate_density_MOD_calculate_rho_core_c1d_gs
+	at /opt/cp2k/src/qs_collocate_density.F:916
+#13  0xaaaaab4393d7 in __qs_update_s_mstruct_MOD_qs_env_update_s_mstruct
+	at /opt/cp2k/src/qs_update_s_mstruct.F:109
+#13  0xaaaaab4393d7 in __qs_update_s_mstruct_MOD_qs_env_update_s_mstruct
+	at /opt/cp2k/src/qs_update_s_mstruct.F:109
+#14  0xaaaaab1f3477 in qs_energies_init_hamiltonians
+	at /opt/cp2k/src/qs_energy_init.F:316
+#14  0xaaaaab1f3477 in qs_energies_init_hamiltonians
+	at /opt/cp2k/src/qs_energy_init.F:316
+#15  0xaaaaab1f3477 in __qs_energy_init_MOD_qs_energies_init
+	at /opt/cp2k/src/qs_energy_init.F:111
+#15  0xaaaaab1f3477 in __qs_energy_init_MOD_qs_energies_init
+	at /opt/cp2k/src/qs_energy_init.F:111
+#16  0xaaaaab5134c7 in __qs_energy_MOD_qs_energies
+	at /opt/cp2k/src/qs_energy.F:95
+#16  0xaaaaab5134c7 in __qs_energy_MOD_qs_energies
+	at /opt/cp2k/src/qs_energy.F:95
+#17  0xaaaaab6a3733 in __force_env_methods_MOD_force_env_calc_energy_force
+	at /opt/cp2k/src/force_env_methods.F:259
+#17  0xaaaaab6a3733 in __force_env_methods_MOD_force_env_calc_energy_force
+	at /opt/cp2k/src/force_env_methods.F:259
+#18  0xaaaaaabaddeb in cp2k_run
+	at /opt/cp2k/src/start/cp2k_runs.F:361
+#19  0xaaaaaabaeebb in __cp2k_runs_MOD_run_input
+	at /opt/cp2k/src/start/cp2k_runs.F:968
+#18  0xaaaaaabaddeb in cp2k_run
+	at /opt/cp2k/src/start/cp2k_runs.F:361
+#19  0xaaaaaabaeebb in __cp2k_runs_MOD_run_input
+	at /opt/cp2k/src/start/cp2k_runs.F:968
+#20  0xaaaaaaba349f in cp2k
+	at /opt/cp2k/src/start/cp2k.F:379
+#20  0xaaaaaaba349f in cp2k
+	at /opt/cp2k/src/start/cp2k.F:379
+#21  0xaaaaaab42323 in main
+	at /opt/cp2k/src/start/cp2k.F:44
+#21  0xaaaaaab42323 in main
+	at /opt/cp2k/src/start/cp2k.F:44
+--------------------------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 3139984 on node work1 exited on signal 6 (Aborted).
+--------------------------------------------------------------------------
+exit 134
+wall=3.523479208 s NP=4 OMP=18
+GPU samples=8 meanPower=96.9W maxPower=122.3W meanUtil=0.2%

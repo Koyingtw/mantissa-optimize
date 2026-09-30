@@ -1,0 +1,19 @@
+node=work13 BIN=/nfs/home/koying/mantissa-optimize/apps/sw4/optimize/sw4 INP=loh1grad-h100.in MANT_BITS=unset MANT_ROUND=unset RUN=/nfs/home/koying/mantissa-optimize/apps/sw4-inputs/runs/loh1grad-h100_nsys_1958
+power.limit [W], enforced.power.limit [W], temperature.gpu
+900.00 W, 900.00 W, 54
+GPU kernel total = 6.92 s
+     5.500s  79.5% n=   3435  void forall3kernel
+     1.022s  14.8% n=  11693  void RAJA::policy::cuda::impl::forallp_cuda_kernel
+     0.305s   4.4% n=   2749  void gmforallkernel
+     0.070s   1.0% n=   8256  void RAJA::internal::CudaKernelLauncherFixed
+     0.022s   0.3% n=      5  void forallkernel
+   Execution time, reading input file 1.47792133e-01 seconds 
+   Execution time, start up phase 9.32731172e-01 seconds 
+ Number of time steps = 687 dt: 0.0131004
+   Execution time, solver phase 7.01 seconds 
+GPU samples=178 meanPower=127.6W maxPower=505.8W meanUtil=7.9% meanSM=530MHz | busy(util>=50%) samples=14 meanPower=469.6W meanUtil=96.9% meanSM=1980MHz minSM=1980MHz
+wall(mpirun)=89.05s
+sta01.txt n=688  c1: max|u|=27.774012129898775 l2=86.698356514252808  c2: max|u|=19.068975459804228 l2=59.108410512936146  c3: max|u|=10.731779754483117 l2=35.965825017655675
+sta10.txt n=688  c1: max|u|=1.6208607289276353 l2=8.084777798182726  c2: max|u|=1.8686349596159944 l2=9.8952050754049914  c3: max|u|=1.6220064656136872 l2=9.6492029117284073
+sta20.txt n=688  c1: max|u|=1.6755473317034209 l2=7.1294911978328974  c2: max|u|=2.6246936181276306 l2=12.013147164356635  c3: max|u|=1.0986340169446673 l2=6.0041748866775571
+receiver files=3 md5(data lines)=68b04821d3d0243caf507fe73de919e9

@@ -1,0 +1,30 @@
+  pseudo_dir='./'
+  outdir='./tmp'
+job=1755 host=head app=qe case=ausurf112 variants=[native adapt0:nearest adapt4:nearest adapt8:nearest native] tdps=[450]
+TDP 450 set: 450.00 W
+=== RUN tdp=450 variant=native pass=A t_begin=1790692712.506016351
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m31.12s CPU   1m29.84s WALL
+=== END tdp=450 variant=native pass=A t_begin=1790692712.506016351 t_end=1790692804.335791982
+=== RUN tdp=450 variant=adapt0:nearest pass=A t_begin=1790692804.349370055
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m27.90s CPU   1m26.56s WALL
+=== END tdp=450 variant=adapt0:nearest pass=A t_begin=1790692804.349370055 t_end=1790692892.773013582
+=== RUN tdp=450 variant=adapt4:nearest pass=A t_begin=1790692892.786068778
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m28.08s CPU   1m26.78s WALL
+=== END tdp=450 variant=adapt4:nearest pass=A t_begin=1790692892.786068778 t_end=1790692981.428527389
+=== RUN tdp=450 variant=adapt8:nearest pass=A t_begin=1790692981.441613209
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m28.98s CPU   1m27.50s WALL
+=== END tdp=450 variant=adapt8:nearest pass=A t_begin=1790692981.441613209 t_end=1790693070.797572357
+=== RUN tdp=450 variant=native pass=A t_begin=1790693070.810617473
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m31.52s CPU   1m30.15s WALL
+=== END tdp=450 variant=native pass=A t_begin=1790693070.810617473 t_end=1790693162.834648573
+=== ALL DONE

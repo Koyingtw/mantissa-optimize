@@ -1,0 +1,228 @@
++ module load nvhpc/26.5
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ STEP=all
++ APPS=/nfs/home/koying/mantissa-optimize/apps
++ TPL=/nfs/home/koying/mantissa-optimize/apps/sw4-tpl
++ CUDA=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ export PATH=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/extras/qd/bin:/software/nvhpc/Linux_aarch64/26.5/comm_libs/mpi/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/bin:/software/nvhpc/Linux_aarch64/26.5/cuda/bin:/home/koying/.local/bin:/software/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
++ PATH=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/extras/qd/bin:/software/nvhpc/Linux_aarch64/26.5/comm_libs/mpi/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/bin:/software/nvhpc/Linux_aarch64/26.5/cuda/bin:/home/koying/.local/bin:/software/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
++ [[ all == raja ]]
++ [[ all == all ]]
++ rm -rf /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja
++ cmake -S /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/RAJA -B /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CUDA_HOST_COMPILER=g++ -DCMAKE_CUDA_COMPILER=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin/nvcc -DCUDAToolkit_ROOT=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2 -DCUB_DIR=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include/cccl -DCMAKE_CUDA_ARCHITECTURES=90 -DRAJA_ENABLE_CUDA=On -DENABLE_CUDA=On -DRAJA_ENABLE_OPENMP=Off -DENABLE_OPENMP=Off -DRAJA_ENABLE_TESTS=Off -DENABLE_TESTS=Off -DRAJA_ENABLE_EXAMPLES=Off -DRAJA_ENABLE_EXERCISES=Off -DRAJA_ENABLE_BENCHMARKS=Off -DENABLE_BENCHMARKS=Off -DRAJA_ENABLE_REPRODUCERS=Off -DBLT_CXX_STD=c++17 -DCMAKE_CUDA_FLAGS=-Xcompiler=-Wno-template-body
++ tail -30
+-- Enabling all compiler warnings on all targets.
+-- Fortran support disabled.
+-- CMAKE_C_FLAGS flags are:   -Wall -Wextra  
+-- CMAKE_CXX_FLAGS flags are:   -Wall -Wextra     
+-- CMAKE_EXE_LINKER_FLAGS flags are:  
+-- CMake's C implicit link directories: /usr/lib/gcc/aarch64-linux-gnu/15;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib
+-- CMake's CXX implicit link directories: /usr/lib/gcc/aarch64-linux-gnu/15;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib
+-- CMake's CUDA implicit link directories: /software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux/lib/stubs;/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux/lib;/usr/lib/gcc/aarch64-linux-gnu/15;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib
+-- CMake's C implicit link libraries: gcc;gcc_s;c;gcc;gcc_s
+-- CMake's CXX implicit link libraries: stdc++;m;gcc_s;gcc;c;gcc_s;gcc
+-- CMake's CUDA implicit link libraries: stdc++;m;gcc_s;gcc;c;gcc_s;gcc
+-- Setting RAJA_ENABLE_EXTERNAL_CUB ON with CUDA_VERSION 13.2.
+-- Found CUB: /software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include/cccl
+-- Desul Atomics support is OFF
+-- Using RAJA CAMP submodule.
+-- Looking for posix_memalign
+-- Looking for posix_memalign - found
+-- Looking for std::aligned_alloc
+-- Looking for std::aligned_alloc - found
+-- Looking for _mm_malloc
+-- Looking for _mm_malloc - not found
+-- Configuring done (2.2s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CUDAToolkit_ROOT
+
+
+-- Build files have been written to: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja
++ cmake --build /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja -j 72
++ tail -30
+[ 10%] Building CXX object tpl/camp/CMakeFiles/camp.dir/src/errors.cpp.o
+[ 20%] Linking CXX static library ../../lib/libcamp.a
+[ 20%] Built target camp
+[ 30%] Building CUDA object CMakeFiles/RAJA.dir/src/AlignedRangeIndexSetBuilders.cpp.o
+[ 50%] Building CUDA object CMakeFiles/RAJA.dir/src/DepGraphNode.cpp.o
+[ 60%] Building CUDA object CMakeFiles/RAJA.dir/src/LockFreeIndexSetBuilders.cpp.o
+[ 70%] Building CUDA object CMakeFiles/RAJA.dir/src/MemUtils_CUDA.cpp.o
+[ 80%] Building CUDA object CMakeFiles/RAJA.dir/src/MemUtils_HIP.cpp.o
+[ 90%] Building CUDA object CMakeFiles/RAJA.dir/src/MemUtils_SYCL.cpp.o
+[ 90%] Building CUDA object CMakeFiles/RAJA.dir/src/PluginStrategy.cpp.o
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/RAJA/include/RAJA/policy/cuda/MemUtils_CUDA.hpp(149): error: no suitable constructor exists to convert from "int" to "cudaMemLocation"
+      do { cudaError_t code_56792578 = cudaMemAdvise(ptr, nbytes, cudaMemAdviseSetPreferredLocation, device); if (code_56792578 != cudaSuccess && code_56792578 != cudaErrorNotReady) { static constexpr auto func_name_56792578 = "cudaMemAdvise"; static constexpr auto arg_names_56792578 = ::camp::experimental::cuda_get_api_arg_names(func_name_56792578); ::camp::reportError("CUDA", cudaGetErrorString(code_56792578), func_name_56792578, arg_names_56792578, std::forward_as_tuple(ptr, nbytes, cudaMemAdviseSetPreferredLocation, device), "/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/RAJA/include/RAJA/policy/cuda/MemUtils_CUDA.hpp", 149); } } while (false)
+                                                                                                     ^
+
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/RAJA/include/RAJA/policy/cuda/MemUtils_CUDA.hpp(151): error: no suitable constructor exists to convert from "int" to "cudaMemLocation"
+     ((int)-1)
+     ^
+
+2 errors detected in the compilation of "/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/RAJA/src/MemUtils_CUDA.cpp".
+gmake[2]: *** [CMakeFiles/RAJA.dir/build.make:125: CMakeFiles/RAJA.dir/src/MemUtils_CUDA.cpp.o] Error 2
+gmake[2]: *** Waiting for unfinished jobs....
+gmake[1]: *** [CMakeFiles/Makefile2:231: CMakeFiles/RAJA.dir/all] Error 2
+gmake: *** [Makefile:136: all] Error 2
++ cmake --install /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja
++ tail -5
+CMake Error at /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja/cmake_install.cmake:80 (file):
+  file INSTALL cannot find
+  "/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja/lib/libRAJA.a":
+  No such file or directory.
+
+
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/type_traits/is_same.hpp
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/value.hpp
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/value
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/value/eval.hpp
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp
++ [[ all == sw4 ]]
++ [[ all == all ]]
++ cd /nfs/home/koying/mantissa-optimize/apps/sw4
++ cp configs/make.gh200 configs/make.inc
++ make -j 72 sw4
++ tail -60
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/material.C:33:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:338: optimize/rhs4th3fortc.o] Error 1
+make: *** [Makefile:338: optimize/material.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.C:40:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/sachdf5.C:47:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:338: optimize/Sarray.o] Error 1
+make: *** [Makefile:338: optimize/sachdf5.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/SfileOutput.C:40:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:338: optimize/SfileOutput.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/GridPointSource.h:42,
+                 from ../src/Mspace.C:12:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:338: optimize/Mspace.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/computedtanisoc.C:1:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:338: optimize/computedtanisoc.o] Error 1
+
+real	0m7.211s
+user	0m18.828s
+sys	0m32.622s
++ [[ -x optimize/sw4 ]]
++ make -j 16 sw4
++ tail -60
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/material.C:33:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/curvilinearGrid.C:33:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:339: optimize/solve.o] Error 1
+make: *** [Makefile:339: optimize/material.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/Image.C:43:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:339: optimize/curvilinearGrid.o] Error 1
+make: *** [Makefile:339: optimize/Image.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/MaterialBlock.C:36:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:339: optimize/MaterialBlock.o] Error 1
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/TestEcons.h:4,
+                 from ../src/CurvilinearInterface2.h:6,
+                 from ../src/setupRun.C:35:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+In file included from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/MaterialData.h:37,
+                 from ../src/MaterialData.C:33:
+../src/policies.h:1:10: fatal error: RAJA/RAJA.hpp: No such file or directory
+    1 | #include "RAJA/RAJA.hpp"
+      |          ^~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [Makefile:339: optimize/setupRun.o] Error 1
+make: *** [Makefile:339: optimize/MaterialData.o] Error 1
+
+real	0m5.589s
+user	0m1.323s
+sys	0m1.202s
++ ls -l optimize/sw4
+ls: cannot access 'optimize/sw4': No such file or directory

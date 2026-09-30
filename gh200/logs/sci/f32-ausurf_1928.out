@@ -1,0 +1,63 @@
+  pseudo_dir='./'
+  outdir='./tmp'
+job=1928 host=work1 app=qe case=ausurf112 variants=[native copy 24:nearest 20:nearest f32:fp32 f32:tf32x3 f32:tf32 f32:tf32 f32:tf32x3 f32:fp32 20:nearest 24:nearest copy native] tdps=[450]
+TDP 450 set: 450.00 W
+=== RUN tdp=450 variant=native pass=A t_begin=1790735232.803354942
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m30.83s CPU   1m29.37s WALL
+=== END tdp=450 variant=native pass=A t_begin=1790735232.803354942 t_end=1790735324.195794672
+=== RUN tdp=450 variant=copy pass=A t_begin=1790735324.209033100
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m35.39s CPU   1m34.29s WALL
+=== END tdp=450 variant=copy pass=A t_begin=1790735324.209033100 t_end=1790735420.397390404
+=== RUN tdp=450 variant=24:nearest pass=A t_begin=1790735425.423922219
+    !    total energy              =  -11427.09401409 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m30.90s CPU   1m29.71s WALL
+=== END tdp=450 variant=24:nearest pass=A t_begin=1790735425.423922219 t_end=1790735517.173555476
+=== RUN tdp=450 variant=20:nearest pass=A t_begin=1790735522.200134359
+    !    total energy              =  -11427.09396765 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m35.64s CPU   1m34.44s WALL
+=== END tdp=450 variant=20:nearest pass=A t_begin=1790735522.200134359 t_end=1790735618.668341246
+=== RUN tdp=450 variant=f32:fp32 pass=A t_begin=1790735623.694865056
+=== RUN FAILED rc=1
+=== END tdp=450 variant=f32:fp32 pass=A t_begin=1790735623.694865056 t_end=1790735758.799706158
+=== RUN tdp=450 variant=f32:tf32x3 pass=A t_begin=1790735768.838794678
+=== RUN FAILED rc=1
+=== END tdp=450 variant=f32:tf32x3 pass=A t_begin=1790735768.838794678 t_end=1790735829.192456788
+=== RUN tdp=450 variant=f32:tf32 pass=A t_begin=1790735839.231470977
+=== RUN FAILED rc=1
+=== END tdp=450 variant=f32:tf32 pass=A t_begin=1790735839.231470977 t_end=1790735881.296457374
+=== RUN tdp=450 variant=f32:tf32 pass=B t_begin=1790735886.322708323
+=== RUN FAILED rc=1
+=== END tdp=450 variant=f32:tf32 pass=B t_begin=1790735886.322708323 t_end=1790735928.476961606
+=== RUN tdp=450 variant=f32:tf32x3 pass=B t_begin=1790735933.502726826
+=== RUN FAILED rc=1
+=== END tdp=450 variant=f32:tf32x3 pass=B t_begin=1790735933.502726826 t_end=1790735993.874221411
+=== RUN tdp=450 variant=f32:fp32 pass=B t_begin=1790736003.913289420
+=== RUN FAILED rc=1
+=== END tdp=450 variant=f32:fp32 pass=B t_begin=1790736003.913289420 t_end=1790736139.207816034
+=== RUN tdp=450 variant=20:nearest pass=B t_begin=1790736149.247022315
+    !    total energy              =  -11427.09396765 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m35.78s CPU   1m34.68s WALL
+=== END tdp=450 variant=20:nearest pass=B t_begin=1790736149.247022315 t_end=1790736245.948533645
+=== RUN tdp=450 variant=24:nearest pass=B t_begin=1790736250.974960305
+    !    total energy              =  -11427.09401409 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m31.29s CPU   1m30.10s WALL
+=== END tdp=450 variant=24:nearest pass=B t_begin=1790736250.974960305 t_end=1790736343.090830063
+=== RUN tdp=450 variant=copy pass=B t_begin=1790736348.116980723
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m36.64s CPU   1m35.23s WALL
+=== END tdp=450 variant=copy pass=B t_begin=1790736348.116980723 t_end=1790736445.404859754
+=== RUN tdp=450 variant=native pass=B t_begin=1790736450.431077134
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m32.07s CPU   1m30.91s WALL
+=== END tdp=450 variant=native pass=B t_begin=1790736450.431077134 t_end=1790736543.355983839
+=== ALL DONE

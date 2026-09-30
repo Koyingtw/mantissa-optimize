@@ -1,0 +1,21 @@
+name, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 33, 1980 MHz
+=== RUN tag=single MANT_BITS=<unset> MANT_ROUND=<unset> BIN=ex1_bench.build-cuda ARGS=-n 128 -o 3 -rep 1
+Options used:
+   --nx 128
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 0
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[2026-09-30T02:35:34.281] error: *** JOB 1962 ON work10 CANCELLED AT 2026-09-30T02:35:34 DUE to SIGNAL Terminated ***

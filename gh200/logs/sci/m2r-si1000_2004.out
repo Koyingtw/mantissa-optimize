@@ -1,0 +1,34 @@
+  calculation='scf', prefix='si1000', pseudo_dir='./', outdir='./tmp',
+job=2004 host=work10 app=qe case=si1000 variants=[native adapt0:nearest src28:nearest src28:nearest adapt0:nearest native native adapt0:nearest src28:nearest src28:nearest adapt0:nearest native] tdps=[550]
+TDP 550 set: 550.00 W
+=== RUN tdp=550 variant=native pass=A t_begin=1790753745.507817103
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m56.61s CPU   2m43.07s WALL
+=== END tdp=550 variant=native pass=A t_begin=1790753745.507817103 t_end=1790753910.430054804
+=== RUN tdp=550 variant=adapt0:nearest pass=A t_begin=1790753945.533927448
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m57.34s CPU   2m43.64s WALL
+=== END tdp=550 variant=adapt0:nearest pass=A t_begin=1790753945.533927448 t_end=1790754110.967603511
+=== RUN tdp=550 variant=src28:nearest pass=A t_begin=1790754151.084312117
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m57.81s CPU   2m44.24s WALL
+=== END tdp=550 variant=src28:nearest pass=A t_begin=1790754151.084312117 t_end=1790754317.114763689
+=== RUN tdp=550 variant=src28:nearest pass=B t_begin=1790754357.232194849
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m58.28s CPU   2m44.52s WALL
+=== END tdp=550 variant=src28:nearest pass=B t_begin=1790754357.232194849 t_end=1790754523.554017592
+=== RUN tdp=550 variant=adapt0:nearest pass=B t_begin=1790754563.670503672
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m58.60s CPU   2m44.79s WALL
+=== END tdp=550 variant=adapt0:nearest pass=B t_begin=1790754563.670503672 t_end=1790754730.262974650
+=== RUN tdp=550 variant=native pass=B t_begin=1790754770.379373274
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m 0.41s CPU   2m46.73s WALL
+=== END tdp=550 variant=native pass=B t_begin=1790754770.379373274 t_end=1790754938.905208625
+=== RUN tdp=550 variant=native pass=C t_begin=1790754979.022453674

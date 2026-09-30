@@ -1,0 +1,23 @@
+  pseudo_dir='./'
+  outdir='./tmp'
+job=1738 host=work2 app=qe case=ausurf112 variants=[32:trunc 24:nearest 16:nearest 32:nearest] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=32:trunc pass=A t_begin=1790688004.773732139
+    !    total energy              =  -11427.09402075 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m18.81s CPU   1m17.57s WALL
+=== END tdp=1000 variant=32:trunc pass=A t_begin=1790688004.773732139 t_end=1790688084.371279111
+=== RUN tdp=1000 variant=24:nearest pass=A t_begin=1790688084.384410087
+    !    total energy              =  -11427.09401409 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m18.96s CPU   1m17.43s WALL
+=== END tdp=1000 variant=24:nearest pass=A t_begin=1790688084.384410087 t_end=1790688163.699990842
+=== RUN tdp=1000 variant=16:nearest pass=A t_begin=1790688163.713121754
+=== RUN FAILED rc=1
+=== END tdp=1000 variant=16:nearest pass=A t_begin=1790688163.713121754 t_end=1790688255.192901182
+=== RUN tdp=1000 variant=32:nearest pass=A t_begin=1790688260.219188112
+    !    total energy              =  -11427.09402212 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m18.70s CPU   1m17.38s WALL
+=== END tdp=1000 variant=32:nearest pass=A t_begin=1790688260.219188112 t_end=1790688339.634127401
+=== ALL DONE

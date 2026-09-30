@@ -1,0 +1,233 @@
+diff --git a/src/KOKKOS/pair_eam_kokkos.cpp b/src/KOKKOS/pair_eam_kokkos.cpp
+index 1e87055..30fe145 100644
+--- a/src/KOKKOS/pair_eam_kokkos.cpp
++++ b/src/KOKKOS/pair_eam_kokkos.cpp
+@@ -29,6 +29,7 @@
+ #include "neigh_request.h"
+ #include "neighbor.h"
+ #include "pair_kokkos.h"
++#include "mant_trunc.h"   // MANT_BITS research hook
+ 
+ #include <cmath>
+ using namespace LAMMPS_NS;
+@@ -390,16 +391,22 @@ void PairEAMKokkos<DeviceType>::array2spline()
+ 
+   for (int i = 0; i < nfrho; i++)
+     interpolate(nrho,drho,frho[i],h_frho_spline,i);
+-  k_frho_spline.template modify<LMPHostType>();
+-  k_frho_spline.template sync<DeviceType>();
+ 
+   for (int i = 0; i < nrhor; i++)
+     interpolate(nr,dr,rhor[i],h_rhor_spline,i);
+-  k_rhor_spline.template modify<LMPHostType>();
+-  k_rhor_spline.template sync<DeviceType>();
+ 
+   for (int i = 0; i < nz2r; i++)
+     interpolate(nr,dr,z2r[i],h_z2r_spline,i);
++
++  // MANT_BITS research hook: truncate the stored spline coefficient tables
++  // (host copies) once, before they are synced to the device.  No-op when
++  // MANT_BITS is unset or >= 52.
++  truncate_spline_mantissa(h_frho_spline,h_rhor_spline,h_z2r_spline);
++
++  k_frho_spline.template modify<LMPHostType>();
++  k_frho_spline.template sync<DeviceType>();
++  k_rhor_spline.template modify<LMPHostType>();
++  k_rhor_spline.template sync<DeviceType>();
+   k_z2r_spline.template modify<LMPHostType>();
+   k_z2r_spline.template sync<DeviceType>();
+ 
+@@ -410,6 +417,30 @@ void PairEAMKokkos<DeviceType>::array2spline()
+ 
+ /* ---------------------------------------------------------------------- */
+ 
++template<class DeviceType>
++void PairEAMKokkos<DeviceType>::truncate_spline_mantissa(t_host_ffloat_2d_n7 h_frho,
++                                                        t_host_ffloat_2d_n7 h_rhor,
++                                                        t_host_ffloat_2d_n7 h_z2r)
++{
++  const MantTrunc::Config &mc = MantTrunc::config();
++  if (!mc.active) return;
++  t_host_ffloat_2d_n7 tabs[3] = {h_frho, h_rhor, h_z2r};
++  const char *names[3] = {"PairEAMKokkos frho_spline", "PairEAMKokkos rhor_spline",
++                          "PairEAMKokkos z2r_spline"};
++  for (int t = 0; t < 3; t++) {
++    MantTrunc::Stats st;
++    auto h = tabs[t];
++    // rows 1..n are filled by interpolate(); row 0 is unused (zero)
++    for (int i = 0; i < (int) h.extent(0); i++)
++      for (int m = 0; m < (int) h.extent(1); m++)
++        for (int k = 0; k < (int) h.extent(2); k++)
++          MantTrunc::apply_inplace(h(i,m,k), mc, st);
++    if (comm->me == 0) utils::logmesg(lmp, st.str(names[t], mc));
++  }
++}
++
++/* ---------------------------------------------------------------------- */
++
+ template<class DeviceType>
+ void PairEAMKokkos<DeviceType>::interpolate(int n, double delta, double *f, t_host_ffloat_2d_n7 h_spline, int i)
+ {
+diff --git a/src/KOKKOS/pair_eam_kokkos.h b/src/KOKKOS/pair_eam_kokkos.h
+index 950db43..9238ab9 100644
+--- a/src/KOKKOS/pair_eam_kokkos.h
++++ b/src/KOKKOS/pair_eam_kokkos.h
+@@ -176,6 +176,7 @@ class PairEAMKokkos : public PairEAM, public KokkosBase {
+   t_ffloat_2d_n7 d_rhor_spline;
+   t_ffloat_2d_n7 d_z2r_spline;
+   void interpolate(int, double, double *, t_host_ffloat_2d_n7, int);
++  void truncate_spline_mantissa(t_host_ffloat_2d_n7, t_host_ffloat_2d_n7, t_host_ffloat_2d_n7);
+   void file2array() override;
+   void array2spline() override;
+ 
+diff --git a/src/KOKKOS/pair_lj_cut_kokkos.cpp b/src/KOKKOS/pair_lj_cut_kokkos.cpp
+index a8a663b..a3bc7e8 100644
+--- a/src/KOKKOS/pair_lj_cut_kokkos.cpp
++++ b/src/KOKKOS/pair_lj_cut_kokkos.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include "atom_kokkos.h"
+ #include "atom_masks.h"
++#include "comm.h"
+ #include "error.h"
+ #include "force.h"
+ #include "kokkos.h"
+@@ -24,6 +25,7 @@
+ #include "neighbor.h"
+ #include "respa.h"
+ #include "update.h"
++#include "mant_trunc.h"   // MANT_BITS research hook
+ 
+ using namespace LAMMPS_NS;
+ 
+@@ -218,6 +220,25 @@ double PairLJCutKokkos<DeviceType>::init_one(int i, int j)
+   k_params.h_view(i,j).lj4 = lj4[i][j];
+   k_params.h_view(i,j).offset = offset[i][j];
+   k_params.h_view(i,j).cutsq = cutone*cutone;
++
++  // MANT_BITS research hook: truncate the per-type-pair coefficients that are
++  // multiplied in the force/energy kernels (lj1..lj4, offset).  cutsq is a
++  // comparison threshold and is left untouched.  No-op when MANT_BITS unset.
++  {
++    const MantTrunc::Config &mc = MantTrunc::config();
++    if (mc.active) {
++      MantTrunc::Stats st;
++      auto &pp = k_params.h_view(i,j);
++      MantTrunc::apply_inplace(pp.lj1, mc, st);
++      MantTrunc::apply_inplace(pp.lj2, mc, st);
++      MantTrunc::apply_inplace(pp.lj3, mc, st);
++      MantTrunc::apply_inplace(pp.lj4, mc, st);
++      MantTrunc::apply_inplace(pp.offset, mc, st);
++      if (comm->me == 0)
++        utils::logmesg(lmp, st.str(fmt::format("PairLJCutKokkos params({},{}) lj1..lj4,offset",
++                                               i, j).c_str(), mc));
++    }
++  }
+   k_params.h_view(j,i) = k_params.h_view(i,j);
+   if (i<MAX_TYPES_STACKPARAMS+1 && j<MAX_TYPES_STACKPARAMS+1) {
+     m_params[i][j] = m_params[j][i] = k_params.h_view(i,j);
+diff --git a/src/KOKKOS/mant_trunc.h b/src/KOKKOS/mant_trunc.h
+new file mode 100644
+index 0000000..98f3fb0
+--- /dev/null
++++ b/src/KOKKOS/mant_trunc.h
+@@ -0,0 +1,99 @@
++/* -*- c++ -*- ----------------------------------------------------------
++   Mantissa truncation of stored FP64 coefficient tables (research only).
++
++   Environment:
++     MANT_BITS=<k>   keep k explicit mantissa bits (0..51); unset or >=52 -> no-op
++     MANT_ROUND=trunc|nearest   (default trunc)
++   trunc  : clear the low (52-k) bits of the IEEE-754 binary64 pattern
++   nearest: add 1<<(52-k-1) first (round half away from zero in magnitude),
++            then clear the low (52-k) bits. NaN/Inf are left untouched.
++------------------------------------------------------------------------- */
++
++#ifndef LMP_MANT_TRUNC_H
++#define LMP_MANT_TRUNC_H
++
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <cstdlib>
++#include <cstring>
++#include <string>
++
++namespace LAMMPS_NS {
++namespace MantTrunc {
++
++struct Config {
++  int bits = 52;
++  bool nearest = false;
++  bool active = false;
++};
++
++inline const Config &config()
++{
++  static const Config cfg = [] {
++    Config c;
++    const char *s = std::getenv("MANT_BITS");
++    if (s && *s) {
++      int k = std::atoi(s);
++      if (k >= 0 && k < 52) {
++        c.bits = k;
++        c.active = true;
++      }
++    }
++    const char *r = std::getenv("MANT_ROUND");
++    if (r && std::strcmp(r, "nearest") == 0) c.nearest = true;
++    return c;
++  }();
++  return cfg;
++}
++
++inline double apply(double v, const Config &c)
++{
++  if (!c.active) return v;
++  uint64_t u;
++  std::memcpy(&u, &v, sizeof(u));
++  if (((u >> 52) & 0x7ffULL) == 0x7ffULL) return v;    // NaN / Inf
++  const int drop = 52 - c.bits;
++  if (c.nearest) u += 1ULL << (drop - 1);
++  u &= ~((1ULL << drop) - 1ULL);
++  std::memcpy(&v, &u, sizeof(v));
++  return v;
++}
++
++// running statistics for one array
++struct Stats {
++  long n = 0, changed = 0;
++  double max_rel = 0.0;
++  void add(double before, double after)
++  {
++    ++n;
++    if (before != after) {
++      ++changed;
++      if (before != 0.0) {
++        double rel = std::fabs((after - before) / before);
++        if (rel > max_rel) max_rel = rel;
++      }
++    }
++  }
++  std::string str(const char *name, const Config &c) const
++  {
++    char buf[256];
++    std::snprintf(buf, sizeof(buf),
++                  "[MANT] %s: MANT_BITS=%d MANT_ROUND=%s values=%ld changed=%ld max_rel_change=%.3e\n",
++                  name, c.bits, c.nearest ? "nearest" : "trunc", n, changed, max_rel);
++    return std::string(buf);
++  }
++};
++
++// truncate in place and accumulate statistics
++inline void apply_inplace(double &v, const Config &c, Stats &st)
++{
++  const double b = v;
++  v = apply(v, c);
++  st.add(b, v);
++}
++
++}    // namespace MantTrunc
++}    // namespace LAMMPS_NS
++
++#endif

@@ -1,0 +1,33 @@
+run dir: /nfs/home/koying/mlperf-llama2-70b-lora/runs/final14-p575-seed1234   config: config_GH200_8x1x1xtp1pp1cp1_offload.sh   seed: 1234   nodes: 14
+Submitted batch job 1747
+restore job queued after 1747
+status: success
+converged at: 3920 samples
+time to train: 19.08 min
+Creating compliance venv at /nfs/home/koying/mlperf-logging-venv
+[36m[1mDownloading[0m[39m cpython-3.12.14-linux-aarch64-gnu (download) [2m(27.8MiB)[0m
+ [36m[1mDownloaded[0m[39m cpython-3.12.14-linux-aarch64-gnu (download)
+Using CPython [36m3.12.14[39m[36m[39m
+Creating virtual environment at: [36m/nfs/home/koying/mlperf-logging-venv[39m
+Activate with: [32msource /nfs/home/koying/mlperf-logging-venv/bin/activate[39m
+[2mUsing Python 3.12.14 environment at: /nfs/home/koying/mlperf-logging-venv[0m
+   [36m[1mUpdating[0m[39m https://github.com/mlcommons/logging.git ([2mHEAD[0m)
+    [32m[1mUpdated[0m[39m https://github.com/mlcommons/logging.git ([2m8a0cc0558ab498b3b003b106d7eae0de19801876[0m)
+[2mResolved [1m7 packages[0m [2min 3.82s[0m[0m
+   [36m[1mBuilding[0m[39m mlperf-logging[2m @ git+https://github.com/mlcommons/logging.git@8a0cc0558ab498b3b003b106d7eae0de19801876[0m
+      [32m[1mBuilt[0m[39m mlperf-logging[2m @ git+https://github.com/mlcommons/logging.git@8a0cc0558ab498b3b003b106d7eae0de19801876[0m
+[2mPrepared [1m2 packages[0m [2min 1.12s[0m[0m
+[2mInstalled [1m7 packages[0m [2min 53ms[0m[0m
+ [32m+[39m [1mmlperf-logging[0m[2m==4.1.67 (from git+https://github.com/mlcommons/logging.git@8a0cc0558ab498b3b003b106d7eae0de19801876)[0m
+ [32m+[39m [1mnumpy[0m[2m==2.5.3[0m
+ [32m+[39m [1mpandas[0m[2m==3.0.6[0m
+ [32m+[39m [1mpython-dateutil[0m[2m==2.9.0.post0[0m
+ [32m+[39m [1mpyyaml[0m[2m==6.0.3[0m
+ [32m+[39m [1mscipy[0m[2m==1.18.1[0m
+ [32m+[39m [1msix[0m[2m==1.17.0[0m
+INFO - Running compliance on file: /nfs/home/koying/mlperf-llama2-70b-lora/runs/final14-p575-seed1234/result_seed1234.txt
+INFO -  Compliance checks: training_6.0.0/common.yaml
+INFO -  Compliance checks: training_6.0.0/closed_common.yaml
+INFO -  Compliance checks: training_6.0.0/closed_llama2_70b_lora.yaml
+INFO - SUCCESS
+** Logging output also at compliance_checker.log

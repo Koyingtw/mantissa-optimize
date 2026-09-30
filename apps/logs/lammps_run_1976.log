@@ -1,0 +1,52 @@
+name, power.limit [W], enforced.power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 900.00 W, 1980 MHz
+=== orig  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:39.250366364
+lmp exit 1
+=== orig end 02:55:41.263537168
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000126176 on 1 procs for 0 steps with 256000 atoms
+=== orig2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:41.267204830
+lmp exit 1
+=== orig2 end 02:55:43.246649976
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000120384 on 1 procs for 0 steps with 256000 atoms
+=== mod  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:43.250417765
+lmp exit 1
+=== mod end 02:55:45.241405671
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000135583 on 1 procs for 0 steps with 256000 atoms
+=== mod2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:55:45.245096501
+lmp exit 1
+=== mod2 end 02:55:47.249427380
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000133599 on 1 procs for 0 steps with 256000 atoms
+=== trunc36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=trunc  start 02:55:47.253018658
+lmp exit 1
+=== trunc36 end 02:55:49.240583604
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=trunc values=7000 changed=2948 max_rel_change=1.430e-11
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=trunc values=3500 changed=3178 max_rel_change=1.439e-11
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=trunc values=3500 changed=3349 max_rel_change=1.434e-11
+         0   1.600000000000000e+03 -3.540000002288785e+00 -3.333184578164691e+00  1.870408480193134e+04
+Loop time of 0.000119263 on 1 procs for 0 steps with 256000 atoms
+=== near36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=nearest  start 02:55:49.244322658
+lmp exit 1
+=== near36 end 02:55:51.231631925
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=nearest values=7000 changed=2948 max_rel_change=7.225e-12
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3178 max_rel_change=7.251e-12
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3349 max_rel_change=7.241e-12
+         0   1.600000000000000e+03 -3.540000002254854e+00 -3.333184578130760e+00  1.870408480963923e+04
+Loop time of 0.000164031 on 1 procs for 0 steps with 256000 atoms
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_npyio_impl.py", line 1381, in loadtxt
+    arr = _read(fname, dtype=dtype, comment=comment, delimiter=delimiter,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_npyio_impl.py", line 1011, in _read
+    fh = np.lib._datasource.open(fname, 'rt', encoding=encoding)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_datasource.py", line 192, in open
+    return ds.open(path, mode, encoding=encoding, newline=newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/.venv/lib/python3.12/site-packages/numpy/lib/_datasource.py", line 529, in open
+    raise FileNotFoundError(f"{path} not found.")
+FileNotFoundError: eam_x2_1976.orig.dump not found.

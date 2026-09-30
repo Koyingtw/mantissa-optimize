@@ -1,0 +1,61 @@
+job=1802 host=head tdps=[500] configs=[fp64:52 fp64:40 fp64:32 fp64:28 fp64:24 fp64:20 fp64emu:53 fp64emu:40 fp64emu:32 fp64emu:28 fp64emu:24 fp64emu:20 fp32:23 tf32:23] warmup=6 seconds=12 start_temp=45
+name, uuid, driver_version, module.power.limit [W], power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, GPU-99b8bbc0-e8a7-226c-e018-932fbcac1919, 615.71.09, 1000.00 W, 900.00 W, 1980 MHz
+TDP 500 set: 500.00 W
+COOL waited=0s temp=25C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64 frac=52 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=115 tflops=40.421 chunk_min=40.022 chunk_max=40.689 t_begin=1790696588.968 t_end=1790696601.481 rel_err=0.000e+00 emu_bits=-2
+COOL waited=0s temp=39C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64 frac=40 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=115 tflops=41.829 chunk_min=41.201 chunk_max=42.114 t_begin=1790696608.055 t_end=1790696620.146 rel_err=6.379e-13 emu_bits=-2
+COOL waited=0s temp=42C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64 frac=32 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=120 tflops=42.786 chunk_min=42.674 chunk_max=42.974 t_begin=1790696626.678 t_end=1790696639.013 rel_err=1.634e-10 emu_bits=-2
+COOL waited=5s temp=38C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64 frac=28 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=120 tflops=43.637 chunk_min=43.269 chunk_max=44.032 t_begin=1790696650.656 t_end=1790696662.751 rel_err=2.614e-09 emu_bits=-2
+COOL waited=5s temp=39C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64 frac=24 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=125 tflops=44.252 chunk_min=43.812 chunk_max=44.427 t_begin=1790696674.430 t_end=1790696686.854 rel_err=4.183e-08 emu_bits=-2
+COOL waited=5s temp=40C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64 frac=20 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=125 tflops=44.808 chunk_min=44.528 chunk_max=45.057 t_begin=1790696698.537 t_end=1790696710.806 rel_err=6.692e-07 emu_bits=-2
+COOL waited=5s temp=41C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64emu frac=53 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=60 tflops=21.224 chunk_min=21.010 chunk_max=21.411 t_begin=1790696722.505 t_end=1790696734.959 rel_err=1.516e-15 emu_bits=53
+COOL waited=5s temp=40C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64emu frac=40 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=75 tflops=27.530 chunk_min=27.413 chunk_max=27.686 t_begin=1790696746.714 t_end=1790696758.718 rel_err=4.033e-14 emu_bits=40
+COOL waited=5s temp=40C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64emu frac=32 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=105 tflops=36.769 chunk_min=36.455 chunk_max=37.261 t_begin=1790696770.427 t_end=1790696783.014 rel_err=9.710e-12 emu_bits=32
+COOL waited=5s temp=40C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64emu frac=28 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=145 tflops=52.042 chunk_min=51.525 chunk_max=52.342 t_begin=1790696794.635 t_end=1790696806.920 rel_err=2.305e-09 emu_bits=28
+COOL waited=5s temp=40C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64emu frac=24 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=145 tflops=52.061 chunk_min=51.303 chunk_max=52.851 t_begin=1790696818.544 t_end=1790696830.825 rel_err=2.305e-09 emu_bits=24
+COOL waited=5s temp=41C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp64emu frac=20 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=210 tflops=77.040 chunk_min=76.419 chunk_max=78.666 t_begin=1790696842.469 t_end=1790696854.493 rel_err=5.398e-07 emu_bits=20
+COOL waited=5s temp=41C
+RESULT tag=host=head,tdp=500,pass=A dtype=fp32 frac=23 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=105 tflops=37.284 chunk_min=37.152 chunk_max=37.310 t_begin=1790696866.136 t_end=1790696878.522 rel_err=8.103e-07 emu_bits=-2
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=A dtype=tf32 frac=23 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=595 tflops=217.405 chunk_min=215.008 chunk_max=217.886 t_begin=1790696890.168 t_end=1790696902.205 rel_err=2.610e-04 emu_bits=-2
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=tf32 frac=23 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=595 tflops=217.098 chunk_min=211.676 chunk_max=217.871 t_begin=1790696913.865 t_end=1790696925.919 rel_err=2.610e-04 emu_bits=-2
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp32 frac=23 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=105 tflops=37.180 chunk_min=36.947 chunk_max=37.309 t_begin=1790696937.573 t_end=1790696949.994 rel_err=8.103e-07 emu_bits=-2
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64emu frac=20 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=210 tflops=76.740 chunk_min=76.131 chunk_max=77.412 t_begin=1790696961.669 t_end=1790696973.741 rel_err=5.398e-07 emu_bits=20
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64emu frac=24 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=145 tflops=51.836 chunk_min=51.569 chunk_max=52.097 t_begin=1790696985.389 t_end=1790696997.723 rel_err=2.305e-09 emu_bits=24
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64emu frac=28 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=145 tflops=51.765 chunk_min=51.530 chunk_max=52.124 t_begin=1790697009.393 t_end=1790697021.743 rel_err=2.305e-09 emu_bits=28
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64emu frac=32 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=100 tflops=36.624 chunk_min=36.440 chunk_max=36.751 t_begin=1790697033.428 t_end=1790697045.462 rel_err=9.710e-12 emu_bits=32
+COOL waited=5s temp=41C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64emu frac=40 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=75 tflops=27.535 chunk_min=27.505 chunk_max=27.566 t_begin=1790697057.099 t_end=1790697069.101 rel_err=4.033e-14 emu_bits=40
+COOL waited=5s temp=41C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64emu frac=53 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=60 tflops=21.134 chunk_min=21.090 chunk_max=21.161 t_begin=1790697080.812 t_end=1790697093.319 rel_err=1.516e-15 emu_bits=53
+COOL waited=5s temp=41C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64 frac=20 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=125 tflops=44.670 chunk_min=44.515 chunk_max=44.910 t_begin=1790697105.032 t_end=1790697117.339 rel_err=6.692e-07 emu_bits=-2
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64 frac=24 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=120 tflops=43.916 chunk_min=43.275 chunk_max=44.136 t_begin=1790697129.046 t_end=1790697141.064 rel_err=4.183e-08 emu_bits=-2
+COOL waited=5s temp=42C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64 frac=28 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=120 tflops=42.932 chunk_min=42.183 chunk_max=43.247 t_begin=1790697152.710 t_end=1790697165.003 rel_err=2.614e-09 emu_bits=-2
+COOL waited=5s temp=43C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64 frac=32 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=120 tflops=42.373 chunk_min=42.175 chunk_max=42.490 t_begin=1790697176.632 t_end=1790697189.088 rel_err=1.634e-10 emu_bits=-2
+COOL waited=5s temp=43C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64 frac=40 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=115 tflops=41.100 chunk_min=40.772 chunk_max=41.408 t_begin=1790697200.798 t_end=1790697213.104 rel_err=6.379e-13 emu_bits=-2
+COOL waited=5s temp=43C
+RESULT tag=host=head,tdp=500,pass=B dtype=fp64 frac=52 only_a=0 low=zero round=trunc m=32768 n=32768 k=2048 calls=110 tflops=39.287 chunk_min=39.134 chunk_max=39.464 t_begin=1790697224.750 t_end=1790697237.064 rel_err=0.000e+00 emu_bits=-2
+E1 done

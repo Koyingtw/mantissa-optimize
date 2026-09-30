@@ -1,0 +1,37 @@
+  calculation='scf', prefix='si1000', pseudo_dir='./', outdir='./tmp',
+job=1930 host=work12 app=qe case=si1000 variants=[native copy 24:nearest 20:nearest f32:fp32 f32:tf32x3 f32:tf32 f32:tf32 f32:tf32x3 f32:fp32 20:nearest 24:nearest copy native] tdps=[550]
+TDP 550 set: 550.00 W
+=== RUN tdp=550 variant=native pass=A t_begin=1790735239.806942091
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m27.82s CPU   3m14.30s WALL
+=== END tdp=550 variant=native pass=A t_begin=1790735239.806942091 t_end=1790735436.269563695
+=== RUN tdp=550 variant=copy pass=A t_begin=1790735446.308269339
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m42.97s CPU   3m29.41s WALL
+=== END tdp=550 variant=copy pass=A t_begin=1790735446.308269339 t_end=1790735657.814416932
+=== RUN tdp=550 variant=24:nearest pass=A t_begin=1790735672.867115298
+    !    total energy              =   -7881.17635764 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m31.50s CPU   3m18.13s WALL
+=== END tdp=550 variant=24:nearest pass=A t_begin=1790735672.867115298 t_end=1790735873.091096355
+=== RUN tdp=550 variant=20:nearest pass=A t_begin=1790735888.143210026
+=== RUN FAILED rc=1
+=== END tdp=550 variant=20:nearest pass=A t_begin=1790735888.143210026 t_end=1790736281.629135353
+=== RUN tdp=550 variant=f32:fp32 pass=A t_begin=1790736296.681820831
+=== RUN FAILED rc=1
+=== END tdp=550 variant=f32:fp32 pass=A t_begin=1790736296.681820831 t_end=1790736723.716205916
+=== RUN tdp=550 variant=f32:tf32x3 pass=A t_begin=1790736738.768275119
+=== RUN FAILED rc=1
+=== END tdp=550 variant=f32:tf32x3 pass=A t_begin=1790736738.768275119 t_end=1790737159.634364164
+=== RUN tdp=550 variant=f32:tf32 pass=A t_begin=1790737174.686254872
+=== RUN FAILED rc=1
+=== END tdp=550 variant=f32:tf32 pass=A t_begin=1790737174.686254872 t_end=1790737410.011401648
+=== RUN tdp=550 variant=f32:tf32 pass=B t_begin=1790737425.063073150
+=== RUN FAILED rc=1
+=== END tdp=550 variant=f32:tf32 pass=B t_begin=1790737425.063073150 t_end=1790737660.479858657
+=== RUN tdp=550 variant=f32:tf32x3 pass=B t_begin=1790737675.531531537
+=== RUN FAILED rc=1
+=== END tdp=550 variant=f32:tf32x3 pass=B t_begin=1790737675.531531537 t_end=1790738096.764444202
+=== RUN tdp=550 variant=f32:fp32 pass=B t_begin=1790738111.816826034

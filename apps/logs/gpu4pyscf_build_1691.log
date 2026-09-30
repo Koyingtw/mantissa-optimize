@@ -1,0 +1,27 @@
++ module load nvhpc/26.5 cmake/3.31.12
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ export CC=gcc CXX=g++ CUDAHOSTCXX=g++
++ CC=gcc
++ CXX=g++
++ CUDAHOSTCXX=g++
++ export CUDA_HOME=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ CUDA_HOME=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ cd /nfs/home/koying/mantissa-optimize/apps/gpu4pyscf
++ cmake -S gpu4pyscf/lib -B build/g4p -DCUDA_ARCHITECTURES=90-real -DBUILD_LIBXC=ON -DCMAKE_CUDA_COMPILER=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin/nvcc -DCMAKE_BUILD_TYPE=Release -DCUDAToolkit_ROOT=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2 -DCMAKE_MESSAGE_LOG_LEVEL=WARNING
+CMake Error: CMAKE_CUDA_COMPILER not set, after EnableLanguage
+CMake Error at /nfs/software/cmake/3.31.12/share/cmake-3.31/Modules/FindOpenMP.cmake:456 (try_compile):
+  Failed to configure test project build system.
+Call Stack (most recent call first):
+  /nfs/software/cmake/3.31.12/share/cmake-3.31/Modules/FindOpenMP.cmake:596 (_OPENMP_GET_SPEC_DATE)
+  CMakeLists.txt:70 (find_package)
+
+
+-- Configuring incomplete, errors occurred!

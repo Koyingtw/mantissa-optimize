@@ -1,0 +1,156 @@
+name, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 30, 1980 MHz
+=== RUN tag=r0_native MANT_BITS=<unset> MANT_ROUND=<unset> BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -matvec 200
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 200
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=0
+[SETUP] size=7189057 ess=221186 setup_time=1.568 s
+[CHECK] BnormL2=0.0083047816391143125  (B,AB)=1.2812407465606296e-06  ||AB||=0.00033331952877295522
+[MATVEC] count=200 time=0.310 s  per=1.5483 ms  4.643 GDOF/s  ||y||=0.00033331952877295522
+[SOLVE] rep=0 its=963 converged=1 final_norm=2.9594382313413103e-12 time=1.833 s
+[TIME] solves=1 total_its=963 solve_time=1.833 s  per_it=1.9031 ms  3.778 GDOF/s(CG it)
+[RESULT] ||X||=936.95236057136913  (X,B)=6.4769278882088637
+[RESULT] nodal_err_max=5.6692650574063919e-11 nodal_err_rms=9.7153492241272042e-12
+[TIME] wall_total=3.727 s
+ELAPSED 4.24 s  MAXRSS 1331584 KB
+GPU samples=9 meanPower=304.7W maxPower=602.8W meanUtil=44.2%
+GPU busy(util>=50%) samples=4 (2.0s) meanPower=543.0W maxPower=602.8W meanSM=1980MHz meanUtil=99.2%
+=== RUN tag=r1_m36trunc MANT_BITS=36 MANT_ROUND=trunc BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -matvec 200
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 200
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=0
+[MANT] DiffusionIntegrator::AssemblePA pa_data: kept 36 mantissa bits (dropped 16), mode=trunc, values=196608000 (1.573 GB)
+[SETUP] size=7189057 ess=221186 setup_time=1.567 s
+[CHECK] BnormL2=0.0083047816391143125  (B,AB)=1.2812407465542767e-06  ||AB||=0.00033331952877125698
+[MATVEC] count=200 time=0.310 s  per=1.5488 ms  4.642 GDOF/s  ||y||=0.00033331952877125698
+[SOLVE] rep=0 its=963 converged=1 final_norm=2.9595736464258339e-12 time=1.835 s
+[TIME] solves=1 total_its=963 solve_time=1.835 s  per_it=1.9053 ms  3.773 GDOF/s(CG it)
+[RESULT] ||X||=936.95236057619616  (X,B)=6.4769278882422467
+[RESULT] nodal_err_max=5.8955285098249988e-11 nodal_err_rms=9.8794398530157604e-12
+[TIME] wall_total=3.728 s
+ELAPSED 4.09 s  MAXRSS 1334528 KB
+GPU samples=9 meanPower=366.6W maxPower=597.6W meanUtil=44.1%
+GPU busy(util>=50%) samples=4 (2.0s) meanPower=553.1W maxPower=597.6W meanSM=1980MHz meanUtil=99.0%
+=== RUN tag=r2_m36nearest MANT_BITS=36 MANT_ROUND=nearest BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -matvec 200
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 200
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=0
+[MANT] DiffusionIntegrator::AssemblePA pa_data: kept 36 mantissa bits (dropped 16), mode=nearest, values=196608000 (1.573 GB)
+[SETUP] size=7189057 ess=221186 setup_time=1.578 s
+[CHECK] BnormL2=0.0083047816391143125  (B,AB)=1.2812407465606298e-06  ||AB||=0.00033331952877295538
+[MATVEC] count=200 time=0.310 s  per=1.5486 ms  4.642 GDOF/s  ||y||=0.00033331952877295538
+[SOLVE] rep=0 its=963 converged=1 final_norm=2.9592195855878538e-12 time=1.835 s
+[TIME] solves=1 total_its=963 solve_time=1.835 s  per_it=1.9051 ms  3.774 GDOF/s(CG it)
+[RESULT] ||X||=936.95236057136788  (X,B)=6.476927888208853
+[RESULT] nodal_err_max=5.6684101856774305e-11 nodal_err_rms=9.7153472521586852e-12
+[TIME] wall_total=3.739 s
+ELAPSED 4.09 s  MAXRSS 1331584 KB
+GPU samples=9 meanPower=353.5W maxPower=599.0W meanUtil=47.9%
+GPU busy(util>=50%) samples=4 (2.0s) meanPower=553.4W maxPower=599.0W meanSM=1980MHz meanUtil=99.0%
+=== RUN tag=r3_m20trunc MANT_BITS=20 MANT_ROUND=trunc BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -matvec 200
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 200
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=0
+[MANT] DiffusionIntegrator::AssemblePA pa_data: kept 20 mantissa bits (dropped 32), mode=trunc, values=196608000 (1.573 GB)
+[SETUP] size=7189057 ess=221186 setup_time=1.608 s
+[CHECK] BnormL2=0.0083047816391143125  (B,AB)=1.2812403302605707e-06  ||AB||=0.00033331941750607783
+[MATVEC] count=200 time=0.309 s  per=1.5469 ms  4.647 GDOF/s  ||y||=0.00033331941750607783
+[SOLVE] rep=0 its=963 converged=1 final_norm=2.9576469388316972e-12 time=1.833 s
+[TIME] solves=1 total_its=963 solve_time=1.833 s  per_it=1.9031 ms  3.778 GDOF/s(CG it)
+[RESULT] ||X||=936.95267668866802  (X,B)=6.4769300757862851
+[RESULT] nodal_err_max=3.3089749140735591e-07 nodal_err_rms=1.179324891235466e-07
+[TIME] wall_total=3.767 s
+ELAPSED 4.12 s  MAXRSS 1386880 KB
+GPU samples=9 meanPower=348.3W maxPower=590.3W meanUtil=44.1%
+GPU busy(util>=50%) samples=4 (2.0s) meanPower=542.7W maxPower=590.3W meanSM=1980MHz meanUtil=99.0%
+=== RUN tag=r4_m20nearest MANT_BITS=20 MANT_ROUND=nearest BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -matvec 200
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 200
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=0
+[MANT] DiffusionIntegrator::AssemblePA pa_data: kept 20 mantissa bits (dropped 32), mode=nearest, values=196608000 (1.573 GB)
+[SETUP] size=7189057 ess=221186 setup_time=1.577 s
+[CHECK] BnormL2=0.0083047816391143125  (B,AB)=1.2812407465993126e-06  ||AB||=0.00033331952878837729
+[MATVEC] count=200 time=0.309 s  per=1.5470 ms  4.647 GDOF/s  ||y||=0.00033331952878837729
+[SOLVE] rep=0 its=963 converged=1 final_norm=2.9586761247420487e-12 time=1.833 s
+[TIME] solves=1 total_its=963 solve_time=1.833 s  per_it=1.9035 ms  3.777 GDOF/s(CG it)
+[RESULT] ||X||=936.95236063481298  (X,B)=6.4769278886283503
+[RESULT] nodal_err_max=2.3794208964256214e-09 nodal_err_rms=2.7485553454618817e-10
+[TIME] wall_total=3.736 s
+ELAPSED 4.11 s  MAXRSS 1331584 KB
+GPU samples=9 meanPower=355.9W maxPower=591.7W meanUtil=44.1%
+GPU busy(util>=50%) samples=4 (2.0s) meanPower=548.2W maxPower=591.7W meanSM=1980MHz meanUtil=99.0%

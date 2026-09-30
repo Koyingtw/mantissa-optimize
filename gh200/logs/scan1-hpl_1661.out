@@ -1,0 +1,76 @@
+job=1661 bench=hpl nodes=1 hosts=work4 P=1 Q=1 N=98304 NB=1024 variants=[53:53 40:40 36:36 32:32 30:30 28:28] tdps=[1000] repeat=1
+rocHPL=28e1d24 rocHPL-MxP=7de9b5b
+TDP 1000 set on work4
+=== RUN tdp=1000 variant=53:53 pass=A t_begin=1790672188.307527165
+CUDA communication streams use high priority -5
+Final Score:    3.9329e+04 GFLOPS 
+Residual value = 0.000049272843406 (0x3f09d54a02119b15)
+Residual Check: PASSED 
+=== END tdp=1000 variant=53:53 pass=A t_begin=1790672188.307527165 t_end=1790672208.322975689
+=== RUN tdp=1000 variant=40:40 pass=A t_begin=1790672208.325340309
+CUDA communication streams use high priority -5
+Final Score:    3.9169e+04 GFLOPS 
+Residual value = 0.026381743702918 (0x3f9b03d0d9a97547)
+Residual Check: PASSED 
+=== END tdp=1000 variant=40:40 pass=A t_begin=1790672208.325340309 t_end=1790672228.240206502
+=== RUN tdp=1000 variant=36:36 pass=A t_begin=1790672228.242478035
+CUDA communication streams use high priority -5
+Final Score:    3.9148e+04 GFLOPS 
+Residual value = 0.019792396879826 (0x3f944475453bb493)
+Residual Check: PASSED 
+=== END tdp=1000 variant=36:36 pass=A t_begin=1790672228.242478035 t_end=1790672248.258195132
+=== RUN tdp=1000 variant=32:32 pass=A t_begin=1790672248.260565385
+CUDA communication streams use high priority -5
+Final Score:    3.9159e+04 GFLOPS 
+Residual value = 4.405911396237520 (0x40119fa73cafa7c7)
+Residual Check: PASSED 
+=== END tdp=1000 variant=32:32 pass=A t_begin=1790672248.260565385 t_end=1790672268.175670007
+=== RUN tdp=1000 variant=30:30 pass=A t_begin=1790672268.178038084
+CUDA communication streams use high priority -5
+Final Score:    3.9158e+04 GFLOPS 
+Residual value = 4.267735561342514 (0x40111229455fc4ea)
+Residual Check: PASSED 
+=== END tdp=1000 variant=30:30 pass=A t_begin=1790672268.178038084 t_end=1790672288.093020787
+=== RUN tdp=1000 variant=28:28 pass=A t_begin=1790672288.095341120
+CUDA communication streams use high priority -5
+Final Score:    3.9131e+04 GFLOPS 
+Residual value = 60.417850173401824 (0x404e357c1d4eb1c3)
+Residual Check: FAILED 
+=== END tdp=1000 variant=28:28 pass=A t_begin=1790672288.095341120 t_end=1790672308.010541838
+=== RUN tdp=1000 variant=28:28 pass=B t_begin=1790672308.012870362
+CUDA communication streams use high priority -5
+Final Score:    3.8797e+04 GFLOPS 
+Residual value = 60.417850173401824 (0x404e357c1d4eb1c3)
+Residual Check: FAILED 
+=== END tdp=1000 variant=28:28 pass=B t_begin=1790672308.012870362 t_end=1790672328.127949641
+=== RUN tdp=1000 variant=30:30 pass=B t_begin=1790672328.130226966
+CUDA communication streams use high priority -5
+Final Score:    3.8342e+04 GFLOPS 
+Residual value = 4.267735561342514 (0x40111229455fc4ea)
+Residual Check: PASSED 
+=== END tdp=1000 variant=30:30 pass=B t_begin=1790672328.130226966 t_end=1790672348.445416165
+=== RUN tdp=1000 variant=32:32 pass=B t_begin=1790672348.447814833
+CUDA communication streams use high priority -5
+Final Score:    3.7874e+04 GFLOPS 
+Residual value = 4.405911396237520 (0x40119fa73cafa7c7)
+Residual Check: PASSED 
+=== END tdp=1000 variant=32:32 pass=B t_begin=1790672348.447814833 t_end=1790672368.963317916
+=== RUN tdp=1000 variant=36:36 pass=B t_begin=1790672368.965669641
+CUDA communication streams use high priority -5
+Final Score:    3.7241e+04 GFLOPS 
+Residual value = 0.019792396879826 (0x3f944475453bb493)
+Residual Check: PASSED 
+=== END tdp=1000 variant=36:36 pass=B t_begin=1790672368.965669641 t_end=1790672389.781339860
+=== RUN tdp=1000 variant=40:40 pass=B t_begin=1790672389.783699937
+CUDA communication streams use high priority -5
+Final Score:    3.6685e+04 GFLOPS 
+Residual value = 0.026381743702918 (0x3f9b03d0d9a97547)
+Residual Check: PASSED 
+=== END tdp=1000 variant=40:40 pass=B t_begin=1790672389.783699937 t_end=1790672410.798938220
+=== RUN tdp=1000 variant=53:53 pass=B t_begin=1790672410.801257849
+CUDA communication streams use high priority -5
+Final Score:    3.5365e+04 GFLOPS 
+Residual value = 0.000049272843406 (0x3f09d54a02119b15)
+Residual Check: PASSED 
+=== END tdp=1000 variant=53:53 pass=B t_begin=1790672410.801257849 t_end=1790672432.617392005
+=== ALL DONE

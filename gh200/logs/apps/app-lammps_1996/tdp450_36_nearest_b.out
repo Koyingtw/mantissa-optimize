@@ -1,0 +1,129 @@
+LAMMPS (22 Jul 2025 - Update 6)
+KOKKOS mode with Kokkos version 4.6.2 is enabled
+  will use up to 1 GPU(s) per node
+WARNING: When using a single thread, the Kokkos Serial backend (i.e. Makefile.kokkos_mpi_only) gives better performance than the OpenMP backend (src/KOKKOS/kokkos.cpp:221)
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off neigh full
+# bulk Cu lattice, EAM（改自 bench/in.eam：可調大小/步數、thermo 15 位有效數字）
+variable        x index 8
+variable        y index 8
+variable        z index 8
+variable        nsteps index 1000
+variable        nthermo index 100
+
+variable        xx equal 20*$x
+variable        xx equal 20*8
+variable        yy equal 20*$y
+variable        yy equal 20*8
+variable        zz equal 20*$z
+variable        zz equal 20*8
+
+units           metal
+atom_style      atomic
+
+lattice         fcc 3.615
+Lattice spacing in x,y,z = 3.615 3.615 3.615
+region          box block 0 ${xx} 0 ${yy} 0 ${zz}
+region          box block 0 160 0 ${yy} 0 ${zz}
+region          box block 0 160 0 160 0 ${zz}
+region          box block 0 160 0 160 0 160
+create_box      1 box
+Created orthogonal box = (0 0 0) to (578.4 578.4 578.4)
+  1 by 1 by 1 MPI processor grid
+create_atoms    1 box
+Created 16384000 atoms
+  using lattice units in orthogonal box = (0 0 0) to (578.4 578.4 578.4)
+  create_atoms CPU = 1.191 seconds
+
+pair_style      eam
+pair_coeff      1 1 Cu_u3.eam
+Reading eam potential file Cu_u3.eam with DATE: 2007-06-11
+
+velocity        all create 1600.0 376847 loop geom
+
+neighbor        1.0 bin
+neigh_modify    every 1 delay 5 check yes
+
+fix             1 all nve
+
+timestep        0.005
+thermo_style    custom step temp epair etotal press
+thermo_modify   format float %22.15e norm yes
+thermo          ${nthermo}
+thermo          100
+
+run             ${nsteps}
+run             2000
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=nearest values=7000 changed=2948 max_rel_change=7.225e-12
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3178 max_rel_change=7.251e-12
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3349 max_rel_change=7.241e-12
+Neighbor list info ...
+  update: every = 1 steps, delay = 5 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 5.95
+  ghost atom cutoff = 5.95
+  binsize = 5.95, bins = 98 98 98
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/kk, perpetual
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+Per MPI rank memory allocation (min/avg/max) = 2967 | 2967 | 2967 Mbytes
+   Step          Temp          E_pair         TotEng         Press     
+         0   1.600000000000000e+03 -3.540000002254915e+00 -3.333183782877976e+00  1.870415673125184e+04
+       100   7.984924263354275e+02 -3.435726863249429e+00 -3.332513622739546e+00  5.146655044660353e+04
+       200   7.975470327590867e+02 -3.435605257607605e+00 -3.332514218801024e+00  5.154016163776950e+04
+       300   7.977023407590463e+02 -3.435625249823446e+00 -3.332514135883496e+00  5.153862014031804e+04
+       400   7.979147860744089e+02 -3.435652754154195e+00 -3.332514179503653e+00  5.153079307586445e+04
+       500   7.979031979562616e+02 -3.435651048445939e+00 -3.332513971677137e+00  5.153442340600660e+04
+       600   7.976734303484465e+02 -3.435620618985452e+00 -3.332513242009139e+00  5.154504056446230e+04
+       700   7.977195683115452e+02 -3.435626404828626e+00 -3.332513064052878e+00  5.154532669256388e+04
+       800   7.977528907887120e+02 -3.435630442361662e+00 -3.332512794317946e+00  5.154391091753483e+04
+       900   7.977812523702128e+02 -3.435633663661466e+00 -3.332512349595837e+00  5.154026810012414e+04
+      1000   7.976624983710186e+02 -3.435617784805787e+00 -3.332511820898376e+00  5.154701626811147e+04
+      1100   7.980460691206519e+02 -3.435667384666422e+00 -3.332511840351322e+00  5.153464518160876e+04
+      1200   7.977323769279357e+02 -3.435626215278425e+00 -3.332511218859166e+00  5.154583743346594e+04
+      1300   7.978080649295005e+02 -3.435635571582593e+00 -3.332510791721873e+00  5.154323318652670e+04
+      1400   7.976290654380404e+02 -3.435611952386063e+00 -3.332510310024152e+00  5.155076173686897e+04
+      1500   7.977745766671766e+02 -3.435630503728607e+00 -3.332510052565267e+00  5.154510882135259e+04
+      1600   7.977565902254589e+02 -3.435627957528531e+00 -3.332509831295114e+00  5.154451886105350e+04
+      1700   7.977111693914865e+02 -3.435621357152120e+00 -3.332509102021930e+00  5.154814207097750e+04
+      1800   7.976564370202778e+02 -3.435614238598753e+00 -3.332509058182370e+00  5.154964554880909e+04
+      1900   7.977271642915016e+02 -3.435623059888849e+00 -3.332508737255690e+00  5.154806903130294e+04
+      2000   7.979968035627221e+02 -3.435657637746263e+00 -3.332508461503935e+00  5.153411890766126e+04
+Loop time of 92.6672 on 1 procs for 2000 steps with 16384000 atoms
+
+Performance: 9.324 ns/day, 2.574 hours/ns, 21.583 timesteps/s, 353.609 Matom-step/s
+50.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 27.429     | 27.429     | 27.429     |   0.0 | 29.60
+Neigh   | 19.677     | 19.677     | 19.677     |   0.0 | 21.23
+Comm    | 4.0937     | 4.0937     | 4.0937     |   0.0 |  4.42
+Output  | 0.0058314  | 0.0058314  | 0.0058314  |   0.0 |  0.01
+Modify  | 39.974     | 39.974     | 39.974     |   0.0 | 43.14
+Other   |            | 1.487      |            |       |  1.60
+
+Nlocal:     1.6384e+07 ave  1.6384e+07 max  1.6384e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    1.09883e+06 ave 1.09883e+06 max 1.09883e+06 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  1.23703e+09 ave 1.23703e+09 max 1.23703e+09 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 1.2370307e+09
+Ave neighs/atom = 75.502362
+Neighbor list builds = 341
+Dangerous builds = 53
+
+# 可選：逐位比對用，run 結束後把每個原子的力以 %.17g 依 id 排序寫出（-var dodump 1 -var dumpf <file>）
+variable        dodump index 0
+variable        dumpf index none
+if "${dodump} == 1" then "write_dump all custom ${dumpf} id fx fy fz modify format float %.17g sort id"
+Total wall time: 0:01:38

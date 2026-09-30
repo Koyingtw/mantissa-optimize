@@ -1,0 +1,110 @@
+LAMMPS (22 Jul 2025 - Update 6)
+KOKKOS mode with Kokkos version 4.6.2 is enabled
+  will use up to 1 GPU(s) per node
+WARNING: When using a single thread, the Kokkos Serial backend (i.e. Makefile.kokkos_mpi_only) gives better performance than the OpenMP backend (src/KOKKOS/kokkos.cpp:221)
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off neigh full
+# bulk Cu lattice, EAM（改自 bench/in.eam：可調大小/步數、thermo 15 位有效數字）
+variable        x index 8
+variable        y index 8
+variable        z index 8
+variable        nsteps index 1000
+variable        nthermo index 100
+
+variable        xx equal 20*$x
+variable        xx equal 20*2
+variable        yy equal 20*$y
+variable        yy equal 20*2
+variable        zz equal 20*$z
+variable        zz equal 20*2
+
+units           metal
+atom_style      atomic
+
+lattice         fcc 3.615
+Lattice spacing in x,y,z = 3.615 3.615 3.615
+region          box block 0 ${xx} 0 ${yy} 0 ${zz}
+region          box block 0 40 0 ${yy} 0 ${zz}
+region          box block 0 40 0 40 0 ${zz}
+region          box block 0 40 0 40 0 40
+create_box      1 box
+Created orthogonal box = (0 0 0) to (144.6 144.6 144.6)
+  1 by 1 by 1 MPI processor grid
+create_atoms    1 box
+Created 256000 atoms
+  using lattice units in orthogonal box = (0 0 0) to (144.6 144.6 144.6)
+  create_atoms CPU = 0.024 seconds
+
+pair_style      eam
+pair_coeff      1 1 Cu_u3.eam
+Reading eam potential file Cu_u3.eam with DATE: 2007-06-11
+
+velocity        all create 1600.0 376847 loop geom
+
+neighbor        1.0 bin
+neigh_modify    every 1 delay 5 check yes
+
+fix             1 all nve
+
+timestep        0.005
+thermo_style    custom step temp epair etotal press
+thermo_modify   format float %22.15e norm yes
+thermo          ${nthermo}
+thermo          100
+
+run             ${nsteps}
+run             0
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=nearest values=7000 changed=2948 max_rel_change=7.225e-12
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3178 max_rel_change=7.251e-12
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3349 max_rel_change=7.241e-12
+Neighbor list info ...
+  update: every = 1 steps, delay = 5 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 5.95
+  ghost atom cutoff = 5.95
+  binsize = 5.95, bins = 25 25 25
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/kk, perpetual
+      attributes: full, newton off, kokkos_device
+      pair build: full/bin/kk/device
+      stencil: full/bin/3d
+      bin: kk/device
+Per MPI rank memory allocation (min/avg/max) = 57.03 | 57.03 | 57.03 Mbytes
+   Step          Temp          E_pair         TotEng         Press     
+         0   1.600000000000000e+03 -3.540000002254854e+00 -3.333184578130760e+00  1.870408480963923e+04
+Loop time of 0.000112991 on 1 procs for 0 steps with 256000 atoms
+
+28.3% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 0.000113   |            |       |100.00
+
+Nlocal:         256000 ave      256000 max      256000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          73251 ave       73251 max       73251 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:   1.9968e+07 ave  1.9968e+07 max  1.9968e+07 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 19968000
+Ave neighs/atom = 78
+Neighbor list builds = 0
+Dangerous builds = 0
+
+# 可選：逐位比對用，run 結束後把每個原子的力以 %.17g 依 id 排序寫出（-var dodump 1 -var dumpf <file>）
+variable        dodump index 0
+variable        dumpf index none
+if "${dodump} == 1" then "write_dump all custom ${dumpf} id fx fy fz modify format float %.17g sort id"
+write_dump all custom ${dumpf} id fx fy fz modify format float %.17g sort id
+write_dump all custom eam_x2_1986.near36.dump id fx fy fz modify format float %.17g sort id
+Total wall time: 0:00:00

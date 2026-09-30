@@ -1,0 +1,127 @@
+diff --git a/fem/integ/bilininteg_diffusion_pa.cpp b/fem/integ/bilininteg_diffusion_pa.cpp
+index 0ba22de..aef1840 100644
+--- a/fem/integ/bilininteg_diffusion_pa.cpp
++++ b/fem/integ/bilininteg_diffusion_pa.cpp
+@@ -10,6 +10,7 @@
+ // CONTRIBUTING.md for details.
+ 
+ #include "../bilininteg.hpp"
++#include "mantissa_trunc.hpp"
+ #include "../gridfunc.hpp"
+ #include "../qfunction.hpp"
+ #include "../../mesh/nurbs.hpp"
+@@ -170,6 +171,8 @@ void DiffusionIntegrator::AssemblePA(const FiniteElementSpace &fes)
+    pa_data.SetSize(pa_size * nq * ne, mt);
+    internal::PADiffusionSetup(dim, sdim, dofs1D, quad1D, coeff_dim, ne,
+                               ir->GetWeights(), geom->J, coeff, pa_data);
++   // [mantissa-optimize] 環境變數 MANT_BITS/MANT_ROUND 控制的一次性尾數截斷（未設定則不動作）
++   mant::ApplyEnvToVector(pa_data, "DiffusionIntegrator::AssemblePA pa_data");
+ }
+ 
+ void DiffusionIntegrator::AssembleNURBSPA(const FiniteElementSpace &fes)
+diff --git a/fem/integ/bilininteg_mass_pa.cpp b/fem/integ/bilininteg_mass_pa.cpp
+index d961b00..f861f04 100644
+--- a/fem/integ/bilininteg_mass_pa.cpp
++++ b/fem/integ/bilininteg_mass_pa.cpp
+@@ -11,6 +11,7 @@
+ 
+ #include "../../general/forall.hpp"
+ #include "../bilininteg.hpp"
++#include "mantissa_trunc.hpp"
+ #include "../gridfunc.hpp"
+ #include "../qfunction.hpp"
+ #include "../ceed/integrators/mass/mass.hpp"
+@@ -87,6 +88,8 @@ void MassIntegrator::AssemblePA(const FiniteElementSpace &fes)
+          v(q, e) = W(q) * coeff * (by_val ? detJ : 1.0 / detJ);
+       });
+    }
++   // [mantissa-optimize] 環境變數 MANT_BITS/MANT_ROUND 控制的一次性尾數截斷（未設定則不動作）
++   mant::ApplyEnvToVector(pa_data, "MassIntegrator::AssemblePA pa_data");
+ }
+ 
+ void MassIntegrator::AssemblePABoundary(const FiniteElementSpace &fes)
+diff --git a/fem/integ/mantissa_trunc.hpp b/fem/integ/mantissa_trunc.hpp
+new file mode 100644
+index 0000000..5e8565d
+--- /dev/null
++++ b/fem/integ/mantissa_trunc.hpp
+@@ -0,0 +1,79 @@
++// 尾數截斷研究（mantissa-optimize 專案）加入的輔助函式，非 MFEM 上游程式碼。
++//
++// 由環境變數控制，對 PA 求積點資料（pa_data）做一次性的 FP64 尾數截斷：
++//   MANT_BITS=<k>            保留 k 個尾數位元（0..51）；未設定、空字串或 k>=52 → 完全不動作
++//   MANT_ROUND=trunc|nearest 預設 trunc（直接清掉低 52-k 位）；
++//                            nearest：先加 1<<(52-k-1) 再清低位（round-half-up on magnitude）
++// NaN/Inf 不動。在 AssemblePA 產生 pa_data 之後呼叫一次；之後每次 Mult 讀到的就是截斷後的值。
++#ifndef MFEM_MANTISSA_TRUNC_HPP
++#define MFEM_MANTISSA_TRUNC_HPP
++
++#include "../../config/config.hpp"
++#include "../../general/forall.hpp"
++#include "../../linalg/vector.hpp"
++#include <cstdint>
++#include <cstdio>
++#include <cstdlib>
++#include <cstring>
++
++namespace mfem
++{
++namespace mant
++{
++
++/// 讀環境變數；回傳要丟掉的低位數 drop = 52-k（0 表示不動作），nearest 由參數帶回。
++inline int EnvDropBits(bool &nearest)
++{
++   nearest = false;
++   const char *s = std::getenv("MANT_BITS");
++   if (s == nullptr || *s == '\0') { return 0; }
++   const int k = std::atoi(s);
++   if (k < 0 || k >= 52) { return 0; }
++   const char *r = std::getenv("MANT_ROUND");
++   nearest = (r != nullptr && std::strcmp(r, "nearest") == 0);
++   return 52 - k;
++}
++
++MFEM_HOST_DEVICE inline double RoundMantissa(double v, int drop, bool nearest)
++{
++#if defined(__CUDA_ARCH__)
++   unsigned long long u = (unsigned long long) __double_as_longlong(v);
++#else
++   unsigned long long u; std::memcpy(&u, &v, sizeof(u));
++#endif
++   const unsigned long long expmask = 0x7ff0000000000000ull;
++   if ((u & expmask) == expmask) { return v; } // NaN / Inf
++   if (nearest) { u += (1ull << (drop - 1)); }
++   u &= ~((1ull << drop) - 1ull);
++#if defined(__CUDA_ARCH__)
++   return __longlong_as_double((long long) u);
++#else
++   double w; std::memcpy(&w, &u, sizeof(w)); return w;
++#endif
++}
++
++/// 依環境變數對整個向量做尾數截斷（在向量目前所在的裝置上執行）。
++inline void ApplyEnvToVector(Vector &v, const char *tag)
++{
++#ifdef MFEM_USE_SINGLE
++   return; // 只支援 FP64 build
++#endif
++   bool nearest;
++   const int drop = EnvDropBits(nearest);
++   if (drop == 0) { return; }
++   const int n = v.Size();
++   auto d = v.ReadWrite();
++   mfem::forall(n, [=] MFEM_HOST_DEVICE (int i)
++   {
++      d[i] = RoundMantissa(d[i], drop, nearest);
++   });
++   std::printf("[MANT] %s: kept %d mantissa bits (dropped %d), mode=%s, "
++               "values=%d (%.3f GB)\n", tag, 52 - drop, drop,
++               nearest ? "nearest" : "trunc", n, 8.0e-9 * n);
++   std::fflush(stdout);
++}
++
++} // namespace mant
++} // namespace mfem
++
++#endif

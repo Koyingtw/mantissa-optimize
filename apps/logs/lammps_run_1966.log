@@ -1,0 +1,27 @@
+name, power.limit [W], enforced.power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 900.00 W, 1980 MHz
+=== native  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:52:43.257860126
+=== native end 02:54:09.924209225
+         0   1.600000000000000e+03 -3.540000002279794e+00 -3.333183782902855e+00  1.870415672326925e+04
+       500   7.979031979630879e+02 -3.435651048444364e+00 -3.332513971674679e+00  5.153442340613172e+04
+      1000   7.976625007555003e+02 -3.435617785184901e+00 -3.332511820969271e+00  5.154701620527795e+04
+      1500   7.977745718162352e+02 -3.435630504325781e+00 -3.332510053789475e+00  5.154511023460550e+04
+      2000   7.979963296150279e+02 -3.435657571805503e+00 -3.332508456825720e+00  5.153413264566674e+04
+Loop time of 79.1014 on 1 procs for 2000 steps with 16384000 atoms
+Performance: 10.923 ns/day, 2.197 hours/ns, 25.284 timesteps/s, 414.253 Matom-step/s
+Total wall time: 0:01:25
+=== trunc20  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=20 MANT_ROUND=trunc  start 02:54:09.928353909
+=== trunc20 end 02:55:36.381303418
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=20 MANT_ROUND=trunc values=7000 changed=3394 max_rel_change=9.384e-07
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=20 MANT_ROUND=trunc values=3500 changed=3476 max_rel_change=9.376e-07
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=20 MANT_ROUND=trunc values=3500 changed=3477 max_rel_change=9.408e-07
+         0   1.600000000000000e+03 -3.539997014952333e+00 -3.333180795575394e+00  1.870444632768096e+04
+       500   7.979032430063629e+02 -3.435648906525417e+00 -3.332511823933432e+00  5.153466773349865e+04
+      1000   7.976631056508687e+02 -3.435615708300161e+00 -3.332509665895673e+00  5.154724858924621e+04
+      1500   7.977763068169181e+02 -3.435628672746510e+00 -3.332507997943777e+00  5.154536020981751e+04
+      2000   7.978450819979927e+02 -3.435635836762672e+00 -3.332506272070604e+00  5.154133531039185e+04
+Loop time of 78.9715 on 1 procs for 2000 steps with 16384000 atoms
+Performance: 10.941 ns/day, 2.194 hours/ns, 25.326 timesteps/s, 414.934 Matom-step/s
+Total wall time: 0:01:24
+[native] wall=86.7s samples=174 meanP=550W maxP=612W meanUtil=79% | busy(util>=50%) n=159 meanP=586W meanSM=1980MHz meanUtil=86% maxT=76C sw_power_cap_samples=0 hw_slowdown_samples=0
+[trunc20] wall=86.4s samples=173 meanP=552W maxP=607W meanUtil=79% | busy(util>=50%) n=159 meanP=585W meanSM=1980MHz meanUtil=86% maxT=76C sw_power_cap_samples=0 hw_slowdown_samples=0

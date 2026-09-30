@@ -1,0 +1,39 @@
+job=1731 host=work3 app=pyscf case=113_Taxol variants=[stats copy 44:trunc 36:trunc 28:trunc 20:trunc 12:trunc 28:nearest 20:nearest] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=stats pass=A t_begin=1790690050.488749314
+    RESULT_HF converged=True E=-2912.9452874941 Eh wall=43.91s
+    RESULT_MP2 Ecorr=-12.1553786822 Etot=-2925.1006661763 Eh wall=42.14s
+=== END tdp=1000 variant=stats pass=A t_begin=1790690050.488749314 t_end=1790690137.799883759
+=== RUN tdp=1000 variant=copy pass=A t_begin=1790690142.825711581
+    RESULT_HF converged=True E=-2912.9452874941 Eh wall=49.72s
+    RESULT_MP2 Ecorr=-12.1553786822 Etot=-2925.1006661763 Eh wall=68.80s
+=== END tdp=1000 variant=copy pass=A t_begin=1790690142.825711581 t_end=1790690262.526856468
+=== RUN tdp=1000 variant=44:trunc pass=A t_begin=1790690267.553040830
+    RESULT_HF converged=True E=-2912.9452874380 Eh wall=49.83s
+    RESULT_MP2 Ecorr=-12.1553786818 Etot=-2925.1006661199 Eh wall=68.57s
+=== END tdp=1000 variant=44:trunc pass=A t_begin=1790690267.553040830 t_end=1790690387.177138221
+=== RUN tdp=1000 variant=36:trunc pass=A t_begin=1790690392.203603095
+    RESULT_HF converged=True E=-2912.9452603828 Eh wall=65.41s
+    RESULT_MP2 Ecorr=-12.1553785543 Etot=-2925.1006389370 Eh wall=68.98s
+=== END tdp=1000 variant=36:trunc pass=A t_begin=1790690392.203603095 t_end=1790690527.833045154
+=== RUN tdp=1000 variant=28:trunc pass=A t_begin=1790690532.859211054
+=== RUN FAILED rc=1
+    RESULT_HF converged=False E=-2912.9473060088 Eh wall=137.89s
+=== END tdp=1000 variant=28:trunc pass=A t_begin=1790690532.859211054 t_end=1790690674.641312142
+=== RUN tdp=1000 variant=20:trunc pass=A t_begin=1790690674.654448168
+=== RUN FAILED rc=1
+    RESULT_HF converged=False E=-2969250.5274965297 Eh wall=137.98s
+=== END tdp=1000 variant=20:trunc pass=A t_begin=1790690674.654448168 t_end=1790690816.423603607
+=== RUN tdp=1000 variant=12:trunc pass=A t_begin=1790690816.436799472
+=== RUN FAILED rc=1
+    RESULT_HF converged=False E=261001910194.4292602539 Eh wall=137.94s
+=== END tdp=1000 variant=12:trunc pass=A t_begin=1790690816.436799472 t_end=1790690958.169145524
+=== RUN tdp=1000 variant=28:nearest pass=A t_begin=1790690958.182315495
+=== RUN FAILED rc=1
+    RESULT_HF converged=False E=-2912.9447925593 Eh wall=138.03s
+=== END tdp=1000 variant=28:nearest pass=A t_begin=1790690958.182315495 t_end=1790691100.020249168
+=== RUN tdp=1000 variant=20:nearest pass=A t_begin=1790691100.033313988
+=== RUN FAILED rc=1
+    RESULT_HF converged=False E=-2744383.0249000569 Eh wall=137.96s
+=== END tdp=1000 variant=20:nearest pass=A t_begin=1790691100.033313988 t_end=1790691241.805383152
+=== ALL DONE

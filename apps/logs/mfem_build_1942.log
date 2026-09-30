@@ -1,0 +1,643 @@
++ module load nvhpc/26.5
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ CUDA=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ SRC=/nfs/home/koying/mantissa-optimize/apps/mfem
++ BENCH=/nfs/home/koying/mantissa-optimize/apps/mfem-bench
++ BDIR=build-cuda
++ cd /nfs/home/koying/mantissa-optimize/apps/mfem
++ nvcc --version
++ tail -2
+Cuda compilation tools, release 13.2, V13.2.78
+Build cuda_13.2.r13.2/compiler.37668154_0
++ g++ --version
++ head -1
+g++ (Ubuntu 15.2.0-16ubuntu1) 15.2.0
++ '[' -z '' ']'
++ make BUILD_DIR=/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda config MFEM_USE_CUDA=YES MFEM_USE_MPI=NO MFEM_DEBUG=NO CUDA_ARCH=sm_90 CUDA_DIR=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
+for d in general linalg linalg/batched linalg/simd mesh mesh/submesh fem fem/ceed/integrators/mass fem/ceed/integrators/convection fem/ceed/integrators/diffusion fem/ceed/integrators/nlconvection fem/ceed/interface fem/ceed/solvers fem/eltrans fem/fe fem/gslib fem/integ fem/lor fem/moonolith fem/qinterp fem/tmop fem/dfem fem/tmop/assemble fem/tmop/metrics fem/tmop/mult fem/tmop/tools config examples examples/amgx examples/caliper examples/ginkgo examples/hiop examples/petsc examples/pumi examples/sundials examples/superlu examples/moonolith miniapps/common miniapps/electromagnetics miniapps/meshing miniapps/performance miniapps/tools miniapps/toys miniapps/nurbs miniapps/gslib miniapps/adjoint miniapps/solvers miniapps/shifted miniapps/mtop miniapps/parelag miniapps/tribol miniapps/autodiff miniapps/dfem miniapps/hooke miniapps/multidomain miniapps/dpg miniapps/hdiv-linear-solver miniapps/spde miniapps/diag-smoothers miniapps/contact miniapps/fluids/navier miniapps/fluids/schrodinger-flow miniapps/plasma miniapps/plasma/pic doc tests/unit; do mkdir -p /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/${d}; done
+for dir in "" config/ examples/ examples/amgx/ examples/caliper/ examples/ginkgo/ examples/hiop/ examples/petsc/ examples/pumi/ examples/sundials/ examples/superlu/ examples/moonolith/ miniapps/common/ miniapps/electromagnetics/ miniapps/meshing/ miniapps/performance/ miniapps/tools/ miniapps/toys/ miniapps/nurbs/ miniapps/gslib/ miniapps/adjoint/ miniapps/solvers/ miniapps/shifted/ miniapps/mtop/ miniapps/parelag/ miniapps/tribol/ miniapps/autodiff/ miniapps/dfem/ miniapps/hooke/ miniapps/multidomain/ miniapps/dpg/ miniapps/hdiv-linear-solver/ miniapps/spde/ miniapps/diag-smoothers/ miniapps/contact/ miniapps/fluids/navier/ miniapps/fluids/schrodinger-flow/ miniapps/plasma/ miniapps/plasma/pic/ doc/ tests/unit/; do\
+   printf "# Auto-generated file.\n%s\n%s\n" \
+      "MFEM_DIR = /nfs/home/koying/mantissa-optimize/apps/mfem" \
+      "include \$(MFEM_DIR)/${dir}makefile" \
+      > /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/${dir}GNUmakefile; done
+make -C /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config all
+make[1]: Entering directory '/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config'
+make[1]: Leaving directory '/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config'
+cd "/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda" && ln -sf "/nfs/home/koying/mantissa-optimize/apps/mfem/data" .
+for hdr in mfem.hpp mfem-performance.hpp; do \
+   printf "// Auto-generated file.\n%s\n%s\n" \
+   "#define MFEM_CONFIG_FILE \"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp\"" \
+   "#include \"/nfs/home/koying/mantissa-optimize/apps/mfem/${hdr}\"" > /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/${hdr}; done
+
+Build destination: /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda [/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda]
+
++ make -C /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda -j 72 lib
+make: Entering directory '/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda'
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/adios2stream.cpp -o general/adios2stream.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/array.cpp -o general/array.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/binaryio.cpp -o general/binaryio.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/communication.cpp -o general/communication.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/cuda.cpp -o general/cuda.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/device.cpp -o general/device.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/error.cpp -o general/error.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/gecko.cpp -o general/gecko.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/globals.cpp -o general/globals.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/hash.cpp -o general/hash.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/hash_util.cpp -o general/hash_util.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/hip.cpp -o general/hip.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/isockstream.cpp -o general/isockstream.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/mem_manager.cpp -o general/mem_manager.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/occa.cpp -o general/occa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/optparser.cpp -o general/optparser.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/osockstream.cpp -o general/osockstream.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/sets.cpp -o general/sets.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/socketstream.cpp -o general/socketstream.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/stable3d.cpp -o general/stable3d.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/table.cpp -o general/table.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/tic_toc.cpp -o general/tic_toc.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/tinyxml2.cpp -o general/tinyxml2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/general/version.cpp -o general/version.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/amgxsolver.cpp -o linalg/amgxsolver.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/auxiliary.cpp -o linalg/auxiliary.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/blockmatrix.cpp -o linalg/blockmatrix.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/blockoperator.cpp -o linalg/blockoperator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/blockvector.cpp -o linalg/blockvector.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/complex_densemat.cpp -o linalg/complex_densemat.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/complex_operator.cpp -o linalg/complex_operator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/constraints.cpp -o linalg/constraints.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/cpardiso.cpp -o linalg/cpardiso.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/cudss.cpp -o linalg/cudss.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/densemat.cpp -o linalg/densemat.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/filteredsolver.cpp -o linalg/filteredsolver.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/ginkgo.cpp -o linalg/ginkgo.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/handle.cpp -o linalg/handle.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/hiop.cpp -o linalg/hiop.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/hypre.cpp -o linalg/hypre.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/hypre_parcsr.cpp -o linalg/hypre_parcsr.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/matrix.cpp -o linalg/matrix.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/mma.cpp -o linalg/mma.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/multivector.cpp -o linalg/multivector.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/mumps.cpp -o linalg/mumps.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/ode.cpp -o linalg/ode.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/operator.cpp -o linalg/operator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/ordering.cpp -o linalg/ordering.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/pardiso.cpp -o linalg/pardiso.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/particlevector.cpp -o linalg/particlevector.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/petsc.cpp -o linalg/petsc.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/slepc.cpp -o linalg/slepc.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/solvers.cpp -o linalg/solvers.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/sparsemat.cpp -o linalg/sparsemat.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/sparsesmoothers.cpp -o linalg/sparsesmoothers.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/strumpack.cpp -o linalg/strumpack.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/sundials.cpp -o linalg/sundials.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/superlu.cpp -o linalg/superlu.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/symmat.cpp -o linalg/symmat.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/vector.cpp -o linalg/vector.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/batched/batched.cpp -o linalg/batched/batched.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/batched/gpu_blas.cpp -o linalg/batched/gpu_blas.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/batched/magma.cpp -o linalg/batched/magma.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/batched/native.cpp -o linalg/batched/native.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/linalg/batched/solver.cpp -o linalg/batched/solver.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/attribute_sets.cpp -o mesh/attribute_sets.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/bb_grid_map.cpp -o mesh/bb_grid_map.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/element.cpp -o mesh/element.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/exodus_writer.cpp -o mesh/exodus_writer.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/face_nbr_geom.cpp -o mesh/face_nbr_geom.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/gmsh.cpp -o mesh/gmsh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/hexahedron.cpp -o mesh/hexahedron.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/mesh.cpp -o mesh/mesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/mesh_operators.cpp -o mesh/mesh_operators.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/mesh_readers.cpp -o mesh/mesh_readers.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/ncmesh.cpp -o mesh/ncmesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/ncnurbs.cpp -o mesh/ncnurbs.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/nurbs.cpp -o mesh/nurbs.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/pmesh.cpp -o mesh/pmesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/pncmesh.cpp -o mesh/pncmesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/point.cpp -o mesh/point.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/pumi.cpp -o mesh/pumi.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/pyramid.cpp -o mesh/pyramid.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/quadrilateral.cpp -o mesh/quadrilateral.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/segment.cpp -o mesh/segment.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/spacing.cpp -o mesh/spacing.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/tetrahedron.cpp -o mesh/tetrahedron.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/triangle.cpp -o mesh/triangle.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/vertex.cpp -o mesh/vertex.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/vtk.cpp -o mesh/vtk.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/vtkhdf.cpp -o mesh/vtkhdf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/wedge.cpp -o mesh/wedge.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/ncsubmesh.cpp -o mesh/submesh/ncsubmesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/pncsubmesh.cpp -o mesh/submesh/pncsubmesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/psubmesh.cpp -o mesh/submesh/psubmesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/ptransfermap.cpp -o mesh/submesh/ptransfermap.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/submesh.cpp -o mesh/submesh/submesh.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/submesh_utils.cpp -o mesh/submesh/submesh_utils.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/mesh/submesh/transfermap.cpp -o mesh/submesh/transfermap.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/adios2datacollection.cpp -o fem/adios2datacollection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/batchitrans.cpp -o fem/batchitrans.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/bilinearform.cpp -o fem/bilinearform.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/bilinearform_ext.cpp -o fem/bilinearform_ext.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/bilininteg.cpp -o fem/bilininteg.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/bounds.cpp -o fem/bounds.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/coefficient.cpp -o fem/coefficient.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/complex_fem.cpp -o fem/complex_fem.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/conduitdatacollection.cpp -o fem/conduitdatacollection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/convergence.cpp -o fem/convergence.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/datacollection.cpp -o fem/datacollection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/derefmat_op.cpp -o fem/derefmat_op.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/dgmassinv.cpp -o fem/dgmassinv.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/doftrans.cpp -o fem/doftrans.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/eltrans.cpp -o fem/eltrans.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/estimators.cpp -o fem/estimators.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe_coll.cpp -o fem/fe_coll.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe.cpp -o fem/fe.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fespace.cpp -o fem/fespace.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fespacehierarchy.cpp -o fem/fespacehierarchy.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fmsconvert.cpp -o fem/fmsconvert.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fmsdatacollection.cpp -o fem/fmsdatacollection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/geom.cpp -o fem/geom.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gridfunc.cpp -o fem/gridfunc.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib.cpp -o fem/gslib.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/hybridization.cpp -o fem/hybridization.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/hybridization_ext.cpp -o fem/hybridization_ext.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/hyperbolic.cpp -o fem/hyperbolic.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integrator.cpp -o fem/integrator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/intrules.cpp -o fem/intrules.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/intrules_cut.cpp -o fem/intrules_cut.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/kdtree.cpp -o fem/kdtree.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/linearform.cpp -o fem/linearform.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/linearform_ext.cpp -o fem/linearform_ext.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/lininteg.cpp -o fem/lininteg.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/multigrid.cpp -o fem/multigrid.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/nonlinearform.cpp -o fem/nonlinearform.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/nonlinearform_ext.cpp -o fem/nonlinearform_ext.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/nonlininteg.cpp -o fem/nonlininteg.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/normal_deriv_restriction.cpp -o fem/normal_deriv_restriction.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/particleset.cpp -o fem/particleset.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/pbilinearform.cpp -o fem/pbilinearform.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/pderefmat_op.cpp -o fem/pderefmat_op.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/pfespace.cpp -o fem/pfespace.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/pgridfunc.cpp -o fem/pgridfunc.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/plinearform.cpp -o fem/plinearform.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/pnonlinearform.cpp -o fem/pnonlinearform.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/prestriction.cpp -o fem/prestriction.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qfunction.cpp -o fem/qfunction.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qspace.cpp -o fem/qspace.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/quadinterpolator.cpp -o fem/quadinterpolator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/quadinterpolator_face.cpp -o fem/quadinterpolator_face.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/restriction.cpp -o fem/restriction.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/sidredatacollection.cpp -o fem/sidredatacollection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/staticcond.cpp -o fem/staticcond.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop_amr.cpp -o fem/tmop_amr.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop.cpp -o fem/tmop.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop_tools.cpp -o fem/tmop_tools.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/transfer.cpp -o fem/transfer.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/integrators/mass/mass.cpp -o fem/ceed/integrators/mass/mass.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/integrators/convection/convection.cpp -o fem/ceed/integrators/convection/convection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/integrators/diffusion/diffusion.cpp -o fem/ceed/integrators/diffusion/diffusion.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/integrators/nlconvection/nlconvection.cpp -o fem/ceed/integrators/nlconvection/nlconvection.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/interface/basis.cpp -o fem/ceed/interface/basis.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/interface/operator.cpp -o fem/ceed/interface/operator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/interface/restriction.cpp -o fem/ceed/interface/restriction.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/interface/util.cpp -o fem/ceed/interface/util.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/solvers/algebraic.cpp -o fem/ceed/solvers/algebraic.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/solvers/full-assembly.cpp -o fem/ceed/solvers/full-assembly.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/ceed/solvers/solvers-atpmg.cpp -o fem/ceed/solvers/solvers-atpmg.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/face_map_utils.cpp -o fem/fe/face_map_utils.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_base.cpp -o fem/fe/fe_base.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_fixed_order.cpp -o fem/fe/fe_fixed_order.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_h1.cpp -o fem/fe/fe_h1.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_l2.cpp -o fem/fe/fe_l2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_nd.cpp -o fem/fe/fe_nd.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_nurbs.cpp -o fem/fe/fe_nurbs.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_pos.cpp -o fem/fe/fe_pos.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_pyramid.cpp -o fem/fe/fe_pyramid.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_rt.cpp -o fem/fe/fe_rt.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/fe/fe_ser.cpp -o fem/fe/fe_ser.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/findptsedge_local_2.cpp -o fem/gslib/findptsedge_local_2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/findptsedge_local_3.cpp -o fem/gslib/findptsedge_local_3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/findpts_local_2.cpp -o fem/gslib/findpts_local_2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/findpts_local_3.cpp -o fem/gslib/findpts_local_3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/findptssurf_local_3.cpp -o fem/gslib/findptssurf_local_3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/interpolate_local_1.cpp -o fem/gslib/interpolate_local_1.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/interpolate_local_2.cpp -o fem/gslib/interpolate_local_2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/gslib/interpolate_local_3.cpp -o fem/gslib/interpolate_local_3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_br2.cpp -o fem/integ/bilininteg_br2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_convection_ea.cpp -o fem/integ/bilininteg_convection_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_convection_mf.cpp -o fem/integ/bilininteg_convection_mf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_convection_pa.cpp -o fem/integ/bilininteg_convection_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_curlcurl_pa.cpp -o fem/integ/bilininteg_curlcurl_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_dgdiffusion_pa.cpp -o fem/integ/bilininteg_dgdiffusion_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_dgtrace_ea.cpp -o fem/integ/bilininteg_dgtrace_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_dgtrace_pa.cpp -o fem/integ/bilininteg_dgtrace_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_diffusion_ea.cpp -o fem/integ/bilininteg_diffusion_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_diffusion_kernels.cpp -o fem/integ/bilininteg_diffusion_kernels.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_diffusion_mf.cpp -o fem/integ/bilininteg_diffusion_mf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_diffusion_pa.cpp -o fem/integ/bilininteg_diffusion_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_diffusion_patch.cpp -o fem/integ/bilininteg_diffusion_patch.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_divdiv_pa.cpp -o fem/integ/bilininteg_divdiv_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_elasticity_ea.cpp -o fem/integ/bilininteg_elasticity_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_elasticity_kernels.cpp -o fem/integ/bilininteg_elasticity_kernels.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_elasticity_pa.cpp -o fem/integ/bilininteg_elasticity_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_gradient_pa.cpp -o fem/integ/bilininteg_gradient_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_hcurlhdiv_kernels.cpp -o fem/integ/bilininteg_hcurlhdiv_kernels.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_hcurl_kernels.cpp -o fem/integ/bilininteg_hcurl_kernels.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_hdiv_ea.cpp -o fem/integ/bilininteg_hdiv_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_hdiv_kernels.cpp -o fem/integ/bilininteg_hdiv_kernels.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_interp_pa.cpp -o fem/integ/bilininteg_interp_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_mass_ea.cpp -o fem/integ/bilininteg_mass_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_mass_kernels.cpp -o fem/integ/bilininteg_mass_kernels.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_mass_mf.cpp -o fem/integ/bilininteg_mass_mf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_mass_pa.cpp -o fem/integ/bilininteg_mass_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_mixedcurl_pa.cpp -o fem/integ/bilininteg_mixedcurl_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_mixedvecgrad_pa.cpp -o fem/integ/bilininteg_mixedvecgrad_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_trace_jump_ea.cpp -o fem/integ/bilininteg_trace_jump_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_transpose_ea.cpp -o fem/integ/bilininteg_transpose_ea.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vecdiffusion_mf.cpp -o fem/integ/bilininteg_vecdiffusion_mf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vecdiffusion_pa.cpp -o fem/integ/bilininteg_vecdiffusion_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vecdiv_pa.cpp -o fem/integ/bilininteg_vecdiv_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vecmass_mf.cpp -o fem/integ/bilininteg_vecmass_mf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vecmass_pa.cpp -o fem/integ/bilininteg_vecmass_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vectorfediv_pa.cpp -o fem/integ/bilininteg_vectorfediv_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/bilininteg_vectorfemass_pa.cpp -o fem/integ/bilininteg_vectorfemass_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/lininteg_boundary.cpp -o fem/integ/lininteg_boundary.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/lininteg_boundary_flux.cpp -o fem/integ/lininteg_boundary_flux.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/lininteg_domain.cpp -o fem/integ/lininteg_domain.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/lininteg_domain_grad.cpp -o fem/integ/lininteg_domain_grad.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/lininteg_domain_vectorfe.cpp -o fem/integ/lininteg_domain_vectorfe.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/nonlininteg_vecconvection_mf.cpp -o fem/integ/nonlininteg_vecconvection_mf.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/nonlininteg_vecconvection_pa.cpp -o fem/integ/nonlininteg_vecconvection_pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/nonlininteg_vecconvection_pa_diag.cpp -o fem/integ/nonlininteg_vecconvection_pa_diag.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/integ/nonlininteg_vecconvection_pa_grad.cpp -o fem/integ/nonlininteg_vecconvection_pa_grad.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/lor/lor_ads.cpp -o fem/lor/lor_ads.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/lor/lor_ams.cpp -o fem/lor/lor_ams.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/lor/lor_batched.cpp -o fem/lor/lor_batched.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/lor/lor.cpp -o fem/lor/lor.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/moonolith/cut.cpp -o fem/moonolith/cut.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/moonolith/mortarassembler.cpp -o fem/moonolith/mortarassembler.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/moonolith/mortarintegrator.cpp -o fem/moonolith/mortarintegrator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/moonolith/pmortarassembler.cpp -o fem/moonolith/pmortarassembler.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/moonolith/transfer.cpp -o fem/moonolith/transfer.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/moonolith/transferutils.cpp -o fem/moonolith/transferutils.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qinterp/det.cpp -o fem/qinterp/det.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qinterp/eval_by_nodes.cpp -o fem/qinterp/eval_by_nodes.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qinterp/eval_by_vdim.cpp -o fem/qinterp/eval_by_vdim.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qinterp/eval_hdiv.cpp -o fem/qinterp/eval_hdiv.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qinterp/grad_by_nodes.cpp -o fem/qinterp/grad_by_nodes.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/qinterp/grad_by_vdim.cpp -o fem/qinterp/grad_by_vdim.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/pa.cpp -o fem/tmop/pa.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/dfem/doperator.cpp -o fem/dfem/doperator.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/diag2.cpp -o fem/tmop/assemble/diag2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/diag2_limit.cpp -o fem/tmop/assemble/diag2_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/diag3.cpp -o fem/tmop/assemble/diag3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/diag3_limit.cpp -o fem/tmop/assemble/diag3_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/grad2.cpp -o fem/tmop/assemble/grad2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/grad2_limit.cpp -o fem/tmop/assemble/grad2_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/grad3.cpp -o fem/tmop/assemble/grad3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/assemble/grad3_limit.cpp -o fem/tmop/assemble/grad3_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/001.cpp -o fem/tmop/metrics/001.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/002.cpp -o fem/tmop/metrics/002.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/007.cpp -o fem/tmop/metrics/007.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/056.cpp -o fem/tmop/metrics/056.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/077.cpp -o fem/tmop/metrics/077.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/080.cpp -o fem/tmop/metrics/080.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/094.cpp -o fem/tmop/metrics/094.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/302.cpp -o fem/tmop/metrics/302.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/303.cpp -o fem/tmop/metrics/303.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/315.cpp -o fem/tmop/metrics/315.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/318.cpp -o fem/tmop/metrics/318.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/321.cpp -o fem/tmop/metrics/321.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/332.cpp -o fem/tmop/metrics/332.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/metrics/338.cpp -o fem/tmop/metrics/338.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/grad2.cpp -o fem/tmop/mult/grad2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/grad2_limit.cpp -o fem/tmop/mult/grad2_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/grad3.cpp -o fem/tmop/mult/grad3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/grad3_limit.cpp -o fem/tmop/mult/grad3_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/mult2.cpp -o fem/tmop/mult/mult2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/mult2_limit.cpp -o fem/tmop/mult/mult2_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/mult3.cpp -o fem/tmop/mult/mult3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/mult/mult3_limit.cpp -o fem/tmop/mult/mult3_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/det2_jpr.cpp -o fem/tmop/tools/det2_jpr.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/det3_jpr.cpp -o fem/tmop/tools/det3_jpr.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/discrete.cpp -o fem/tmop/tools/discrete.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/energy2.cpp -o fem/tmop/tools/energy2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/energy2_limit.cpp -o fem/tmop/tools/energy2_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/energy3.cpp -o fem/tmop/tools/energy3.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/energy3_limit.cpp -o fem/tmop/tools/energy3_limit.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/target2.cpp -o fem/tmop/tools/target2.o
+nvcc   -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++  -DMFEM_CONFIG_FILE='"/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/config/_config.hpp"' -c /nfs/home/koying/mantissa-optimize/apps/mfem/fem/tmop/tools/target3.cpp -o fem/tmop/tools/target3.o
+ar crv libmfem.a general/adios2stream.o general/array.o general/binaryio.o general/communication.o general/cuda.o general/device.o general/error.o general/gecko.o general/globals.o general/hash.o general/hash_util.o general/hip.o general/isockstream.o general/mem_manager.o general/occa.o general/optparser.o general/osockstream.o general/sets.o general/socketstream.o general/stable3d.o general/table.o general/tic_toc.o general/tinyxml2.o general/version.o linalg/amgxsolver.o linalg/auxiliary.o linalg/blockmatrix.o linalg/blockoperator.o linalg/blockvector.o linalg/complex_densemat.o linalg/complex_operator.o linalg/constraints.o linalg/cpardiso.o linalg/cudss.o linalg/densemat.o linalg/filteredsolver.o linalg/ginkgo.o linalg/handle.o linalg/hiop.o linalg/hypre.o linalg/hypre_parcsr.o linalg/matrix.o linalg/mma.o linalg/multivector.o linalg/mumps.o linalg/ode.o linalg/operator.o linalg/ordering.o linalg/pardiso.o linalg/particlevector.o linalg/petsc.o linalg/slepc.o linalg/solvers.o linalg/sparsemat.o linalg/sparsesmoothers.o linalg/strumpack.o linalg/sundials.o linalg/superlu.o linalg/symmat.o linalg/vector.o linalg/batched/batched.o linalg/batched/gpu_blas.o linalg/batched/magma.o linalg/batched/native.o linalg/batched/solver.o mesh/attribute_sets.o mesh/bb_grid_map.o mesh/element.o mesh/exodus_writer.o mesh/face_nbr_geom.o mesh/gmsh.o mesh/hexahedron.o mesh/mesh.o mesh/mesh_operators.o mesh/mesh_readers.o mesh/ncmesh.o mesh/ncnurbs.o mesh/nurbs.o mesh/pmesh.o mesh/pncmesh.o mesh/point.o mesh/pumi.o mesh/pyramid.o mesh/quadrilateral.o mesh/segment.o mesh/spacing.o mesh/tetrahedron.o mesh/triangle.o mesh/vertex.o mesh/vtk.o mesh/vtkhdf.o mesh/wedge.o mesh/submesh/ncsubmesh.o mesh/submesh/pncsubmesh.o mesh/submesh/psubmesh.o mesh/submesh/ptransfermap.o mesh/submesh/submesh.o mesh/submesh/submesh_utils.o mesh/submesh/transfermap.o fem/adios2datacollection.o fem/batchitrans.o fem/bilinearform.o fem/bilinearform_ext.o fem/bilininteg.o fem/bounds.o fem/coefficient.o fem/complex_fem.o fem/conduitdatacollection.o fem/convergence.o fem/datacollection.o fem/derefmat_op.o fem/dgmassinv.o fem/doftrans.o fem/eltrans.o fem/estimators.o fem/fe_coll.o fem/fe.o fem/fespace.o fem/fespacehierarchy.o fem/fmsconvert.o fem/fmsdatacollection.o fem/geom.o fem/gridfunc.o fem/gslib.o fem/hybridization.o fem/hybridization_ext.o fem/hyperbolic.o fem/integrator.o fem/intrules.o fem/intrules_cut.o fem/kdtree.o fem/linearform.o fem/linearform_ext.o fem/lininteg.o fem/multigrid.o fem/nonlinearform.o fem/nonlinearform_ext.o fem/nonlininteg.o fem/normal_deriv_restriction.o fem/particleset.o fem/pbilinearform.o fem/pderefmat_op.o fem/pfespace.o fem/pgridfunc.o fem/plinearform.o fem/pnonlinearform.o fem/prestriction.o fem/qfunction.o fem/qspace.o fem/quadinterpolator.o fem/quadinterpolator_face.o fem/restriction.o fem/sidredatacollection.o fem/staticcond.o fem/tmop_amr.o fem/tmop.o fem/tmop_tools.o fem/transfer.o fem/ceed/integrators/mass/mass.o fem/ceed/integrators/convection/convection.o fem/ceed/integrators/diffusion/diffusion.o fem/ceed/integrators/nlconvection/nlconvection.o fem/ceed/interface/basis.o fem/ceed/interface/operator.o fem/ceed/interface/restriction.o fem/ceed/interface/util.o fem/ceed/solvers/algebraic.o fem/ceed/solvers/full-assembly.o fem/ceed/solvers/solvers-atpmg.o fem/fe/face_map_utils.o fem/fe/fe_base.o fem/fe/fe_fixed_order.o fem/fe/fe_h1.o fem/fe/fe_l2.o fem/fe/fe_nd.o fem/fe/fe_nurbs.o fem/fe/fe_pos.o fem/fe/fe_pyramid.o fem/fe/fe_rt.o fem/fe/fe_ser.o fem/gslib/findptsedge_local_2.o fem/gslib/findptsedge_local_3.o fem/gslib/findpts_local_2.o fem/gslib/findpts_local_3.o fem/gslib/findptssurf_local_3.o fem/gslib/interpolate_local_1.o fem/gslib/interpolate_local_2.o fem/gslib/interpolate_local_3.o fem/integ/bilininteg_br2.o fem/integ/bilininteg_convection_ea.o fem/integ/bilininteg_convection_mf.o fem/integ/bilininteg_convection_pa.o fem/integ/bilininteg_curlcurl_pa.o fem/integ/bilininteg_dgdiffusion_pa.o fem/integ/bilininteg_dgtrace_ea.o fem/integ/bilininteg_dgtrace_pa.o fem/integ/bilininteg_diffusion_ea.o fem/integ/bilininteg_diffusion_kernels.o fem/integ/bilininteg_diffusion_mf.o fem/integ/bilininteg_diffusion_pa.o fem/integ/bilininteg_diffusion_patch.o fem/integ/bilininteg_divdiv_pa.o fem/integ/bilininteg_elasticity_ea.o fem/integ/bilininteg_elasticity_kernels.o fem/integ/bilininteg_elasticity_pa.o fem/integ/bilininteg_gradient_pa.o fem/integ/bilininteg_hcurlhdiv_kernels.o fem/integ/bilininteg_hcurl_kernels.o fem/integ/bilininteg_hdiv_ea.o fem/integ/bilininteg_hdiv_kernels.o fem/integ/bilininteg_interp_pa.o fem/integ/bilininteg_mass_ea.o fem/integ/bilininteg_mass_kernels.o fem/integ/bilininteg_mass_mf.o fem/integ/bilininteg_mass_pa.o fem/integ/bilininteg_mixedcurl_pa.o fem/integ/bilininteg_mixedvecgrad_pa.o fem/integ/bilininteg_trace_jump_ea.o fem/integ/bilininteg_transpose_ea.o fem/integ/bilininteg_vecdiffusion_mf.o fem/integ/bilininteg_vecdiffusion_pa.o fem/integ/bilininteg_vecdiv_pa.o fem/integ/bilininteg_vecmass_mf.o fem/integ/bilininteg_vecmass_pa.o fem/integ/bilininteg_vectorfediv_pa.o fem/integ/bilininteg_vectorfemass_pa.o fem/integ/lininteg_boundary.o fem/integ/lininteg_boundary_flux.o fem/integ/lininteg_domain.o fem/integ/lininteg_domain_grad.o fem/integ/lininteg_domain_vectorfe.o fem/integ/nonlininteg_vecconvection_mf.o fem/integ/nonlininteg_vecconvection_pa.o fem/integ/nonlininteg_vecconvection_pa_diag.o fem/integ/nonlininteg_vecconvection_pa_grad.o fem/lor/lor_ads.o fem/lor/lor_ams.o fem/lor/lor_batched.o fem/lor/lor.o fem/moonolith/cut.o fem/moonolith/mortarassembler.o fem/moonolith/mortarintegrator.o fem/moonolith/pmortarassembler.o fem/moonolith/transfer.o fem/moonolith/transferutils.o fem/qinterp/det.o fem/qinterp/eval_by_nodes.o fem/qinterp/eval_by_vdim.o fem/qinterp/eval_hdiv.o fem/qinterp/grad_by_nodes.o fem/qinterp/grad_by_vdim.o fem/tmop/pa.o fem/dfem/doperator.o fem/tmop/assemble/diag2.o fem/tmop/assemble/diag2_limit.o fem/tmop/assemble/diag3.o fem/tmop/assemble/diag3_limit.o fem/tmop/assemble/grad2.o fem/tmop/assemble/grad2_limit.o fem/tmop/assemble/grad3.o fem/tmop/assemble/grad3_limit.o fem/tmop/metrics/001.o fem/tmop/metrics/002.o fem/tmop/metrics/007.o fem/tmop/metrics/056.o fem/tmop/metrics/077.o fem/tmop/metrics/080.o fem/tmop/metrics/094.o fem/tmop/metrics/302.o fem/tmop/metrics/303.o fem/tmop/metrics/315.o fem/tmop/metrics/318.o fem/tmop/metrics/321.o fem/tmop/metrics/332.o fem/tmop/metrics/338.o fem/tmop/mult/grad2.o fem/tmop/mult/grad2_limit.o fem/tmop/mult/grad3.o fem/tmop/mult/grad3_limit.o fem/tmop/mult/mult2.o fem/tmop/mult/mult2_limit.o fem/tmop/mult/mult3.o fem/tmop/mult/mult3_limit.o fem/tmop/tools/det2_jpr.o fem/tmop/tools/det3_jpr.o fem/tmop/tools/discrete.o fem/tmop/tools/energy2.o fem/tmop/tools/energy2_limit.o fem/tmop/tools/energy3.o fem/tmop/tools/energy3_limit.o fem/tmop/tools/target2.o fem/tmop/tools/target3.o
+a - general/adios2stream.o
+a - general/array.o
+a - general/binaryio.o
+a - general/communication.o
+a - general/cuda.o
+a - general/device.o
+a - general/error.o
+a - general/gecko.o
+a - general/globals.o
+a - general/hash.o
+a - general/hash_util.o
+a - general/hip.o
+a - general/isockstream.o
+a - general/mem_manager.o
+a - general/occa.o
+a - general/optparser.o
+a - general/osockstream.o
+a - general/sets.o
+a - general/socketstream.o
+a - general/stable3d.o
+a - general/table.o
+a - general/tic_toc.o
+a - general/tinyxml2.o
+a - general/version.o
+a - linalg/amgxsolver.o
+a - linalg/auxiliary.o
+a - linalg/blockmatrix.o
+a - linalg/blockoperator.o
+a - linalg/blockvector.o
+a - linalg/complex_densemat.o
+a - linalg/complex_operator.o
+a - linalg/constraints.o
+a - linalg/cpardiso.o
+a - linalg/cudss.o
+a - linalg/densemat.o
+a - linalg/filteredsolver.o
+a - linalg/ginkgo.o
+a - linalg/handle.o
+a - linalg/hiop.o
+a - linalg/hypre.o
+a - linalg/hypre_parcsr.o
+a - linalg/matrix.o
+a - linalg/mma.o
+a - linalg/multivector.o
+a - linalg/mumps.o
+a - linalg/ode.o
+a - linalg/operator.o
+a - linalg/ordering.o
+a - linalg/pardiso.o
+a - linalg/particlevector.o
+a - linalg/petsc.o
+a - linalg/slepc.o
+a - linalg/solvers.o
+a - linalg/sparsemat.o
+a - linalg/sparsesmoothers.o
+a - linalg/strumpack.o
+a - linalg/sundials.o
+a - linalg/superlu.o
+a - linalg/symmat.o
+a - linalg/vector.o
+a - linalg/batched/batched.o
+a - linalg/batched/gpu_blas.o
+a - linalg/batched/magma.o
+a - linalg/batched/native.o
+a - linalg/batched/solver.o
+a - mesh/attribute_sets.o
+a - mesh/bb_grid_map.o
+a - mesh/element.o
+a - mesh/exodus_writer.o
+a - mesh/face_nbr_geom.o
+a - mesh/gmsh.o
+a - mesh/hexahedron.o
+a - mesh/mesh.o
+a - mesh/mesh_operators.o
+a - mesh/mesh_readers.o
+a - mesh/ncmesh.o
+a - mesh/ncnurbs.o
+a - mesh/nurbs.o
+a - mesh/pmesh.o
+a - mesh/pncmesh.o
+a - mesh/point.o
+a - mesh/pumi.o
+a - mesh/pyramid.o
+a - mesh/quadrilateral.o
+a - mesh/segment.o
+a - mesh/spacing.o
+a - mesh/tetrahedron.o
+a - mesh/triangle.o
+a - mesh/vertex.o
+a - mesh/vtk.o
+a - mesh/vtkhdf.o
+a - mesh/wedge.o
+a - mesh/submesh/ncsubmesh.o
+a - mesh/submesh/pncsubmesh.o
+a - mesh/submesh/psubmesh.o
+a - mesh/submesh/ptransfermap.o
+a - mesh/submesh/submesh.o
+a - mesh/submesh/submesh_utils.o
+a - mesh/submesh/transfermap.o
+a - fem/adios2datacollection.o
+a - fem/batchitrans.o
+a - fem/bilinearform.o
+a - fem/bilinearform_ext.o
+a - fem/bilininteg.o
+a - fem/bounds.o
+a - fem/coefficient.o
+a - fem/complex_fem.o
+a - fem/conduitdatacollection.o
+a - fem/convergence.o
+a - fem/datacollection.o
+a - fem/derefmat_op.o
+a - fem/dgmassinv.o
+a - fem/doftrans.o
+a - fem/eltrans.o
+a - fem/estimators.o
+a - fem/fe_coll.o
+a - fem/fe.o
+a - fem/fespace.o
+a - fem/fespacehierarchy.o
+a - fem/fmsconvert.o
+a - fem/fmsdatacollection.o
+a - fem/geom.o
+a - fem/gridfunc.o
+a - fem/gslib.o
+a - fem/hybridization.o
+a - fem/hybridization_ext.o
+a - fem/hyperbolic.o
+a - fem/integrator.o
+a - fem/intrules.o
+a - fem/intrules_cut.o
+a - fem/kdtree.o
+a - fem/linearform.o
+a - fem/linearform_ext.o
+a - fem/lininteg.o
+a - fem/multigrid.o
+a - fem/nonlinearform.o
+a - fem/nonlinearform_ext.o
+a - fem/nonlininteg.o
+a - fem/normal_deriv_restriction.o
+a - fem/particleset.o
+a - fem/pbilinearform.o
+a - fem/pderefmat_op.o
+a - fem/pfespace.o
+a - fem/pgridfunc.o
+a - fem/plinearform.o
+a - fem/pnonlinearform.o
+a - fem/prestriction.o
+a - fem/qfunction.o
+a - fem/qspace.o
+a - fem/quadinterpolator.o
+a - fem/quadinterpolator_face.o
+a - fem/restriction.o
+a - fem/sidredatacollection.o
+a - fem/staticcond.o
+a - fem/tmop_amr.o
+a - fem/tmop.o
+a - fem/tmop_tools.o
+a - fem/transfer.o
+a - fem/ceed/integrators/mass/mass.o
+a - fem/ceed/integrators/convection/convection.o
+a - fem/ceed/integrators/diffusion/diffusion.o
+a - fem/ceed/integrators/nlconvection/nlconvection.o
+a - fem/ceed/interface/basis.o
+a - fem/ceed/interface/operator.o
+a - fem/ceed/interface/restriction.o
+a - fem/ceed/interface/util.o
+a - fem/ceed/solvers/algebraic.o
+a - fem/ceed/solvers/full-assembly.o
+a - fem/ceed/solvers/solvers-atpmg.o
+a - fem/fe/face_map_utils.o
+a - fem/fe/fe_base.o
+a - fem/fe/fe_fixed_order.o
+a - fem/fe/fe_h1.o
+a - fem/fe/fe_l2.o
+a - fem/fe/fe_nd.o
+a - fem/fe/fe_nurbs.o
+a - fem/fe/fe_pos.o
+a - fem/fe/fe_pyramid.o
+a - fem/fe/fe_rt.o
+a - fem/fe/fe_ser.o
+a - fem/gslib/findptsedge_local_2.o
+a - fem/gslib/findptsedge_local_3.o
+a - fem/gslib/findpts_local_2.o
+a - fem/gslib/findpts_local_3.o
+a - fem/gslib/findptssurf_local_3.o
+a - fem/gslib/interpolate_local_1.o
+a - fem/gslib/interpolate_local_2.o
+a - fem/gslib/interpolate_local_3.o
+a - fem/integ/bilininteg_br2.o
+a - fem/integ/bilininteg_convection_ea.o
+a - fem/integ/bilininteg_convection_mf.o
+a - fem/integ/bilininteg_convection_pa.o
+a - fem/integ/bilininteg_curlcurl_pa.o
+a - fem/integ/bilininteg_dgdiffusion_pa.o
+a - fem/integ/bilininteg_dgtrace_ea.o
+a - fem/integ/bilininteg_dgtrace_pa.o
+a - fem/integ/bilininteg_diffusion_ea.o
+a - fem/integ/bilininteg_diffusion_kernels.o
+a - fem/integ/bilininteg_diffusion_mf.o
+a - fem/integ/bilininteg_diffusion_pa.o
+a - fem/integ/bilininteg_diffusion_patch.o
+a - fem/integ/bilininteg_divdiv_pa.o
+a - fem/integ/bilininteg_elasticity_ea.o
+a - fem/integ/bilininteg_elasticity_kernels.o
+a - fem/integ/bilininteg_elasticity_pa.o
+a - fem/integ/bilininteg_gradient_pa.o
+a - fem/integ/bilininteg_hcurlhdiv_kernels.o
+a - fem/integ/bilininteg_hcurl_kernels.o
+a - fem/integ/bilininteg_hdiv_ea.o
+a - fem/integ/bilininteg_hdiv_kernels.o
+a - fem/integ/bilininteg_interp_pa.o
+a - fem/integ/bilininteg_mass_ea.o
+a - fem/integ/bilininteg_mass_kernels.o
+a - fem/integ/bilininteg_mass_mf.o
+a - fem/integ/bilininteg_mass_pa.o
+a - fem/integ/bilininteg_mixedcurl_pa.o
+a - fem/integ/bilininteg_mixedvecgrad_pa.o
+a - fem/integ/bilininteg_trace_jump_ea.o
+a - fem/integ/bilininteg_transpose_ea.o
+a - fem/integ/bilininteg_vecdiffusion_mf.o
+a - fem/integ/bilininteg_vecdiffusion_pa.o
+a - fem/integ/bilininteg_vecdiv_pa.o
+a - fem/integ/bilininteg_vecmass_mf.o
+a - fem/integ/bilininteg_vecmass_pa.o
+a - fem/integ/bilininteg_vectorfediv_pa.o
+a - fem/integ/bilininteg_vectorfemass_pa.o
+a - fem/integ/lininteg_boundary.o
+a - fem/integ/lininteg_boundary_flux.o
+a - fem/integ/lininteg_domain.o
+a - fem/integ/lininteg_domain_grad.o
+a - fem/integ/lininteg_domain_vectorfe.o
+a - fem/integ/nonlininteg_vecconvection_mf.o
+a - fem/integ/nonlininteg_vecconvection_pa.o
+a - fem/integ/nonlininteg_vecconvection_pa_diag.o
+a - fem/integ/nonlininteg_vecconvection_pa_grad.o
+a - fem/lor/lor_ads.o
+a - fem/lor/lor_ams.o
+a - fem/lor/lor_batched.o
+a - fem/lor/lor.o
+a - fem/moonolith/cut.o
+a - fem/moonolith/mortarassembler.o
+a - fem/moonolith/mortarintegrator.o
+a - fem/moonolith/pmortarassembler.o
+a - fem/moonolith/transfer.o
+a - fem/moonolith/transferutils.o
+a - fem/qinterp/det.o
+a - fem/qinterp/eval_by_nodes.o
+a - fem/qinterp/eval_by_vdim.o
+a - fem/qinterp/eval_hdiv.o
+a - fem/qinterp/grad_by_nodes.o
+a - fem/qinterp/grad_by_vdim.o
+a - fem/tmop/pa.o
+a - fem/dfem/doperator.o
+a - fem/tmop/assemble/diag2.o
+a - fem/tmop/assemble/diag2_limit.o
+a - fem/tmop/assemble/diag3.o
+a - fem/tmop/assemble/diag3_limit.o
+a - fem/tmop/assemble/grad2.o
+a - fem/tmop/assemble/grad2_limit.o
+a - fem/tmop/assemble/grad3.o
+a - fem/tmop/assemble/grad3_limit.o
+a - fem/tmop/metrics/001.o
+a - fem/tmop/metrics/002.o
+a - fem/tmop/metrics/007.o
+a - fem/tmop/metrics/056.o
+a - fem/tmop/metrics/077.o
+a - fem/tmop/metrics/080.o
+a - fem/tmop/metrics/094.o
+a - fem/tmop/metrics/302.o
+a - fem/tmop/metrics/303.o
+a - fem/tmop/metrics/315.o
+a - fem/tmop/metrics/318.o
+a - fem/tmop/metrics/321.o
+a - fem/tmop/metrics/332.o
+a - fem/tmop/metrics/338.o
+a - fem/tmop/mult/grad2.o
+a - fem/tmop/mult/grad2_limit.o
+a - fem/tmop/mult/grad3.o
+a - fem/tmop/mult/grad3_limit.o
+a - fem/tmop/mult/mult2.o
+a - fem/tmop/mult/mult2_limit.o
+a - fem/tmop/mult/mult3.o
+a - fem/tmop/mult/mult3_limit.o
+a - fem/tmop/tools/det2_jpr.o
+a - fem/tmop/tools/det3_jpr.o
+a - fem/tmop/tools/discrete.o
+a - fem/tmop/tools/energy2.o
+a - fem/tmop/tools/energy2_limit.o
+a - fem/tmop/tools/energy3.o
+a - fem/tmop/tools/energy3_limit.o
+a - fem/tmop/tools/target2.o
+a - fem/tmop/tools/target3.o
+ranlib libmfem.a
+make[1]: Entering directory '/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda'
+make[1]: Leaving directory '/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda'
+make: Leaving directory '/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda'
+
+real	1m39.108s
+user	44m40.396s
+sys	1m18.130s
++ ls -l /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/libmfem.a
+-rw-rw-r--+ 1 koying koying 170571200 Sep 30 02:33 /nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda/libmfem.a
++ cd /nfs/home/koying/mantissa-optimize/apps/mfem-bench
++ make -f /nfs/home/koying/mantissa-optimize/apps/mfem-bench/Makefile MFEM_BUILD=/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda OUT=ex1_bench.build-cuda
+nvcc  -O3 -std=c++17 -x=cu --expt-extended-lambda --expt-relaxed-constexpr -arch=sm_90 -isystem "/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include" -ccbin g++ -I/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda  -lineinfo ex1_bench.cpp -o ex1_bench.build-cuda -L/nfs/home/koying/mantissa-optimize/apps/mfem/build-cuda -lmfem -lcusparse -lcublas -lrt
++ ls -l /nfs/home/koying/mantissa-optimize/apps/mfem-bench/ex1_bench.build-cuda
+-rwxrwxr-x+ 1 koying koying 59475344 Sep 30 02:33 /nfs/home/koying/mantissa-optimize/apps/mfem-bench/ex1_bench.build-cuda

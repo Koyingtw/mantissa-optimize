@@ -1,0 +1,154 @@
+After MPI_Init Wed Sep 30 02:33:43 2026
+ 
+Device 0 used by 1 ranks 
+----------------------------------------------------------------
+            sw4 version 3.0
+
+ This program comes with ABSOLUTELY NO WARRANTY; released under GPL.
+ This is free software, and you are welcome to redistribute     
+ it under certain conditions, see LICENSE.txt for more details  
+----------------------------------------------------------------
+  Compiled on: Wed Sep 30 02:33:13 AM UTC 2026
+  By user:     koying
+  Machine:     work13
+  Compiler:    /software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin/nvcc
+  3rd party include dir: /include, and library dir: /lib
+  Version:      52b5-dirty
+  Options:      RAJA(2026.7.1):  NO_UMPIRE(!):STAGED_MPI_BUFFERS: 
+		CUDA(13020)
+
+----------------------------------------------------------------
+
+Input file: loh1grad-h100.in
+Using staged MPI buffers (COMPILE OPTION)
+Default Supergrid thickness has been tuned; # grid points = 30 grid sizes
+Default Supergrid damping coefficient has been tuned; damping coefficient = 2.00000000e-02
+
+* Processing the grid command...
+* Setting nx to 301 to be consistent with h=1.00000000e+02
+* Setting ny to 301 to be consistent with h=1.00000000e+02
+* Setting nz to 171 to be consistent with h=1.00000000e+02
+cleanupRefinementLevels: topo_zmax = 0.00000000e+00
+ Cartesian refinement levels (z=):
+0.00000000e+00
+ Grid distributed on 1 processors 
+ Finest grid size    305 x 305
+ Processor array     1 x 1
+Number of curvilinear grids = 0
+Number of Cartesian grids = 1
+Total number of grids = 1
+Extent of the computational domain xmax=3.00000000e+04 ymax=3.00000000e+04 zmax=1.70000000e+04
+Cartesian refinement levels after correction: 
+Grid=0 z-min=0.00000000e+00
+Corrected global_zmax = 1.70000000e+04
+
+Rank=0, Grid #0 (Cartesian), iInterior=[1,301], jInterior=[1,301], kInterior=[1,171]
+Device buffer of size 14640 bytes allocated in 2D on 297
+
+*** No topography command found in input file. Using z=0 as free surface boundary ***
+
+Device buffer of size 17934000 bytes allocated
+
+Global grid sizes (without ghost points)
+Grid         h        Nx        Ny        Nz       Points      Type
+   0       100       301       301       171     15492771     Cartesian
+Total number of grid points (without ghost points): 1.54928e+07
+
+
+Read station input, took 5.09760000e-05seconds.
+   Execution time, reading input file 1.39352179e-01 seconds 
+  Using Bjorn's fast (parallel) IO library
+Assuming a SERIAL file system.
+Detected at least one boundary with supergrid conditions
+----------------------------------------------------
+ Making Directory: out-loh1grad-h100/
+		
+... Done!
+----------------------------------------------------
+Geographic and Cartesian coordinates of the corners of the computational grid:
+0: Lon= -1.180000e+02, Lat=3.700000e+01, x=0.000000e+00, y=0.000000e+00
+1: Lon= -1.180000e+02, Lat=3.726949e+01, x=3.000000e+04, y=0.000000e+00
+2: Lon= -1.176614e+02, Lat=3.726949e+01, x=3.000000e+04, y=3.000000e+04
+3: Lon= -1.176626e+02, Lat=3.700000e+01, x=0.000000e+00, y=3.000000e+04
+
+Considering all material blocks
+block command: outside = 1087212, material = 14767963
+block command: outside = 14677362, material = 1177813
+
+       ----------- Material properties ranges ---------------
+       2.57600000e+03 kg/m^3 <=  Density <= 2.86200000e+03 kg/m^3
+       3.76000000e+03 m/s    <=  Vp      <= 7.62000000e+03 m/s
+       1.76000000e+03 m/s    <=  Vs      <= 4.50080000e+03 m/s
+       1.69303235e+00        <=  Vp/Vs   <= 2.13636364e+00
+       7.97941760e+09 Pa     <=  mu      <= 5.79761082e+10 Pa
+       2.04596224e+10 Pa     <=  lambda  <= 5.02280963e+10 Pa
+       ------------------------------------------------------
+
+***** PPW = minVs/h/maxFrequency ********
+g=0, h=1.000000e+02, minVs/h=17.6 (Cartesian)
+
+  Assigned material properties
+*** computing the time step ***
+TIME accuracy order=4 CFL=1.30000000e+00 prel. time step=1.30933744e-02
+*** Initialized Images
+ Min source z-level: 2.000000e+03, max source z-level: 2.000000e+03
+   Execution time, start up phase 9.42371822e-01 seconds 
+Running sw4 on 1 processor...
+   Using C routines.
+Writing output to directory: out-loh1grad-h100/
+
+***  Starting solve ***
+============================================================
+ Running program on 1 MPI tasks using the following data: 
+
+ Start Time = 0 Goal Time = 9
+ Number of time steps = 687 dt: 0.0131004
+
+============================================================
+ Global boundary conditions 
+      x=0    supergrid
+      x=xMax supergrid
+      y=0    supergrid
+      y=yMax supergrid
+      z=topo free surface
+      z=zMax supergrid
+
+
+-----------------------------------------------------------------------
+  Total seismic moment (M0): 1e+18 Nm 
+  Moment magnitude     (Mw): 5.93333
+  Number of moment sources 1
+-----------------------------------------------------------------------
+number of grid point  sources = 216
+number of unique g.p. sources = 216
+  Initial data has been assigned
+
+Reporting SW4 internal flags and settings:
+m_testing=no, twilight=no, point_source=no, moment_test=no, energy_test=no, lamb_test=no, rayleigh_test=no
+m_use_supergrid=yes
+End report of internal flags and settings
+
+  Begin time stepping...
+Start time stepping at Wed Sep 30 02:33:44 2026
+
+Time step       1  t =   1.3100437e-02	Wed Sep 30 02:33:44 2026
+Space::Managed object count & HWM are 216 & 216 Size = 0.038 Min & Max per-device memory HWM  0.00,0.00 GB
+ Total device memory used 0.00 GB
+Time step     101  t =   1.3231441e+00	Wed Sep 30 02:33:45 2026
+Time step     201  t =   2.6331878e+00	Wed Sep 30 02:33:46 2026
+Time step     301  t =   3.9432314e+00	Wed Sep 30 02:33:47 2026
+Time step     401  t =   5.2532751e+00	Wed Sep 30 02:33:48 2026
+Time step     501  t =   6.5633188e+00	Wed Sep 30 02:33:49 2026
+Time step     601  t =   7.8733624e+00	Wed Sep 30 02:33:50 2026
+Time step     687  t =   9.0000000e+00	Wed Sep 30 02:33:51 2026
+ Time for the last time step is 10 ms 
+First time step :: min12.00  max 12.00 mean 12.00
+  Time stepping finished...
+   Execution time, solver phase 6.92 seconds 
+============================================================
+ program sw4 finished! 
+============================================================
+ Min & Max per-device memory HWM  0.00,0.00 GB
+ Total device memory used 0.00 GB
+Pre MPI_Finalize Wed Sep 30 02:33:51 2026
+ 

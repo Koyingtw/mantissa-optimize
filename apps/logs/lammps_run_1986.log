@@ -1,0 +1,49 @@
+name, power.limit [W], enforced.power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 900.00 W, 1980 MHz
+=== orig  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:56:33.707928704
+=== orig end 02:56:36.050839039
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000122687 on 1 procs for 0 steps with 256000 atoms
+Total wall time: 0:00:00
+=== orig2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:56:36.054495405
+=== orig2 end 02:56:38.404257289
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000122175 on 1 procs for 0 steps with 256000 atoms
+Total wall time: 0:00:00
+=== mod  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:56:38.408023127
+=== mod end 02:56:40.752109071
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000136735 on 1 procs for 0 steps with 256000 atoms
+Total wall time: 0:00:00
+=== mod2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:56:40.755648478
+=== mod2 end 02:56:43.108281612
+         0   1.600000000000000e+03 -3.540000002279800e+00 -3.333184578155707e+00  1.870408480165663e+04
+Loop time of 0.000131487 on 1 procs for 0 steps with 256000 atoms
+Total wall time: 0:00:00
+=== trunc36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=trunc  start 02:56:43.111857243
+=== trunc36 end 02:56:45.453839358
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=trunc values=7000 changed=2948 max_rel_change=1.430e-11
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=trunc values=3500 changed=3178 max_rel_change=1.439e-11
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=trunc values=3500 changed=3349 max_rel_change=1.434e-11
+         0   1.600000000000000e+03 -3.540000002288785e+00 -3.333184578164691e+00  1.870408480193134e+04
+Loop time of 0.000119584 on 1 procs for 0 steps with 256000 atoms
+Total wall time: 0:00:00
+=== near36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=nearest  start 02:56:45.457576715
+=== near36 end 02:56:47.810342649
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=nearest values=7000 changed=2948 max_rel_change=7.225e-12
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3178 max_rel_change=7.251e-12
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3349 max_rel_change=7.241e-12
+         0   1.600000000000000e+03 -3.540000002254854e+00 -3.333184578130760e+00  1.870408480963923e+04
+Loop time of 0.000112991 on 1 procs for 0 steps with 256000 atoms
+Total wall time: 0:00:00
+[bitwise] orig2 vs orig: DIFFERENT components=732584/768000 max|df|=9.926e-16 max|df|/max|f|=9.282e-03 rms_rel=4.873e-03
+[bitwise] mod vs orig: DIFFERENT components=719390/768000 max|df|=9.957e-16 max|df|/max|f|=9.311e-03 rms_rel=4.697e-03
+[bitwise] mod2 vs orig: DIFFERENT components=725968/768000 max|df|=1.110e-15 max|df|/max|f|=1.038e-02 rms_rel=4.798e-03
+[bitwise] trunc36 vs orig: DIFFERENT components=768000/768000 max|df|=2.601e-15 max|df|/max|f|=2.433e-02 rms_rel=1.243e-02
+[bitwise] near36 vs orig: DIFFERENT components=768000/768000 max|df|=2.090e-15 max|df|/max|f|=1.954e-02 rms_rel=1.117e-02
+[orig] wall=2.3s samples=5 meanP=152W maxP=152W meanUtil=2% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=45C sw_power_cap_samples=0 hw_slowdown_samples=0
+[orig2] wall=2.3s samples=5 meanP=151W maxP=152W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=44C sw_power_cap_samples=0 hw_slowdown_samples=0
+[mod] wall=2.3s samples=5 meanP=151W maxP=152W meanUtil=2% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=44C sw_power_cap_samples=0 hw_slowdown_samples=0
+[mod2] wall=2.3s samples=4 meanP=151W maxP=152W meanUtil=3% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=44C sw_power_cap_samples=0 hw_slowdown_samples=0
+[trunc36] wall=2.3s samples=5 meanP=150W maxP=151W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=43C sw_power_cap_samples=0 hw_slowdown_samples=0
+[near36] wall=2.3s samples=5 meanP=150W maxP=150W meanUtil=1% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=43C sw_power_cap_samples=0 hw_slowdown_samples=0

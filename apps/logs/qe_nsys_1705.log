@@ -1,0 +1,25 @@
+Warning: ieee_divide_by_zero is signaling
+Warning: ieee_inexact is signaling
+FORTRAN STOP
+!    total energy              =   -7881.17635372 Ry
+     convergence has been achieved in  24 iterations
+     PWSCF        :   3m 3.46s CPU   2m47.18s WALL
+ERROR: Report 'cublas_api_sum' could not be found.
+
+GPU kernel total = 148.09 s ; BLAS-like kernels (gemm/gemv/trsm/...) = 79.43 s = 53.6% of GPU kernel time
+wall = 167.18 s ; BLAS kernels / wall = 47.5%
+GEMM-only kernels = 77.00 s = 52.0% of GPU kernel time = 46.1% of wall
+Top 12 kernels:
+    24.879s  16.8% n=    326 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x128x16_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_c
+    24.656s  16.6% n=    415 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x128x16_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_c
+    23.919s  16.2% n=  72726        void regular_fft<(unsigned int)180, EPT<(unsigned int)4, (unsigned int)5, (unsigned int)9>, (unsigned int)8, (
+    12.404s   8.4% n=  36363        void regular_fft<(unsigned int)180, EPT<(unsigned int)4, (unsigned int)5, (unsigned int)9>, (unsigned int)2, (
+     9.274s   6.3% n=    627 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x64x16_stage4_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cu
+     4.946s   3.3% n=   1042 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x64x16_stage4_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cu
+     4.905s   3.3% n=   4943        vloc_psi_gamma_acc_74_gpu
+     4.262s   2.9% n=   5020        fft_scalar_cufft_cfft3d_gpu_586_gpu
+     3.604s   2.4% n=   1991 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_aligna8_alignc8_exe
+     3.307s   2.2% n=    227 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x128x16_stage3_warpsize4x2x1_tensor16x8x16_execute_kernel__5x
+     3.226s   2.2% n=   4206        void sytrd4_gpu<sytrd_params<double, (int)32, (int)16, (int)3072, (int)32, (int)1, (int)1, (int)2>>(int, T1::d
+     2.480s   1.7% n=   6496        void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)2048, (int)32, (int)1, (int)1, (int)2>>(int, T1::da
+head: cannot open 'nsys_si1000_1705_cublas_api_sum.csv' for reading: No such file or directory

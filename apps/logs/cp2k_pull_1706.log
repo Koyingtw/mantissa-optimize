@@ -1,0 +1,64 @@
++ cd /nfs/home/koying/mantissa-optimize/apps/cp2k
++ export APPTAINER_TMPDIR=/tmp/koying-apt-1706 APPTAINER_CACHEDIR=/tmp/koying-aptc-1706
++ APPTAINER_TMPDIR=/tmp/koying-apt-1706
++ APPTAINER_CACHEDIR=/tmp/koying-aptc-1706
++ mkdir -p /tmp/koying-apt-1706 /tmp/koying-aptc-1706
++ apptainer pull --force cp2k_v2024.3.sif docker://nvcr.io/hpc/cp2k:v2024.3
+INFO:    Converting OCI blobs to SIF format
+WARNING: 'nodev' mount option set on /tmp, it could be a source of failure during build process
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+INFO:    Extracting OCI image...
+2026/09/29 12:19:29  warn rootless{usr/lib/aarch64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper} ignoring (usually) harmless EPERM on setxattr "security.capability"
+2026/09/29 12:19:29  warn rootless{opt/nvidia/hpc_sdk/Linux_aarch64/2024} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:30  warn rootless{opt/hpcx/hpcx-v2.19-gcc-MLNX_OFED_LINUX-24.01-0.3.3.1-ubuntu22.04-aarch64} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:36  warn rootless{opt/ompi} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:39  warn rootless{opt/ScaLAPACK} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:39  warn rootless{opt/ScaLAPACK_threaded_false/lib/libscalapack.so} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:39  warn rootless{opt/ScaLAPACK_threaded_false/lib/libscalapack.so.2.2} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:39  warn rootless{opt/ScaLAPACK_threaded_true/lib/libscalapack.so} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:39  warn rootless{opt/ScaLAPACK_threaded_true/lib/libscalapack.so.2.2} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:39  warn rootless{opt/scalapack} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:40  warn rootless{opt/elpa/lib/libelpa.so} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:40  warn rootless{opt/elpa/lib/libelpa.so.19} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:43  warn rootless{opt/elpa/include/elpa-2023.11.001/elpa_openmp-2023.11.001} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:43  warn rootless{opt/elpa/include/elpa-include} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:43  warn rootless{opt/cp2k/.git/objects/pack/pack-0c951cf6087aea18e5558084e77970af9b5f6b6e.idx} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:44  warn rootless{opt/cp2k/.git/objects/pack/pack-0c951cf6087aea18e5558084e77970af9b5f6b6e.pack} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:49  warn rootless{opt/cp2k/tools/toolchain/build/libint-v2.6.0-cp2k-lmax-5/lib/.libs/libint2.la} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:54  warn rootless{opt/cp2k/tools/toolchain/install/openblas} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:20:54  warn rootless{opt/ucc} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:03  warn rootless{opt/cosma/lib/libcosma_pxgemm.a} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:03  warn rootless{opt/cp2k/.git/modules/exts/dbcsr/modules/tools/build_utils/fypp/objects/pack/pack-b2acacdafe4a9cae3965947cbb698f85e4612bd2.idx} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:03  warn rootless{opt/cp2k/.git/modules/exts/dbcsr/modules/tools/build_utils/fypp/objects/pack/pack-b2acacdafe4a9cae3965947cbb698f85e4612bd2.pack} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:03  warn rootless{opt/cp2k/.git/modules/exts/dbcsr/objects/pack/pack-809871cd4a83e283a7926e2a5f6541f5d654e922.idx} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:06  warn rootless{opt/cp2k/.git/modules/exts/dbcsr/objects/pack/pack-809871cd4a83e283a7926e2a5f6541f5d654e922.pack} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:06  warn rootless{opt/cp2k/exts/dbcsr/src/acc/libsmm_acc/notebooks/libsmm_acc_predictive_modeling_features.png} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:06  warn rootless{opt/cp2k/exts/dbcsr/tools/build_utils/fypp/src/fypp.py} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:06  warn rootless{opt/cp2k/exe/local_cuda/cp2k.popt} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+2026/09/29 12:21:07  warn rootless{opt/cp2k/exe/local_cuda/cp2k_shell.psmp} ignoring (usually) harmless EPERM on setxattr "user.rootlesscontainers"
+INFO:    Inserting Apptainer configuration...
+INFO:    Creating SIF file...
+
+real	8m24.308s
+user	35m37.251s
+sys	0m57.849s
++ rm -rf /tmp/koying-apt-1706 /tmp/koying-aptc-1706
++ ls -lh
+total 12G
+-rwxrwxr-x+ 1 koying koying 8.8G Sep 29 12:22 cp2k_v2024.3.sif
++ apptainer exec --nv cp2k_v2024.3.sif bash -c 'which cp2k.psmp cp2k.psmp 2>/dev/null; ls /opt 2>/dev/null; env | grep -i -E "^PATH|LD_LIBRARY"'
+ScaLAPACK
+ScaLAPACK_threaded_false
+ScaLAPACK_threaded_true
+cosma
+cp2k
+elpa
+fftw3
+hpcx
+nvidia
+ompi
+scalapack
+ucc
+LD_LIBRARY_PATH=/opt/pdsyevd_gpu/:/opt/cusolvermp/build/:/opt/cusolvermp/build/libcal/:/opt/mypdgemm/:/opt/pdsyevd_gpu:/opt/cusolvermp/build/:/opt/cusolvermp/build/libcal:/opt/cusolvermp/lib:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/comm_libs/12.5/nccl/lib:/opt/cp2k/tools/toolchain/install/openblas/lib/:/opt/elpa/lib:/opt/fftw3/lib/:/opt/ScaLAPACK/lib/:/opt/hpcx/hpcx-v2.19-gcc-MLNX_OFED_LINUX-24.01-0.3.3.1-ubuntu22.04-aarch64/hcoll/lib/:/opt/ucc/lib:/opt/ucc/lib/ucc:/opt/ompi/lib/:/usr/local/cuda/lib64:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/comm_libs/nvshmem/lib:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/comm_libs/nccl/lib:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/math_libs/lib64:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/cuda/lib64::/.singularity.d/libs
+PATH=/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/comm_libs/12.5/nccl/bin:/opt/elpa/bin:/opt/ompi/bin/:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/comm_libs/nvshmem/bin:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/comm_libs/nccl/bin:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/profilers/Nsight_Systems/bin:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/profilers/bin:/opt/nvidia/hpc_sdk/Linux_aarch64/24.7/cuda/bin:/opt/mkl/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

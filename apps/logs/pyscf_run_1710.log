@@ -1,0 +1,10 @@
+exit 1
+from gpu4pyscf import scf
+print(f"natm={mol.natm} nao={mol.nao} nelec={mol.nelectron} basis={basis}")
+print(f"RESULT_HF converged={mf.converged} E={ehf:.10f} Eh wall={t1-t0:.2f}s")
+print(f"RESULT_MP2 Ecorr={float(ecorr):.10f} Etot={float(ehf+ecorr):.10f} Eh wall={t3-t2:.2f}s")
+natm=113 nao=2228 nelec=452 basis=def2-tzvp
+RESULT_HF converged=True E=-2912.9452874941 Eh wall=43.67s
+  File "cupy_backends/cuda/api/runtime.pyx", line 519, in cupy_backends.cuda.api.runtime.malloc
+  File "cupy_backends/cuda/api/runtime.pyx", line 146, in cupy_backends.cuda.api.runtime.check_status
+cupy_backends.cuda.api.runtime.CUDARuntimeError: cudaErrorMemoryAllocation: out of memory

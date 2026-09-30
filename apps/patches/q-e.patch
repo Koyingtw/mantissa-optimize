@@ -1,0 +1,150 @@
+diff --git a/KS_Solvers/Davidson/cegterg.f90 b/KS_Solvers/Davidson/cegterg.f90
+index 3f127cf..03591f0 100644
+--- a/KS_Solvers/Davidson/cegterg.f90
++++ b/KS_Solvers/Davidson/cegterg.f90
+@@ -118,7 +118,8 @@ SUBROUTINE cegterg( h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+     !    the first nvec columns contain the trial eigenvectors
+   !
+   nhpsi = 0
+-  CALL start_clock( 'cegterg' ); !write(*,*) 'start cegterg' ; FLUSH(6)
++  CALL start_clock( 'cegterg' )
++  CALL qe_mant_set_ethr( ethr ); !write(*,*) 'start cegterg' ; FLUSH(6)
+   !
+   IF ( nvec > nvecx / 2 ) CALL errore( 'cegterg', 'nvecx is too small', 1 )
+   !
+@@ -187,11 +188,14 @@ SUBROUTINE cegterg( h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+   !
+   ! ... hpsi contains h times the basis vectors
+   !
++  CALL qe_mant_reduce( npwx*npol*nvec, psi )
+   CALL h_psi_ptr( npwx, npw, nvec, psi, hpsi ) ; nhpsi = nhpsi + nvec
+   !
+   ! ... spsi contains s times the basis vectors
+   !
+   IF ( uspp ) CALL s_psi_ptr( npwx, npw, nvec, psi, spsi )
++  CALL qe_mant_reduce( npwx*npol*nvec, hpsi )
++  IF ( uspp ) CALL qe_mant_reduce( npwx*npol*nvec, spsi )
+   !
+   ! ... hc contains the projection of the hamiltonian onto the reduced 
+   ! ... space vc contains the eigenvectors of hc
+@@ -460,9 +464,12 @@ SUBROUTINE cegterg( h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+      !
+      ! ... here compute the hpsi and spsi of the new functions
+      !
++     CALL qe_mant_reduce( npwx*npol*notcnv, psi(1,nb1) )
+      CALL h_psi_ptr( npwx, npw, notcnv, psi(1,nb1), hpsi(1,nb1) ) ; nhpsi = nhpsi + notcnv
+      !
+      IF ( uspp ) CALL s_psi_ptr( npwx, npw, notcnv, psi(1,nb1), spsi(1,nb1) )
++     CALL qe_mant_reduce( npwx*npol*notcnv, hpsi(1,nb1) )
++     IF ( uspp ) CALL qe_mant_reduce( npwx*npol*notcnv, spsi(1,nb1) )
+      !
+      ! ... update the reduced hamiltonian
+      !
+diff --git a/KS_Solvers/Davidson/regterg.f90 b/KS_Solvers/Davidson/regterg.f90
+index 749d206..825e2a6 100644
+--- a/KS_Solvers/Davidson/regterg.f90
++++ b/KS_Solvers/Davidson/regterg.f90
+@@ -109,7 +109,8 @@ SUBROUTINE regterg(  h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+     !    calculates (diag(h)-e)^-1 * psi, diagonal approx. to (h-e)^-1*psi
+     !    the first nvec columns contain the trial eigenvectors
+   !
+-  CALL start_clock( 'regterg' ) !; write(6,*) 'enter regterg' ; FLUSH(6)
++  CALL start_clock( 'regterg' )
++  CALL qe_mant_set_ethr( ethr ) !; write(6,*) 'enter regterg' ; FLUSH(6)
+   ! 
+   IF ( nvec > nvecx / 2 ) CALL errore( 'regter', 'nvecx is too small', 1 )
+   !
+@@ -179,11 +180,14 @@ SUBROUTINE regterg(  h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+   !
+   ! ... hpsi contains h times the basis vectors
+   !
++  CALL qe_mant_reduce( npwx*nvec, psi )
+   CALL h_psi_ptr( npwx, npw, nvec, psi, hpsi )  ; nhpsi = nvec
+   !
+   ! ... spsi contains s times the basis vectors
+   !
+   IF ( uspp ) CALL s_psi_ptr( npwx, npw, nvec, psi, spsi )
++  CALL qe_mant_reduce( npwx*nvec, hpsi )
++  IF ( uspp ) CALL qe_mant_reduce( npwx*nvec, spsi )
+   !
+   ! ... hr contains the projection of the hamiltonian onto the reduced
+   ! ... space vr contains the eigenvectors of hr
+@@ -380,9 +384,12 @@ SUBROUTINE regterg(  h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+      !
+      ! ... here compute the hpsi and spsi of the new functions
+      !
++     CALL qe_mant_reduce( npwx*notcnv, psi(1,nb1) )
+      CALL h_psi_ptr( npwx, npw, notcnv, psi(1,nb1), hpsi(1,nb1) ) ; nhpsi = nhpsi + notcnv
+      !
+      IF ( uspp ) CALL s_psi_ptr( npwx, npw, notcnv, psi(1,nb1), spsi(1,nb1) )
++     CALL qe_mant_reduce( npwx*notcnv, hpsi(1,nb1) )
++     IF ( uspp ) CALL qe_mant_reduce( npwx*notcnv, spsi(1,nb1) )
+      !
+      ! ... update the reduced hamiltonian
+      !
+@@ -633,3 +640,65 @@ SUBROUTINE regterg(  h_psi_ptr, s_psi_ptr, uspp, g_psi_ptr, &
+   RETURN
+   !
+ END SUBROUTINE regterg
++
++!----------------------------------------------------------------------------
++! mantissa-optimize research knob: keep only some of the 52 FP64 fraction bits
++! of a complex array on the device, in place. Used by regterg/cegterg to reduce
++! psi/hpsi/spsi once where they are produced, so every later GEMM reads reduced
++! operands without extra copies. Environment (all unset = no-op):
++!   QE_MANT_BITS=<k>        fixed number of kept bits
++!   QE_MANT_ROUND=nearest   round instead of truncating
++!   QE_MANT_ADAPT=<m>       tolerance-aware: bits = ceil(-log2(ethr)) + m, where
++!                           ethr is the current Davidson threshold, clamped to
++!                           [QE_MANT_MIN (default 16), 52]
++SUBROUTINE qe_mant_set_ethr( ethr )
++  USE util_param, ONLY : DP
++  IMPLICIT NONE
++  REAL(DP), INTENT(IN) :: ethr
++  REAL(DP) :: cur_ethr
++  COMMON /qe_mant_c/ cur_ethr
++  cur_ethr = ethr
++END SUBROUTINE qe_mant_set_ethr
++!
++SUBROUTINE qe_mant_reduce( n, x )
++  USE util_param, ONLY : DP
++  IMPLICIT NONE
++  INTEGER, INTENT(IN) :: n
++  COMPLEX(DP), INTENT(INOUT) :: x(n)
++  REAL(DP) :: cur_ethr
++  COMMON /qe_mant_c/ cur_ethr
++  INTEGER, SAVE :: bits = -1, adapt = -1, minb = 16, last = -1
++  LOGICAL, SAVE :: nearest = .FALSE.
++  INTEGER :: i, ios, b
++  INTEGER(8) :: ur, ui, mask, half
++  CHARACTER(len=32) :: s
++  IF ( bits < 0 ) THEN
++     bits = 52
++     CALL get_environment_variable( 'QE_MANT_BITS', s, status=ios )
++     IF ( ios == 0 ) READ( s, * ) bits
++     bits = MAX( 0, MIN( 52, bits ) )
++     CALL get_environment_variable( 'QE_MANT_ADAPT', s, status=ios )
++     IF ( ios == 0 ) READ( s, * ) adapt
++     CALL get_environment_variable( 'QE_MANT_MIN', s, status=ios )
++     IF ( ios == 0 ) READ( s, * ) minb
++     CALL get_environment_variable( 'QE_MANT_ROUND', s, status=ios )
++     nearest = ( ios == 0 .AND. TRIM(s) == 'nearest' )
++  END IF
++  b = bits
++  IF ( adapt >= 0 .AND. cur_ethr > 0.0_DP ) &
++     b = MAX( minb, MIN( 52, CEILING( -LOG( cur_ethr ) / LOG( 2.0_DP ) ) + adapt ) )
++  IF ( b /= last ) THEN
++     WRITE( *, '(5x,a,i3,a,es9.2)' ) 'qe_mant: kept fraction bits =', b, '   ethr =', cur_ethr
++     last = b
++  END IF
++  IF ( b >= 52 ) RETURN
++  mask = NOT( ISHFT( 1_8, 52 - b ) - 1_8 )
++  half = 0_8
++  IF ( nearest ) half = ISHFT( 1_8, 51 - b )
++  !$acc parallel loop present(x)
++  DO i = 1, n
++     ur = IAND( TRANSFER( DBLE( x(i) ), 1_8 ) + half, mask )
++     ui = IAND( TRANSFER( AIMAG( x(i) ), 1_8 ) + half, mask )
++     x(i) = CMPLX( TRANSFER( ur, 1.0_DP ), TRANSFER( ui, 1.0_DP ), kind=DP )
++  END DO
++END SUBROUTINE qe_mant_reduce

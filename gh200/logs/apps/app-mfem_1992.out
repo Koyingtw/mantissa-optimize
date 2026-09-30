@@ -1,0 +1,113 @@
+job=1992 host=work10 app=mfem case=[mfem -n 112 -o 3 -rep 4] variants=[native 36:nearest 20:nearest 20:nearest 36:nearest native] tdps=[1000 550 450]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=native pass=A t_begin=1790738164.277268480
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+    [TIME] solves=4 total_its=6800 solve_time=67.304 s  per_it=9.8976 ms  3.867 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+    [RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+=== END tdp=1000 variant=native pass=A t_begin=1790738164.277268480 t_end=1790738240.515176036
+=== RUN tdp=1000 variant=36:nearest pass=A t_begin=1790738260.579723825
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.226200181104401e-05
+    [TIME] solves=4 total_its=6800 solve_time=67.320 s  per_it=9.9000 ms  3.866 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384966  (X,B)=6.4769278882147017
+    [RESULT] nodal_err_max=4.3077208466968386e-12 nodal_err_rms=8.2435226092682305e-13
+=== END tdp=1000 variant=36:nearest pass=A t_begin=1790738260.579723825 t_end=1790738336.750687645
+=== RUN tdp=1000 variant=20:nearest pass=A t_begin=1790738361.827860852
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441905428e-07  ||AB||=8.2262001815157677e-05
+    [TIME] solves=4 total_its=6800 solve_time=67.338 s  per_it=9.9026 ms  3.865 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693894215  (X,B)=6.4769278883672792
+    [RESULT] nodal_err_max=1.4828680401646199e-09 nodal_err_rms=1.6002515382823261e-10
+=== END tdp=1000 variant=20:nearest pass=A t_begin=1790738361.827860852 t_end=1790738437.984208042
+=== RUN tdp=1000 variant=20:nearest pass=B t_begin=1790738463.061850191
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441905428e-07  ||AB||=8.2262001815157677e-05
+    [TIME] solves=4 total_its=6800 solve_time=67.314 s  per_it=9.8991 ms  3.866 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693894215  (X,B)=6.4769278883672792
+    [RESULT] nodal_err_max=1.4828680401646199e-09 nodal_err_rms=1.6002515382823261e-10
+=== END tdp=1000 variant=20:nearest pass=B t_begin=1790738463.061850191 t_end=1790738539.288458333
+=== RUN tdp=1000 variant=36:nearest pass=B t_begin=1790738569.378643575
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.226200181104401e-05
+    [TIME] solves=4 total_its=6800 solve_time=67.304 s  per_it=9.8976 ms  3.867 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384966  (X,B)=6.4769278882147017
+    [RESULT] nodal_err_max=4.3077208466968386e-12 nodal_err_rms=8.2435226092682305e-13
+=== END tdp=1000 variant=36:nearest pass=B t_begin=1790738569.378643575 t_end=1790738645.408316520
+=== RUN tdp=1000 variant=native pass=B t_begin=1790738675.498350787
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+    [TIME] solves=4 total_its=6800 solve_time=67.304 s  per_it=9.8977 ms  3.867 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+    [RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+=== END tdp=1000 variant=native pass=B t_begin=1790738675.498350787 t_end=1790738751.537429924
+TDP 550 set: 550.00 W
+=== RUN tdp=550 variant=native pass=A t_begin=1790738782.140770895
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+    [TIME] solves=4 total_its=6800 solve_time=82.881 s  per_it=12.1884 ms  3.140 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+    [RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+=== END tdp=550 variant=native pass=A t_begin=1790738782.140770895 t_end=1790738873.863524163
+=== RUN tdp=550 variant=36:nearest pass=A t_begin=1790738883.902283862
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.226200181104401e-05
+    [TIME] solves=4 total_its=6800 solve_time=82.310 s  per_it=12.1043 ms  3.162 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384966  (X,B)=6.4769278882147017
+    [RESULT] nodal_err_max=4.3077208466968386e-12 nodal_err_rms=8.2435226092682305e-13
+=== END tdp=550 variant=36:nearest pass=A t_begin=1790738883.902283862 t_end=1790738975.106492007
+=== RUN tdp=550 variant=20:nearest pass=A t_begin=1790738985.144892541
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441905428e-07  ||AB||=8.2262001815157677e-05
+    [TIME] solves=4 total_its=6800 solve_time=81.677 s  per_it=12.0114 ms  3.186 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693894215  (X,B)=6.4769278883672792
+    [RESULT] nodal_err_max=1.4828680401646199e-09 nodal_err_rms=1.6002515382823261e-10
+=== END tdp=550 variant=20:nearest pass=A t_begin=1790738985.144892541 t_end=1790739075.724048482
+=== RUN tdp=550 variant=20:nearest pass=B t_begin=1790739085.763230642
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441905428e-07  ||AB||=8.2262001815157677e-05
+    [TIME] solves=4 total_its=6800 solve_time=81.654 s  per_it=12.0079 ms  3.187 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693894215  (X,B)=6.4769278883672792
+    [RESULT] nodal_err_max=1.4828680401646199e-09 nodal_err_rms=1.6002515382823261e-10
+=== END tdp=550 variant=20:nearest pass=B t_begin=1790739085.763230642 t_end=1790739176.270908960
+=== RUN tdp=550 variant=36:nearest pass=B t_begin=1790739186.309601875
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.226200181104401e-05
+    [TIME] solves=4 total_its=6800 solve_time=82.249 s  per_it=12.0955 ms  3.164 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384966  (X,B)=6.4769278882147017
+    [RESULT] nodal_err_max=4.3077208466968386e-12 nodal_err_rms=8.2435226092682305e-13
+=== END tdp=550 variant=36:nearest pass=B t_begin=1790739186.309601875 t_end=1790739277.486015316
+=== RUN tdp=550 variant=native pass=B t_begin=1790739287.524599656
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+    [TIME] solves=4 total_its=6800 solve_time=82.763 s  per_it=12.1710 ms  3.145 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+    [RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+=== END tdp=550 variant=native pass=B t_begin=1790739287.524599656 t_end=1790739379.052793228
+TDP 450 set: 450.00 W
+=== RUN tdp=450 variant=native pass=A t_begin=1790739389.596282938
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+    [TIME] solves=4 total_its=6800 solve_time=93.775 s  per_it=13.7904 ms  2.775 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+    [RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+=== END tdp=450 variant=native pass=A t_begin=1790739389.596282938 t_end=1790739492.134258257
+=== RUN tdp=450 variant=36:nearest pass=A t_begin=1790739497.160218705
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.226200181104401e-05
+    [TIME] solves=4 total_its=6800 solve_time=92.761 s  per_it=13.6414 ms  2.806 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384966  (X,B)=6.4769278882147017
+    [RESULT] nodal_err_max=4.3077208466968386e-12 nodal_err_rms=8.2435226092682305e-13
+=== END tdp=450 variant=36:nearest pass=A t_begin=1790739497.160218705 t_end=1790739598.893693035
+=== RUN tdp=450 variant=20:nearest pass=A t_begin=1790739603.919496780
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441905428e-07  ||AB||=8.2262001815157677e-05
+    [TIME] solves=4 total_its=6800 solve_time=91.684 s  per_it=13.4829 ms  2.839 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693894215  (X,B)=6.4769278883672792
+    [RESULT] nodal_err_max=1.4828680401646199e-09 nodal_err_rms=1.6002515382823261e-10
+=== END tdp=450 variant=20:nearest pass=A t_begin=1790739603.919496780 t_end=1790739704.375585913
+=== RUN tdp=450 variant=20:nearest pass=B t_begin=1790739709.401335772
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441905428e-07  ||AB||=8.2262001815157677e-05
+    [TIME] solves=4 total_its=6800 solve_time=91.626 s  per_it=13.4745 ms  2.840 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693894215  (X,B)=6.4769278883672792
+    [RESULT] nodal_err_max=1.4828680401646199e-09 nodal_err_rms=1.6002515382823261e-10
+=== END tdp=450 variant=20:nearest pass=B t_begin=1790739709.401335772 t_end=1790739809.850177832
+=== RUN tdp=450 variant=36:nearest pass=B t_begin=1790739814.876081001
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.226200181104401e-05
+    [TIME] solves=4 total_its=6800 solve_time=92.560 s  per_it=13.6117 ms  2.812 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384966  (X,B)=6.4769278882147017
+    [RESULT] nodal_err_max=4.3077208466968386e-12 nodal_err_rms=8.2435226092682305e-13
+=== END tdp=450 variant=36:nearest pass=B t_begin=1790739814.876081001 t_end=1790739916.207681295
+=== RUN tdp=450 variant=native pass=B t_begin=1790739921.233807375
+    [CHECK] BnormL2=0.0035873331240144106  (B,AB)=1.3654363441474566e-07  ||AB||=8.2262001811043997e-05
+    [TIME] solves=4 total_its=6800 solve_time=93.215 s  per_it=13.7081 ms  2.792 GDOF/s(CG it)
+    [RESULT] ||X||=2169.0750693384989  (X,B)=6.4769278882147052
+    [RESULT] nodal_err_max=4.3090531143263888e-12 nodal_err_rms=8.2444474246447498e-13
+=== END tdp=450 variant=native pass=B t_begin=1790739921.233807375 t_end=1790740023.290946205
+=== ALL DONE

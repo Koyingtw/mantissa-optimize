@@ -1,0 +1,57 @@
+name, power.limit [W], enforced.power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 900.00 W, 1980 MHz
+=== orig  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:58:33.816774617
+=== orig end 02:58:36.200565531
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719145e+00
+        10   1.099198770557270e+00 -6.937848431827302e+00  0.000000000000000e+00 -5.289056716609193e+00 -2.973671553788761e+00
+Loop time of 0.0061249 on 1 procs for 10 steps with 256000 atoms
+Performance: 705317.868 tau/day, 1632.680 timesteps/s, 417.966 Matom-step/s
+Total wall time: 0:00:00
+=== orig2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:58:36.204276297
+=== orig2 end 02:58:38.591429371
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719145e+00
+        10   1.099198770557270e+00 -6.937848431827303e+00  0.000000000000000e+00 -5.289056716609194e+00 -2.973671553788761e+00
+Loop time of 0.0031357 on 1 procs for 10 steps with 256000 atoms
+Performance: 1377684.132 tau/day, 3189.084 timesteps/s, 816.405 Matom-step/s
+Total wall time: 0:00:00
+=== mod  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:58:38.595104521
+=== mod end 02:58:40.978866732
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719145e+00
+        10   1.099198770557270e+00 -6.937848431827303e+00  0.000000000000000e+00 -5.289056716609194e+00 -2.973671553788761e+00
+Loop time of 0.00615879 on 1 procs for 10 steps with 256000 atoms
+Performance: 701436.939 tau/day, 1623.697 timesteps/s, 415.666 Matom-step/s
+Total wall time: 0:00:00
+=== mod2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:58:40.982453338
+=== mod2 end 02:58:43.359944348
+         0   1.440000000000000e+00 -7.450704858578252e+00  0.000000000000000e+00 -5.290713296078252e+00 -5.643205745719147e+00
+        10   1.099198770557270e+00 -6.937848431827303e+00  0.000000000000000e+00 -5.289056716609194e+00 -2.973671553788761e+00
+Loop time of 0.0060873 on 1 procs for 10 steps with 256000 atoms
+Performance: 709674.473 tau/day, 1642.765 timesteps/s, 420.548 Matom-step/s
+Total wall time: 0:00:00
+=== trunc36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=trunc  start 02:58:43.363534794
+=== trunc36 end 02:58:45.756631903
+[MANT] PairLJCutKokkos params(1,1) lj1..lj4,offset: MANT_BITS=36 MANT_ROUND=trunc values=5 changed=4 max_rel_change=7.937e-12
+         0   1.440000000000000e+00 -7.450704858519114e+00  0.000000000000000e+00 -5.290713296019113e+00 -5.643205745694948e+00
+        10   1.099198770558271e+00 -6.937848431771936e+00  0.000000000000000e+00 -5.289056716552325e+00 -2.973671553772658e+00
+Loop time of 0.00609012 on 1 procs for 10 steps with 256000 atoms
+Performance: 709346.211 tau/day, 1642.005 timesteps/s, 420.353 Matom-step/s
+Total wall time: 0:00:00
+=== near36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=nearest  start 02:58:45.760199598
+=== near36 end 02:58:48.154003935
+[MANT] PairLJCutKokkos params(1,1) lj1..lj4,offset: MANT_BITS=36 MANT_ROUND=nearest values=5 changed=4 max_rel_change=5.292e-12
+         0   1.440000000000000e+00 -7.450704858617677e+00  0.000000000000000e+00 -5.290713296117677e+00 -5.643205745694948e+00
+        10   1.099198770558271e+00 -6.937848431863719e+00  0.000000000000000e+00 -5.289056716644108e+00 -2.973671553772658e+00
+Loop time of 0.00615792 on 1 procs for 10 steps with 256000 atoms
+Performance: 701535.356 tau/day, 1623.924 timesteps/s, 415.725 Matom-step/s
+Total wall time: 0:00:00
+[bitwise] orig2 vs orig: DIFFERENT components=476515/768000 max|df|=3.386e-12 max|df|/max|f|=3.597e-14 rms_rel=1.456e-15
+[bitwise] mod vs orig: DIFFERENT components=466556/768000 max|df|=6.459e-12 max|df|/max|f|=6.862e-14 rms_rel=2.036e-15
+[bitwise] mod2 vs orig: DIFFERENT components=526747/768000 max|df|=4.622e-12 max|df|/max|f|=4.910e-14 rms_rel=1.576e-15
+[bitwise] trunc36 vs orig: DIFFERENT components=768000/768000 max|df|=1.885e-10 max|df|/max|f|=2.003e-12 rms_rel=2.857e-12
+[bitwise] near36 vs orig: DIFFERENT components=768000/768000 max|df|=1.885e-10 max|df|/max|f|=2.003e-12 rms_rel=2.857e-12
+[orig] wall=2.4s samples=5 meanP=145W maxP=145W meanUtil=3% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=37C sw_power_cap_samples=0 hw_slowdown_samples=0
+[orig2] wall=2.4s samples=5 meanP=145W maxP=145W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=37C sw_power_cap_samples=0 hw_slowdown_samples=0
+[mod] wall=2.4s samples=5 meanP=145W maxP=145W meanUtil=1% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=37C sw_power_cap_samples=0 hw_slowdown_samples=0
+[mod2] wall=2.4s samples=5 meanP=144W maxP=144W meanUtil=1% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=37C sw_power_cap_samples=0 hw_slowdown_samples=0
+[trunc36] wall=2.4s samples=4 meanP=144W maxP=144W meanUtil=2% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=37C sw_power_cap_samples=0 hw_slowdown_samples=0
+[near36] wall=2.4s samples=5 meanP=143W maxP=144W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=37C sw_power_cap_samples=0 hw_slowdown_samples=0

@@ -1,0 +1,16 @@
+node=work13 BIN=/nfs/home/koying/mantissa-optimize/apps/sw4/optimize/sw4 INP=loh1grad-h50.in MANT_BITS=36 MANT_ROUND=nearest RUN=/nfs/home/koying/mantissa-optimize/apps/sw4-inputs/runs/loh1grad-h50_mb36_nearest_1954
+power.limit [W], enforced.power.limit [W], temperature.gpu
+900.00 W, 900.00 W, 54
+   Execution time, reading input file 2.57826328e-01 seconds 
+[MANT] SW4 material arrays (rho,mu,lambda): MANT_BITS=36 MANT_ROUND=nearest, 378835875 values, 188868900 changed
+   Execution time, start up phase 7.52064213e+00 seconds 
+ Number of time steps = 1373 dt: 0.00655499
+   Execution time, solver phase 1 minute  47.82 seconds 
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:57.54
+	Maximum resident set size (kbytes): 4106752
+GPU samples=235 meanPower=479.4W maxPower=520.5W meanUtil=91.6% meanSM=1952MHz | busy(util>=50%) samples=215 meanPower=510.1W meanUtil=100.0% meanSM=1980MHz minSM=1980MHz
+wall(mpirun)=117.54s
+sta01.txt n=1374  c1: max|u|=29.074743891709065 l2=120.12148497152978  c2: max|u|=17.53763634014577 l2=75.894872551461276  c3: max|u|=11.939646353389151 l2=52.002671251975634
+sta10.txt n=1374  c1: max|u|=1.626726728322339 l2=11.007658639668957  c2: max|u|=1.7448481349503733 l2=13.943758709354814  c3: max|u|=1.4917307832721705 l2=13.427533829513791
+sta20.txt n=1374  c1: max|u|=1.6325846742540677 l2=10.20102276613845  c2: max|u|=2.5587920456775559 l2=16.656975220022947  c3: max|u|=1.0980893990021119 l2=8.547313350814612
+receiver files=3 md5(data lines)=3f12f049f3ffe6021ca3fbd22dfb534f

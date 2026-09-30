@@ -1,0 +1,212 @@
++ module load nvhpc/26.5
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ STEP=all
++ APPS=/nfs/home/koying/mantissa-optimize/apps
++ TPL=/nfs/home/koying/mantissa-optimize/apps/sw4-tpl
++ CUDA=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ export PATH=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/extras/qd/bin:/software/nvhpc/Linux_aarch64/26.5/comm_libs/mpi/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/bin:/software/nvhpc/Linux_aarch64/26.5/cuda/bin:/home/koying/.local/bin:/software/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
++ PATH=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/extras/qd/bin:/software/nvhpc/Linux_aarch64/26.5/comm_libs/mpi/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/bin:/software/nvhpc/Linux_aarch64/26.5/cuda/bin:/home/koying/.local/bin:/software/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
++ [[ all == raja ]]
++ [[ all == all ]]
++ rm -rf /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja
++ rm -rf /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install
++ cmake -S /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/RAJA-2026.07.1 -B /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_CUDA_HOST_COMPILER=g++ -DCMAKE_CUDA_COMPILER=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin/nvcc -DCUDAToolkit_ROOT=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2 -DCUB_DIR=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include/cccl -DCMAKE_CUDA_ARCHITECTURES=90 -DRAJA_ENABLE_CUDA=On -DENABLE_CUDA=On -DRAJA_ENABLE_OPENMP=Off -DENABLE_OPENMP=Off -DRAJA_ENABLE_TESTS=Off -DENABLE_TESTS=Off -DRAJA_ENABLE_EXAMPLES=Off -DRAJA_ENABLE_EXERCISES=Off -DRAJA_ENABLE_BENCHMARKS=Off -DENABLE_BENCHMARKS=Off -DRAJA_ENABLE_REPRODUCERS=Off -DBLT_CXX_STD=c++20 -DCMAKE_CUDA_FLAGS=-Xcompiler=-Wno-template-body
++ tail -30
+-- ClangTidy support is ON
+-- Failed to locate ClangTidy executable (missing: CLANGTIDY_EXECUTABLE) 
+-- ClangApplyReplacements support is ON
+-- Failed to locate ClangApplyReplacements executable (missing: CLANGAPPLYREPLACEMENTS_EXECUTABLE) 
+-- C Compiler family is GNU
+-- Adding optional BLT definitions and compiler flags
+-- Enabling all compiler warnings on all targets.
+-- Fortran support disabled.
+-- CMAKE_C_FLAGS flags are:   -Wall -Wextra  
+-- CMAKE_CXX_FLAGS flags are:   -Wall -Wextra  
+-- CMAKE_EXE_LINKER_FLAGS flags are:  
+-- CMake's C implicit link directories: /usr/lib/gcc/aarch64-linux-gnu/15;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib
+-- CMake's CXX implicit link directories: /usr/lib/gcc/aarch64-linux-gnu/15;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib
+-- CMake's CUDA implicit link directories: /software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux/lib/stubs;/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux/lib;/usr/lib/gcc/aarch64-linux-gnu/15;/usr/lib/aarch64-linux-gnu;/usr/lib;/lib/aarch64-linux-gnu;/lib
+-- CMake's C implicit link libraries: gcc;gcc_s;c;gcc;gcc_s
+-- CMake's CXX implicit link libraries: stdc++;m;gcc_s;gcc;c;gcc_s;gcc
+-- CMake's CUDA implicit link libraries: stdc++;m;gcc_s;gcc;c;gcc_s;gcc
+-- Setting RAJA_ENABLE_EXTERNAL_CUB ON with CUDA_VERSION 13.2.
+-- Found CUB: /software/nvhpc/Linux_aarch64/26.5/cuda/13.2/include/cccl
+-- Desul Atomics support is OFF
+-- Using RAJA CAMP submodule.
+-- Looking for posix_memalign
+-- Looking for posix_memalign - found
+-- Looking for std::aligned_alloc
+-- Looking for std::aligned_alloc - found
+-- Looking for _mm_malloc
+-- Looking for _mm_malloc - not found
+-- Configuring done (2.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja
++ cmake --build /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja -j 72
++ tail -30
+[ 10%] Building CXX object tpl/camp/CMakeFiles/camp.dir/src/errors.cpp.o
+[ 20%] Linking CXX static library ../../lib/libcamp.a
+[ 20%] Built target camp
+[ 40%] Building CUDA object CMakeFiles/RAJA.dir/src/AlignedRangeIndexSetBuilders.cpp.o
+[ 50%] Building CUDA object CMakeFiles/RAJA.dir/src/DepGraphNode.cpp.o
+[ 60%] Building CUDA object CMakeFiles/RAJA.dir/src/LockFreeIndexSetBuilders.cpp.o
+[ 60%] Building CUDA object CMakeFiles/RAJA.dir/src/Memory.cpp.o
+[ 80%] Building CUDA object CMakeFiles/RAJA.dir/src/MemUtils_CUDA.cpp.o
+[ 90%] Building CUDA object CMakeFiles/RAJA.dir/src/MemUtils_HIP.cpp.o
+[ 90%] Building CUDA object CMakeFiles/RAJA.dir/src/PluginStrategy.cpp.o
+[100%] Linking CXX static library lib/libRAJA.a
+[100%] Built target RAJA
++ cmake --install /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/build-raja
++ tail -5
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/RAJA/util/zip_tuple.hpp
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/RAJA/config.hpp
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/lib/cmake/raja/raja-config.cmake
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/lib/cmake/raja/raja-config-version.cmake
+-- Installing: /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/lib/pkgconfig/RAJA.pc
++ [[ all == sw4 ]]
++ [[ all == all ]]
++ cd /nfs/home/koying/mantissa-optimize/apps/sw4
++ cp configs/make.gh200 configs/make.inc
++ make -j 72 sw4
++ tail -60
+make: *** [Makefile:339: optimize/Mspace.o] Error 1
+make: *** [Makefile:339: optimize/Image.o] Error 1
+make: *** [Makefile:339: optimize/boundaryOpc.o] Error 1
+make: *** [Makefile:339: optimize/MaterialData.o] Error 1
+make: *** [Makefile:339: optimize/evenIoddJinterp.o] Error 1
+make: *** [Makefile:339: optimize/CurvilinearInterface2.o] Error 1
+make: *** [Makefile:339: optimize/RHS43DEV.o] Error 1
+make: *** [Makefile:339: optimize/ESSI3DHDF5.o] Error 1
+make: *** [Makefile:339: optimize/ForcingTwilight.o] Error 1
+make: *** [Makefile:339: optimize/MaterialBlock.o] Error 1
+make: *** [Makefile:339: optimize/addsgdc.o] Error 1
+make: *** [Makefile:339: optimize/testsrcc.o] Error 1
+make: *** [Makefile:339: optimize/rhs4curvilinearsgc.o] Error 1
+make: *** [Makefile:339: optimize/parseInputFile.o] Error 1
+make: *** [Makefile:339: optimize/solerr3c.o] Error 1
+make: *** [Makefile:339: optimize/TestPointSource.o] Error 1
+make: *** [Makefile:339: optimize/bcfortc.o] Error 1
+make: *** [Makefile:339: optimize/GridGeneratorGaussianHill.o] Error 1
+make: *** [Makefile:339: optimize/MaterialSfile.o] Error 1
+make: *** [Makefile:339: optimize/MaterialPfile.o] Error 1
+make: *** [Makefile:339: optimize/sachdf5.o] Error 1
+make: *** [Makefile:339: optimize/setupRun.o] Error 1
+make: *** [Makefile:339: optimize/energy4c.o] Error 1
+make: *** [Makefile:339: optimize/geodyn.o] Error 1
+make: *** [Makefile:339: optimize/randomfield3dc.o] Error 1
+make: *** [Makefile:339: optimize/tw_aniso_force_ttc.o] Error 1
+make: *** [Makefile:339: optimize/readhdf5.o] Error 1
+make: *** [Makefile:339: optimize/GridGenerator.o] Error 1
+make: *** [Makefile:339: optimize/bcfreesurfcurvanic.o] Error 1
+make: *** [Makefile:339: optimize/GridGeneratorGeneral.o] Error 1
+make: *** [Makefile:339: optimize/TestEcons.o] Error 1
+make: *** [Makefile:339: optimize/curvilinear4sgcX1.o] Error 1
+make: *** [Makefile:339: optimize/curvilinear4sgwind.o] Error 1
+make: *** [Makefile:339: optimize/RandomizedMaterial.o] Error 1
+make: *** [Makefile:339: optimize/AnisotropicMaterialBlock.o] Error 1
+make: *** [Makefile:339: optimize/MaterialRfile.o] Error 1
+make: *** [Makefile:339: optimize/bcfortanisgc.o] Error 1
+make: *** [Makefile:339: optimize/Image3D.o] Error 1
+make: *** [Makefile:339: optimize/MaterialGMG.o] Error 1
+make: *** [Makefile:339: optimize/MaterialVolimagefile.o] Error 1
+make: *** [Makefile:335: optimize/main.o] Error 1
+make: *** [Makefile:339: optimize/TimeSeries.o] Error 1
+make: *** [Makefile:339: optimize/solve.o] Error 1
+make: *** [Makefile:339: optimize/time_functions.o] Error 1
+make: *** [Makefile:339: optimize/Sarray.o] Error 1
+make: *** [Makefile:339: optimize/parallelStuff.o] Error 1
+make: *** [Makefile:339: optimize/twilightsgfortc.o] Error 1
+make: *** [Makefile:339: optimize/Source.o] Error 1
+make: *** [Makefile:339: optimize/computedtanisoc.o] Error 1
+make: *** [Makefile:339: optimize/GridPointSource.o] Error 1
+make: *** [Makefile:339: optimize/material.o] Error 1
+make: *** [Makefile:339: optimize/oddIevenJinterp.o] Error 1
+make: *** [Makefile:316: optimize/version.o] Error 1
+make: *** [Makefile:339: optimize/curvilinearGrid.o] Error 1
+make: *** [Makefile:339: optimize/TestTwilight.o] Error 1
+make: *** [Makefile:339: optimize/CheckPoint.o] Error 1
+make: *** [Makefile:339: optimize/consintp.o] Error 1
+make: *** [Makefile:339: optimize/evenIevenJinterp.o] Error 1
+make: *** [Makefile:339: optimize/rhs4th3fortc.o] Error 1
+make: *** [Makefile:339: optimize/twilightfortc.o] Error 1
+
+real	0m17.221s
+user	0m29.432s
+sys	0m45.346s
++ [[ -x optimize/sw4 ]]
++ tail -60
++ make -j 16 sw4
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/GridPointSource.C:37:
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp:42:2: error: #error "Manually defining CAMP_USE_PLATFORM_DEFAULT_STREAM is not allowed because of the potential for ODR violations. CAMP supports a CMake configuration option that should be used instead."
+   42 | #error \
+      |  ^~~~~
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp:46:9: warning: ‘CAMP_USE_PLATFORM_DEFAULT_STREAM’ redefined
+   46 | #define CAMP_USE_PLATFORM_DEFAULT_STREAM 0
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<command-line>: note: this is the location of the previous definition
+make: *** [Makefile:316: optimize/version.o] Error 1
+make: *** Waiting for unfinished jobs....
+make: *** [Makefile:339: optimize/MaterialData.o] Error 1
+make: *** [Makefile:339: optimize/ForcingTwilight.o] Error 1
+make: *** [Makefile:339: optimize/parallelStuff.o] Error 1
+make: *** [Makefile:339: optimize/curvilinearGrid.o] Error 1
+make: *** [Makefile:339: optimize/MaterialBlock.o] Error 1
+make: *** [Makefile:339: optimize/setupRun.o] Error 1
+make: *** [Makefile:339: optimize/parseInputFile.o] Error 1
+make: *** [Makefile:339: optimize/Source.o] Error 1
+In file included from /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/defines.hpp:13,
+                 from /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/RAJA/util/camp_aliases.hpp:31,
+                 from /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/RAJA/RAJA.hpp:35,
+                 from ../src/policies.h:1,
+                 from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/Image.C:43:
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp:42:2: error: #error "Manually defining CAMP_USE_PLATFORM_DEFAULT_STREAM is not allowed because of the potential for ODR violations. CAMP supports a CMake configuration option that should be used instead."
+   42 | #error \
+      |  ^~~~~
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp:46:9: warning: ‘CAMP_USE_PLATFORM_DEFAULT_STREAM’ redefined
+   46 | #define CAMP_USE_PLATFORM_DEFAULT_STREAM 0
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<command-line>: note: this is the location of the previous definition
+In file included from /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/defines.hpp:13,
+                 from /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/RAJA/util/camp_aliases.hpp:31,
+                 from /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/RAJA/RAJA.hpp:35,
+                 from ../src/policies.h:1,
+                 from ../src/Mspace.h:16,
+                 from ../src/Sarray.h:44,
+                 from ../src/AnisotropicMaterial.h:4,
+                 from ../src/EW.h:44,
+                 from ../src/main.C:45:
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp:42:2: error: #error "Manually defining CAMP_USE_PLATFORM_DEFAULT_STREAM is not allowed because of the potential for ODR violations. CAMP supports a CMake configuration option that should be used instead."
+   42 | #error \
+      |  ^~~~~
+/nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install/include/camp/config.hpp:46:9: warning: ‘CAMP_USE_PLATFORM_DEFAULT_STREAM’ redefined
+   46 | #define CAMP_USE_PLATFORM_DEFAULT_STREAM 0
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<command-line>: note: this is the location of the previous definition
+make: *** [Makefile:339: optimize/Image.o] Error 1
+make: *** [Makefile:335: optimize/main.o] Error 1
+make: *** [Makefile:339: optimize/material.o] Error 1
+make: *** [Makefile:339: optimize/solve.o] Error 1
+make: *** [Makefile:339: optimize/EW.o] Error 1
+make: *** [Makefile:339: optimize/Sarray.o] Error 1
+make: *** [Makefile:339: optimize/GridPointSource.o] Error 1
+
+real	0m11.402s
+user	0m6.295s
+sys	0m2.763s
++ ls -l optimize/sw4
+ls: cannot access 'optimize/sw4': No such file or directory

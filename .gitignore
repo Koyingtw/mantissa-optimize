@@ -1,0 +1,31 @@
+# Python environments and caches
+**/.venv/
+**/__pycache__/
+apps/pyscf-venv/
+
+# Build products and binaries
+*.so
+*.o
+gh200/bin/
+gh200/shim/test_f32
+gh200/shim/test_shim
+apps/mfem-bench/ex1_bench.build-*
+
+# Profiler databases (hundreds of MB each; the summaries are in the logs and results)
+*.sqlite
+*.nsys-rep
+
+# Third-party source trees and builds; our changes live in apps/patches/
+apps/cp2k/
+apps/GEMMul8/
+apps/lammps/
+apps/mfem/
+apps/sw4/
+apps/sw4-tpl/
+
+# Pseudopotentials copied into run directories (originals are in apps/qe-inputs/)
+gh200/logs/**/*.UPF
+gh200/logs/**/*.upf
+
+# Stray output
+gh200/HPL.out

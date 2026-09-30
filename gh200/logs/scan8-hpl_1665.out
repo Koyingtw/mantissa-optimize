@@ -1,0 +1,64 @@
+job=1665 bench=hpl nodes=8 hosts=work4,work5,work6,work7,work10,work11,work12,work13 P=2 Q=4 N=262144 NB=1024 variants=[53:53 36:36 32:32 30:30 28:28] tdps=[1000] repeat=1 cooldown=20
+rocHPL=28e1d24 rocHPL-MxP=7de9b5b
+TDP 1000 set on work4,work5,work6,work7,work10,work11,work12,work13
+=== RUN tdp=1000 variant=53:53 pass=A t_begin=1790672513.590825775
+CUDA communication streams use high priority -5
+Final Score:    3.7464e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=1000 variant=53:53 pass=A t_begin=1790672513.590825775 t_end=1790672551.616066101
+=== RUN tdp=1000 variant=36:36 pass=A t_begin=1790672571.620451069
+CUDA communication streams use high priority -5
+Final Score:    3.7868e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=1000 variant=36:36 pass=A t_begin=1790672571.620451069 t_end=1790672608.744876009
+=== RUN tdp=1000 variant=32:32 pass=A t_begin=1790672628.748907509
+CUDA communication streams use high priority -5
+Final Score:    3.7870e+05 GFLOPS 
+Residual value = 1.238881162054538 (0x3ff3d2750daa79b7)
+Residual Check: PASSED 
+=== END tdp=1000 variant=32:32 pass=A t_begin=1790672628.748907509 t_end=1790672665.873613852
+=== RUN tdp=1000 variant=30:30 pass=A t_begin=1790672685.877313865
+CUDA communication streams use high priority -5
+Final Score:    3.7869e+05 GFLOPS 
+Residual value = 5.409102240291655 (0x4015a2ebb29b178b)
+Residual Check: PASSED 
+=== END tdp=1000 variant=30:30 pass=A t_begin=1790672685.877313865 t_end=1790672723.102064370
+=== RUN tdp=1000 variant=28:28 pass=A t_begin=1790672743.106359769
+CUDA communication streams use high priority -5
+Final Score:    3.7864e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=1000 variant=28:28 pass=A t_begin=1790672743.106359769 t_end=1790672780.330842820
+=== RUN tdp=1000 variant=28:28 pass=B t_begin=1790672800.334813934
+CUDA communication streams use high priority -5
+Final Score:    3.7860e+05 GFLOPS 
+Residual value = 14.699002105524015 (0x402d65e39a9e1f1f)
+Residual Check: PASSED 
+=== END tdp=1000 variant=28:28 pass=B t_begin=1790672800.334813934 t_end=1790672837.459581240
+=== RUN tdp=1000 variant=30:30 pass=B t_begin=1790672857.463361670
+CUDA communication streams use high priority -5
+Final Score:    3.7793e+05 GFLOPS 
+Residual value = 5.409102240291655 (0x4015a2ebb29b178b)
+Residual Check: PASSED 
+=== END tdp=1000 variant=30:30 pass=B t_begin=1790672857.463361670 t_end=1790672894.688281004
+=== RUN tdp=1000 variant=32:32 pass=B t_begin=1790672914.692781330
+CUDA communication streams use high priority -5
+Final Score:    3.7645e+05 GFLOPS 
+Residual value = 1.238881162054538 (0x3ff3d2750daa79b7)
+Residual Check: PASSED 
+=== END tdp=1000 variant=32:32 pass=B t_begin=1790672914.692781330 t_end=1790672952.017991319
+=== RUN tdp=1000 variant=36:36 pass=B t_begin=1790672972.022114275
+CUDA communication streams use high priority -5
+Final Score:    3.7219e+05 GFLOPS 
+Residual value = 0.042054852793971 (0x3fa58836b2c6c25e)
+Residual Check: PASSED 
+=== END tdp=1000 variant=36:36 pass=B t_begin=1790672972.022114275 t_end=1790673009.747980225
+=== RUN tdp=1000 variant=53:53 pass=B t_begin=1790673029.751899214
+CUDA communication streams use high priority -5
+Final Score:    3.5590e+05 GFLOPS 
+Residual value = 0.000026444133861 (0x3efbba8b0aacb918)
+Residual Check: PASSED 
+=== END tdp=1000 variant=53:53 pass=B t_begin=1790673029.751899214 t_end=1790673068.978290281
+=== ALL DONE

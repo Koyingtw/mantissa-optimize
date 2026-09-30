@@ -1,0 +1,657 @@
+1
+Understanding the Impact of Input Entropy on
+FPU, CPU, and GPU Power
+Sridutt Bhalachandra, Brian Austin, Samuel Williams, and Nicholas J. Wright
+Lawrence Berkeley National Laboratory, Berkeley, USA
+{sriduttb, baustin, swwilliams, njwright}@lbl.gov
+Abstract—Power is increasingly becoming a limiting resource in high-performance, GPU-accelerated computing systems. Understand-
+ing the range and sources of power variation is essential in setting realistic bounds on rack and system peak power, and developing
+techniques that minimize energy. While variations arising during manufacturing and other factors like algorithm among others have been
+previously studied, this work shows that the program inputs can also severely impact the power consumed not only on the GPU but also
+CPUs. Power variations of up to 67% were observed on an NVIDIA Ampere A100 GPU for the same algorithm (DGEMM benchmark)
+and input size with different matrix values. Our investigation shows that the values used as matrix elements, their position, and their
+uniqueness strongly inﬂuence power consumption. The implications of this result on supercomputer performance and energy efﬁciency
+are further discussed.
+!
+1 I NTRODUCTION
+The ﬁrst exascale system, Frontier [1], has achieved
+an impressive energy efﬁciency of 52 GFLOPS/W (19
+pJ/FLOP) meeting the exascale computing study goals [2].
+While this indicates a marked improvement in the energy
+efﬁciency of hardware architectures, it may not necessar-
+ily be adequate. Future system peak performance will be
+predominantly limited by how efﬁciently available power
+budgets are managed. In particular, large power swings
+in supercomputers can detract from achieving sustained
+performance [3]. Consequently, understanding the sources
+of power variation and inter-process correlations in power
+will be vital to designing future systems that are both high-
+performance and energy-efﬁcient.
+Variations in the power consumption of systems have
+been a well-known and widely studied topic of HPC re-
+search. Manufacturing variations that arise during the fab-
+rication process can induce variations in the performance
+and power of otherwise identical processors [4]. Component
+placement too can cause deviations due to varying thermal
+efﬁciencies[5]. However, the cause of these differences is not
+limited to hardware. Software variations emanating from
+varying data locality, compiler optimizations, and context
+switching, have been shown to cause 20% variations in
+power in general and over a 2 × variation in power in
+extreme case [6]. The presence of this variability can hinder
+performance and energy-tuning efforts leading to a choice
+of sub-optimal versions of code [7].
+Benchmarking power variability can play a critical role
+in system sizing and rack density. Benchmarks that un-
+derestimate peak GPU power can result in nodes, racks,
+and systems that draw substantially higher peak power
+than expected. Figure 1 shows NVIDIA A100 Ampere GPU
+power over time when running dense matrix-matrix multi-
+plications (DGEMM) for different input matrices of dimen-
+sion 16K. The ﬁxed input case uses the same value for all
+elements of each input matrix, while in the random case each
+element of each matrix is a randomly generated number.
+0 10 20 30 40 50 60
+200
+400
+Thermal Design Power (TDP)
+Execution Timeline [s]
+Power [W] Fixed Input (19.4 TFLOP/s)
+Random Input (18.6 TFLOP/s)
+Fig. 1: Timeline showing the power consumption for 100 DGEMMs
+with ﬁxed and random inputs on an NVIDIA A100 GPU (Input Size:
+16384×16384)
+The average power consumed by the random case (≈398
+W) is about 67% higher than the ﬁxed case (≈239 W). In
+addition to a higher power, the performance of the random
+case is nearly 4% lower (18.6 TFLOPS vs. 19.4 TFLOPS).
+These observations suggest that, in addition to input size,
+the entropy of matrix values strongly inﬂuences the power
+as well as the performance of a GPU.
+CMOS circuit power is dominated by two terms: static
+power and dynamic power. Whereas static power is a
+constant drain, dynamic power (or switching power) arises
+from transistors turning off and on and wire/gate capac-
+itance being charged and discharged. Datapath functional
+units (e.g. multipliers, register ﬁles, load-store units, etc...)
+are built from CMOS logic gates. Changes to functional
+unit inputs produce dynamic power from each logic gate
+whose inputs change. Figure 2 visualizes how any time an
+input value changes from one cycle to the next, dynamic
+energy is consumed. We can thus theorize that the 159 W
+difference between the red (random) and blue (ﬁxed) curves
+in Figure 1 is due to the dynamic datapath switching energy.
+We estimate (159 W / 19.4 TFLOP/s) an upper bound on
+FPU energy of about 8pJ/FLOP . Despite the A100 GPU
+being built on a 7 nm process, this estimate is remarkably
+arXiv:2212.08805v1  [cs.DC]  17 Dec 2022
+2
+Fig. 2: Stylized cycle-by-cycle timeline of FMA inputs, output, and power.
+FMA power is only high when inputs change.
+close to the 2018 estimates of what an 11 nm process might
+provide [8]. Our estimate also includes amortized DRAM,
+cache, and register ﬁle energy.
+We explore the relationship between power and FMA
+input values in the context of DGEMM on GPUs
+and CPUs. We attain insights into the value of ten-
+sor cores on FMA energy as well as implications
+on future GPU and system architectures. All experi-
+mental data is available on Zenodo with open access
+(https://doi.org/10.5281/zenodo.7081498).
+2 E XPERIMENTAL SETUP
+The hardware platform for this study is the Perlmutter
+supercomputer located at NERSC. Perlmutter debuted as
+#5 on the Top500 and #6 on the Green500 lists in June
+2021. It was also the most energy-efﬁcient of the top 10
+entries in the Top500 list. Perlmutter is an HPE EX system
+comprised of 4,608 compute nodes with a peak performance
+of around 71 PetaFLOPs, augmented by a 35 PB all-ﬂash
+storage system, all connected by an HPE Cray Slingshot
+interconnect. Perlmutter’s primary compute partition has
+1,536 GPU-accelerated nodes with four NVIDIA A100 Am-
+pere GPUs (160 GB of HBM2 memory in total) and one AMD
+EPYC 7763 (Milan) processor (512 GB of DDR4 memory).
+Each GPU includes 3,456 FP64 FPUs capable of one fused
+multiply-add (FMA) per cycle. It also has a secondary par-
+tition of 3,072 CPU-only nodes each with two AMD EPYC
+7763 (Milan) processors and 512 GB of DDR4 memory in
+total. The Thermal Design Powers (TDPs) for the GPU and
+CPU are 400 W and 280 W respectively.
+The highest resolution power measurements for Perl-
+mutter can be obtained from NVIDIA’s System Manage-
+ment Interface (nvidia-smi) or Data Center GPU Manager
+(DCGM) on each GPU with an interval of one millisecond.
+We use nvidia-smi in our experiments with a sampling
+interval of 100 milliseconds. CPU-level power measure-
+ments are obtained through Cray’s power monitoring (PM)
+interface [9].
+3 M ETHODOLOGY & E VALUATION
+DGEMM is the BLAS function that performs double-
+precision dense matrix-matrix multiplication. Optimized
+implementations of DGEMM are provided by most proces-
+sor vendors and approach a processor’s peak ﬂoating-point
+performance. DGEMM calculates the product of double-
+precision matrices as
+C⇐αA∗B +βC
+The GPU version of DGEMM from the NERSC Proxies
+suite [10] is conﬁgured to use the DGEMM implementation
+in the NVIDIA cuBLAS Library (v 11.7). We hypothesize
+that the higher power consumed by DGEMM in Section 1
+with random inputs is caused by a higher number of bit
+ﬂips. Each of the 192 input bits to each of the 3456 FP64
+FMAs has a chance of ﬂipping from one cycle to the next.
+For a multiplier, unlike a bitwise operation, ﬂipping some
+bits will cause the FMA to burn more energy than ﬂipping
+others. Each of those FMAs is time multiplexed among
+multiple 4 threads in a CUDA warp, time multiplexed across
+multiple warps in a thread block, and time multiplexed
+across multiple warps running concurrently on each SM.
+3.1 Matrix Pattern Generators
+Three levels of time multiplexing make it very difﬁcult
+to analytically construct a matrix whose elements, when
+mapped to threads and thread blocks, will result in a par-
+ticular switching frequency across all the FP64 FMAs on an
+A100 GPU. As such, we modiﬁed the NERSC benchmark to
+accept different input patterns that we generate with the aim
+of producing matrices that strongly differentiate dynamic
+power through the GPU compute and memory subsystems.
+The input patterns used in our evaluation can be
+grouped into two categories - block and sparse. In a block pat-
+tern for populating the DGEMM input matrices, the random
+values are arranged into 1 to N blocks ( 2n, 0≤n≤log2N)
+as shown in Figures 3a as block rows and columns, and in
+Figure 3b in a checkerboard pattern. Aside from the fully
+random base case, all generated matrices are 50% random
+and 50% zero. Examination of the dot products of rows of
+A and columns of B highlight patterns of random-random,
+random-zero, and zero-zero multiplications. Generalization
+to high-performance tiled DGEMM implementations pro-
+duces small random-random, random-zero, and zero-zero
+matrix-matrix multiplications.
+In a sparse pattern for populating the input matrices, the
+number of random values is increased from(N 2)/N to (N 2)
+elements ( (N∗N )/2(log2N −n), 0≤ n≤ log2N) as shown
+in Figures 4a & 4b along rows and columns or blocked
+diagonals (i.e. checkerboard). The resultant dot products or
+tiled matrix multiplications are initially multiplications by
+mostly zeros (thus propagating zeros in the dot product
+accumulations and also zeroing adder energy) but tend
+towards fully random.
+Whereas random-random multiplications produce sub-
+stantial FPU energy, we can deﬁne four additional cases by
+taking the aforementioned block and sparse random patterns
+by replacing the random values with a ﬁxed (across all ma-
+trix entries) random number. Doing so will minimize mem-
+ory and multiplier energy as values (bits) do not change.
+However, accumulation (adder) energy will persist. The
+random values for input matrices (A and B) are generated
+as rand() / RAND MAX and have a range between 0 and 1.
+Theα andβ values are set to 1.0 with the output matrix C
+initialized to 0.0. In the ﬁxed input case, the values for A, B,
+C,α, andβ are 2.0, 0.5, 1.0, 1.0, and 1.0 respectively.
+Our benchmark performs 100 DGEMMs ensuring each
+conﬁguration has an execution time of about a minute. Both
+GPU and CPU experiments were run on three different
+3
+1
+A =
+2 4 8
+B =
+(a) Row/column block input pattern for 8×8 matrices
+1
+A =
+2 4 8
+B =
+(b) Diagonal block input pattern for 8×8 matrices
+0 2 4 6 8 10 12 14
+200
+250
+300
+350
+400
+450
+Thermal Design Power (TDP)
+Random Input
+Fixed Input
+Number of blocks in input matrices
+(2n, 0 ≤ n ≤ log2N)
+Power [W]
+Independent Fixed
+(c) Power consumption for block row/column pattern with independent
+and ﬁxed random values on NVIDIA A100 GPU (16K×16K matrices)
+0 2 4 6 8 10 12 14
+200
+250
+300
+350
+400
+450
+Thermal Design Power (TDP)
+Random Input
+Fixed Input
+Number of blocks in input matrices
+(2n, 0 ≤ n ≤ log2N)
+Power [W]
+Independent Fixed
+(d) Power consumption for block diagonal pattern with independent and
+ﬁxed random values on an NVIDIA A100 GPU (16K×16K matrices)
+Fig. 3: In a block pattern for populating the DGEMM input matrices, the random values (shown in gray) are arranged into 1 to N blocks in ‘a’ along
+rows and columns or ‘b’ along diagonals. The randomness in the matrices is maintained at a constant 50% for greater than one block. The power
+consumption for row/col and diagonal patterns with independent and ﬁxed random values are shown in ‘c’ and ‘d’ respectively.
+(8∗ 8)/8
+A =
+(8∗ 8)/4 (8∗ 8)/2 (8∗ 8)
+B =
+(a) Row/column sparse input pattern for 8×8 matrices
+(8∗ 8)/8
+A =
+(8∗ 8)/4 (8∗ 8)/2 (8∗ 8)
+B =
+(b) Diagonal sparse input pattern for 8×8 matrices
+0 2 4 6 8 10 12 14
+200
+250
+300
+350
+400
+450
+Thermal Design Power (TDP)
+Random Input
+Fixed Input
+Number of random values in input matrices
+((N ∗ N )/2(log2 N −n), 0 ≤ n ≤ log2N)
+Power [W]
+Independent Fixed
+(c) Power consumption for sparse row/column pattern with independent
+and ﬁxed random values on NVIDIA A100 GPU (16K×16K matrices)
+0 2 4 6 8 10 12 14
+200
+250
+300
+350
+400
+450
+Thermal Design Power (TDP)
+Random Input
+Fixed Input
+Number of random values in input matrices
+((N ∗ N )/2(log2 N −n), 0 ≤ n ≤ log2N)
+Power [W]
+Independent Fixed
+(d) Power consumption for sparse diagonal pattern with independent
+and ﬁxed random values on NVIDIA A100 GPU (16K×16K matrices)
+Fig. 4: In a sparse pattern for populating the DGEMM input matrices, the random values (shown in gray) increases from (N ∗ N )/N to (N ∗ N ) in
+‘a’ along rows and columns or ‘b’ along diagonals. The power consumption for row/col and diagonal patterns with independent and ﬁxed random
+values are shown in ‘c’ and ‘d’ respectively.
+Perlmutter nodes and each experiment was repeated three
+times. The variation in power across the nodes was less than
+2%, and thus the mean values (of three runs) from only one
+of the nodes are reported. To avoid any startup effects, each
+experiment was also preceded by a warm-up run lasting
+about a minute.
+4
+3.2 GPU Results
+Figure 3c shows the power consumption for the block
+row/column pattern with independent and ﬁxed random
+values (input size of 16K). It can be seen that the power
+for 50% random matrices (red) increases as the random
+values become more evenly distributed — a pattern that is
+intended to produce high cycle-to-cycle bit entropy. The 50%
+random matrices that are the most evenly distributed (at 214
+blocks) are shown to consume as much power as a fully ran-
+dom matrix. Conversely, if one were to replace the random
+nonzero matrix entries with a common nonzero value (blue),
+then power drops precipitously. As warps march through
+rows or columns, they read and execute multiplications with
+the same values over and over. However, as one approaches
+matrices with high entropy, values change from row to row
+ofA or column to column of B producing increased power.
+Nevertheless, the ﬁxed value row/column power reaches
+only about 75% of TDP . Ultimately, these ﬁgures highlight
+that FPU energy is tied less to the values of a matrix and
+more to how those values change from one column/row to
+the next.
+Figure 3d presents power for diagonally-structured
+matrices. Compared to a fully random matrix, the
+N/2×N/2 block structure performs many multiplications
+by zero submatrices, but still incurs power thru the mem-
+ory/register/FPU subsystem as random values are propa-
+gated without any gating/holding when a zero is observed.
+The ﬁxed value diagonal pattern ultimately consumes near
+TDP power as matrix values are very different for adjacent
+rows or columns. Both Figures 3c and 3d have equal 50%
+sparsity (aside from the ﬁrst data point) and generally
+observe similar trends of increasing power where values
+change faster than every 16 rows or columns.
+Figures 4c and 4d show that TDP increases as sparsity
+(the number of zero rows/columns/diagonals) decreases.
+Similar to the block patterns, power consumption increases
+quickly once more than about 6% of the matrix is random.
+For the diagonal(checkerboard pattern), TDP is attained
+when the matrix reaches 50% sparsity as there is maximal
+variation between adjacent rows and columns. When the
+random values of the matrices are replaced with a constant,
+power drops precipitously for the blocked row/column
+structure, but not for the diagonal format. For any vector-
+ized implementation, the constant checkerboard format is
+effectively the same as the random checkerboard format
+(striding in rows or columns produces high variability).
+Once again, as entropy increases, power increases. However,
+it is clear that the actual pattern will deﬁne how much
+power can vary and how the presence of constant values
+will further reduce power.
+3.3 CPU Results
+To further test the extent of the above-observed phenomena,
+we repeated the experiment in the introduction (Section 1)
+on 64 cores of an AMD Milan CPU of Perlmutter. The input
+size for the matrices on each of the 64 cores is 3344 ×3344
+with 30 repetitions. The gcc (v11.2) compiler and Cray
+LibSci library (v21.08) were used. While similar results were
+obtained, the extent of variation was much lower than
+the 67% observed on the GPU. The average CPU power
+consumption with random inputs ( ≈188 W) is about 30W
+(19%) higher than the ﬁxed input case (≈158 W), but still
+only about 67% of the TDP . The memory power consump-
+tion and the execution time remain almost unchanged. The
+aggregate CPU performance is≈2.0 TFLOP/s in both cases.
+We can thus infer the AMD EPYC CPU requires less than 15
+pJ/FLOP using vectorized FMA instructions.
+Time [s] CPU Power [W] Memory Power [W]
+100
+150
+200
+250
+72.9
+157.7
+114.6
+73.0
+188.4
+114.9
+Fixed Input Random Input
+Fig. 5: Execution time and power for 30 DGEMMs with ﬁxed and random
+inputs on 64 cores of AMD EPYC CPU (Input Size: 3344×3344 on each
+core)
+4 R ELATED WORK
+Measurement and mitigation of variability both in power
+and performance are important areas of HPC research.
+Power and performance modeling of HPC systems have
+been explored by several previous works [11], [12], [13],
+[14]. In the absence of reliable methods to measure power
+in previous generation architectures, several external meter
+solutions have been proposed [15], [16], [17]. In this work,
+we have used the hardware interfaces provided by NVIDIA
+and Cray to obtain high-resolution power measurements.
+Performance improvement over several generations of
+architecture has come at a cost of increased variations in
+both performance and power. Variations in performance
+have been attributed to contention for resources between ap-
+plications and operating system [18], system utilization [19],
+network [20] and I/O [21] among others. The run-to-run and
+variation across processors have been shown to be up to 15%
+and 20% respectively mainly due to manufacturing variabil-
+ity leading to differences in operating frequencies [22]. Vari-
+ations in power and performance of GPUs due to hardware
+or system software have been reported [23]. However, none
+of the above addresses the variation emanating from the
+program inputs themselves.
+Several works have attempted to mitigate the effects of
+manufacturing variation [24], [25]. Exploiting the variations
+in processor and GPU power due to application charac-
+teristics to improve energy efﬁciency have been well stud-
+ied [26], [27], [28], [29], [30], [31], [32]. Variations in the node
+power draw predominantly in non-GPU systems have also
+been used to an advantage for improving performance [33],
+[34], [35], [36]. There have also been attempts to provide
+end-to-end HPC power management solutions [37], [38].
+Again, these works do not focus on variations arising due
+to the actual program inputs explicitly.
+The current work shows that program inputs can have a
+large impact on power and marginal effects on performance,
+which future policies for maximizing performance within a
+5
+budget or improving energy efﬁciency may need to take into
+consideration.
+5 D ISCUSSION & C ONCLUSION
+Observations of input-induced variations in power moti-
+vated us to investigate how the data sent to a time/thread-
+multiplexed GPU core strides through memory. This is dif-
+ferent from previous research that investigated how a thread
+or thread block strides through memory. The dynamic si-
+multaneous multi-threading (SMT) nature of a streaming
+multiprocessor makes it hard to analyze analytically. Thus,
+we constructed a series of experiments to highlight how
+changes in input values give rise to a highly variable power.
+GPU DGEMM power is shown to be highly dependent on
+the entropy of inputs to the FPUs ranging from roughly 60-
+100% of TDP . This allowed us to provide an upper bound
+on GPU and CPU FPU energies of 8 and 15 pJ/FLOP
+respectively — the difference possibly attributable to the
+former’s use of tensor cores.
+Perhaps one of the more worrying problems is potential
+inter-process correlations in power. One can imagine ma-
+trix or vector values initially set to zero tending towards
+effectively random numbers. This suggests all processes
+in a job start at lower power and eventually run at high
+power. If all the processes of a job are co-located in a rack,
+rack-to-rack power can swing substantially. Conversely, if
+all the processes of a job were spread through a system,
+rack-to-rack power ﬂuctuations would be mitigated but
+network bandwidth tapering could become a performance
+impediment.
+The result that power may not always be commensurate
+with performance is important. As many moderately sparse
+systems are treated as dense (zero ﬁll) or systems with
+duplicate coefﬁcients are treated as if they were unique,
+our methodology provides insights into the degree to which
+these applications may be overprovisioned in terms of
+power. Avoiding zero ﬁll and exploiting sparsity will reduce
+run time, but may increase power as only non-zeros are
+operated on.
+The insights from this study may also have implica-
+tions on performance benchmarking and future power-
+aware HPC research, especially for architectures that can
+ramp frequency in response to observed power rather than
+observed utilization or the ﬂoating point (FP) rate. As
+roughly 40% of NVIDIA GPU power was found to be in the
+datapath (memory through the tensor core), we ﬁnd there
+is less than a potential 1.7 × win for iso-power, iso-area,
+iso-process architectural improvements in NVIDIA GPUs.
+Future investigation into 1) how DFMA (double-precision
+vector FMA) energy per FLOP differs from DMMA (double-
+precision tensor core multiplication) energy per FLOP and
+2) how much energy is consumed in the memory subsystem
+would provide a tighter bound. One could certainly imag-
+ine extending our benchmarking methodology to capturing
+energy in the memory, cache, or register ﬁles.
+Ultimately, we have demonstrated the imperative of
+including value entropy in power benchmarking to set real-
+istic bounds on node, rack, and system power. Moreover, we
+have utterly dispelled the belief that performance is neces-
+sarily correlated with sustained power. Moving forward, it
+is imperative that vendors, system integrators, and compute
+centers adopt benchmarking methodologies that integrate
+input entropy.
+ACKNOWLEDGMENTS
+This research used resources of the National Energy Re-
+search Scientiﬁc Computing Center (NERSC), a U.S. De-
+partment of Energy Ofﬁce of Science User Facility located
+at Lawrence Berkeley National Laboratory, operated under
+Contract No. DE-AC02-05CH11231.
+DISCLAIMER
+This report was prepared as an account of work sponsored
+by an agency of the United States Government. Neither
+the United States Government nor any agency thereof,
+nor any of their employees, makes any warranty, express
+or implied, or assumes any legal liability or responsibil-
+ity for the accuracy, completeness, or usefulness of any
+information, apparatus, product, or process disclosed, or
+represents that its use would not infringe privately owned
+rights. Reference herein to any speciﬁc commercial product,
+process, or service by trade name, trademark, manufacturer,
+or otherwise does not necessarily constitute or imply its
+endorsement, recommendation, or favoring by the United
+States Government or any agency thereof. The views and
+opinions of authors expressed herein do not necessarily state
+or reﬂect those of the United States Government or any
+agency thereof.
+REFERENCES
+[1] “Top500: Frontier,” https://www.top500.org/system/180047/,
+2022.
+[2] P . Kogge, K. Bergman, S. Borkar, D. Campbell, W. Carson, W. Dally,
+M. Denneau, P . Franzon, W. Harrod, K. Hill et al. , “Exascale
+computing study: Technology challenges in achieving exascale
+systems,” 2008.
+[3] S. Bhalachandra, B. Austin, and N. J. Wright, “Understanding
+power variation and its implications on performance optimization
+on the cori supercomputer,” in 2021 International Workshop on Per-
+formance Modeling, Benchmarking and Simulation of High Performance
+Computer Systems (PMBS). IEEE, 2021, pp. 51–62.
+[4] B. Rountree, D. H. Ahn, B. R. de Supinski, D. K. Lowenthal,
+and M. Schulz, “Beyond dvfs: A ﬁrst look at performance under
+a hardware-enforced power bound,” in 26th IEEE International
+Parallel and Distributed Processing Symposium Workshops & PhD
+Forum, IPDPS 2012, Shanghai, China, May 21-25, 2012 , 2012.
+[5] A. Marathe, G. Abdulla, B. L. Rountree, and K. Shoga, “Towards
+a uniﬁed monitoring framework for power, performance and
+thermal metrics: A case study on the evaluation of hpc cooling
+systems,” in 2017 IEEE International Parallel and Distributed Process-
+ing Symposium Workshops (IPDPSW). IEEE, 2017, pp. 974–983.
+[6] A. K. Porterﬁeld, S. L. Olivier, S. Bhalachandra, and J. F. Prins,
+“Power measurement and concurrency throttling for energy re-
+duction in openmp programs,” inParallel and Distributed Processing
+Symposium Workshops & PhD Forum (IPDPSW), 2013 IEEE 27th
+International. IEEE, 2013, pp. 884–891.
+[7] A. Porterﬁeld, S. Bhalachandra, W. Wang, and R. Fowler, “Vari-
+ability: A tuning headache,” in 2016 IEEE International Parallel
+and Distributed Processing Symposium Workshops (IPDPSW). IEEE,
+2016, pp. 1069–1072.
+[8] J. Shalf, “The future of computing beyond moore’s law,” Philo-
+sophical Transactions of the Royal Society A , vol. 378, no. 2166, p.
+20190061, 2020.
+[9] S. J. Martin and M. Kappel, “Cray xc30 power monitoring and
+management,” in Cray User Group Conference Proceedings, 2014.
+[10] “Nersc Proxies,” https://gitlab.com/NERSC/nersc-proxies/info.
+6
+[11] A. Tiwari, M. A. Laurenzano, L. Carrington, and A. Snavely,
+“Modeling power and energy usage of hpc kernels,” in 2012
+IEEE 26th International Parallel and Distributed Processing Symposium
+Workshops & PhD Forum. IEEE, 2012, pp. 990–998.
+[12] M. Witkowski, A. Oleksiak, T. Piontek, and J. Weglarz, “Practical
+power consumption estimation for real life hpc applications,”
+Future Generation Computer Systems , vol. 29, no. 1, pp. 208–217,
+2013.
+[13] G. T. Chetsa, L. Lef `evre, J.-M. Pierson, P . Stolf, and G. Da Costa,
+“Exploiting performance counters to predict and improve energy
+performance of hpc systems,” Future Generation Computer Systems,
+vol. 36, pp. 287–298, 2014.
+[14] X. Wu, V . Taylor, J. Cook, and P . J. Mucci, “Using performance-
+power modeling to improve energy efﬁciency of hpc applica-
+tions,” Computer, vol. 49, no. 10, pp. 20–29, 2016.
+[15] D. Bedard, M. Y. Lim, R. Fowler, and A. Porterﬁeld, “Powermon:
+Fine-grained and integrated power monitoring for commodity
+computer systems,” in Proceedings of the IEEE SoutheastCon 2010
+(SoutheastCon). IEEE, 2010, pp. 479–484.
+[16] M. F. Dolz, M. R. Heidari, M. Kuhn, T. Ludwig, and G. Fabregat,
+“Ardupower: A low-cost wattmeter to improve energy efﬁciency
+of hpc applications,” in 2015 Sixth International Green and Sustain-
+able Computing Conference (IGSC). IEEE, 2015, pp. 1–8.
+[17] M. Rashti, G. Sabin, D. Vansickle, and B. Norris, “Wattprof: A
+ﬂexible platform for ﬁne-grained hpc power proﬁling,” in 2015
+IEEE International Conference on Cluster Computing . IEEE, 2015,
+pp. 698–705.
+[18] D. Skinner and W. Kramer, “Understanding the causes of perfor-
+mance variability in hpc workloads,” in IEEE International. 2005
+Proceedings of the IEEE Workload Characterization Symposium, 2005.
+IEEE, 2005, pp. 137–149.
+[19] B. Li, S. Chunduri, K. Harms, Y. Fan, and Z. Lan, “The effect of
+system utilization on application performance variability,” in Pro-
+ceedings of the 9th International Workshop on Runtime and Operating
+Systems for Supercomputers, 2019, pp. 11–18.
+[20] A. Bhatele, J. J. Thiagarajan, T. Groves, R. Anirudh, S. A. Smith,
+B. Cook, and D. K. Lowenthal, “The case of performance variabil-
+ity on dragonﬂy-based systems,” in 2020 IEEE International Parallel
+and Distributed Processing Symposium (IPDPS) . IEEE, 2020, pp.
+896–905.
+[21] O. Yildiz, M. Dorier, S. Ibrahim, R. Ross, and G. Antoniu, “On the
+root causes of cross-application i/o interference in hpc storage sys-
+tems,” in 2016 IEEE International Parallel and Distributed Processing
+Symposium (IPDPS). IEEE, 2016, pp. 750–759.
+[22] A. Marathe, Y. Zhang, G. Blanks, N. Kumbhare, G. Abdulla, and
+B. Rountree, “An empirical survey of performance and energy
+efﬁciency variation on intel processors,” in Proceedings of the 5th
+International Workshop on Energy Efﬁcient Supercomputing, 2017, pp.
+1–8.
+[23] N. DeBardeleben, S. Blanchard, L. Monroe, P . Romero, D. Grunau,
+C. Idler, and C. Wright, “Gpu behavior on a large hpc cluster,”
+in European Conference on Parallel Processing . Springer, 2013, pp.
+680–689.
+[24] N. Gholkar, F. Mueller, and B. Rountree, “Power tuning for hpc
+jobs under manufacturing variations,” Tech. Rep.
+[25] Y. Inadomi, T. Patki, K. Inoue, M. Aoyagi, B. Rountree, M. Schulz,
+D. Lowenthal, Y. Wada, K. Fukazawa, M. Ueda et al. , “Analyz-
+ing and mitigating the impact of manufacturing variability in
+power-constrained supercomputing,” in SC’15: Proceedings of the
+International Conference for High Performance Computing, Networking,
+Storage and Analysis. IEEE, 2015, pp. 1–12.
+[26] B. Rountree, D. K. Lowenthal, B. R. de Supinski, M. Schulz,
+V . W. Freeh, and T. K. Bletsch, “Adagio: Making DVS practical
+for complex HPC applications,” in ICS ’09: Proc. of the 23rd Intl.
+Conference on Supercomputing, 2009.
+[27] B. Wang, D. Schmidl, and M. S. M ¨uller, “Evaluating the Energy
+Consumption of OpenMP Applications on Haswell Processors,”
+in OpenMP: Heterogenous Execution and Data Movements. Springer,
+2015, pp. 233–246.
+[28] S. Bhalachandra, A. Porterﬁeld, and J. F. Prins, “Using dynamic
+duty cycle modulation to improve energy efﬁciency in high perfor-
+mance computing,” in Parallel and Distributed Processing Symposium
+Workshop (IPDPSW), 2015 IEEE International. IEEE, 2015, pp. 911–
+918.
+[29] A. Marathe, P . E. Bailey, D. K. Lowenthal, B. Rountree, M. Schulz,
+and B. R. de Supinski, “A run-time system for power-constrained
+hpc applications,” in International Conference on High Performance
+Computing. Springer, 2015, pp. 394–408.
+[30] S. Bhalachandra, A. Porterﬁeld, S. L. Olivier, and J. F. Prins, “An
+adaptive core-speciﬁc runtime for energy efﬁciency,” inParallel and
+Distributed Processing Symposium (IPDPS), 2017 IEEE International .
+IEEE, 2017, pp. 947–956.
+[31] V . Adhinarayanan, B. Dutta, and W.-c. Feng, “Making a case
+for green high-performance visualization via embedded graphics
+processors,” in 2018 IEEE International Parallel and Distributed
+Processing Symposium Workshops (IPDPSW). IEEE, 2018, pp. 721–
+724.
+[32] S. Kumar, A. Gupta, V . Kumar, and S. Bhalachandra, “Cuttle-
+ﬁsh: library for achieving energy efﬁciency in multicore parallel
+programs,” in Proceedings of the International Conference for High
+Performance Computing, Networking, Storage and Analysis , 2021, pp.
+1–14.
+[33] T. Patki, D. K. Lowenthal, B. Rountree, M. Schulz, and B. R.
+de Supinski, “Exploring hardware overprovisioning in power-
+constrained, high performance computing,” in Proceedings of the
+27th international ACM conference on International conference on
+supercomputing. ACM, 2013, pp. 173–182.
+[34] O. Sarood, A. Langer, L. Kal ´e, B. Rountree, and B. De Supinski,
+“Optimizing power allocation to cpu and memory subsystems in
+overprovisioned hpc systems,” in Cluster Computing (CLUSTER),
+2013 IEEE International Conference on. IEEE, 2013, pp. 1–8.
+[35] O. Sarood, A. Langer, A. Gupta, and L. Kale, “Maximizing
+throughput of overprovisioned hpc data centers under a strict
+power budget,” in Proceedings of the International Conference for High
+Performance Computing, Networking, Storage and Analysis . IEEE
+Press, 2014, pp. 807–818.
+[36] R. Sakamoto, T. Cao, M. Kondo, K. Inoue, M. Ueda, T. Patki,
+D. Ellsworth, B. Rountree, and M. Schulz, “Production hardware
+overprovisioning: Real-world performance optimization using an
+extensible power-aware resource management framework,” in
+2017 IEEE International Parallel and Distributed Processing Sympo-
+sium (IPDPS). IEEE, 2017, pp. 957–966.
+[37] J. Eastep, S. Sylvester, C. Cantalupo, B. Geltz, F. Ardanaz, A. Al-
+Rawi, K. Livingston, F. Keceli, M. Maiterth, and S. Jana, “Global
+extensible open power manager: a vehicle for hpc community
+collaboration on co-designed energy management solutions,” in
+International Supercomputing Conference. Springer, 2017, pp. 394–
+412.
+[38] X. Wu, A. Marathe, S. Jana, O. Vysocky, J. John, A. Bartolini,
+L. Riha, M. Gerndt, V . Taylor, and S. Bhalachandra, “Toward an
+end-to-end auto-tuning framework in hpc powerstack,” in 2020
+IEEE International Conference on Cluster Computing (CLUSTER) .
+IEEE, 2020, pp. 473–483.

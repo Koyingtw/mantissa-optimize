@@ -1,0 +1,218 @@
+Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
+36.4,950240168,10651,89216.1,1632.0,832,3351712,439406.8,cupy_copy__float64_float64
+9.7,253355583,1,253355583.0,253355583.0,253355583,253355583,0.0,"int3c2e_kernel(double *, RysIntEnvVars, double *, double, double, double, int *, unsigned int *, int *, int *, int *, int, int, int, int, int, int *, int, int)"
+6.7,175471937,166,1057059.9,1044032.0,43584,1796128,347694.0,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x64x16_stage4_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+6.0,157989568,131,1206027.2,1214144.0,169984,1222432,91300.3,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize128x64x16_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+5.4,141614145,154,919572.4,965376.0,530016,968672,123988.6,"decompress_kernel(double *, unsigned long, double *, int *, int, int, unsigned long, int, int)"
+3.7,95418816,7488,12742.9,12992.0,7584,18080,2475.2,sm90_xmma_gemm_f64f64_f64f64_f64_nt_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+3.6,93538434,2,46769217.0,46769217.0,138240,93400194,65946160.1,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x128x16_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+2.5,66349376,18536,3579.5,2784.0,1984,8800,1713.7,"void _cart_kernel_deriv1<(int)0>(BasOffsets, GTOValEnvVars)"
+2.4,63288287,2324,27232.5,29856.0,6688,44000,9970.2,"dscale_ao_kernel(double *, double *, double *, int, int, int)"
+2.4,63083936,224,281624.7,281376.0,267232,295264,6603.7,"void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)1024, (int)32, (int)1, (int)1, (int)2>>(int, T1::data_type *, int, int, T1::pod_type *, T1::data_type *, int, int, int, int, T1::data_type *, unsigned int *, T1::data_type *, T1::data_type *, int, int, int)"
+1.9,48741664,9296,5243.3,4288.0,2624,9376,2026.0,"void _cart_kernel_deriv1<(int)1>(BasOffsets, GTOValEnvVars)"
+1.6,40680000,955,42596.9,38880.0,3456,79584,20917.8,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+1.5,40318848,168,239993.1,240272.0,231296,250272,4527.0,"void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)512, (int)32, (int)1, (int)1, (int)2>>(int, T1::data_type *, int, int, T1::pod_type *, T1::data_type *, int, int, int, int, T1::data_type *, unsigned int *, T1::data_type *, T1::data_type *, int, int, int)"
+1.2,31048928,3413,9097.3,1344.0,928,263968,28396.3,cupy_multiply__float64_float_float64
+1.2,30365824,154,197180.7,210416.0,62688,212512,42337.6,"std::enable_if<T7, void>::type internal::gemvx::kernel<int, int, double, double, double, double, (bool)1, (bool)1, (bool)1, (bool)0, (int)6, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13)"
+1.2,30256384,154,196470.0,210112.0,58144,213280,43611.3,"std::enable_if<!T7, void>::type internal::gemvx::kernel<int, int, double, double, double, double, (bool)0, (bool)1, (bool)1, (bool)0, (int)9, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13)"
+1.1,28599744,4648,6153.1,6080.0,3168,9984,1417.2,"void _sph_kernel_deriv1<(int)2>(BasOffsets, GTOValEnvVars)"
+0.9,24655904,9296,2652.3,2592.0,2464,4064,180.7,"GDFTcontract_rho_kernel(double *, double *, double *, int, int)"
+0.8,21229856,4648,4567.5,4768.0,2816,7872,988.3,"void _sph_kernel_deriv1<(int)3>(BasOffsets, GTOValEnvVars)"
+0.8,20680000,1144,18076.9,17984.0,16640,20544,692.2,sm90_xmma_gemm_f64f64_f64f64_f64_nt_n_tilesize64x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.6,15680768,2324,6747.3,6464.0,2848,12512,2408.1,"_add_sparse(double *, double *, int *, int, int, int)"
+0.6,15336640,608,25224.7,25552.0,15584,36032,4919.4,sm90_xmma_gemm_f64f64_f64f64_f64_nt_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.5,14136129,224,63107.7,63104.0,62400,63968,295.8,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x128x32_stage3_warpsize2x4x1_tensor16x8x8_execute_kernel__5x_cublas
+0.5,11934304,2,5967152.0,5967152.0,5966336,5967968,1154.0,"int2e_qcond_kernel(float *, RysIntEnvVars, unsigned int *, int *, int *, double, double, double)"
+0.4,10427168,252,41377.7,36368.0,5056,96288,18229.2,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+0.4,10425824,1,10425824.0,10425824.0,10425824,10425824,0.0,"contract_int3c2e_auxvec_kernel(double *, double *, int, int, RysIntEnvVars, int *, unsigned int *, int *, int *)"
+0.4,10349376,28,369620.6,385936.0,208320,415488,48619.2,"void laed2_par<stedc_params_<double2, double, (int)8, (int)1024, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.3,8741312,210,41625.3,41632.0,40768,42592,274.4,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x64x32_stage3_warpsize4x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.3,8179361,198,41309.9,51840.0,7968,53056,12732.2,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.3,7984768,14,570340.6,570560.0,567520,574784,2165.1,"void sytrd4_cta<sytrd_params<double, (int)16, (int)32, (int)128, (int)32, (int)0, (int)1, (int)2>, (int)1>(int, T1::data_type *, int, int, T1::pod_type *, int, T1::pod_type *, int, T1::data_type *, int, int)"
+0.3,7758368,84,92361.5,92208.0,90688,94752,965.0,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x64x32_stage3_warpsize4x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.3,7502976,1,7502976.0,7502976.0,7502976,7502976,0.0,"_screen_index(signed char *, double, double *, int, int, int *, int, int *, int, double *)"
+0.3,7223840,84,85998.1,84304.0,82816,104736,4160.2,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x64x16_stage4_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+0.3,6945504,2684,2587.7,2688.0,1088,16064,696.5,cupy_take
+0.2,6384896,126,50673.8,50720.0,49472,51808,565.4,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.2,5225472,14,373248.0,362080.0,359104,522144,42868.8,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.2,4997088,14,356934.9,356960.0,354560,359328,1501.3,"void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)2048, (int)32, (int)1, (int)1, (int)2>>(int, T1::data_type *, int, int, T1::pod_type *, T1::data_type *, int, int, int, int, T1::data_type *, unsigned int *, T1::data_type *, T1::data_type *, int, int, int)"
+0.2,4549312,49,92843.1,92832.0,90368,95680,1157.1,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+0.1,3550560,1,3550560.0,3550560.0,3550560,3550560,0.0,"void GDFTgrid_weight_kernel<(bool)1, (GridPartitionScheme)100>(double *, const double *, const double *, const double *, const int *, int, int)"
+0.1,3228192,815,3961.0,3936.0,3232,36128,1964.7,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_split_k_kernel__5x_cublas
+0.1,3110784,154,20199.9,19216.0,18784,23488,1760.9,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.1,2999584,462,6492.6,4224.0,1408,12096,3813.2,cupy_add__float64_float64_float64
+0.1,2860672,406,7046.0,6336.0,4672,11456,1929.1,sm90_xmma_syr2k_l_f64f64_f64f64_f64_nt_n_tilesize32x32x32_stage5_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.1,2855680,42,67992.4,66688.0,9056,92608,19347.1,"void laed3_epi1<stedc_params_<double2, double, (int)8, (int)512, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, int *, int *, T1::data_type *, T1::data_type *, T1::data_type *, int *, int, int)"
+0.1,2840832,14,202916.6,203504.0,195648,205632,2225.5,"void laed2_par<stedc_params_<double2, double, (int)8, (int)512, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.1,2345312,25,93812.5,93664.0,91776,97696,1158.5,sm90_xmma_gemm_f64f64_f64f64_f64_nt_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+0.1,2335072,1468,1590.6,1280.0,1152,6880,1208.1,cupy_scan_naive
+0.1,2157088,42,51359.2,10832.0,8928,136832,58863.6,"void laed3_epi2<stedc_params_<double2, double, (int)8, (int)512, (int)128>>(int, int, int, int *, T1::data_type *, int, int *, T1::data_type *, int *, T1::data_type *, T1::data_type *, int, int)"
+0.1,1982880,42,47211.4,48288.0,39392,58944,4813.8,"void laed4_par<stedc_params_<double2, double, (int)8, (int)512, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, long, T1::data_type *, T1::data_type *, T1::data_type *, int, int *, int)"
+0.1,1515136,10,151513.6,153504.0,138496,156448,5432.8,"void kernel_trsm_l_mul32<double, (int)8, (bool)0, (bool)0, (bool)0, (bool)0>(int, int, const T1 *, const T1 *, int, T1 *, int, T1, int)"
+0.1,1485856,14,106132.6,106176.0,105088,106944,408.0,"void laed2_par<stedc_params_<double2, double, (int)8, (int)256, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.1,1447584,112,12924.9,12928.0,12704,13248,120.3,"void larft_T_64_batch<double>(int, T1 *, int, long, const T1 *, long)"
+0.0,1249344,224,5577.4,5536.0,5184,5984,185.1,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x128x32_stage3_warpsize2x4x1_tensor16x8x8_execute_split_k_kernel__5x_cublas
+0.0,1179584,392,3009.1,2816.0,1216,5696,1268.4,"void transpose<sytrd_params<double, (int)32, (int)8, (int)512, (int)32, (int)16, (int)1, (int)2>, (int)128, (int)1, (int)1, (int)0>(int, int, T1::data_type *, T1::data_type *, int, int)"
+0.0,1130208,381,2966.4,2560.0,2272,10336,1419.8,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,1123040,823,1364.6,1152.0,992,3296,590.9,cupy_bsum_shfl
+0.0,1062336,195,5447.9,4192.0,992,16672,4137.0,cupy_multiply__float64_float64_float64
+0.0,1011904,40,25297.6,24960.0,24608,29472,1039.7,"void trsm_left_kernel<int, double, (int)256, (int)4, (bool)0, (bool)0, (bool)1, (bool)1, (bool)0>(cublasTrsmParams<T1, T2>, T2, const T2 *, int)"
+0.0,945376,83,11390.1,11488.0,1664,12352,1089.5,"void potrf_alg2_cta_upper<double, double, (int)32>(int, int, T1 *, unsigned long, int *)"
+0.0,932864,210,4442.2,4448.0,4192,4768,82.9,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x64x32_stage3_warpsize4x2x1_tensor16x8x16_execute_split_k_kernel__5x_cublas
+0.0,916929,28,32747.5,32624.0,24544,41152,8127.0,"work_gga_gpu_vxc_unpol(const xc_func_type *, unsigned long, const double *, const double *, xc_gga_out_params *)"
+0.0,871424,56,15561.1,15808.0,8192,23200,5460.1,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,830912,42,19783.6,19744.0,19616,20128,140.4,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,811968,289,2809.6,1312.0,1088,11008,2544.5,cupy_getitem_mask
+0.0,807584,56,14421.1,14816.0,13504,15328,613.7,sm90_xmma_gemm_f64f64_f64f64_f64_nt_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,747776,14,53412.6,53392.0,53280,53824,146.8,"void laed2_par<stedc_params_<double2, double, (int)8, (int)128, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.0,733024,28,26179.4,26176.0,25952,26464,114.3,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,723552,28,25841.1,25936.0,8288,43328,17566.4,"work_lda_gpu_vxc_unpol(const xc_func_type *, unsigned long, const double *, xc_lda_out_params *)"
+0.0,705984,162,4357.9,3328.0,1056,7520,2059.3,cupy_prepare_array_indexing
+0.0,650464,4,162616.0,116768.0,113952,302976,93583.2,"ket_sorted2sph_kernel(double *, double *, double *, int *, int *, int *, int *, int, int, int)"
+0.0,610944,153,3993.1,6496.0,1056,6816,2744.0,cupy_copy__bool_bool
+0.0,605824,35,17309.3,15360.0,11168,23040,4859.4,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,604160,66,9153.9,9040.0,8832,9856,264.2,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortSingleTileKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<unsigned int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned long long>::Policy1000, (cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::SortOrder)0, unsigned int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned long long, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::identity_decomposer_t>(const T3 *, T3 *, const T4 *, T4 *, T5, int, int, T6)"
+0.0,592096,154,3844.8,3904.0,3488,4288,182.9,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_split_k_kernel__5x_cublas
+0.0,587872,648,907.2,896.0,800,1088,40.0,cupy_equal__int64_int_bool
+0.0,580256,112,5180.9,2448.0,1664,18016,5247.8,"void laed2_copy<double2, double, (int)256>(int, int, T2 *, int, int *, int *, T2 *, int, int)"
+0.0,557920,360,1549.8,1536.0,1408,2208,53.7,cupy_nonzero_kernel_incomplete_scan
+0.0,546720,140,3905.1,3872.0,3488,4416,199.4,"_add_out(double *, const double *, double, int, int)"
+0.0,545216,154,3540.4,3584.0,2656,3872,242.4,"void cublasLt::splitKreduce_kernel<(int)32, (int)16, int, double, double, double, double, (bool)0, double, double, double, (bool)1, (bool)0, (bool)0, (bool)0>(cublasLt::cublasSplitKParams<T6>, const T4 *, const T10 *, T9 *, T5 *, const T6 *, const T6 *, const T11 *, const T4 *, T11 *, void *, long, T6 *, int *, T6 *, T6 *, const T6 *, const T6 *, const T6 *, const T6 *, const T6 *)"
+0.0,512864,126,4070.3,4064.0,3904,4256,65.4,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_aligna8_alignc8_execute_split_k_kernel__5x_cublas
+0.0,494208,14,35300.6,35456.0,33088,36480,1052.4,"void laed4_par<stedc_params_<double2, double, (int)8, (int)256, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, long, T1::data_type *, T1::data_type *, T1::data_type *, int, int *, int)"
+0.0,460640,77,5982.3,5408.0,5184,11136,1489.1,"void potrf_alg2_upper_trsm<double, (int)5, (int)3>(int, int, T1 *, unsigned long, T1 *, unsigned long)"
+0.0,455008,56,8125.1,8528.0,5280,10400,1805.6,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x32x32_stage5_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,452416,1,452416.0,452416.0,452416,452416,0.0,"pbc_int2c2e_kernel(double *, PBCIntEnvVars, double, double, double, int *, unsigned int *, int *)"
+0.0,444992,22,20226.9,22048.0,14816,22688,2893.6,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,443328,14,31666.3,31664.0,29440,33024,953.1,"void laed3_epi1<stedc_params_<double2, double, (int)8, (int)256, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, int *, int *, T1::data_type *, T1::data_type *, T1::data_type *, int *, int, int)"
+0.0,431616,14,30829.7,31040.0,29024,31968,669.7,"void steqr_ker<stedc_params_<double2, double, (int)8, (int)16, (int)128>, double, (int)0>(long, T1::data_type *, T1::data_type *, T2 *, long, int *, int *, long, long, T1::data_type, T1::data_type, int *, int)"
+0.0,427392,14,30528.0,30160.0,29088,32288,1070.3,"void laed4_par<stedc_params_<double2, double, (int)8, (int)128, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, long, T1::data_type *, T1::data_type *, T1::data_type *, int, int *, int)"
+0.0,411456,56,7347.4,7328.0,7136,7648,111.1,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize32x64x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,385248,14,27517.7,27504.0,27392,27712,97.6,"void laed2_par<stedc_params_<double2, double, (int)8, (int)64, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.0,381504,70,5450.1,4816.0,1408,61024,7426.4,cupy_scatter_update
+0.0,375136,4,93784.0,37472.0,36736,263456,113115.2,"bra_sorted2sph_kernel(double *, double *, double *, int *, int *, int *, int *, int, int, int)"
+0.0,369056,523,705.7,704.0,608,800,38.1,cupy_arange__int_int_int32
+0.0,367072,42,8739.8,8736.0,6112,11360,1851.4,"void dot_kernel<double, (int)128, (int)0, cublasDotParams<cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>>(T4)"
+0.0,354336,84,4218.3,4224.0,4064,4384,70.3,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize128x64x32_stage3_warpsize4x2x1_tensor16x8x16_aligna8_alignc8_execute_split_k_kernel__5x_cublas
+0.0,352832,14,25202.3,25248.0,24640,25536,246.5,"void laed3_epi2<stedc_params_<double2, double, (int)8, (int)256, (int)128>>(int, int, int, int *, T1::data_type *, int, int *, T1::data_type *, int *, T1::data_type *, T1::data_type *, int, int)"
+0.0,317536,39,8141.9,7584.0,6592,10496,1572.8,cupy_subtract__float64_float64_float64
+0.0,308768,14,22054.9,21840.0,20928,23616,789.3,"void laed4_par<stedc_params_<double2, double, (int)8, (int)64, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, long, T1::data_type *, T1::data_type *, T1::data_type *, int, int *, int)"
+0.0,283552,77,3682.5,3520.0,2208,5760,629.4,"void potrf_alg2_syrk_kernel<double, (bool)1, (bool)0, (int)5, (int)5, (int)3, (int)4, (int)4>(int, int, int, const T1 *, unsigned long, T1 *, unsigned long, bool)"
+0.0,277184,122,2272.0,2144.0,1952,2816,277.1,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::reduce::DeviceReduceKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::reduce::policy_hub<double, unsigned int, cuda::std::__4::plus<void>>::Policy1000, double *, unsigned int, cuda::std::__4::plus<void>, double, cuda::std::__4::identity>(T2, T5 *, T3, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::GridEvenShare<T3>, T4, T6)"
+0.0,271840,14,19417.1,19344.0,17984,21152,670.1,"void laed4_par<stedc_params_<double2, double, (int)8, (int)32, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, long, T1::data_type *, T1::data_type *, T1::data_type *, int, int *, int)"
+0.0,267968,14,19140.6,19072.0,18528,20352,493.2,"void laed4_par<stedc_params_<double2, double, (int)8, (int)16, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, long, T1::data_type *, T1::data_type *, T1::data_type *, int, int *, int)"
+0.0,256736,227,1131.0,1120.0,1024,1216,29.1,cupy_nonzero_kernel
+0.0,256160,140,1829.7,1936.0,928,3008,524.0,"void setup_vhat_l_kernel<double, (int)16>(long, long, const T1 *, long, long, T1 *, long, long)"
+0.0,247936,1,247936.0,247936.0,247936,247936,0.0,"bra_sph2sorted_kernel(double *, double *, double *, int *, int *, int *, int *, int, int, int)"
+0.0,242752,276,879.5,896.0,736,1088,35.8,cupy_multiply__int32_int_int32
+0.0,232448,14,16603.4,16576.0,16448,16864,135.7,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,230976,14,16498.3,16576.0,15968,16736,218.7,"void scale_max<double, (int)32, (int)32, (int)1>(long, long, T1 *, T1 *, T1 *, int *)"
+0.0,224640,14,16045.7,16032.0,15936,16160,68.4,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x32x32_stage3_warpsize2x2x1_tensor16x8x16_aligna8_alignc8_execute_kernel__5x_cublas
+0.0,224064,204,1098.4,1024.0,928,1696,150.0,cupy_add__int32_int32_int32
+0.0,220256,13,16942.8,16992.0,16640,17376,196.7,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortSingleTileKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<double, unsigned long, unsigned long long>::Policy1000, (cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::SortOrder)0, double, unsigned long, unsigned long long, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::identity_decomposer_t>(const T3 *, T3 *, const T4 *, T4 *, T5, int, int, T6)"
+0.0,217760,14,15554.3,15552.0,15200,15776,138.9,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,202464,14,14461.7,14432.0,14336,14624,87.4,"void laed2_par<stedc_params_<double2, double, (int)8, (int)32, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.0,197440,25,7897.6,12288.0,2368,13248,5265.4,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize32x32x32_stage5_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,188576,14,13469.7,13424.0,13216,13760,171.4,"void transpose<sytrd_params<double, (int)32, (int)8, (int)512, (int)32, (int)16, (int)1, (int)2>, (int)128, (int)0, (int)1, (int)0>(int, int, T1::data_type *, T1::data_type *, int, int)"
+0.0,187808,88,2134.2,1920.0,1664,6592,740.0,cupy_concatenate
+0.0,182112,3,60704.0,61056.0,33152,87904,27377.7,sm90_xmma_syrk_u_f64f64_f64f64_f64_tn_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,181696,14,12978.3,12928.0,12384,13856,534.5,"void laed3_epi1<stedc_params_<double2, double, (int)8, (int)128, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, int *, int *, T1::data_type *, T1::data_type *, T1::data_type *, int *, int, int)"
+0.0,175968,122,1442.4,1408.0,1216,2048,195.2,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::reduce::DeviceReduceSingleTileKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::reduce::policy_hub<double, unsigned int, cuda::std::__4::plus<void>>::Policy1000, double *, double *, int, cuda::std::__4::plus<void>, double, double, cuda::std::__4::identity>(T2, T3, T4, T5, T6, T8)"
+0.0,163552,28,5841.1,5824.0,5632,5984,83.8,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_execute_split_k_kernel__5x_cublas
+0.0,156480,13,12036.9,12032.0,11936,12160,80.4,sm90_xmma_gemm_f64f64_f64f64_f64_nt_n_tilesize32x32x32_stage5_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,151744,14,10838.9,10752.0,10496,11648,285.2,"void laed3_epi2<stedc_params_<double2, double, (int)8, (int)128, (int)128>>(int, int, int, int *, T1::data_type *, int, int *, T1::data_type *, int *, T1::data_type *, T1::data_type *, int, int)"
+0.0,149664,14,10690.3,10672.0,10592,10816,76.8,"_transpose_dsum(double *, int, int, int)"
+0.0,140384,24,5849.3,5904.0,5376,6304,279.4,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortOnesweepKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<unsigned int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned long long>::Policy1000, (cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::SortOrder)0, unsigned int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned long long, int, int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::identity_decomposer_t>(T7 *, T7 *, T5 *, const T5 *, T3 *, const T3 *, T4 *, const T4 *, T6, int, int, T8)"
+0.0,125184,72,1738.7,1728.0,1184,2080,136.2,cupy_searchsorted_kernel
+0.0,111488,14,7963.4,7936.0,7872,8224,91.3,"void laed2_par<stedc_params_<double2, double, (int)8, (int)16, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, T1::data_type *, T1::data_type *, int *, int *, int *, int *, int *, T1::data_type *, int *, T1::data_type *, int, int)"
+0.0,109376,24,4557.3,4368.0,4096,5536,469.7,"_pack_tril(double *, double *, unsigned long, int)"
+0.0,106944,14,7638.9,7568.0,7424,8256,278.2,vec3_norm2_kernel_f_order
+0.0,105472,132,799.0,800.0,672,928,34.5,cupy_fill
+0.0,105440,27,3905.2,3488.0,2592,9920,1501.4,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x32x32_stage5_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,102112,144,709.1,704.0,608,768,35.8,cupy_arange__uint_uint_uint32
+0.0,96384,14,6884.6,6816.0,6464,7264,289.5,"void laed3_epi1<stedc_params_<double2, double, (int)8, (int)64, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, int *, int *, T1::data_type *, T1::data_type *, T1::data_type *, int *, int, int)"
+0.0,95360,14,6811.4,6816.0,6752,6880,37.4,"void merge_ker<double, double, (int)128, (int)0, (int)1>(long, long, T2 *, T2 *, long, int *, T2 *, T2 *, long, int, int)"
+0.0,90624,14,6473.1,6464.0,6400,6624,55.3,"void merge_ker<double, double, (int)128, (int)1, (int)1>(long, long, T2 *, T2 *, long, int *, T2 *, T2 *, long, int, int)"
+0.0,90048,14,6432.0,6448.0,6240,6848,166.5,"void laed3_epi2<stedc_params_<double2, double, (int)8, (int)64, (int)128>>(int, int, int, int *, T1::data_type *, int, int *, T1::data_type *, int *, T1::data_type *, T1::data_type *, int, int)"
+0.0,87872,72,1220.4,1120.0,992,1920,256.9,"sort_pair_ij_kernel(long *, int *, int *, int, int, int, int)"
+0.0,81152,69,1176.1,1184.0,864,2432,270.7,cupy_greater__float64_float_bool
+0.0,80512,42,1917.0,1888.0,1856,2272,81.4,"void reduce_1Block_kernel<double, (int)128, (int)7, cublasGemvTensorStridedBatched<double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(const T1 *, T1, T4, int, const T1 *, T1, T5, T6, cublasPointerMode_t, cublasLtEpilogue_t, cublasGemvTensorStridedBatched<const biasType<T6::value_type, T1>::type>)"
+0.0,79168,73,1084.5,1056.0,928,1504,127.8,cupy_add__int32_int64_int64
+0.0,71936,14,5138.3,5120.0,5024,5376,84.9,"void larft_T_32<double, (int)256>(int, T1 *, int, long, const T1 *, long)"
+0.0,71808,72,997.3,992.0,896,1216,46.2,cupy_true_divide__int_int32_float64
+0.0,71552,72,993.8,992.0,960,1184,32.6,cupy_floor_divide__int_int32_int32
+0.0,70944,1,70944.0,70944.0,70944,70944,0.0,"int1e_kin_kernel(double *, PBCIntEnvVars, int *, int *, int *)"
+0.0,69344,15,4622.9,4512.0,4352,5344,288.0,"_dfill_triu(double *, unsigned long, int, int)"
+0.0,68032,14,4859.4,4832.0,4672,5152,117.6,"void epilogue<sytrd_params<double, (int)32, (int)8, (int)512, (int)32, (int)16, (int)1, (int)2>, (int)128, (int)0, (int)1>(int, int, T1::data_type *, int, int, T1::pod_type *, int, T1::pod_type *, int, T1::data_type *, int, T1::data_type *, int, int)"
+0.0,67904,72,943.1,928.0,832,1312,81.4,cupy_copy__int64_uint32
+0.0,67872,74,917.2,896.0,800,1408,98.6,cupy_copy__uint32_uint32
+0.0,66560,14,4754.3,4784.0,4608,4896,87.6,"void lacpy_kernel<double, double, (int)5, (int)3>(long, long, const T1 *, long, long, T2 *, long, long, int, int)"
+0.0,61664,72,856.4,864.0,768,896,33.8,cupy_equal__float64_float_bool
+0.0,61600,52,1184.6,1120.0,864,3008,338.7,cupy_add__int64_int64_int64
+0.0,61280,66,928.5,896.0,832,1312,92.0,cupy_copy__int32_uint32
+0.0,61280,72,851.1,864.0,768,896,35.5,cupy_add__int_int32_int32
+0.0,60320,3,20106.7,20160.0,19936,20224,151.2,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x32x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,55232,55,1004.2,992.0,864,1504,107.8,cupy_sqrt__float64_float64
+0.0,53824,1,53824.0,53824.0,53824,53824,0.0,"int1e_ovlp_kernel(double *, PBCIntEnvVars, int *, int *, int *)"
+0.0,52128,56,930.9,928.0,896,1088,31.9,"void zero_lower_kernel<double, (int)5, (int)3>(int, int, T1 *, long, long)"
+0.0,51904,1,51904.0,51904.0,51904,51904,0.0,"fill_bvk_triu_axis0_kernel(double *, int *, int, int)"
+0.0,51776,14,3698.3,3648.0,3392,4128,235.7,"void laed3_epi2<stedc_params_<double2, double, (int)8, (int)32, (int)128>>(int, int, int, int *, T1::data_type *, int, int *, T1::data_type *, int *, T1::data_type *, T1::data_type *, int, int)"
+0.0,49056,12,4088.0,4096.0,4064,4128,19.9,"_unpack_tril(double *, double *, unsigned long, int)"
+0.0,48704,14,3478.9,3504.0,3232,3712,158.0,cupy_divmod__int32_int_int32_int32
+0.0,47232,14,3373.7,3360.0,3296,3456,43.0,"void lansy_M_stage1<double, double, (int)8>(long, const T1 *, unsigned long, T2 *, int)"
+0.0,46912,12,3909.3,3904.0,3840,4064,56.0,cupy_add__float_float64_float64
+0.0,45280,45,1006.2,928.0,800,2912,307.7,cupy_multiply__int64_int_int64
+0.0,42848,14,3060.6,3056.0,3008,3168,40.9,"void laed3_epi2<stedc_params_<double2, double, (int)8, (int)16, (int)128>>(int, int, int, int *, T1::data_type *, int, int *, T1::data_type *, int *, T1::data_type *, T1::data_type *, int, int)"
+0.0,42048,40,1051.2,992.0,800,1728,244.8,cupy_copy__int64_int64
+0.0,39488,4,9872.0,9312.0,9088,11776,1280.4,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortOnesweepKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<int, unsigned long, unsigned long long>::Policy1000, (cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::SortOrder)0, int, unsigned long, unsigned long long, int, int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::identity_decomposer_t>(T7 *, T7 *, T5 *, const T5 *, T3 *, const T3 *, T4 *, const T4 *, T6, int, int, T8)"
+0.0,39072,4,9768.0,9520.0,6656,13376,3179.2,sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+0.0,38816,52,746.5,768.0,640,832,42.4,cupy_arange__int_int_int64
+0.0,37248,14,2660.6,2560.0,2400,3872,368.0,"void laed3_epi1<stedc_params_<double2, double, (int)8, (int)32, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, int *, int *, T1::data_type *, T1::data_type *, T1::data_type *, int *, int, int)"
+0.0,35968,36,999.1,960.0,928,1184,75.0,cupy_divmod__uint32_uint_uint32_uint32
+0.0,35168,14,2512.0,2512.0,2496,2528,16.6,"void laed3_epi1<stedc_params_<double2, double, (int)8, (int)16, (int)128>>(int, int, int, int *, T1::data_type *, T1::data_type *, int, T1::data_type *, int *, int *, T1::data_type *, T1::data_type *, T1::data_type *, int *, int, int)"
+0.0,34496,1,34496.0,34496.0,34496,34496,0.0,cupy_tril_kernel
+0.0,29728,42,707.8,672.0,576,1056,112.0,"copy_info_kernel(int, int *)"
+0.0,28128,2,14064.0,14064.0,2240,25888,16721.7,"void trsm_left_kernel<int, double, (int)256, (int)4, (bool)0, (bool)0, (bool)0, (bool)0, (bool)0>(cublasTrsmParams<T1, T2>, T2, const T2 *, int)"
+0.0,27200,29,937.9,832.0,704,1984,322.3,cupy_tri
+0.0,25344,1,25344.0,25344.0,25344,25344,0.0,"GDFTgroup_grids_kernel(int *, const double *, const double *, int, int)"
+0.0,24096,14,1721.1,1728.0,1632,1792,47.3,"void lansy_M_stage2<double, (int)8>(long, T1 *)"
+0.0,21600,14,1542.9,1552.0,1472,1600,43.8,"void larft_vtv_32<double, (int)128>(long, long, const T1 *, long, long, T1 *, long, long)"
+0.0,19808,18,1100.4,992.0,800,2112,367.7,cupy_where__bool_bool_bool_bool
+0.0,18752,1,18752.0,18752.0,18752,18752,0.0,"void syherk_kernel_core<int, double, double, (int)256, (int)4, (bool)0, (bool)0, (bool)0, (bool)1, (bool)0, (bool)1>(cublasSyherkParams<T1, T2, T3>)"
+0.0,17952,14,1282.3,1248.0,1184,1408,69.3,"void scale_max<double, (int)32, (int)128, (int)0>(long, long, T1 *, T1 *, T1 *, int *)"
+0.0,17120,1,17120.0,17120.0,17120,17120,0.0,sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize32x32x32_stage3_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cublas
+0.0,16768,14,1197.7,1040.0,960,2656,433.7,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::transform::transform_kernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::transform::policy_hub<(bool)0, cuda::std::__4::tuple<thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::counting_iterator<unsigned long, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::compile_time_value<(int)1>>, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::constant_iterator<long, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default>>, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::device_ptr<unsigned long>>::policy1000, int, cuda::std::__4::modulus<unsigned long>, unsigned long *, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::counting_iterator<unsigned long, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::compile_time_value<(int)1>>, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::constant_iterator<long, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default, thrust::THRUST_300102_SM_750_800_860_870_890_900_1000_1100_1200_NS::use_default>>(T2, int, bool, T3, T4, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::transform::kernel_arg<T5>...)"
+0.0,16224,6,2704.0,2688.0,2656,2816,63.2,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortHistogramKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<unsigned int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned long long>::Policy1000, (cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::SortOrder)0, unsigned int, unsigned long long, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::identity_decomposer_t>(T4 *, const T3 *, T4, int, int, T5)"
+0.0,15712,4,3928.0,3920.0,3840,4032,80.0,"ovlp_mask_estimation_kernel(signed char *, float *, float *, PBCIntEnvVars, int, float)"
+0.0,15072,1,15072.0,15072.0,15072,15072,0.0,sm90_xmma_syrk_u_f64f64_f64f64_f64_tn_n_tilesize32x32x32_stage5_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_cublas
+0.0,14848,8,1856.0,1840.0,1728,2080,136.8,cupy_count_nonzero
+0.0,14528,13,1117.5,1152.0,928,1344,144.6,cupy_invert__bool_bool
+0.0,10048,3,3349.3,4544.0,896,4608,2124.9,cupy_copy__int32_int32
+0.0,9792,14,699.4,704.0,640,800,51.5,"xx_set_info_ker(int, int *, int)"
+0.0,7488,8,936.0,928.0,896,1024,47.6,cupy_equal__uint32_uint32_bool
+0.0,7232,8,904.0,896.0,896,928,14.8,cupy_add__int_int64_int64
+0.0,7072,1,7072.0,7072.0,7072,7072,0.0,cupy_true_divide__float64_float64_float64
+0.0,6464,6,1077.3,1104.0,960,1120,62.9,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortExclusiveSumKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<unsigned int, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned long long>::Policy1000, unsigned long long>(T2 *)"
+0.0,5664,3,1888.0,1376.0,1312,2976,942.8,cupy_copy__uint32_int32
+0.0,4224,2,2112.0,2112.0,1312,2912,1131.4,cupy_copy__int64_int32
+0.0,3648,1,3648.0,3648.0,3648,3648,0.0,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortHistogramKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<int, unsigned long, unsigned long long>::Policy1000, (cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::SortOrder)0, int, unsigned long long, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::identity_decomposer_t>(T4 *, const T3 *, T4, int, int, T5)"
+0.0,3584,4,896.0,896.0,864,928,26.1,cupy_log__float32_float32
+0.0,3552,1,3552.0,3552.0,3552,3552,0.0,cupy_divmod__int64_int_int64_int64
+0.0,3520,4,880.0,880.0,832,928,55.4,cupy_absolute__float32_float32
+0.0,3072,1,3072.0,3072.0,3072,3072,0.0,void cutlass::Kernel2<cutlass_80_tensorop_d884gemm_32x32_16x5_nn_align1>(T1::Params)
+0.0,2752,1,2752.0,2752.0,2752,2752,0.0,"ket_sph2sorted_kernel(double *, double *, double *, int *, int *, int *, int *, int, int, int)"
+0.0,2176,2,1088.0,1088.0,960,1216,181.0,cupy_negative__float64_float64
+0.0,1824,1,1824.0,1824.0,1824,1824,0.0,"_block_diag(double *, int, int, double *, int, int *, int *, int *)"
+0.0,1728,1,1728.0,1728.0,1728,1728,0.0,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::scan::DeviceScanKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::scan::policy_hub<long, long, long, unsigned int, cuda::std::__4::plus<void>>::Policy1000, long *, long *, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::ScanTileState<long, (bool)1>, cuda::std::__4::plus<void>, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType, unsigned int, long, (bool)0, cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::NullType>(T2, T3, T4, int, T5, T6, T7)"
+0.0,1440,2,720.0,720.0,704,736,22.6,cupy_arange__float_float_float64
+0.0,1216,1,1216.0,1216.0,1216,1216,0.0,cupy_absolute__float64_float64
+0.0,1152,1,1152.0,1152.0,1152,1152,0.0,potrf_alg2_reset_info(int *)
+0.0,1088,1,1088.0,1088.0,1088,1088,0.0,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix_sort::DeviceRadixSortExclusiveSumKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::radix::policy_hub<int, unsigned long, unsigned long long>::Policy1000, unsigned long long>(T2 *)"
+0.0,1088,1,1088.0,1088.0,1088,1088,0.0,"void gemmk1_kernel<int, double, (int)256, (int)5, (bool)1, (bool)0, (bool)0, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double, (int)0>(cublasGemmk1Params<T2, T9, T10, T11, T12, biasType<T11::value_type, T12>::type>)"
+0.0,896,1,896.0,896.0,896,896,0.0,cupy_copy__int32_int64
+0.0,896,1,896.0,896.0,896,896,0.0,cupy_not_equal__int32_int_bool
+0.0,864,1,864.0,864.0,864,864,0.0,cupy_less__float64_float_bool
+0.0,736,1,736.0,736.0,736,736,0.0,cupy_copy__float_float64
+0.0,736,1,736.0,736.0,736,736,0.0,"void cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::detail::scan::DeviceScanInitKernel<cub::CUB_300102_SM_750_800_860_870_890_900_1000_1100_1200::ScanTileState<long, (bool)1>>(T1, int)"
+0.0,704,1,704.0,704.0,704,704,0.0,cupy_copy__int_int32
+0.0,704,1,704.0,704.0,704,704,0.0,"potrf_alg2_set_info(int, int, int *)"

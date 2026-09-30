@@ -1,0 +1,32 @@
+wall=81.330404718 s NP=1 OMP=72
+  *** SCF run converged in    10 steps ***
+  Total energy:                                              -132.53110433339791
+ ENERGY| Total FORCE_EVAL ( QS ) energy [a.u.]:             -139.427103385610053
+ CP2K                                 1  1.0    0.022    0.022   79.589   79.589
+ -                                T I M I N G                                  -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ SUBROUTINE                       CALLS  ASD         SELF TIME        TOTAL TIME
+                                MAXIMUM       AVERAGE  MAXIMUM  AVERAGE  MAXIMUM
+ CP2K                                 1  1.0    0.022    0.022   79.589   79.589
+ qs_energies                          1  2.0    0.004    0.004   79.439   79.439
+ mp2_main                             1  3.0    0.001    0.001   72.978   72.978
+ mp2_gpw_main                         1  4.0    0.002    0.002   72.773   72.773
+ mp2_ri_gpw_compute_in                1  5.0    0.064    0.064   58.985   58.985
+ mp2_ri_gpw_compute_in_loop           1  6.0    0.007    0.007   54.603   54.603
+ dbcsr_multiply_generic            5322  8.0    0.157    0.157   38.708   38.708
+ ao_to_mo_and_store_B_mult_1       2656  7.0    0.008    0.008   37.330   37.330
+ multiply_cannon                   5322  9.0    1.450    1.450   26.384   26.384
+ multiply_cannon_loop              5322 10.0    3.501    3.501   21.773   21.773
+ mp2_ri_gpw_compute_en                1  5.0    0.013    0.013   13.777   13.777
+ mp2_ri_gpw_compute_en_RI_loop        1  6.0    2.158    2.158   13.239   13.239
+ mp2_eri_3c_integrate_gpw          2656  7.0    0.009    0.009   12.923   12.923
+ multiply_cannon_multrec           5322 11.0    8.457    8.457   10.159   10.159
+ make_m2s                         10644  9.0    0.042    0.042    9.186    9.186
+ make_images                      10644 10.0    1.978    1.978    8.604    8.604
+ integrate_v_rspace                2666  8.0    0.546    0.546    7.595    7.595
+ acc_transpose_blocks              5322 11.0    0.017    0.017    6.569    6.569
+ grid_integrate_task_list          2666  9.0    6.299    6.299    6.299    6.299
+ acc_transpose_blocks_sync        15966 12.0    5.929    5.929    5.929    5.929
+ calculate_wavefunction            2656  8.0    4.499    4.499    5.817    5.817
+GPU samples=163 meanPower=137.8W maxPower=156.3W meanUtil=16.3%

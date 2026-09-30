@@ -1,0 +1,203 @@
+diff --git a/src/setupRun.C b/src/setupRun.C
+index 92d307e..fb0aa0c 100644
+--- a/src/setupRun.C
++++ b/src/setupRun.C
+@@ -35,6 +35,7 @@
+ #include "CurvilinearInterface2.h"
+ #include "EW.h"
+ #include "GridGenerator.h"
++#include "MantTrunc.h"
+ #include "caliper.h"
+ 
+ // making directories
+@@ -107,6 +108,25 @@ void bndryOpNoGhostc(float_sw4 *acof_no_gp, float_sw4 *ghcof_no_gp,
+ #define SQR(x) ((x) * (x))
+ 
+ //----------------------------------------------
++// [mantissa-optimize] Truncate the mantissa of a set of (host-accessible,
++// managed) Sarrays in place and print one "[MANT]" line on rank 0.
++static void mant_trunc_sarrays(const manttrunc::Config &mc,
++                               std::vector<Sarray *> &arrs, const char *what,
++                               bool root) {
++  SYNC_DEVICE;
++  unsigned long long cnt[2] = {0, 0};  // total, changed
++  for (Sarray *a : arrs) {
++    cnt[1] += manttrunc::apply_array(a->c_ptr(), a->m_npts, mc);
++    cnt[0] += a->m_npts;
++  }
++  MPI_Allreduce(MPI_IN_PLACE, cnt, 2, MPI_UNSIGNED_LONG_LONG, MPI_SUM,
++                MPI_COMM_WORLD);
++  if (root)
++    printf("[MANT] SW4 %s: MANT_BITS=%d MANT_ROUND=%s, %llu values, %llu "
++           "changed\n",
++           what, mc.bits, mc.nearest ? "nearest" : "trunc", cnt[0], cnt[1]);
++}
++
+ void EW::setupRun(vector<vector<Source *> > &a_GlobalUniqueSources) {
+   SW4_MARK_FUNCTION;
+   if (mIsInitialized && proc_zero())
+@@ -352,6 +372,27 @@ void EW::setupRun(vector<vector<Source *> > &a_GlobalUniqueSources) {
+   else
+     set_materials();
+ 
++  // [mantissa-optimize] One-time mantissa truncation of the stored material
++  // arrays (rho, mu, lambda; rho and C when anisotropic), applied before any
++  // derived quantity (dt, supergrid, attenuation, MR coefficients, sources) is
++  // computed. No-op unless the environment variable MANT_BITS is set (< 52).
++  {
++    const manttrunc::Config mc = manttrunc::from_env();
++    if (mc.active()) {
++      std::vector<Sarray*> arrs;
++      for (auto& a : mRho) arrs.push_back(&a);
++      if (m_anisotropic)
++        for (auto& a : mC) arrs.push_back(&a);
++      else {
++        for (auto& a : mMu) arrs.push_back(&a);
++        for (auto& a : mLambda) arrs.push_back(&a);
++      }
++      mant_trunc_sarrays(mc, arrs,
++                         m_anisotropic ? "rho,C" : "rho,mu,lambda",
++                         proc_zero());
++    }
++  }
++
+   if (m_output_detailed_timing) time_measure[4] = MPI_Wtime();
+ 
+   // evaluate resolution
+@@ -383,6 +424,23 @@ void EW::setupRun(vector<vector<Source *> > &a_GlobalUniqueSources) {
+       setup_viscoelastic_tw();
+     else
+       setup_viscoelastic();
++    // [mantissa-optimize] setup_viscoelastic() overwrites mMu/mLambda with the
++    // unrelaxed moduli and fills mMuVE/mLambdaVE (full mantissa again), so the
++    // arrays used in the time loop are truncated once more here.
++    const manttrunc::Config mc = manttrunc::from_env();
++    if (mc.active()) {
++      std::vector<Sarray*> arrs;
++      for (int g = 0; g < mNumberOfGrids; g++) {
++        arrs.push_back(&mMu[g]);
++        arrs.push_back(&mLambda[g]);
++        for (int a = 0; a < m_number_mechanisms; a++) {
++          arrs.push_back(&mMuVE[g][a]);
++          arrs.push_back(&mLambdaVE[g][a]);
++        }
++      }
++      mant_trunc_sarrays(mc, arrs, "attenuation mu,lambda,muVE,lambdaVE",
++                         proc_zero());
++    }
+   }
+ 
+   // form combinations of material coefficients for MR
+diff --git a/src/MantTrunc.h b/src/MantTrunc.h
+new file mode 100644
+index 0000000..9a8a2ba
+--- /dev/null
++++ b/src/MantTrunc.h
+@@ -0,0 +1,63 @@
++// Mantissa truncation research hook (mantissa-optimize project, GH200).
++// Controlled by environment variables; a no-op unless MANT_BITS is set:
++//   MANT_BITS=<k>              keep k explicit mantissa bits of each double (0..51)
++//   MANT_ROUND=trunc|nearest   trunc (default) = zero the low 52-k bits,
++//                              nearest = add 1<<(52-k-1) to the bit pattern first
++// NaN/Inf are left untouched. k >= 52 (or unset / invalid) means no change.
++#ifndef SW4_MANT_TRUNC_H
++#define SW4_MANT_TRUNC_H
++
++#include <cstdint>
++#include <cstdlib>
++#include <cstring>
++
++namespace manttrunc {
++
++struct Config {
++  int bits = 52;         // 52 = native, no-op
++  bool nearest = false;  // default: truncation toward zero (mantissa zeroing)
++  bool active() const { return bits >= 0 && bits < 52; }
++};
++
++inline Config from_env() {
++  Config c;
++  const char* b = std::getenv("MANT_BITS");
++  if (b && *b) {
++    char* end = nullptr;
++    long v = std::strtol(b, &end, 10);
++    if (end != b && v >= 0 && v < 52) c.bits = static_cast<int>(v);
++  }
++  const char* r = std::getenv("MANT_ROUND");
++  if (r && (std::strcmp(r, "nearest") == 0 || std::strcmp(r, "rn") == 0))
++    c.nearest = true;
++  return c;
++}
++
++inline double apply(double x, const Config& c) {
++  std::uint64_t u;
++  std::memcpy(&u, &x, sizeof u);
++  if (((u >> 52) & 0x7ffULL) == 0x7ffULL) return x;  // NaN / Inf
++  const int drop = 52 - c.bits;
++  if (c.nearest) u += (1ULL << (drop - 1));
++  u &= ~((1ULL << drop) - 1ULL);
++  std::memcpy(&x, &u, sizeof u);
++  return x;
++}
++
++// Applies in place on host-accessible memory; returns number of values changed.
++inline std::size_t apply_array(double* p, std::size_t n, const Config& c) {
++  if (!c.active()) return 0;
++  std::size_t changed = 0;
++  for (std::size_t i = 0; i < n; i++) {
++    const double y = apply(p[i], c);
++    if (std::memcmp(&y, &p[i], sizeof y) != 0) {
++      p[i] = y;
++      changed++;
++    }
++  }
++  return changed;
++}
++
++}  // namespace manttrunc
++
++#endif  // SW4_MANT_TRUNC_H
+diff --git a/configs/make.gh200 b/configs/make.gh200
+new file mode 100644
+index 0000000..4e694e0
+--- /dev/null
++++ b/configs/make.gh200
+@@ -0,0 +1,38 @@
++# SW4 (raja branch) on GH200: nvcc (CUDA 13.2 from NVHPC 26.5) + RAJA v2026.07.1, sm_90
++# No Umpire / HDF5 / Proj / FFTW. Copy to configs/make.inc before running make.
++NH = /software/nvhpc/Linux_aarch64/26.5
++CUDA_HOME = $(NH)/cuda/13.2
++MPI_HOME = $(NH)/comm_libs/13.2/hpcx/hpcx-2.50/ompi5
++RAJA_HOME = /nfs/home/koying/mantissa-optimize/apps/sw4-tpl/install
++NVHPC_LIB = $(NH)/compilers/lib
++
++FC = gfortran
++LINKER = g++
++CXX = $(PREP) nvcc
++
++proj = no
++ckernel = yes
++openmp = no
++raja_cuda = yes
++hdf5 = no
++zfp = no
++EXTRA_FORT_FLAGS = -fallow-argument-mismatch -std=legacy
++
++GIT_VERSION := "$(shell git describe --abbrev=4 --dirty --always --tags)"
++
++MORE_FLAGS = -DENABLE_MPI_TIMING_BARRIER=1 -DSW4_STAGED_MPI_BUFFERS=1 -DUSE_DIRECT_INVERSE=1 \
++  -DSW4_USE_CMEM=1 -DSW4_GHCOF_NO_GP_IS_ZERO=1 \
++  -DSW4_GIT_VERSION=\"$(GIT_VERSION)\"
++
++DLINKFLAGS = -arch=sm_90
++LINKFLAGS =
++
++EXTRA_CXX_FLAGS = -O3 -lineinfo -use_fast_math $(MORE_FLAGS) -DDISABLE_PREFETCH=1 -ccbin g++ \
++  -Xcompiler=-Wno-template-body -std=c++20 --expt-extended-lambda --expt-relaxed-constexpr -restrict \
++  -arch=sm_90 -I$(CUDA_HOME)/include -I$(RAJA_HOME)/include -I$(MPI_HOME)/include --x cu \
++  -DRAJA_USE_CUDA -DSW4_CROUTINES -DRAJA_USE_RESTRICT_PTR -DCUDA_CODE -DENABLE_CUDA -dc
++
++EXTRA_LINK_FLAGS = -L$(NVHPC_LIB) -Wl,-rpath,$(NVHPC_LIB) -llapack -lblas \
++  -L$(CUDA_HOME)/lib64 -Wl,-rpath,$(CUDA_HOME)/lib64 -lcudart -L$(CUDA_HOME)/lib64/stubs -lcuda \
++  -L$(RAJA_HOME)/lib -lRAJA -lcamp -lcudadevrt -lnvidia-ml \
++  -L$(MPI_HOME)/lib -Wl,-rpath,$(MPI_HOME)/lib -lmpi -lgfortran -lstdc++ -lm -ldl

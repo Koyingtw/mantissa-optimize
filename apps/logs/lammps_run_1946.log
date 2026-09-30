@@ -1,0 +1,63 @@
+name, power.limit [W], enforced.power.limit [W], clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 900.00 W, 1980 MHz
+=== orig  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:37:03.153639444
+=== orig end 02:37:14.973252071
+         0   1.600000000000010e+03 -3.540000002287355e+00 -3.333190233294603e+00  1.870357335907841e+04
+        50   7.848180051613137e+02 -3.433951221560520e+00 -3.332508702592544e+00  5.209060093678079e+04
+       100   7.960634214339386e+02 -3.435412161241928e+00 -3.332516103560471e+00  5.154028403681214e+04
+       150   7.953593573977610e+02 -3.435320103379950e+00 -3.332515050273916e+00  5.164453655036570e+04
+       200   7.970137228160452e+02 -3.435537453824480e+00 -3.332518563887206e+00  5.159090458954899e+04
+Loop time of 9.76926 on 1 procs for 200 steps with 32000 atoms
+Performance: 8.844 ns/day, 2.714 hours/ns, 20.472 timesteps/s, 655.116 katom-step/s
+Total wall time: 0:00:10
+=== orig2  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp_native_unmodified  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:37:14.977071924
+=== orig2 end 02:37:26.672317546
+         0   1.600000000000010e+03 -3.540000002287356e+00 -3.333190233294604e+00  1.870357335907841e+04
+        50   7.848180051613131e+02 -3.433951221560516e+00 -3.332508702592540e+00  5.209060093678077e+04
+       100   7.960634214339377e+02 -3.435412161241932e+00 -3.332516103560475e+00  5.154028403681218e+04
+       150   7.953593573977594e+02 -3.435320103379958e+00 -3.332515050273925e+00  5.164453655036523e+04
+       200   7.970137228160477e+02 -3.435537453824496e+00 -3.332518563887222e+00  5.159090458954895e+04
+Loop time of 9.76149 on 1 procs for 200 steps with 32000 atoms
+Performance: 8.851 ns/day, 2.712 hours/ns, 20.489 timesteps/s, 655.637 katom-step/s
+Total wall time: 0:00:10
+=== mod  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=<unset> MANT_ROUND=<unset>  start 02:37:26.676098680
+=== mod end 02:37:38.285612724
+         0   1.600000000000010e+03 -3.540000002287356e+00 -3.333190233294604e+00  1.870357335907841e+04
+        50   7.848180051613118e+02 -3.433951221560516e+00 -3.332508702592540e+00  5.209060093678070e+04
+       100   7.960634214339350e+02 -3.435412161241918e+00 -3.332516103560461e+00  5.154028403681175e+04
+       150   7.953593573977648e+02 -3.435320103379950e+00 -3.332515050273916e+00  5.164453655036561e+04
+       200   7.970137228160443e+02 -3.435537453824494e+00 -3.332518563887221e+00  5.159090458954899e+04
+Loop time of 9.67378 on 1 procs for 200 steps with 32000 atoms
+Performance: 8.931 ns/day, 2.687 hours/ns, 20.674 timesteps/s, 661.582 katom-step/s
+Total wall time: 0:00:09
+=== trunc36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=trunc  start 02:37:38.289314178
+=== trunc36 end 02:37:49.885055970
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=trunc values=7000 changed=2948 max_rel_change=1.430e-11
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=trunc values=3500 changed=3178 max_rel_change=1.439e-11
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=trunc values=3500 changed=3349 max_rel_change=1.434e-11
+         0   1.600000000000010e+03 -3.540000002319089e+00 -3.333190233326337e+00  1.870357335935313e+04
+        50   7.848180051663262e+02 -3.433951221528819e+00 -3.332508702560195e+00  5.209060093996055e+04
+       100   7.960634214404848e+02 -3.435412161210444e+00 -3.332516103528141e+00  5.154028403993670e+04
+       150   7.953593574062223e+02 -3.435320103348226e+00 -3.332515050241099e+00  5.164453655355727e+04
+       200   7.970137228253391e+02 -3.435537453792800e+00 -3.332518563854325e+00  5.159090459286982e+04
+Loop time of 9.6851 on 1 procs for 200 steps with 32000 atoms
+Performance: 8.921 ns/day, 2.690 hours/ns, 20.650 timesteps/s, 660.809 katom-step/s
+Total wall time: 0:00:09
+=== near36  bin=/nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda/lmp  MANT_BITS=36 MANT_ROUND=nearest  start 02:37:49.888763248
+=== near36 end 02:38:01.483388533
+[MANT] PairEAMKokkos frho_spline: MANT_BITS=36 MANT_ROUND=nearest values=7000 changed=2948 max_rel_change=7.225e-12
+[MANT] PairEAMKokkos rhor_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3178 max_rel_change=7.251e-12
+[MANT] PairEAMKokkos z2r_spline: MANT_BITS=36 MANT_ROUND=nearest values=3500 changed=3349 max_rel_change=7.241e-12
+         0   1.600000000000010e+03 -3.540000002273927e+00 -3.333190233281176e+00  1.870357336706092e+04
+        50   7.848180051592896e+02 -3.433951221561337e+00 -3.332508702593623e+00  5.209060093690075e+04
+       100   7.960634214316411e+02 -3.435412161242968e+00 -3.332516103561808e+00  5.154028403698160e+04
+       150   7.953593573950839e+02 -3.435320103380985e+00 -3.332515050275298e+00  5.164453655056459e+04
+       200   7.970137228134329e+02 -3.435537453825854e+00 -3.332518563888918e+00  5.159090458968987e+04
+Loop time of 9.67104 on 1 procs for 200 steps with 32000 atoms
+Performance: 8.934 ns/day, 2.686 hours/ns, 20.680 timesteps/s, 661.769 katom-step/s
+Total wall time: 0:00:09
+[orig] wall=11.8s samples=24 meanP=151W maxP=164W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=60C sw_power_cap_samples=0 hw_slowdown_samples=0
+[orig2] wall=11.7s samples=23 meanP=158W maxP=163W meanUtil=1% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=56C sw_power_cap_samples=0 hw_slowdown_samples=0
+[mod] wall=11.6s samples=23 meanP=156W maxP=160W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=52C sw_power_cap_samples=0 hw_slowdown_samples=0
+[trunc36] wall=11.6s samples=23 meanP=150W maxP=157W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=48C sw_power_cap_samples=0 hw_slowdown_samples=0
+[near36] wall=11.6s samples=23 meanP=149W maxP=155W meanUtil=0% | busy(util>=50%) n=0 meanP=0W meanSM=0MHz meanUtil=0% maxT=46C sw_power_cap_samples=0 hw_slowdown_samples=0

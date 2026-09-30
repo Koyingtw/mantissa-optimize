@@ -1,0 +1,9 @@
+print(f"natm={mol.natm} nao={mol.nao} nelec={mol.nelectron} xc={xc} basis={basis} mode={mode} dev={dev}")
+    from gpu4pyscf import dft
+print(f"RESULT converged={mf.converged} E={e:.10f} Eh  scf_cycles={nit[0]}  wall={t1-t0:.2f}s")
+natm=168 nao=2958 nelec=600 xc=b3lyp basis=def2-tzvp mode=df dev=gpu
+gpu4pyscf 1.8.1 cupy 14.2.0 CONTRACT_ENGINE cupy
+RESULT converged=True E=-3795.5392524244 Eh  scf_cycles=16  wall=111.57s
+cycle= 16 E= -3795.53925242442  delta_E= -3.27e-11  |g|= 5.88e-06  |ddm|= 1.4e-05
+converged SCF energy = -3795.53925242442
+RESULT converged=True E=-3795.5392524244 Eh  scf_cycles=16  wall=111.57s

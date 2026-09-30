@@ -1,0 +1,46 @@
+  pseudo_dir='./'
+  outdir='./tmp'
+job=1729 host=work2 app=qe case=ausurf112 variants=[stats copy 44:trunc 36:trunc 28:trunc 20:trunc 12:trunc 28:nearest 20:nearest] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=stats pass=A t_begin=1790685729.684208937
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m17.18s CPU   1m15.95s WALL
+=== END tdp=1000 variant=stats pass=A t_begin=1790685729.684208937 t_end=1790685807.640299942
+=== RUN tdp=1000 variant=copy pass=A t_begin=1790685807.653465573
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m23.42s CPU   1m44.61s WALL
+=== END tdp=1000 variant=copy pass=A t_begin=1790685807.653465573 t_end=1790685914.127556072
+=== RUN tdp=1000 variant=44:trunc pass=A t_begin=1790685914.140609128
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m23.12s CPU   1m44.41s WALL
+=== END tdp=1000 variant=44:trunc pass=A t_begin=1790685914.140609128 t_end=1790686020.420357252
+=== RUN tdp=1000 variant=36:trunc pass=A t_begin=1790686020.433691362
+    !    total energy              =  -11427.09402207 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m23.27s CPU   1m44.56s WALL
+=== END tdp=1000 variant=36:trunc pass=A t_begin=1790686020.433691362 t_end=1790686126.870849878
+=== RUN tdp=1000 variant=28:trunc pass=A t_begin=1790686126.884044180
+    !    total energy              =  -11427.09399958 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m23.39s CPU   1m44.40s WALL
+=== END tdp=1000 variant=28:trunc pass=A t_begin=1790686126.884044180 t_end=1790686233.167211287
+=== RUN tdp=1000 variant=20:trunc pass=A t_begin=1790686233.180285655
+=== RUN FAILED rc=1
+=== END tdp=1000 variant=20:trunc pass=A t_begin=1790686233.180285655 t_end=1790686383.903070781
+=== RUN tdp=1000 variant=12:trunc pass=A t_begin=1790686383.916204348
+=== RUN FAILED rc=1
+=== END tdp=1000 variant=12:trunc pass=A t_begin=1790686383.916204348 t_end=1790686506.697263092
+=== RUN tdp=1000 variant=28:nearest pass=A t_begin=1790686506.710415859
+    !    total energy              =  -11427.09402244 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m23.56s CPU   1m44.71s WALL
+=== END tdp=1000 variant=28:nearest pass=A t_begin=1790686506.710415859 t_end=1790686613.290575753
+=== RUN tdp=1000 variant=20:nearest pass=A t_begin=1790686613.303854247
+    !    total energy              =  -11427.09396765 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m27.75s CPU   1m50.59s WALL
+=== END tdp=1000 variant=20:nearest pass=A t_begin=1790686613.303854247 t_end=1790686725.777162444
+=== ALL DONE

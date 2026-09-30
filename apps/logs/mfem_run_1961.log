@@ -1,0 +1,29 @@
+name, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 33, 1980 MHz
+=== RUN tag=single MANT_BITS=<unset> MANT_ROUND=<unset> BIN=ex1_bench.build-cuda ARGS=-n 128 -o 3 -rep 3 -matvec 500
+Options used:
+   --nx 128
+   --order 3
+   --device cuda
+   --partial-assembly
+   --no-mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 3
+   --fixed-its 0
+   --matvec 500
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=128 p=3 NE=2097152 ndofs=57066625 amp=0.05 kappa=var mass=0
+
+
+CUDA error: (cudaFree(dptr)) failed with error:
+ --> an illegal memory access was encountered [code: 700]
+ ... in function: void* mfem::CuMemFree(void*)
+ ... in file: /nfs/home/koying/mantissa-optimize/apps/mfem/general/cuda.cpp:86
+Command terminated by signal 6
+ELAPSED 13.45 s  MAXRSS 7598208 KB

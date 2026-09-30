@@ -1,0 +1,157 @@
++ module load nvhpc/26.5
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ export CUDA_HOME=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ CUDA_HOME=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ export PATH=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/extras/qd/bin:/software/nvhpc/Linux_aarch64/26.5/comm_libs/mpi/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/bin:/software/nvhpc/Linux_aarch64/26.5/cuda/bin:/home/koying/.local/bin:/software/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
++ PATH=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/extras/qd/bin:/software/nvhpc/Linux_aarch64/26.5/comm_libs/mpi/bin:/software/nvhpc/Linux_aarch64/26.5/compilers/bin:/software/nvhpc/Linux_aarch64/26.5/cuda/bin:/home/koying/.local/bin:/software/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
++ export NVCC_WRAPPER_DEFAULT_COMPILER=g++
++ NVCC_WRAPPER_DEFAULT_COMPILER=g++
++ export OMPI_CXX=g++ OMPI_CC=gcc
++ OMPI_CXX=g++
++ OMPI_CC=gcc
++ cd /nfs/home/koying/mantissa-optimize/apps/lammps
++ B=build-kokkos-cuda
++ '[' 1 = 1 ']'
++ cmake -S cmake -B build-kokkos-cuda -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=/nfs/home/koying/mantissa-optimize/apps/lammps/lib/kokkos/bin/nvcc_wrapper -DPKG_KOKKOS=on -DKokkos_ENABLE_CUDA=yes -DKokkos_ARCH_HOPPER90=yes -DKokkos_ENABLE_OPENMP=yes -DPKG_MANYBODY=on -DPKG_MOLECULE=off -DBUILD_MPI=yes -DBUILD_OMP=yes -DCUDAToolkit_ROOT=/software/nvhpc/Linux_aarch64/26.5/cuda/13.2
++ tail -60
+-- Architectures:
+--  HOPPER90
+-- Found CUDAToolkit: /software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux/include;/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/targets/sbsa-linux/include/cccl;/nfs/software/nvhpc/Linux_aarch64/26.5/math_libs/13.2/include (found version "13.2.78")
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Found TPLLIBDL: /usr/include
+-- Found OpenMP_CXX: -fopenmp (found suitable version "4.5", minimum required is "3.0")
+-- Found OpenMP: TRUE (found suitable version "4.5", minimum required is "3.0") found components: CXX
+-- Using internal desul_atomics copy
+-- Experimental mdspan support is enabled
+-- Looking for C++ include experimental/mdspan
+-- Looking for C++ include experimental/mdspan - not found
+-- Looking for C++ include mdspan
+-- Looking for C++ include mdspan - not found
+-- Using internal mdspan directory /nfs/home/koying/mantissa-optimize/apps/lammps/lib/kokkos/tpls/mdspan/include
+-- Kokkos Backends: OPENMP;CUDA
+-- Generating style headers...
+-- Generating package headers...
+-- Generating lmpinstalledpkgs.h...
+-- Found Python3: /usr/bin/python3 (found version "3.14.4") found components: Interpreter
+-- The following tools and libraries have been found and configured:
+ * MPI
+ * Threads
+ * CUDAToolkit
+ * TPLLIBDL
+ * OpenMP (required version >= 3.0)
+ * Python3
+
+-- <<< Build configuration >>>
+   LAMMPS Version:   2025.7.22.6 stable_22Jul2025_update6
+   Operating System: Linux Ubuntu" 26.04
+   CMake Version:    4.2.3
+   Build type:       Release
+   Install path:     /home/koying/.local
+   Generator:        Unix Makefiles using /usr/bin/gmake
+-- Enabled packages: KOKKOS;MANYBODY
+-- <<< Compilers and Flags: >>>
+-- C++ Compiler:     /nfs/home/koying/mantissa-optimize/apps/lammps/lib/kokkos/bin/nvcc_wrapper
+      Type:          GNU
+      Version:       15.2.0
+      C++ Standard:  17
+      C++ Flags:     -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -O3 -DNDEBUG
+      Defines:       LAMMPS_SMALLBIG;LAMMPS_MEMALIGN=64;LAMMPS_OMP_COMPAT=4;LAMMPS_GZIP;$<BUILD_INTERFACE:LMP_KOKKOS>
+-- C compiler:       /software/nvhpc/Linux_aarch64/26.5/compilers/bin/nvc
+      Type:          NVHPC
+      Version:       26.5.0
+      C Flags:       -fast -O3 -DNDEBUG
+-- <<< Linker flags: >>>
+-- Executable name:  lmp
+-- Static library flags:    
+-- <<< MPI flags >>>
+-- MPI_defines:      MPICH_SKIP_MPICXX;OMPI_SKIP_MPICXX;_MPICC_H
+-- MPI includes:     /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/include;/nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/include/openmpi
+-- MPI libraries:    /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libmpi.so;
+-- Kokkos Devices: CUDA;CUDA_LAMBDA;OPENMP
+-- Kokkos Architecture: HOPPER90
+-- Configuring done (10.4s)
+-- Generating done (0.4s)
+-- Build files have been written to: /nfs/home/koying/mantissa-optimize/apps/lammps/build-kokkos-cuda
++ cmake --build build-kokkos-cuda -j 72
++ grep -E 'error|Error|warning: .*deprecated|Linking|Built target lmp'
++ head -80
+[  2%] Generating includes/lammps/error.h
+[  6%] Built target error.h
+[  7%] Built target lmppython.h
+[  7%] Built target lmptype.h
+[  8%] Building CXX object lib/kokkos/core/src/CMakeFiles/kokkoscore.dir/impl/Kokkos_Error.cpp.o
+[ 11%] Linking CXX static library libkokkossimd.a
+[ 11%] Linking CXX static library libkokkoscore.a
+[ 11%] Linking CXX static library libkokkoscontainers.a
+[ 32%] Building CXX object CMakeFiles/lammps.dir/nfs/home/koying/mantissa-optimize/apps/lammps/src/error.cpp.o
+[ 98%] Linking CXX static library liblammps.a
+[100%] Linking CXX executable lmp
+[100%] Built target lmp
+
+real	1m46.385s
+user	54m58.406s
+sys	6m52.741s
++ ls -l build-kokkos-cuda/lmp
+-rwxrwxr-x+ 1 koying koying 95411504 Sep 30 02:27 build-kokkos-cuda/lmp
++ ldd build-kokkos-cuda/lmp
++ grep -E 'cuda|mpi|gomp'
+	libmpi.so.40 => /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libmpi.so.40 (0x0000fffff2470000)
+	libgomp.so.1 => /software/nvhpc/Linux_aarch64/26.5/compilers/lib/libgomp.so.1 (0x0000fffff2250000)
+	libcuda.so.1 => /usr/lib/aarch64-linux-gnu/libcuda.so.1 (0x0000000000400000)
+	libcudart.so.13 => /software/nvhpc/Linux_aarch64/26.5/cuda/lib64/libcudart.so.13 (0x0000fffff2170000)
+	libopen-pal.so.80 => /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libopen-pal.so.80 (0x0000fffff1ad0000)
+	libpmix.so.2 => /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libpmix.so.2 (0x0000fffff15b0000)
+	libevent_core-2.1.so.7 => /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libevent_core-2.1.so.7 (0x0000fffff1510000)
+	libevent_pthreads-2.1.so.7 => /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libevent_pthreads-2.1.so.7 (0x0000fffff14d0000)
+	libhwloc.so.15 => /nfs/software/nvhpc/Linux_aarch64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5/lib/libhwloc.so.15 (0x0000fffff1440000)
+	libnvc.so => /software/nvhpc/Linux_aarch64/26.5/compilers/lib/libnvc.so (0x0000fffff13b0000)
+	libnvcpumath.so => /software/nvhpc/Linux_aarch64/26.5/compilers/lib/libnvcpumath.so (0x0000fffff1200000)
++ build-kokkos-cuda/lmp -h
++ sed -n 1,60p
++ grep -iE 'kokkos|version|precision|MPI|OpenMP|Installed packages' -A2
++ head -40
+Usage example: build-kokkos-cuda/lmp -var t 300 -echo screen -in in.alloy
+
+List of command-line options supported by this LAMMPS executable:
+--
+-kokkos on/off ...          : turn KOKKOS mode on or off (-k)
+-log none/filename          : where to send log output (-l)
+-mdi '<mdi flags>'          : pass flags to the MolSSI Driver Interface
+-mpicolor color             : which exe in a multi-exe mpirun cmd (-m)
+-cite                       : select citation reminder style (-c)
+-nocite                     : disable citation reminder (-nc)
+--
+Compiler: GNU C++ 15.2.0 with OpenMP 4.5
+C++ standard: C++17
+Embedded fmt library version: 10.2.0
+Embedded JSON class version: 3.12.0
+
+MPI v3.1: Open MPI v5.0.10rc2, package: Open MPI qa@thunder2 Distribution, ident: 5.0.10rc2, repo rev: v5.0.0rc1-2475-gb99be7132e, 20 January 2026
+
+Accelerator configuration:
+--
+KOKKOS package API: CUDA OpenMP
+KOKKOS package precision: double
+Kokkos library version: 4.6.2
+
+FFT information:
+--
+FFT precision  = double
+FFT engine  = mpiFFT
+FFT library = KISS
+KOKKOS FFT engine  = mpiFFT
+KOKKOS FFT library = KISS
+
+Active compile time flags:
+
+-DLAMMPS_GZIP

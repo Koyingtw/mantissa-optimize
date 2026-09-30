@@ -1,0 +1,5 @@
+job=1848 host=work3 model=/data/mlperf/llama2_70b_lora/model
+specs=[bf16 bf16:5 bf16:4 bf16:3 bf16:2 bf16:1 bf16:0 bf16:3:trunc bf16:0:trunc fp8 fp8c fp8:2 fp8:1 fp8:0 fp8c:2 fp8c:1 fp8c:0 fp8:2;wa=w fp8:0;wa=w]
+NVIDIA GH200 480GB, 1000.00 W, 1980 MHz
+DUMPED {"x": "/nfs/home/koying/models/llama2_70b_operands/x_mlp_L40.bf16", "x_shape": [8192, 8192], "w": "/nfs/home/koying/models/llama2_70b_operands/w_gateup_L40.bf16", "w_shape": [57344, 8192], "layer": 40, "x_absmax": 5.625, "x_absmed": 0.1640625, "w_absmax": 0.55859375, "w_absmed": 0.00982666015625}
+infer-ppl done

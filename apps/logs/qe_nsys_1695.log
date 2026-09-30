@@ -1,0 +1,24 @@
+Warning: ieee_divide_by_zero is signaling
+Warning: ieee_inexact is signaling
+FORTRAN STOP
+!    total energy              =   -4035.04463221 Ry
+     convergence has been achieved in  22 iterations
+     PWSCF        :     39.67s CPU     35.04s WALL
+ERROR: Report 'cublas_api_sum' could not be found.
+
+GPU kernel total = 26.95 s ; BLAS-like kernels (gemm/gemv/trsm/...) = 11.28 s = 41.9% of GPU kernel time
+wall = 35.04 s ; BLAS kernels / wall = 32.2%
+Top 12 kernels:
+     4.549s  16.9% n=    166 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x64x16_stage4_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cu
+     4.500s  16.7% n=  35170        void regular_fft<(unsigned int)144, EPT<(unsigned int)12>, (unsigned int)16, (unsigned int)2, (padding_t)6, (t
+     3.337s  12.4% n=    343 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x64x16_stage4_warpsize2x2x1_tensor16x8x8_execute_kernel__5x_cu
+     2.286s   8.5% n=  17585        void regular_fft<(unsigned int)144, EPT<(unsigned int)12>, (unsigned int)8, (unsigned int)8, (padding_t)6, (tw
+     1.396s   5.2% n=   3751        void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)2048, (int)32, (int)1, (int)1, (int)2>>(int, T1::da
+     1.179s   4.4% n=   2363        vloc_psi_gamma_acc_74_gpu
+     1.021s   3.8% n=   2434        fft_scalar_cufft_cfft3d_gpu_586_gpu
+     0.788s   2.9% n=   2768        void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)1024, (int)32, (int)1, (int)1, (int)2>>(int, T1::da
+     0.510s   1.9% n=   2363        fft_helper_subroutines_fftx_c2psi_gamma_360_gpu
+     0.506s   1.9% n=   2076        void sytrd4_gpu<sytrd_params<double, (int)32, (int)8, (int)512, (int)32, (int)1, (int)1, (int)2>>(int, T1::dat
+     0.477s   1.8% n=     67 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_tn_n_tilesize64x64x32_stage3_warpsize2x2x1_tensor16x8x16_execute_kernel__5x_c
+     0.437s   1.6% n=    673 [BLAS] sm90_xmma_gemm_f64f64_f64f64_f64_nn_n_tilesize64x128x32_stage3_warpsize2x4x1_tensor16x8x16_aligna8_alignc8_exe
+head: cannot open 'nsys_si512_1695_cublas_api_sum.csv' for reading: No such file or directory

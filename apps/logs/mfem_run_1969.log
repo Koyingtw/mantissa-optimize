@@ -1,0 +1,62 @@
+name, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 900.00 W, 52, 1980 MHz
+=== RUN tag=r0_native MANT_BITS=<unset> MANT_ROUND=<unset> BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -mass
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 0
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=1
+[SETUP] size=7189057 ess=221186 setup_time=1.588 s
+[CHECK] BnormL2=0.008462803984458131  (B,AB)=1.3299728675123089e-06  ||AB||=0.00033953626311873772
+[SOLVE] rep=0 its=960 converged=1 final_norm=2.9925642574162206e-12 time=13.230 s
+[TIME] solves=1 total_its=960 solve_time=13.230 s  per_it=13.7814 ms  0.522 GDOF/s(CG it)
+[RESULT] ||X||=936.95236057136867  (X,B)=6.6019278882087571
+[RESULT] nodal_err_max=5.6612214915929826e-11 nodal_err_rms=9.7145959635811278e-12
+[TIME] wall_total=14.888 s
+ELAPSED 15.11 s  MAXRSS 1367744 KB
+GPU samples=30 meanPower=496.2W maxPower=568.5W meanUtil=86.7%
+GPU busy(util>=50%) samples=26 (13.0s) meanPower=552.0W maxPower=568.5W meanSM=1980MHz meanUtil=100.0%
+=== RUN tag=r1_m36trunc MANT_BITS=36 MANT_ROUND=trunc BIN=ex1_bench.build-cuda ARGS=-n 64 -o 3 -mass
+Options used:
+   --nx 64
+   --order 3
+   --device cuda
+   --partial-assembly
+   --mass
+   --var-kappa
+   --amp 0.05
+   --jacobi
+   --rtol 1e-10
+   --maxit 20000
+   --repeat 1
+   --fixed-its 0
+   --matvec 0
+   --print-level 0
+Device configuration: cuda,cpu
+Memory configuration: host-std,cuda
+[SETUP] n=64 p=3 NE=262144 ndofs=7189057 amp=0.05 kappa=var mass=1
+[MANT] DiffusionIntegrator::AssemblePA pa_data: kept 36 mantissa bits (dropped 16), mode=trunc, values=196608000 (1.573 GB)
+[MANT] MassIntegrator::AssemblePA pa_data: kept 36 mantissa bits (dropped 16), mode=trunc, values=134217728 (1.074 GB)
+[SETUP] size=7189057 ess=221186 setup_time=1.562 s
+[CHECK] BnormL2=0.008462803984458131  (B,AB)=1.3299728675057158e-06  ||AB||=0.00033953626311700766
+[SOLVE] rep=0 its=960 converged=1 final_norm=2.9924002299164023e-12 time=13.227 s
+[TIME] solves=1 total_its=960 solve_time=13.227 s  per_it=13.7786 ms  0.522 GDOF/s(CG it)
+[RESULT] ||X||=936.95236057619445  (X,B)=6.6019278882427965
+[RESULT] nodal_err_max=5.8931415303220547e-11 nodal_err_rms=9.8787244768280145e-12
+[TIME] wall_total=14.859 s
+ELAPSED 15.07 s  MAXRSS 1319552 KB
+GPU samples=31 meanPower=518.1W maxPower=568.5W meanUtil=87.3%
+GPU busy(util>=50%) samples=27 (13.5s) meanPower=551.3W maxPower=568.5W meanSM=1980MHz meanUtil=99.7%

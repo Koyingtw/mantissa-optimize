@@ -1,0 +1,105 @@
+LAMMPS (22 Jul 2025 - Update 6)
+KOKKOS mode with Kokkos version 4.6.2 is enabled
+  will use up to 1 GPU(s) per node
+WARNING: When using a single thread, the Kokkos Serial backend (i.e. Makefile.kokkos_mpi_only) gives better performance than the OpenMP backend (src/KOKKOS/kokkos.cpp:221)
+  using 1 OpenMP thread(s) per MPI task
+package kokkos
+package kokkos newton off neigh full
+# bulk Cu lattice, EAM（改自 bench/in.eam：可調大小/步數、thermo 15 位有效數字）
+variable        x index 8
+variable        y index 8
+variable        z index 8
+variable        nsteps index 1000
+variable        nthermo index 100
+
+variable        xx equal 20*$x
+variable        xx equal 20*1
+variable        yy equal 20*$y
+variable        yy equal 20*1
+variable        zz equal 20*$z
+variable        zz equal 20*1
+
+units           metal
+atom_style      atomic
+
+lattice         fcc 3.615
+Lattice spacing in x,y,z = 3.615 3.615 3.615
+region          box block 0 ${xx} 0 ${yy} 0 ${zz}
+region          box block 0 20 0 ${yy} 0 ${zz}
+region          box block 0 20 0 20 0 ${zz}
+region          box block 0 20 0 20 0 20
+create_box      1 box
+Created orthogonal box = (0 0 0) to (72.3 72.3 72.3)
+  1 by 1 by 1 MPI processor grid
+create_atoms    1 box
+Created 32000 atoms
+  using lattice units in orthogonal box = (0 0 0) to (72.3 72.3 72.3)
+  create_atoms CPU = 0.003 seconds
+
+pair_style      eam
+pair_coeff      1 1 Cu_u3.eam
+Reading eam potential file Cu_u3.eam with DATE: 2007-06-11
+
+velocity        all create 1600.0 376847 loop geom
+
+neighbor        1.0 bin
+neigh_modify    every 1 delay 5 check yes
+
+fix             1 all nve
+
+timestep        0.005
+thermo_style    custom step temp epair etotal press
+thermo_modify   format float %22.15e norm yes
+thermo          ${nthermo}
+thermo          50
+
+run             ${nsteps}
+run             200
+Neighbor list info ...
+  update: every = 1 steps, delay = 5 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 5.95
+  ghost atom cutoff = 5.95
+  binsize = 5.95, bins = 13 13 13
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair eam/kk/host, perpetual
+      attributes: full, newton off, kokkos_host
+      pair build: full/bin/kk/host
+      stencil: full/bin/3d
+      bin: kk/host
+Per MPI rank memory allocation (min/avg/max) = 9.618 | 9.618 | 9.618 Mbytes
+   Step          Temp          E_pair         TotEng         Press     
+         0   1.600000000000010e+03 -3.540000002287355e+00 -3.333190233294603e+00  1.870357335907841e+04
+        50   7.848180051613137e+02 -3.433951221560520e+00 -3.332508702592544e+00  5.209060093678079e+04
+       100   7.960634214339386e+02 -3.435412161241928e+00 -3.332516103560471e+00  5.154028403681214e+04
+       150   7.953593573977610e+02 -3.435320103379950e+00 -3.332515050273916e+00  5.164453655036570e+04
+       200   7.970137228160452e+02 -3.435537453824480e+00 -3.332518563887206e+00  5.159090458954899e+04
+Loop time of 9.76926 on 1 procs for 200 steps with 32000 atoms
+
+Performance: 8.844 ns/day, 2.714 hours/ns, 20.472 timesteps/s, 655.116 katom-step/s
+100.0% CPU use with 1 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 8.3859     | 8.3859     | 8.3859     |   0.0 | 85.84
+Neigh   | 1.3094     | 1.3094     | 1.3094     |   0.0 | 13.40
+Comm    | 0.015182   | 0.015182   | 0.015182   |   0.0 |  0.16
+Output  | 0.00075315 | 0.00075315 | 0.00075315 |   0.0 |  0.01
+Modify  | 0.043525   | 0.043525   | 0.043525   |   0.0 |  0.45
+Other   |            | 0.0145     |            |       |  0.15
+
+Nlocal:          32000 ave       32000 max       32000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:          19911 ave       19911 max       19911 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:  2.41493e+06 ave 2.41493e+06 max 2.41493e+06 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 2414926
+Ave neighs/atom = 75.466437
+Neighbor list builds = 28
+Dangerous builds = 0
+Total wall time: 0:00:10

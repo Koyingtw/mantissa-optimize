@@ -1,0 +1,12 @@
+diff --git a/gpu4pyscf/lib/CMakeLists.txt b/gpu4pyscf/lib/CMakeLists.txt
+index b77ccab..f911b2e 100644
+--- a/gpu4pyscf/lib/CMakeLists.txt
++++ b/gpu4pyscf/lib/CMakeLists.txt
+@@ -143,6 +143,7 @@ if(BUILD_LIBXC)
+     GIT_REPOSITORY https://github.com/wxj6000/libxc.git
+     GIT_TAG b225c254c063e1de835a4425115c9a6377478b32
+     PATCH_COMMAND git apply --reject ${PROJECT_SOURCE_DIR}/libxc_prune.patch || true
++      COMMAND sed -i "s/set(CMAKE_CUDA_STANDARD 98)/set(CMAKE_CUDA_STANDARD 17)/" CMakeLists.txt
+     PREFIX ${PROJECT_BINARY_DIR}/deps
+     INSTALL_DIR ${PROJECT_SOURCE_DIR}/deps
+     CMAKE_ARGS -DBUILD_SHARED_LIBS=ON -DENABLE_CUDA=ON
