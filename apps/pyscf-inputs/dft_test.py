@@ -17,7 +17,7 @@ else:
 mf = dft.RKS(mol, xc=xc)
 if mode == 'df':
     mf = mf.density_fit()
-mf.grids.level = 3
+mf.grids.level = int(os.environ.get("GRID_LEVEL", "3"))
 mf.conv_tol = float(os.environ.get("CONV_TOL", "1e-10"))
 mf.max_cycle = 100
 nit = [0]
