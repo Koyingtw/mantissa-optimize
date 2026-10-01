@@ -1,0 +1,42 @@
+  calculation='scf', prefix='si1000', pseudo_dir='./', outdir='./tmp',
+job=2137 host=work1 app=qe case=si1000 variants=[native 36:nearest 32:nearest emu40 emu36 emu32 g8:10 native] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=native pass=A t_begin=1790789261.771778544
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m54.34s CPU   2m41.33s WALL
+=== END tdp=1000 variant=native pass=A t_begin=1790789261.771778544 t_end=1790789425.180152405
+=== RUN tdp=1000 variant=36:nearest pass=A t_begin=1790789475.335408711
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m 4.27s CPU   2m50.51s WALL
+=== END tdp=1000 variant=36:nearest pass=A t_begin=1790789475.335408711 t_end=1790789647.945309672
+=== RUN tdp=1000 variant=32:nearest pass=A t_begin=1790789703.116591878
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m 3.71s CPU   2m49.45s WALL
+=== END tdp=1000 variant=32:nearest pass=A t_begin=1790789703.116591878 t_end=1790789874.670196414
+=== RUN tdp=1000 variant=emu40 pass=A t_begin=1790789929.841387996
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m55.16s CPU   4m18.24s WALL
+=== END tdp=1000 variant=emu40 pass=A t_begin=1790789929.841387996 t_end=1790790190.154824303
+=== RUN tdp=1000 variant=emu36 pass=A t_begin=1790790230.284140046
+    !    total energy              =   -7881.17635378 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m22.38s CPU   3m39.62s WALL
+=== END tdp=1000 variant=emu36 pass=A t_begin=1790790230.284140046 t_end=1790790452.008955026
+=== RUN tdp=1000 variant=emu32 pass=A t_begin=1790790492.141194243
+    !    total energy              =   -7881.17635378 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m22.23s CPU   3m39.52s WALL
+=== END tdp=1000 variant=emu32 pass=A t_begin=1790790492.141194243 t_end=1790790713.761929027
+=== RUN tdp=1000 variant=g8:10 pass=A t_begin=1790790748.880830640
+=== RUN FAILED rc=1
+=== END tdp=1000 variant=g8:10 pass=A t_begin=1790790748.880830640 t_end=1790790755.264111232
+=== RUN tdp=1000 variant=native pass=B t_begin=1790790760.302824568
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   2m55.73s CPU   2m41.76s WALL
+=== END tdp=1000 variant=native pass=B t_begin=1790790760.302824568 t_end=1790790924.161262848
+=== ALL DONE

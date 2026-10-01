@@ -18,6 +18,10 @@
 //   MANT_VERBOSE=1             print one line per intercepted call to stderr
 //   MANT_FORCE_COPY=1          take the copy path even when nothing is dropped (bits=52),
 //                              so a baseline carries the same copy overhead as a reduced run
+//   MANT_SPAN=<path>           per GEMM shape, count the nonzero elements of sampled rows of op(A) and
+//                              columns of op(B) that lie more than 24/32/40/48/56 binades below their
+//                              row's (column's) maximum: what per-row scaled INT8 emulation loses
+//                              (MANT_SPAN_LINES lines per operand per call, MANT_SPAN_MIN_MNK)
 //   MANT_EMU_BITS=<k>          instead of reducing, run each FP64 GEMM with cuBLAS fixed-point
 //                              (Ozaki-type, integer tensor core) emulation retaining at most k
 //                              mantissa bits; no copies are made
@@ -49,6 +53,7 @@
 #include <map>
 #include <mutex>
 #include <string>
+#include <tuple>
 #include <vector>
 
 namespace {
@@ -70,7 +75,13 @@ struct Config {
   const char* dump = nullptr;   // MANT_DUMP=<dir>: write the operands of the first MANT_DUMP_N GEMMs
   long dump_n = 4;
   double dump_min = 1e9;        // MANT_DUMP_MIN_MNK: only GEMMs with m*n*k at least this
+  const char* span = nullptr;   // MANT_SPAN=<path>: per-row exponent span per GEMM shape -> <path>.<pid>.txt
+  double span_min = 1e8;        // MANT_SPAN_MIN_MNK
+  long span_lines = 256;        // MANT_SPAN_LINES: rows / columns sampled per operand per call
   Config() {
+    span = getenv("MANT_SPAN");
+    if (const char* e = getenv("MANT_SPAN_MIN_MNK")) span_min = atof(e);
+    if (const char* e = getenv("MANT_SPAN_LINES")) span_lines = atol(e);
     dump = getenv("MANT_DUMP");
     if (const char* e = getenv("MANT_DUMP_N")) dump_n = atol(e);
     if (const char* e = getenv("MANT_DUMP_MIN_MNK")) dump_min = atof(e);
@@ -177,14 +188,147 @@ void launch_reduce(const double* src, long rows, long cols, long ld, int per, do
   reduce_copy<<<grid, 256, 0, st>>>(src, rows, cols, ld, per, dst, cfg().bits, cfg().nearest);
 }
 
+// ---- per-row exponent span (MANT_SPAN) -------------------------------------
+// Per-row scaled emulation (Ozaki-type: cuBLAS fixed-point, GEMMul8) normalises every row of op(A) and
+// every column of op(B) (both run along k) by its largest element, so an element e binades below that
+// maximum keeps only about (bits - e) bits and is lost once e exceeds the retained bits. For sampled lines
+// we count the nonzero elements more than T binades below their line's maximum, per GEMM shape.
+constexpr int kSpanT[] = {24, 32, 40, 48, 56};   // = 24 + 8 t (the device code uses that form)
+constexpr int kNSpan = sizeof(kSpanT) / sizeof(int);
+constexpr int kSpanSlot = 2 + kNSpan;  // lines, nonzeros, count above each threshold
+constexpr int kSpanClasses = 512;       // distinct shapes tracked; the last class collects the rest
+
+__global__ void span_kernel(const double* x, long len, long line_stride, long elem_stride, int per, long nlines,
+                            long line_step, unsigned long long* out) {
+  __shared__ int smax[256];
+  __shared__ unsigned long long scnt[256][kNSpan + 1];
+  for (long ln = blockIdx.x; ln * line_step < nlines; ln += gridDim.x) {
+    const long base = ln * line_step * line_stride;
+    int mx = -100000;
+    for (long e = threadIdx.x; e < len; e += blockDim.x)
+      for (int p = 0; p < per; ++p) {
+        const double v = x[(base + e * elem_stride) * per + p];
+        if (v != 0 && isfinite(v)) mx = max(mx, ilogb(v));
+      }
+    smax[threadIdx.x] = mx;
+    __syncthreads();
+    for (int s = blockDim.x / 2; s > 0; s >>= 1) {
+      if (threadIdx.x < s) smax[threadIdx.x] = max(smax[threadIdx.x], smax[threadIdx.x + s]);
+      __syncthreads();
+    }
+    mx = smax[0];
+    unsigned long long c[kNSpan + 1] = {};
+    for (long e = threadIdx.x; e < len; e += blockDim.x)
+      for (int p = 0; p < per; ++p) {
+        const double v = x[(base + e * elem_stride) * per + p];
+        if (v == 0 || !isfinite(v)) continue;
+        c[0]++;
+        const int below = mx - ilogb(v);
+        for (int t = 0; t < kNSpan; ++t) c[t + 1] += below > 24 + 8 * t;   // = kSpanT[t]
+      }
+    for (int t = 0; t <= kNSpan; ++t) scnt[threadIdx.x][t] = c[t];
+    __syncthreads();
+    for (int s = blockDim.x / 2; s > 0; s >>= 1) {
+      if (threadIdx.x < s)
+        for (int t = 0; t <= kNSpan; ++t) scnt[threadIdx.x][t] += scnt[threadIdx.x + s][t];
+      __syncthreads();
+    }
+    if (threadIdx.x == 0) {
+      atomicAdd(out, 1ull);
+      for (int t = 0; t <= kNSpan; ++t) atomicAdd(out + 1 + t, scnt[0][t]);
+    }
+    __syncthreads();
+  }
+}
+
+struct SpanClass { long m, n, k; int ta, tb, per; unsigned long long calls = 0; double flops = 0; };
+std::mutex g_span_mu;
+std::vector<SpanClass> g_span_cls;
+std::map<std::tuple<long, long, long, int, int, int>, int> g_span_idx;
+std::map<int, unsigned long long*> g_span_dev;  // per device: kSpanClasses x 2 operands x kSpanSlot
+
+void span_record(bool ta, bool tb, long m, long n, long k, const void* A, long lda, const void* B, long ldb, int per,
+                 cudaStream_t s) {
+  if (!cfg().span || (double)m * n * k < cfg().span_min || m <= 0 || n <= 0 || k <= 0) return;
+  int dev = 0;
+  cudaGetDevice(&dev);
+  int ci;
+  unsigned long long* buf;
+  {
+    std::lock_guard<std::mutex> g(g_span_mu);
+    auto key = std::make_tuple(m, n, k, (int)ta, (int)tb, per);
+    auto it = g_span_idx.find(key);
+    if (it != g_span_idx.end()) ci = it->second;
+    else if ((int)g_span_cls.size() < kSpanClasses - 1) {
+      ci = (int)g_span_cls.size();
+      g_span_idx[key] = ci;
+      g_span_cls.push_back(SpanClass{m, n, k, (int)ta, (int)tb, per});
+    } else {
+      if ((int)g_span_cls.size() < kSpanClasses) g_span_cls.push_back(SpanClass{-1, -1, -1, 0, 0, per});
+      ci = kSpanClasses - 1;
+    }
+    g_span_cls[ci].calls++;
+    g_span_cls[ci].flops += 2.0 * m * n * k * (per == 2 ? 4 : 1);
+    auto d = g_span_dev.find(dev);
+    if (d == g_span_dev.end()) {
+      unsigned long long* p = nullptr;
+      cudaMalloc(&p, (size_t)kSpanClasses * 2 * kSpanSlot * 8);
+      cudaMemset(p, 0, (size_t)kSpanClasses * 2 * kSpanSlot * 8);
+      d = g_span_dev.emplace(dev, p).first;
+    }
+    buf = d->second + (size_t)ci * 2 * kSpanSlot;
+  }
+  const long lines = cfg().span_lines;
+  // op(A): m lines (rows) of length k; op(B): n lines (columns) of length k
+  const long a_ls = ta ? lda : 1, a_es = ta ? 1 : lda, b_ls = tb ? 1 : ldb, b_es = tb ? ldb : 1;
+  const long a_step = std::max(1L, m / lines), b_step = std::max(1L, n / lines);
+  span_kernel<<<(unsigned)std::min(m, lines), 256, 0, s>>>((const double*)A, k, a_ls, a_es, per, m, a_step, buf);
+  span_kernel<<<(unsigned)std::min(n, lines), 256, 0, s>>>((const double*)B, k, b_ls, b_es, per, n, b_step,
+                                                          buf + kSpanSlot);
+}
+
+void write_span() {
+  if (!cfg().span) return;
+  std::lock_guard<std::mutex> g(g_span_mu);
+  std::vector<unsigned long long> tot((size_t)kSpanClasses * 2 * kSpanSlot, 0);
+  for (auto& kv : g_span_dev) {
+    std::vector<unsigned long long> tmp(tot.size());
+    cudaSetDevice(kv.first);
+    cudaDeviceSynchronize();
+    if (cudaMemcpy(tmp.data(), kv.second, tmp.size() * 8, cudaMemcpyDeviceToHost) == cudaSuccess)
+      for (size_t i = 0; i < tot.size(); ++i) tot[i] += tmp[i];
+  }
+  std::string path = std::string(cfg().span) + "." + std::to_string(getpid()) + ".txt";
+  FILE* f = fopen(path.c_str(), "w");
+  if (!f) return;
+  fprintf(f, "# per GEMM shape (m=-1: all further shapes); op A = rows of op(A), op B = columns of op(B), along k\n");
+  fprintf(f, "# op m n k ta tb per calls gflop lines nonzero");
+  for (int t : kSpanT) fprintf(f, " below%d", t);
+  fprintf(f, "\n");
+  for (size_t c = 0; c < g_span_cls.size(); ++c)
+    for (int o = 0; o < 2; ++o) {
+      const unsigned long long* v = &tot[(c * 2 + o) * kSpanSlot];
+      const SpanClass& sc = g_span_cls[c];
+      fprintf(f, "%s %ld %ld %ld %d %d %d %llu %.3f", o ? "B" : "A", sc.m, sc.n, sc.k, sc.ta, sc.tb, sc.per, sc.calls,
+              sc.flops / 1e9);
+      for (int t = 0; t < kSpanSlot; ++t) fprintf(f, " %llu", v[t]);
+      fprintf(f, "\n");
+    }
+  fclose(f);
+}
+
 void write_stats();
+void write_all() {
+  write_stats();
+  write_span();
+}
 void register_atexit() {
   // Registered lazily (after the CUDA runtime has initialised), so our handler
   // runs before the runtime tears its context down.
   Stats& s = st();
   if (!s.atexit_registered) {
     s.atexit_registered = true;
-    atexit(write_stats);
+    atexit(write_all);
   }
 }
 
@@ -374,6 +518,7 @@ bool prepare_device(cublasHandle_t h, bool ta, bool tb, long m, long n, long k, 
   stored(ta, m, k, ar, ac);
   stored(tb, k, n, br, bc);
   dump_operands(ta, tb, m, n, k, A, ar, ac, lda, B, br, bc, ldb, per, sc.s);
+  span_record(ta, tb, m, n, k, A, lda, B, ldb, per, sc.s);   // first batch entry only
   for (long i = 0; i < batch; ++i) {
     dev_record((const double*)A + i * sA * per, ar, ac, lda, per, false, sc.s);
     dev_record((const double*)B + i * sB * per, br, bc, ldb, per, true, sc.s);

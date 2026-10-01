@@ -44,6 +44,8 @@ ensure_cap() {
 read -ra cfg <<<"$CONFIGS"
 # SHAPES: optional list of "mxnxk" (x, not comma: sbatch --export splits on commas) (e.g. the truncation-vs-emulation crossover sweep); every config runs at every shape
 read -ra shapes <<<"${SHAPES:-default}"
+# SPREADS: optional list of "<binades>/<elem|row>" exponent spreads for the range experiment (bench --spread)
+read -ra spreads <<<"${SPREADS:-none}"
 rev=()
 for ((i = ${#cfg[@]} - 1; i >= 0; i--)); do rev+=("${cfg[i]}"); done
 
@@ -53,6 +55,9 @@ for tdp in $TDPS; do
   for pass in A B; do
     list=("${cfg[@]}")
     [[ $pass == B ]] && list=("${rev[@]}")
+    for spr in "${spreads[@]}"; do
+    spx=()
+    if [[ $spr != none ]]; then spx=(--spread "${spr%/*}" --spread-mode "${spr#*/}"); fi
     for shape in "${shapes[@]}"; do
     sx=()
     if [[ $shape != default ]]; then IFS=x read -r sm sn sk <<<"$shape"; sx=(--m "$sm" --n "$sn" --k "$sk"); fi
@@ -77,7 +82,8 @@ for tdp in $TDPS; do
       echo "COOL waited=${waited}s temp=$(nvidia-smi --query-gpu=temperature.gpu --format=csv,noheader,nounits)C"
       ensure_cap "$tdp"
       "$bench" --dtype "$dtype" --frac "$frac" --warmup "$WARMUP" --seconds "$SECONDS_PER" \
-        --low "$low" --tag "host=$HOST,tdp=$tdp,pass=$pass" "${extra[@]}" "${sx[@]}" ${EXTRA_ARGS:-}
+        --low "$low" --tag "host=$HOST,tdp=$tdp,pass=$pass" "${extra[@]}" "${sx[@]}" "${spx[@]}" ${EXTRA_ARGS:-}
+    done
     done
     done
   done

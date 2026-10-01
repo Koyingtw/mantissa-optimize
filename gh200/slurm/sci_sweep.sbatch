@@ -68,6 +68,8 @@ run_one() {
     stats) bits=52; round=trunc; env_extra=(MANT_STATS="$WORK/stats_tdp$tdp" MANT_STATS_SAMPLE=65536) ;;
     copy)  bits=52; round=trunc; env_extra=(MANT_FORCE_COPY=1) ;;
     shapes) bits=52; round=trunc; env_extra=(MANT_VERBOSE=1) ;;   # pass-through, log every GEMM's m n k
+    # per-row exponent span per GEMM shape (needs a shim built with MANT_SPAN, e.g. libmantshim.span.so)
+    span)  bits=52; round=trunc; env_extra=(MANT_SPAN="$WORK/span_tdp$tdp" MANT_SPAN_LINES=${SPAN_LINES:-256}) ;;
     dump)  bits=52; round=trunc; mkdir -p "$WORK/dump"; env_extra=(MANT_DUMP="$WORK/dump" MANT_DUMP_N=4 MANT_DUMP_MIN_MNK=1e10) ;;
     native) bits=52; round=trunc; preload= ;;
     # reduction built into the application (QE: psi/hpsi/spsi in Davidson), no shim
@@ -76,6 +78,11 @@ run_one() {
     adapt*) bits=52; round=trunc; preload=; local am=${v#adapt}; env_extra=(QE_MANT_ADAPT=${am%%:*} QE_MANT_ROUND=${am##*:} QE_MANT_MIN=${QE_MANT_MIN:-16}) ;;
     # single-precision replacement of every FP64 GEMM (needs a shim with MANT_F32): f32:fp32|tf32|tf32x3
     f32:*) bits=52; round=trunc; env_extra=(MANT_F32=${v#f32:}) ;;
+    # every FP64 GEMM on cuBLAS fixed-point emulation with k mantissa bits (shim, no operand copy): emu<k>
+    emu*)  bits=52; round=trunc; env_extra=(MANT_EMU_BITS=${v#emu}) ;;
+    # every FP64 GEMM through GEMMul8 (Ozaki scheme II, INT8, fast mode) with m moduli: g8:<m>
+    g8:*)  bits=52; round=trunc; preload="$A/GEMMul8/lib/libgemmul8.so"
+           env_extra=(GEMMUL8_BACKEND_GEMM=INT8 GEMMUL8_NUM_MOD_D_GEMM=${v#g8:} GEMMUL8_FASTMODE_D_GEMM=1) ;;
     *)     bits=${v%%:*}; round=${v##*:} ;;
   esac
   # a variant listed again at the same cap is its next pass (A, B, C, ...: ABBA orders); keep every output

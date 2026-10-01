@@ -1,0 +1,4 @@
+#!/bin/bash
+# Launcher for infer/attn_bench.py inside the NGC PyTorch container (used by e1_gemm_tdp.sbatch, dtype=attn).
+exec apptainer exec --nv --bind /nfs /nfs/home/koying/sc26-mlperf-build/containers/llama2_70b_lora_ngc25.04.sif \
+  python /nfs/home/koying/mantissa-optimize/gh200/infer/attn_bench.py "$@" 2> >(grep -v -i warn >&2)

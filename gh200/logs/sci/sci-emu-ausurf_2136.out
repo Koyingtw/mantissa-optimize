@@ -1,0 +1,45 @@
+  pseudo_dir='./'
+  outdir='./tmp'
+job=2136 host=head app=qe case=ausurf112 variants=[native 36:nearest 32:nearest emu40 emu36 emu32 g8:10 native] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=native pass=A t_begin=1790789261.646427926
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m16.26s CPU   1m14.80s WALL
+=== END tdp=1000 variant=native pass=A t_begin=1790789261.646427926 t_end=1790789338.442085197
+=== RUN tdp=1000 variant=36:nearest pass=A t_begin=1790789343.480216017
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m19.26s CPU   1m17.90s WALL
+=== END tdp=1000 variant=36:nearest pass=A t_begin=1790789343.480216017 t_end=1790789423.407034158
+=== RUN tdp=1000 variant=32:nearest pass=A t_begin=1790789438.471554989
+    !    total energy              =  -11427.09402212 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m19.16s CPU   1m17.65s WALL
+=== END tdp=1000 variant=32:nearest pass=A t_begin=1790789438.471554989 t_end=1790789518.125419542
+=== RUN tdp=1000 variant=emu40 pass=A t_begin=1790789533.189655785
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m52.58s CPU   2m29.19s WALL
+=== END tdp=1000 variant=emu40 pass=A t_begin=1790789533.189655785 t_end=1790789684.387354885
+=== RUN tdp=1000 variant=emu36 pass=A t_begin=1790789689.425758283
+    !    total energy              =  -11427.09402211 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m43.91s CPU   2m18.67s WALL
+=== END tdp=1000 variant=emu36 pass=A t_begin=1790789689.425758283 t_end=1790789830.105998481
+=== RUN tdp=1000 variant=emu32 pass=A t_begin=1790789835.143807540
+    !    total energy              =  -11427.09402211 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m44.05s CPU   2m19.33s WALL
+=== END tdp=1000 variant=emu32 pass=A t_begin=1790789835.143807540 t_end=1790789976.491292992
+=== RUN tdp=1000 variant=g8:10 pass=A t_begin=1790789981.529937604
+    !    total energy              =  -11427.09402253 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m19.38s CPU   1m18.04s WALL
+=== END tdp=1000 variant=g8:10 pass=A t_begin=1790789981.529937604 t_end=1790790062.061235008
+=== RUN tdp=1000 variant=native pass=B t_begin=1790790077.126218187
+    !    total energy              =  -11427.09402216 Ry
+         convergence has been achieved in  28 iterations
+         PWSCF        :   1m16.06s CPU   1m14.77s WALL
+=== END tdp=1000 variant=native pass=B t_begin=1790790077.126218187 t_end=1790790153.904074271
+=== ALL DONE

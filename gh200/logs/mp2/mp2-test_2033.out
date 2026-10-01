@@ -1,0 +1,11 @@
+job=2033 host=work1 mol=057_Tamoxifen basis=def2-svp variants=[native t36n t20n fp32 emu32 emud] tdps=[1000]
+TDP 1000 set: 1000.00 W
+    RESULT_HF converged=True E=-1129.6285081588 Eh wall=1.44s t_begin=1790783470.674 t_end=1790783472.111
+    RANGE global_span=25.3 global_log2=[-31.7,-6.4] row_span_p50=17.0 row_span_p90=25.6 row_span_max=31.7 frac_32below_rowmax=4.325e-06 frac_40below_rowmax=0.000e+00 zero_frac=0.000e+00 shape=(100, 437, 1750)
+    RESULT_MP2 tdp=1000 variant=native pass=A Ecorr=-3.942691203268 dE=0.000e+00 wall=1.509s t_begin=1790783477.146 t_end=1790783478.655
+    RESULT_MP2 tdp=1000 variant=t36n pass=A Ecorr=-3.942691203268 dE=-7.816e-14 wall=1.429s t_begin=1790783483.688 t_end=1790783485.118
+    RESULT_MP2 tdp=1000 variant=t20n pass=A Ecorr=-3.942691201840 dE=1.428e-09 wall=1.036s t_begin=1790783490.152 t_end=1790783491.187
+    RESULT_MP2 tdp=1000 variant=fp32 pass=A Ecorr=-3.942691203268 dE=0.000e+00 wall=1.024s t_begin=1790783491.210 t_end=1790783492.235
+    RESULT_MP2 tdp=1000 variant=emu32 pass=A Ecorr=-3.942691202233 dE=1.035e-09 wall=3.551s t_begin=1790783497.268 t_end=1790783500.819
+    RESULT_MP2 tdp=1000 variant=emud pass=A Ecorr=-3.942691203268 dE=-4.441e-16 wall=3.261s t_begin=1790783500.843 t_end=1790783504.103
+=== ALL DONE

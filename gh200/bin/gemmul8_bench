@@ -1,0 +1,16 @@
+#!/bin/bash
+# GEMMul8 (Ozaki scheme II, INT8) via its cuBLAS hook: runs gemm_mant_bench's FP64 path with
+# cublasDgemm intercepted.  --frac = number of CRT moduli (INT8: ~4 bits each; 7 ~ 28 bits, 9 ~ 36).
+# The RESULT line is relabelled dtype=gemmul8 frac=<moduli>.
+args=(); mod=14
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --frac) mod=$2; shift 2 ;;
+    --dtype) shift 2 ;;
+    *) args+=("$1"); shift ;;
+  esac
+done
+LD_PRELOAD=/nfs/home/koying/mantissa-optimize/apps/GEMMul8/lib/libgemmul8.so \
+GEMMUL8_BACKEND_GEMM=INT8 GEMMUL8_NUM_MOD_D_GEMM=$mod GEMMUL8_FASTMODE_D_GEMM=1 \
+LD_LIBRARY_PATH=/software/nvhpc/Linux_aarch64/26.5/math_libs/13.2/lib64:/software/nvhpc/Linux_aarch64/26.5/cuda/13.2/lib64:${LD_LIBRARY_PATH:-} \
+  "$(dirname "$0")/gemm_mant_bench" --dtype fp64 --frac 52 "${args[@]}" | sed "s/dtype=fp64 frac=52/dtype=gemmul8 frac=$mod/"

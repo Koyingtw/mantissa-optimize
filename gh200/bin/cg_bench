@@ -1,0 +1,4 @@
+#!/bin/bash
+# Launcher for sci/cg_bench.py (memory-bound FP64 CG with truncated matrix values) in the NGC PyTorch container.
+exec apptainer exec --nv --bind /nfs,/data /nfs/home/koying/sc26-mlperf-build/containers/llama2_70b_lora_ngc25.04.sif \
+  python /nfs/home/koying/mantissa-optimize/gh200/sci/cg_bench.py "$@" 2> >(grep -v -i warn >&2)
