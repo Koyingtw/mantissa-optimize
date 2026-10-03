@@ -1,0 +1,27 @@
+job=2195 host=head app=pyscf case=168_Valinomycin variants=[native 36:nearest emu36 emu40 emu40 emu36 36:nearest native] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=native pass=A t_begin=1790839555.618588202
+    RESULT converged=True E=-3795.5392524230 Eh  scf_cycles=12  wall=76.29s
+=== END tdp=1000 variant=native pass=A t_begin=1790839555.618588202 t_end=1790839633.834082709
+=== RUN tdp=1000 variant=36:nearest pass=A t_begin=1790839663.944182496
+    RESULT converged=True E=-3795.5392533777 Eh  scf_cycles=12  wall=83.30s
+=== END tdp=1000 variant=36:nearest pass=A t_begin=1790839663.944182496 t_end=1790839749.168143358
+=== RUN tdp=1000 variant=emu36 pass=A t_begin=1790839794.316355506
+    RESULT converged=True E=-3795.4867366622 Eh  scf_cycles=12  wall=111.58s
+=== END tdp=1000 variant=emu36 pass=A t_begin=1790839794.316355506 t_end=1790839907.746323809
+=== RUN tdp=1000 variant=emu40 pass=A t_begin=1790839937.851454087
+    RESULT converged=True E=-3795.5392525074 Eh  scf_cycles=12  wall=127.91s
+=== END tdp=1000 variant=emu40 pass=A t_begin=1790839937.851454087 t_end=1790840067.618939536
+=== RUN tdp=1000 variant=emu40 pass=B t_begin=1790840102.737376255
+    RESULT converged=True E=-3795.5392525075 Eh  scf_cycles=12  wall=127.97s
+=== END tdp=1000 variant=emu40 pass=B t_begin=1790840102.737376255 t_end=1790840232.555787264
+=== RUN tdp=1000 variant=emu36 pass=B t_begin=1790840267.675063456
+    RESULT converged=True E=-3795.4867366870 Eh  scf_cycles=12  wall=111.57s
+=== END tdp=1000 variant=emu36 pass=B t_begin=1790840267.675063456 t_end=1790840381.116142256
+=== RUN tdp=1000 variant=36:nearest pass=B t_begin=1790840411.220587805
+    RESULT converged=True E=-3795.5392533657 Eh  scf_cycles=12  wall=83.27s
+=== END tdp=1000 variant=36:nearest pass=B t_begin=1790840411.220587805 t_end=1790840496.400169744
+=== RUN tdp=1000 variant=native pass=B t_begin=1790840546.558493233
+    RESULT converged=True E=-3795.5392524230 Eh  scf_cycles=12  wall=76.15s
+=== END tdp=1000 variant=native pass=B t_begin=1790840546.558493233 t_end=1790840624.577977131
+=== ALL DONE
