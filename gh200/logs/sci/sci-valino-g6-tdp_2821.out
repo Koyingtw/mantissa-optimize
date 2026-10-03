@@ -1,3 +1,40 @@
 job=2821 host=head app=pyscf case=168_Valinomycin variants=[copy 36:nearest emu40 emu40 36:nearest copy] tdps=[550 450]
 TDP 550 set: 550.00 W
 === RUN tdp=550 variant=copy pass=A t_begin=1791051540.639845767
+    RESULT converged=True E=-3795.5392927457 Eh  scf_cycles=12  wall=110.98s
+=== END tdp=550 variant=copy pass=A t_begin=1791051540.639845767 t_end=1791051654.021933522
+=== RUN tdp=550 variant=36:nearest pass=A t_begin=1791051654.048465287
+    RESULT converged=True E=-3795.5392936980 Eh  scf_cycles=12  wall=107.87s
+=== END tdp=550 variant=36:nearest pass=A t_begin=1791051654.048465287 t_end=1791051763.963333451
+=== RUN tdp=550 variant=emu40 pass=A t_begin=1791051763.988135369
+    RESULT converged=True E=-3795.5392928295 Eh  scf_cycles=12  wall=171.61s
+=== END tdp=550 variant=emu40 pass=A t_begin=1791051763.988135369 t_end=1791051937.368962551
+=== RUN tdp=550 variant=emu40 pass=B t_begin=1791051937.394423857
+    RESULT converged=True E=-3795.5392928296 Eh  scf_cycles=12  wall=171.37s
+=== END tdp=550 variant=emu40 pass=B t_begin=1791051937.394423857 t_end=1791052110.531187264
+=== RUN tdp=550 variant=36:nearest pass=B t_begin=1791052110.556173981
+    RESULT converged=True E=-3795.5392937032 Eh  scf_cycles=12  wall=108.03s
+=== END tdp=550 variant=36:nearest pass=B t_begin=1791052110.556173981 t_end=1791052220.399753905
+=== RUN tdp=550 variant=copy pass=B t_begin=1791052220.424446960
+    RESULT converged=True E=-3795.5392927457 Eh  scf_cycles=12  wall=111.78s
+=== END tdp=550 variant=copy pass=B t_begin=1791052220.424446960 t_end=1791052334.065115262
+TDP 450 set: 450.00 W
+=== RUN tdp=450 variant=copy pass=A t_begin=1791052334.557369941
+    RESULT converged=True E=-3795.5392927457 Eh  scf_cycles=12  wall=127.90s
+=== END tdp=450 variant=copy pass=A t_begin=1791052334.557369941 t_end=1791052464.294550500
+=== RUN tdp=450 variant=36:nearest pass=A t_begin=1791052464.319505633
+    RESULT converged=True E=-3795.5392936985 Eh  scf_cycles=12  wall=123.15s
+=== END tdp=450 variant=36:nearest pass=A t_begin=1791052464.319505633 t_end=1791052589.296157828
+=== RUN tdp=450 variant=emu40 pass=A t_begin=1791052589.321287168
+    RESULT converged=True E=-3795.5392928293 Eh  scf_cycles=12  wall=190.13s
+=== END tdp=450 variant=emu40 pass=A t_begin=1791052589.321287168 t_end=1791052781.255303702
+=== RUN tdp=450 variant=emu40 pass=B t_begin=1791052781.281219374
+    RESULT converged=True E=-3795.5392928295 Eh  scf_cycles=12  wall=189.84s
+=== END tdp=450 variant=emu40 pass=B t_begin=1791052781.281219374 t_end=1791052972.952610235
+=== RUN tdp=450 variant=36:nearest pass=B t_begin=1791052972.977286074
+    RESULT converged=True E=-3795.5392936970 Eh  scf_cycles=12  wall=123.34s
+=== END tdp=450 variant=36:nearest pass=B t_begin=1791052972.977286074 t_end=1791053098.156585182
+=== RUN tdp=450 variant=copy pass=B t_begin=1791053098.181549627
+    RESULT converged=True E=-3795.5392927457 Eh  scf_cycles=12  wall=127.38s
+=== END tdp=450 variant=copy pass=B t_begin=1791053098.181549627 t_end=1791053227.335632359
+=== ALL DONE

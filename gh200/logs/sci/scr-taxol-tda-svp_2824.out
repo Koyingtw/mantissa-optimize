@@ -1,0 +1,9 @@
+job=2824 host=work9 app=pyscf case=113_Taxol variants=[native span] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=native pass=A t_begin=1791051711.958027873
+    RESULT converged=True E=-2927.3342336499 Eh  scf_wall=10.71s  tda_wall=52.48s  wall=63.20s  exc_eV=[3.733793 4.073656 4.080516 4.139491 4.285937 4.412490 4.455671 4.584795 4.618916 4.678722]
+=== END tdp=1000 variant=native pass=A t_begin=1791051711.958027873 t_end=1791051776.812313763
+=== RUN tdp=1000 variant=span pass=A t_begin=1791051781.850761097
+    RESULT converged=True E=-2927.3342336499 Eh  scf_wall=11.28s  tda_wall=52.39s  wall=63.66s  exc_eV=[3.733793 4.073656 4.080516 4.139491 4.285937 4.412490 4.455671 4.584795 4.618916 4.678722]
+=== END tdp=1000 variant=span pass=A t_begin=1791051781.850761097 t_end=1791051846.854148790
+=== ALL DONE
