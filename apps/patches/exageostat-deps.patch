@@ -1,0 +1,66 @@
+--- a/starpu-1.3.11/src/drivers/cuda/driver_cuda.c
++++ b/starpu-1.3.11/src/drivers/cuda/driver_cuda.c
+@@ -394,7 +394,10 @@
+ 	if (STARPU_UNLIKELY(cures))
+ 		STARPU_CUDA_REPORT_ERROR(cures);
+ #ifdef STARPU_HAVE_CUDA_MEMCPY_PEER
+-	if (props[devid].computeMode == cudaComputeModeExclusive)
++	/* CUDA 13 removed cudaDeviceProp::computeMode: query it as an attribute */
++	int _starpu_compute_mode = 0;
++	cudaDeviceGetAttribute(&_starpu_compute_mode, cudaDevAttrComputeMode, devid);
++	if (_starpu_compute_mode == cudaComputeModeExclusive)
+ 	{
+ 		_STARPU_MSG("CUDA is in EXCLUSIVE-THREAD mode, but StarPU was built with multithread GPU control support, please either ask your administrator to use EXCLUSIVE-PROCESS mode (which should really be fine), or reconfigure with --disable-cuda-memcpy-peer but that will disable the memcpy-peer optimizations\n");
+ 		STARPU_ABORT();
+diff --git a/chameleon-1.1.0/control/common.h b/chameleon-1.1.0/control/common.h
+index 44b628b..a8f2ec4 100644
+--- a/chameleon-1.1.0/control/common.h
++++ b/chameleon-1.1.0/control/common.h
+@@ -40,8 +40,7 @@
+ #include <cuda_runtime.h>
+ #include <cuda_runtime_api.h>
+ #if defined(CHAMELEON_USE_CUBLAS_V2)
+-#include <cublas.h>
+-#include <cublas_v2.h>
++#include <cublas_v2.h> /* CUDA >= 12: cublas.h and cublas_v2.h are mutually exclusive */
+ #else
+ #include <cublas.h>
+ #endif
+diff --git a/chameleon-1.1.0/cudablas/include/cudablas.h b/chameleon-1.1.0/cudablas/include/cudablas.h
+index ad58100..4108cbe 100644
+--- a/chameleon-1.1.0/cudablas/include/cudablas.h
++++ b/chameleon-1.1.0/cudablas/include/cudablas.h
+@@ -38,8 +38,12 @@
+ 
+ #if defined(CHAMELEON_USE_CUBLAS_V2)
+ 
+-#include <cublas.h>
+-#include <cublas_v2.h>
++#include <cublas_v2.h> /* CUDA >= 12: cublas.h and cublas_v2.h are mutually exclusive */
++/* legacy-API leftovers used only in assert()s / MAGMA paths; removed in CUDA 12/13 */
++#ifndef cublasGetError
++#define cublasGetError() CUBLAS_STATUS_SUCCESS
++#endif
++#define cudaThreadSynchronize cudaDeviceSynchronize
+ 
+ #define CUBLAS_STREAM_PARAM cublasHandle_t handle
+ #define CUBLAS_STREAM_VALUE handle
+diff --git a/chameleon-1.1.0/runtime/starpu/include/chameleon_starpu.h.in b/chameleon-1.1.0/runtime/starpu/include/chameleon_starpu.h.in
+index c2ac71d..6262ceb 100644
+--- a/chameleon-1.1.0/runtime/starpu/include/chameleon_starpu.h.in
++++ b/chameleon-1.1.0/runtime/starpu/include/chameleon_starpu.h.in
+@@ -60,11 +60,12 @@
+ #include <starpu_scheduler.h>
+ #include <starpu_cuda.h>
+ 
+-#include <cublas.h>
+ #include <starpu_cublas.h>
+ #if defined(CHAMELEON_USE_CUBLAS_V2)
+-#include <cublas_v2.h>
++#include <cublas_v2.h> /* CUDA >= 12: cublas.h and cublas_v2.h are mutually exclusive */
+ #include <starpu_cublas_v2.h>
++#else
++#include <cublas.h>
+ #endif
+ #endif
+ 

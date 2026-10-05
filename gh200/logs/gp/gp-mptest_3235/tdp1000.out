@@ -1,0 +1,11 @@
+n=8000 nb=1024 ranges=[0.02, 0.05, 0.08] nugget=0.0001 order=morton
+RESULT_GP tdp=1000 variant=native pass=A status=ok loglik=[412.293231 6007.025956 1395.379932] dll=[0.000e+00 0.000e+00 0.000e+00] wall=0.175s t_begin=1791210134.416 t_end=1791210134.591
+RANGE_GP frac_below24=2.124e-01 frac_below32=1.224e-01 frac_below40=6.861e-02
+RESULT_GP tdp=1000 variant=mp3 pass=A status=ok loglik=[412.293231 6007.027826 1395.441987] dll=[-2.219e-07 1.870e-03 6.205e-02] wall=0.124s t_begin=1791210134.614 t_end=1791210134.737
+MP_GP frac_fp16=[0.417 0.417 0.417]
+RESULT_GP tdp=1000 variant=mpn pass=A status=ok loglik=[412.293231 6007.025956 1395.379932] dll=[-4.824e-08 -2.006e-07 0.000e+00] wall=0.071s t_begin=1791210134.760 t_end=1791210134.831
+MP_GP frac_fp16=[0.278 0.056 0.000]
+RESULT_GP tdp=1000 variant=mpn+t28n pass=A status=ok loglik=[412.293231 6007.025954 1395.379898] dll=[1.930e-08 -2.049e-06 -3.450e-05] wall=0.074s t_begin=1791210134.853 t_end=1791210134.927
+MP_GP frac_fp16=[0.278 0.056 0.000]
+RESULT_GP tdp=1000 variant=mpn+h5 pass=A status=ok loglik=[412.293231 6007.025957 1395.379932] dll=[-1.705e-07 5.281e-07 0.000e+00] wall=0.073s t_begin=1791210134.949 t_end=1791210135.022
+MP_GP frac_fp16=[0.278 0.056 0.000]

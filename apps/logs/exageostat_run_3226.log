@@ -1,0 +1,388 @@
+== host work1 Mon Oct  5 02:02:48 PM UTC 2026
+name, driver_version, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 615.71.09, 900.00 W, 34, 1980 MHz
+=== RUN tag=r0_native PRELOAD=/nfs/home/koying/mantissa-optimize/gh200/shim/libmantshim.span.so MANT_BITS=<unset> MANT_ROUND=<unset> MANT_VERBOSE=1
+    /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp/examples/end-to-end/Example_Data_Generation_and_Modeling --N=40000 --dts=960 --kernel=univariate_matern_stationary --computation=exact --precision=double --cores=64 --gpus=1  --initial_theta=1:0.1:0.5 --lb=0.1:0.1:0.1 --ub=5:5:5 --max_mle_iterations=5 --tolerance=9 --seed=0 --verbose=detailed
+		 ** Initialize ExaGeoStat hardware **
+		 ********************SUMMARY**********************
+		 #Synthetic Data generation
+		 #Number of Locations: 40000
+		 #Threads per node: 64
+		 #GPUs: 1
+		 #Precision: Double
+		 #Dense Tile Size: 960
+		 #Computation: Exact
+		 #Dimension: 2D
+		 #Kernel: UnivariateMaternStationary
+		 #Distance Metric: Euclidean distance
+		 #p: 1		 #q: 1
+		 *************************************************
+		 ** ExaGeoStat data generation/loading **
+		 	Initializing Covariance Matrix (Synthetic Dataset Generation Phase).....
+		 	Done.
+		 	Generate Normal Random Distribution Vector Z (Synthetic Dataset Generation Phase) .....
+		 Done.
+		 	Cholesky factorization of Sigma (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Triangular matrix-matrix multiplication Z=L.e (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Done Z Vector Generation Phase. (Chameleon Synchronous)
+		 	---- Facto Time: 1.082831011000
+		 	---- dtrmm Time: 0.054090997000
+		 	---- Matrix Generation Time: 1.103001767000
+		 	---- Total Time: 1.136922008000
+		 	---- Gflop/s: 18766
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	*Data generation/loading finished*
+		 ** ExaGeoStat data Modeling **
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	1 - Model Parameters (0.100000, 0.100000, 0.100000)----> LogLi: -7167.414493547660640616
+		 ---- Facto Time: 0.932856979000
+		 ---- Log Determent Time: 0.000786175000
+		 ---- dtrsm Time: 0.030468246000
+		 ---- Matrix Generation Time: 3.712962022000
+		 ---- Total Time: 0.964111400000
+		 ---- Gflop/s: 22148.006536421799
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	2 - Model Parameters (1.325000, 0.100000, 0.100000)----> LogLi: -34771.240848077599366661
+		 ---- Facto Time: 0.933402418000
+		 ---- Log Determent Time: 0.000760031000
+		 ---- dtrsm Time: 0.029210935000
+		 ---- Matrix Generation Time: 3.713272582000
+		 ---- Total Time: 0.963373384000
+		 ---- Gflop/s: 22164.385434200387
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	3 - Model Parameters (0.100000, 1.325000, 0.100000)----> LogLi: -13269.622733833815800608
+		 ---- Facto Time: 0.931771989000
+		 ---- Log Determent Time: 0.000790271000
+		 ---- dtrsm Time: 0.033190034000
+		 ---- Matrix Generation Time: 2.224858965000
+		 ---- Total Time: 0.965752294000
+		 ---- Gflop/s: 22110.438412559160
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	4 - Model Parameters (0.100000, 0.100000, 1.325000)----> LogLi: -85843154.782955676317214966
+		 ---- Facto Time: 0.932495060000
+		 ---- Log Determent Time: 0.000757727000
+		 ---- dtrsm Time: 0.029920598000
+		 ---- Matrix Generation Time: 3.639105100000
+		 ---- Total Time: 0.963173385000
+		 ---- Gflop/s: 22168.938340361037
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	5 - Model Parameters (2.550000, 0.100000, 0.100000)----> LogLi: -46920.697090010202373378
+		 ---- Facto Time: 0.934540305000
+		 ---- Log Determent Time: 0.000770495000
+		 ---- dtrsm Time: 0.029191800000
+		 ---- Matrix Generation Time: 3.713201861000
+		 ---- Total Time: 0.964502600000
+		 ---- Gflop/s: 22138.655824898557
+		 --> Final Theta Values (0.100000, 0.100000, 0.100000)		 
+		 ********************SUMMARY**********************
+		 #Average Flops per Iteration: 27682.606137
+		 #Average Time Modeling per Iteration: 1.205228
+		 #Final Log Likelihood Value: -46920.697090
+		 #Found Maximum Theta at: [ 2.55000000 0.10000000 0.10000000 ]
+		 #Logger Enabled: Yes
+		 #Logger Path: configurations
+		 #Number of Locations: 40000
+		 #Number of MLE Iterations: 5
+		 #Total Data Generation Execution Time: 1.136922
+		 #Total Data Generation Gflop/s: 18766.000000
+		 #Total Modeling Execution Time: 4.820913
+		 #Total Modeling Flops: 110730.424548
+		 *************************************************
+    rc=0 wall=27.7 s
+CPU 45                          
+	111 task(s)
+CPU 46                          
+	112 task(s)
+CPU 47                          
+	111 task(s)
+CPU 48                          
+	111 task(s)
+CPU 49                          
+	111 task(s)
+CPU 50                          
+	111 task(s)
+CPU 51                          
+	111 task(s)
+CPU 52                          
+	111 task(s)
+CPU 53                          
+	110 task(s)
+CPU 54                          
+	110 task(s)
+CPU 55                          
+	110 task(s)
+CPU 56                          
+	111 task(s)
+CPU 57                          
+	110 task(s)
+CPU 58                          
+	109 task(s)
+CPU 59                          
+	109 task(s)
+CPU 60                          
+	106 task(s)
+CPU 61                          
+	105 task(s)
+CPU 62                          
+	103 task(s)
+CPU 63                          
+	99 task(s)
+#---------------------
+ELAPSED 27.73 s  MAXRSS 50505536 KB
+    [mantshim] lines: 147968  gemm-lines: 73984  cublasDgemm-lines: 73984
+  63960 m=960 n=960 k=960
+   4920 m=960 n=1 k=960
+   4920 m=640 n=960 k=960
+    184 m=640 n=1 k=960
+    GPU samples=56 meanPower=197.7W maxPower=429.1W meanUtil=18.1% maxMem=7922MiB
+    GPU busy(util>=50%) samples=11 (5.5s) meanPower=307.0W maxPower=426.7W meanSM=1980MHz
+=== RUN tag=r1_m36nearest PRELOAD=/nfs/home/koying/mantissa-optimize/gh200/shim/libmantshim.span.so MANT_BITS=36 MANT_ROUND=nearest MANT_VERBOSE=1
+    /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp/examples/end-to-end/Example_Data_Generation_and_Modeling --N=40000 --dts=960 --kernel=univariate_matern_stationary --computation=exact --precision=double --cores=64 --gpus=1  --initial_theta=1:0.1:0.5 --lb=0.1:0.1:0.1 --ub=5:5:5 --max_mle_iterations=5 --tolerance=9 --seed=0 --verbose=detailed
+		 ** Initialize ExaGeoStat hardware **
+		 ********************SUMMARY**********************
+		 #Synthetic Data generation
+		 #Number of Locations: 40000
+		 #Threads per node: 64
+		 #GPUs: 1
+		 #Precision: Double
+		 #Dense Tile Size: 960
+		 #Computation: Exact
+		 #Dimension: 2D
+		 #Kernel: UnivariateMaternStationary
+		 #Distance Metric: Euclidean distance
+		 #p: 1		 #q: 1
+		 *************************************************
+		 ** ExaGeoStat data generation/loading **
+		 	Initializing Covariance Matrix (Synthetic Dataset Generation Phase).....
+		 	Done.
+		 	Generate Normal Random Distribution Vector Z (Synthetic Dataset Generation Phase) .....
+		 Done.
+		 	Cholesky factorization of Sigma (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Triangular matrix-matrix multiplication Z=L.e (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Done Z Vector Generation Phase. (Chameleon Synchronous)
+		 	---- Facto Time: 1.212752911000
+		 	---- dtrmm Time: 0.057575216000
+		 	---- Matrix Generation Time: 1.101149930000
+		 	---- Total Time: 1.270328127000
+		 	---- Gflop/s: 16795
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	*Data generation/loading finished*
+		 ** ExaGeoStat data Modeling **
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	1 - Model Parameters (0.100000, 0.100000, 0.100000)----> LogLi: -7167.414493549461440125
+		 ---- Facto Time: 1.071522131000
+		 ---- Log Determent Time: 0.000746527000
+		 ---- dtrsm Time: 0.032478899000
+		 ---- Matrix Generation Time: 3.712120487000
+		 ---- Total Time: 1.104747557000
+		 ---- Gflop/s: 19325.827422461731
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	2 - Model Parameters (1.325000, 0.100000, 0.100000)----> LogLi: -34771.240848077701230068
+		 ---- Facto Time: 1.071226964000
+		 ---- Log Determent Time: 0.000746623000
+		 ---- dtrsm Time: 0.032437267000
+		 ---- Matrix Generation Time: 3.713172901000
+		 ---- Total Time: 1.104410854000
+		 ---- Gflop/s: 19331.724976416310
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	3 - Model Parameters (0.100000, 1.325000, 0.100000)----> LogLi: -13269.622733843252717634
+		 ---- Facto Time: 1.070826388000
+		 ---- Log Determent Time: 0.000732671000
+		 ---- dtrsm Time: 0.032180371000
+		 ---- Matrix Generation Time: 2.224837493000
+		 ---- Total Time: 1.103739430000
+		 ---- Gflop/s: 19343.248086116215
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	4 - Model Parameters (0.100000, 0.100000, 1.325000)----> LogLi: -85843154.767289772629737854
+		 ---- Facto Time: 1.070785588000
+		 ---- Log Determent Time: 0.000728031000
+		 ---- dtrsm Time: 0.032121332000
+		 ---- Matrix Generation Time: 3.640596522000
+		 ---- Total Time: 1.103634951000
+		 ---- Gflop/s: 19344.999104729526
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	5 - Model Parameters (2.550000, 0.100000, 0.100000)----> LogLi: -46920.697090010253305081
+		 ---- Facto Time: 1.070722996000
+		 ---- Log Determent Time: 0.000741023000
+		 ---- dtrsm Time: 0.032213395000
+		 ---- Matrix Generation Time: 3.711181513000
+		 ---- Total Time: 1.103677414000
+		 ---- Gflop/s: 19344.482196888537
+		 --> Final Theta Values (0.100000, 0.100000, 0.100000)		 
+		 ********************SUMMARY**********************
+		 #Average Flops per Iteration: 24172.570447
+		 #Average Time Modeling per Iteration: 1.380053
+		 #Final Log Likelihood Value: -46920.697090
+		 #Found Maximum Theta at: [ 2.55000000 0.10000000 0.10000000 ]
+		 #Logger Enabled: Yes
+		 #Logger Path: configurations
+		 #Number of Locations: 40000
+		 #Number of MLE Iterations: 5
+		 #Total Data Generation Execution Time: 1.270328
+		 #Total Data Generation Gflop/s: 16795.000000
+		 #Total Modeling Execution Time: 5.520210
+		 #Total Modeling Flops: 96690.281787
+		 *************************************************
+    rc=0 wall=28.4 s
+CPU 45                          
+	112 task(s)
+CPU 46                          
+	111 task(s)
+CPU 47                          
+	111 task(s)
+CPU 48                          
+	110 task(s)
+CPU 49                          
+	111 task(s)
+CPU 50                          
+	110 task(s)
+CPU 51                          
+	110 task(s)
+CPU 52                          
+	110 task(s)
+CPU 53                          
+	110 task(s)
+CPU 54                          
+	108 task(s)
+CPU 55                          
+	108 task(s)
+CPU 56                          
+	108 task(s)
+CPU 57                          
+	106 task(s)
+CPU 58                          
+	106 task(s)
+CPU 59                          
+	106 task(s)
+CPU 60                          
+	106 task(s)
+CPU 61                          
+	104 task(s)
+CPU 62                          
+	103 task(s)
+CPU 63                          
+	100 task(s)
+#---------------------
+ELAPSED 28.41 s  MAXRSS 50571008 KB
+    [mantshim] lines: 147962  gemm-lines: 73981  cublasDgemm-lines: 73981
+  63960 m=960 n=960 k=960
+   4920 m=960 n=1 k=960
+   4920 m=640 n=960 k=960
+    181 m=640 n=1 k=960
+    GPU samples=57 meanPower=201.0W maxPower=436.7W meanUtil=22.5% maxMem=7954MiB
+    GPU busy(util>=50%) samples=13 (6.5s) meanPower=323.9W maxPower=436.7W meanSM=1980MHz
+== done Mon Oct  5 02:03:44 PM UTC 2026

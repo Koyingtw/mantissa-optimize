@@ -1,0 +1,314 @@
+% References for the mantissa-truncation paper. Every entry was checked against the publisher page,
+% arXiv, a patent office record or Crossref (see gh200/refs/round4_refs.md and round5_refs.md);
+% Tong2000, Pool2008, Pool2011, Jahadi2024 and Woo2023 were also checked against the full text.
+
+@misc{Bhalachandra2022,
+  author = {Bhalachandra, Sridutt and Austin, Brian and Williams, Samuel and Wright, Nicholas J.},
+  title = {Understanding the Impact of Input Entropy on {FPU}, {CPU}, and {GPU} Power},
+  year = {2022}, howpublished = {arXiv preprint arXiv:2212.08805}}
+
+@inproceedings{Gregersen2024,
+  author = {Gregersen, Theo and Patel, Pratyush and Choukse, Esha},
+  title = {Input-Dependent Power Usage in {GPUs}},
+  booktitle = {SC24-W: Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis},
+  pages = {1872--1877}, year = {2024}, publisher = {IEEE}, doi = {10.1109/SCW63240.2024.00235}}
+
+@misc{He2024,
+  author = {He, Horace},
+  title = {Strangely, Matrix Multiplications on {GPUs} Run Faster When Given ``Predictable'' Data!},
+  howpublished = {Thonk From First Principles (blog), \url{https://www.thonking.ai/p/strangely-matrix-multiplications}},
+  year = {2024}, note = {April 29, 2024}}
+
+@inproceedings{Antepara2025,
+  author = {Antepara, Oscar and Zhao, Zhengji and Austin, Brian and Ding, Nan and Oliker, Leonid and Wright, Nicholas J. and Williams, Samuel},
+  title = {Benchmark-driven Models for Energy Analysis and Attribution of {GPU}-Accelerated Supercomputing},
+  booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC '25)},
+  pages = {888--904}, year = {2025}, doi = {10.1145/3712285.3759815}}
+
+@inproceedings{Antepara2025W,
+  author = {Antepara, Oscar and Oliker, Leonid and Williams, Samuel},
+  title = {Roofline Analysis of Tightly-Coupled {CPU-GPU} Superchips: A Study on {MI300A} and {GH200}},
+  booktitle = {SC '25 Workshops}, pages = {1205--1216}, year = {2025}, doi = {10.1145/3731599.3767497}}
+
+@misc{Ujeniya2026,
+  author = {Ujeniya, Aditya and Eitzinger, Jan and Hager, Georg and Wellein, Gerhard},
+  title = {Architectural Trade-offs in the Energy-Efficient Era: A Comparative Study of Power-Capping {NVIDIA} {H100} and {H200}},
+  year = {2026}, howpublished = {arXiv preprint arXiv:2604.11391}}
+
+@misc{TensorRTDocs,
+  author = {{NVIDIA}},
+  title = {Performance Benchmarking --- {NVIDIA} {TensorRT} ({GPU} Power Consumption and Power Throttling)},
+  howpublished = {\url{https://docs.nvidia.com/deeplearning/tensorrt/latest/performance/benchmarking.html}},
+  note = {Accessed Sep.~30, 2026}}
+
+@inproceedings{Lucas2016,
+  author = {Lucas, Jan and Juurlink, Ben},
+  title = {{ALUPower}: Data Dependent Power Consumption in {GPUs}},
+  booktitle = {IEEE 24th International Symposium on Modeling, Analysis and Simulation of Computer and Telecommunication Systems (MASCOTS)},
+  pages = {95--104}, year = {2016}, doi = {10.1109/MASCOTS.2016.21}}
+
+@article{Tong2000,
+  author = {Tong, Jonathan Ying Fai and Nagle, David and Rutenbar, Rob A.},
+  title = {Reducing Power by Optimizing the Necessary Precision/Range of Floating-Point Arithmetic},
+  journal = {IEEE Transactions on Very Large Scale Integration (VLSI) Systems},
+  volume = {8}, number = {3}, pages = {273--286}, year = {2000}, doi = {10.1109/92.845894}}
+
+@inproceedings{Pool2008,
+  author = {Pool, Jeff and Lastra, Anselmo and Singh, Montek},
+  title = {Energy-Precision Tradeoffs in Mobile Graphics Processing Units},
+  booktitle = {IEEE International Conference on Computer Design (ICCD)},
+  pages = {60--67}, year = {2008}, doi = {10.1109/ICCD.2008.4751841}}
+
+@inproceedings{Pool2011,
+  author = {Pool, Jeff and Lastra, Anselmo and Singh, Montek},
+  title = {Precision Selection for Energy-Efficient Pixel Shaders},
+  booktitle = {ACM SIGGRAPH Symposium on High Performance Graphics (HPG)},
+  pages = {159--168}, year = {2011}, doi = {10.1145/2018323.2018349}}
+
+@article{Angerd2017,
+  author = {Angerd, Alexandra and Sintorn, Erik and Stenstr{\"o}m, Per},
+  title = {A Framework for Automated and Controlled Floating-Point Accuracy Reduction in Graphics Applications on {GPUs}},
+  journal = {ACM Transactions on Architecture and Code Optimization}, volume = {14}, number = {4},
+  note = {Article 46}, year = {2017}, doi = {10.1145/3151032}}
+
+@inproceedings{Guenther2016,
+  author = {Guenther, Daniel and Henriksson, Tomas and Leupers, Rainer and Ascheid, Gerd},
+  title = {Mantissa-Masking for Energy-Efficient Floating-Point {LTE} Uplink {MIMO} Baseband Processing},
+  booktitle = {Design, Automation \& Test in Europe (DATE)}, pages = {1028--1029}, year = {2016},
+  doi = {10.3850/9783981537079_0389}}
+
+@misc{AMD2022,
+  author = {Argade, Pramod V. and Peroni, Daniel N.},
+  title = {Variable Precision Computing System},
+  howpublished = {US Patent 11,455,766 B2 (Advanced Micro Devices, Inc.), filed Sep.~18, 2018, issued Sep.~27, 2022},
+  year = {2022}}
+
+@misc{Altera2017,
+  author = {Langhammer, Martin},
+  title = {Low Power Optimizations for a Floating Point Multiplier},
+  howpublished = {US Patent 9,606,608 B1 (Altera Corporation)}, year = {2017}}
+
+@inproceedings{Jahadi2024,
+  author = {Jahadi, Reza and Atoofian, Ehsan},
+  title = {Low-Power Register File for Tensor Cores},
+  booktitle = {IEEE 15th International Green and Sustainable Computing Conference (IGSC)},
+  pages = {159--164}, year = {2024}, doi = {10.1109/IGSC64514.2024.00037}}
+
+@article{Dawson2017,
+  author = {Dawson, Andrew and D{\"u}ben, Peter D.},
+  title = {rpe v5: An Emulator for Reduced Floating-Point Precision in Large Numerical Simulations},
+  journal = {Geoscientific Model Development}, volume = {10}, pages = {2221--2230}, year = {2017},
+  doi = {10.5194/gmd-10-2221-2017}}
+
+@article{Higham2019,
+  author = {Higham, Nicholas J. and Pranesh, Srikara},
+  title = {Simulating Low Precision Floating-Point Arithmetic},
+  journal = {SIAM Journal on Scientific Computing}, volume = {41}, number = {5}, pages = {C585--C602}, year = {2019},
+  doi = {10.1137/19M1251308}}
+
+@inproceedings{Chatterjee2017,
+  author = {Chatterjee, Niladrish and O'Connor, Mike and Lee, Donghyuk and Johnson, Daniel R. and Keckler, Stephen W. and Rhu, Minsoo and Dally, William J.},
+  title = {Architecting an Energy-Efficient {DRAM} System for {GPUs}},
+  booktitle = {IEEE International Symposium on High Performance Computer Architecture (HPCA)},
+  pages = {73--84}, year = {2017}, doi = {10.1109/HPCA.2017.58}}
+
+@inproceedings{OConnor2017,
+  author = {O'Connor, Mike and Chatterjee, Niladrish and Lee, Donghyuk and Wilson, John and Agrawal, Aditya and Keckler, Stephen W. and Dally, William J.},
+  title = {Fine-Grained {DRAM}: Energy-Efficient {DRAM} for Extreme Bandwidth Systems},
+  booktitle = {IEEE/ACM International Symposium on Microarchitecture (MICRO)},
+  pages = {41--54}, year = {2017}, doi = {10.1145/3123939.3124545}}
+
+@article{Ghose2018,
+  author = {Ghose, Saugata and Ya{\u{g}}l{\i}k{\c{c}}{\i}, Abdullah Giray and Gupta, Raghav and Lee, Donghyuk and Kudrolli, Kais and Liu, William X. and Hassan, Hasan and Chang, Kevin K. and Chatterjee, Niladrish and Agrawal, Aditya and O'Connor, Mike and Mutlu, Onur},
+  title = {What Your {DRAM} Power Models Are Not Telling You: Lessons from a Detailed Experimental Study},
+  journal = {Proceedings of the ACM on Measurement and Analysis of Computing Systems}, volume = {2}, number = {3},
+  year = {2018}, doi = {10.1145/3224419}}
+
+@inproceedings{Pekhimenko2016,
+  author = {Pekhimenko, Gennady and Bolotin, Evgeny and Vijaykumar, Nandita and Mutlu, Onur and Mowry, Todd C. and Keckler, Stephen W.},
+  title = {A Case for Toggle-Aware Compression for {GPU} Systems},
+  booktitle = {IEEE International Symposium on High Performance Computer Architecture (HPCA)},
+  pages = {188--200}, year = {2016}, doi = {10.1109/HPCA.2016.7446064}}
+
+@inproceedings{RubioGonzalez2013,
+  author = {Rubio-Gonz{\'a}lez, Cindy and Nguyen, Cuong and Nguyen, Hong Diep and Demmel, James and Kahan, William and Sen, Koushik and Bailey, David H. and Iancu, Costin and Hough, David},
+  title = {Precimonious: Tuning Assistant for Floating-Point Precision},
+  booktitle = {Proceedings of the International Conference on High Performance Computing, Networking, Storage and Analysis (SC13)},
+  year = {2013}, doi = {10.1145/2503210.2503296}}
+
+@article{Higham2022,
+  author = {Higham, Nicholas J. and Mary, Theo},
+  title = {Mixed Precision Algorithms in Numerical Linear Algebra},
+  journal = {Acta Numerica}, volume = {31}, pages = {347--414}, year = {2022}, doi = {10.1017/S0962492922000022}}
+
+@inproceedings{Patrou2025,
+  author = {Patrou, Maria and Wang, Thomas and Elwasif, Wael and Eisenbach, Markus and Miller, Ross and Godoy, William and Hernandez, Oscar},
+  title = {Power-Capping Metric Evaluation for Improving Energy Efficiency in {HPC} Applications},
+  booktitle = {ISC High Performance 2025 Workshops (EESP)}, series = {LNCS}, pages = {231--244}, year = {2025},
+  doi = {10.1007/978-3-032-07612-0_18}}
+
+@inproceedings{Yang2024,
+  author = {Yang, Zeyu and Adamek, Karel and Armour, Wesley},
+  title = {Accurate and Convenient Energy Measurements for {GPUs}: A Detailed Study of {NVIDIA} {GPU}'s Built-In Power Sensor},
+  booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC24)},
+  year = {2024}, doi = {10.1109/SC41406.2024.00028}}
+
+@inproceedings{Gupta2015,
+  author = {Gupta, Suyog and Agrawal, Ankur and Gopalakrishnan, Kailash and Narayanan, Pritish},
+  title = {Deep Learning with Limited Numerical Precision},
+  booktitle = {Proceedings of the 32nd International Conference on Machine Learning (ICML)},
+  series = {PMLR}, volume = {37}, pages = {1737--1746}, year = {2015}}
+
+@misc{Micikevicius2022,
+  author = {Micikevicius, Paulius and Stosic, Dusan and others},
+  title = {{FP8} Formats for Deep Learning}, year = {2022}, howpublished = {arXiv preprint arXiv:2209.05433}}
+
+@inproceedings{Haidar2018,
+  author = {Haidar, Azzam and Tomov, Stanimire and Dongarra, Jack and Higham, Nicholas J.},
+  title = {Harnessing {GPU} Tensor Cores for Fast {FP16} Arithmetic to Speed up Mixed-Precision Iterative Refinement Solvers},
+  booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC18)},
+  pages = {603--613}, year = {2018}, doi = {10.1109/SC.2018.00050}}
+
+@article{Dongarra2025,
+  author = {Dongarra, Jack and Luszczek, Piotr},
+  title = {{HPL-MxP} Benchmark: Mixed-Precision Algorithms, Iterative Refinement, and Scalable Data Generation},
+  journal = {International Journal of High Performance Computing Applications}, year = {2025}, note = {arXiv:2509.19618}}
+
+@article{Klower2021,
+  author = {Kl{\"o}wer, Milan and Razinger, Miha and Dominguez, Juan J. and D{\"u}ben, Peter D. and Palmer, Tim N.},
+  title = {Compressing Atmospheric Data into Its Real Information Content},
+  journal = {Nature Computational Science}, volume = {1}, pages = {713--724}, year = {2021},
+  doi = {10.1038/s43588-021-00156-2}}
+
+@misc{Ootomo2024,
+  author = {Ootomo, Hiroyuki and others},
+  title = {{DGEMM} on Integer Matrix Multiplication Unit}, year = {2024}, howpublished = {arXiv preprint arXiv:2306.11975}}
+
+@misc{Ozaki2025,
+  author = {Ozaki, Katsuhisa and Uchino, Yuki and Imamura, Toshiyuki},
+  title = {Ozaki Scheme {II}: A {GEMM}-Oriented Emulation of Floating-Point Matrix Multiplication Using an Integer Modular Technique},
+  year = {2025}, howpublished = {arXiv preprint arXiv:2504.08009}}
+
+@inproceedings{Uchino2025,
+  author = {Uchino, Yuki and others},
+  title = {High-Performance and Power-Efficient Emulation of Matrix Multiplication Using {INT8} Matrix Engines},
+  booktitle = {SC '25 Workshops}, year = {2025}, doi = {10.1145/3731599.3767539}}
+
+@article{Woo2023,
+  author = {Woo, Jeheon and Kim, Seonghwan and Kim, Woo Youn},
+  title = {Dynamic Precision Approach for Accelerating Large-Scale Eigenvalue Solvers in Electronic Structure Calculations on Graphics Processing Units},
+  journal = {Journal of Chemical Theory and Computation}, volume = {19}, number = {5}, pages = {1457--1465}, year = {2023},
+  doi = {10.1021/acs.jctc.2c00983}}
+
+@misc{Huang2026,
+  author = {Huang, Hang and Shao, Wenhao and Hammond, Jeff},
+  title = {Accelerating Density Fitting with Adaptive-Precision and 8-bit Integer on {AI} Accelerators},
+  year = {2026}, howpublished = {arXiv preprint arXiv:2601.08077}}
+
+@article{Dawson2024,
+  author = {Dawson, William and Ozaki, Katsuhisa and Domke, Jens and Nakajima, Takahito},
+  title = {Reducing Numerical Precision Requirements in Quantum Chemistry Calculations},
+  journal = {Journal of Chemical Theory and Computation}, volume = {20}, number = {24}, pages = {10826--10837}, year = {2024},
+  doi = {10.1021/acs.jctc.4c00938}}
+
+@inproceedings{Zhang2025,
+  author = {Zhang, Jintao and Huang, Haofeng and Zhang, Pengle and Wei, Jia and Zhu, Jun and Chen, Jianfei},
+  title = {{SageAttention2}: Efficient Attention with Thorough Outlier Smoothing and Per-Thread {INT4} Quantization},
+  booktitle = {Proceedings of the 42nd International Conference on Machine Learning (ICML)}, year = {2025}, note = {arXiv:2411.10958}}
+
+@misc{MLPerfInfRules,
+  author = {{MLCommons}},
+  title = {{MLPerf} Inference Rules, Section 8.1: Weight Definition and Quantization},
+  howpublished = {\url{https://github.com/mlcommons/inference_policies/blob/master/inference_rules.adoc}}}
+
+@article{Giannozzi2020,
+  author = {Giannozzi, Paolo and others},
+  title = {{Quantum ESPRESSO} toward the Exascale},
+  journal = {The Journal of Chemical Physics}, volume = {152}, pages = {154105}, year = {2020}, doi = {10.1063/5.0005082}}
+
+@article{Fasi2021,
+  author = {Fasi, Massimiliano and Higham, Nicholas J. and Mikaitis, Mantas and Pranesh, Srikara},
+  title = {Numerical Behavior of {NVIDIA} Tensor Cores},
+  journal = {PeerJ Computer Science}, volume = {7}, pages = {e330}, year = {2021}, doi = {10.7717/peerj-cs.330}}
+
+@misc{Khattak2025,
+  author = {Khattak, Faizan A. and Mikaitis, Mantas},
+  title = {Accurate Models of {NVIDIA} Tensor Cores}, year = {2025}, howpublished = {arXiv preprint arXiv:2512.07004}}
+
+@article{Wu2025,
+  author = {Wu, Xiaojie and Sun, Qiming and Pu, Zhichen and Zheng, Tianze and Ma, Wenzhi and Yan, Wen and Xia, Yu and Wu, Zhengxiao and Huo, Mian and Li, Xiang and Ren, Weiluo and Gong, Sheng and Zhang, Yumin and Gao, Weihao},
+  title = {Enhancing {GPU}-Acceleration in the {Python}-Based Simulations of Chemistry Frameworks},
+  journal = {WIREs Computational Molecular Science}, volume = {15}, number = {2}, pages = {e70008}, year = {2025},
+  doi = {10.1002/wcms.70008}}
+
+@article{Li2025,
+  author = {Li, Rui and Sun, Qiming and Zhang, Xing and Chan, Garnet Kin-Lic},
+  title = {Introducing {GPU} Acceleration into the {Python}-Based Simulations of Chemistry Framework},
+  journal = {The Journal of Physical Chemistry A}, volume = {129}, number = {5}, pages = {1459--1468}, year = {2025},
+  doi = {10.1021/acs.jpca.4c05876}}
+
+@article{OlivaresAmaya2010,
+  author = {Olivares-Amaya, Roberto and Watson, Mark A. and Edgar, Richard G. and Vogt, Leslie and Shao, Yihan and Aspuru-Guzik, Al{\'a}n},
+  title = {Accelerating Correlated Quantum Chemistry Calculations Using Graphical Processing Units and a Mixed Precision Matrix Multiplication Library},
+  journal = {Journal of Chemical Theory and Computation}, volume = {6}, number = {1}, pages = {135--144}, year = {2010},
+  doi = {10.1021/ct900543q}}
+
+@article{Abdulah2018,
+  author = {Abdulah, Sameh and Ltaief, Hatem and Sun, Ying and Genton, Marc G. and Keyes, David E.},
+  title = {{ExaGeoStat}: A High Performance Unified Software for Geostatistics on Manycore Systems},
+  journal = {IEEE Transactions on Parallel and Distributed Systems}, volume = {29}, number = {12}, pages = {2771--2784}, year = {2018},
+  doi = {10.1109/TPDS.2018.2850749}}
+
+@inproceedings{Abdulah2019,
+  author = {Abdulah, Sameh and Ltaief, Hatem and Sun, Ying and Genton, Marc G. and Keyes, David E.},
+  title = {Geostatistical Modeling and Prediction Using Mixed Precision Tile {Cholesky} Factorization},
+  booktitle = {IEEE 26th International Conference on High Performance Computing, Data, and Analytics (HiPC)},
+  pages = {152--162}, year = {2019}, doi = {10.1109/HiPC.2019.00028}}
+
+@article{Abdulah2022,
+  author = {Abdulah, Sameh and Cao, Qinglei and Pei, Yu and Bosilca, George and Dongarra, Jack and Genton, Marc G. and Keyes, David E. and Ltaief, Hatem and Sun, Ying},
+  title = {Accelerating Geostatistical Modeling and Prediction With Mixed-Precision Computations: A High-Productivity Approach With {PaRSEC}},
+  journal = {IEEE Transactions on Parallel and Distributed Systems}, volume = {33}, number = {4}, pages = {964--976}, year = {2022},
+  doi = {10.1109/TPDS.2021.3084071}}
+
+@inproceedings{Cao2022,
+  author = {Cao, Qinglei and Abdulah, Sameh and Alomairy, Rabab and Pei, Yu and Nag, Pratik and Bosilca, George and Dongarra, Jack and Genton, Marc G. and Keyes, David E. and Ltaief, Hatem and Sun, Ying},
+  title = {Reshaping Geostatistical Modeling and Prediction for Extreme-Scale Environmental Applications},
+  booktitle = {SC22: International Conference for High Performance Computing, Networking, Storage and Analysis},
+  pages = {1--12}, year = {2022}, doi = {10.1109/SC41404.2022.00007}}
+
+@inproceedings{Cao2023,
+  author = {Cao, Qinglei and Abdulah, Sameh and Ltaief, Hatem and Genton, Marc G. and Keyes, David and Bosilca, George},
+  title = {Reducing Data Motion and Energy Consumption of Geospatial Modeling Applications Using Automated Precision Conversion},
+  booktitle = {IEEE International Conference on Cluster Computing (CLUSTER)},
+  pages = {330--342}, year = {2023}, doi = {10.1109/CLUSTER52292.2023.00035}}
+
+@inproceedings{Abdulah2024,
+  author = {Abdulah, Sameh and Baker, Allison H. and Bosilca, George and Cao, Qinglei and Castruccio, Stefano and Genton, Marc G. and Keyes, David E. and Khalid, Zubair and Ltaief, Hatem and Song, Yan and Stenchikov, Georgiy L. and Sun, Ying},
+  title = {Boosting Earth System Model Outputs and Saving {PetaBytes} in Their Storage Using Exascale Climate Emulators},
+  booktitle = {SC24: International Conference for High Performance Computing, Networking, Storage and Analysis},
+  pages = {1--12}, year = {2024}, doi = {10.1109/SC41406.2024.00008}}
+
+@inproceedings{Ren2025,
+  author = {Ren, Jie and Ltaief, Hatem and Abdulah, Sameh and Keyes, David E.},
+  title = {Accelerating Mixed-Precision Out-of-Core {Cholesky} Factorization with Static Task Scheduling},
+  booktitle = {ISC High Performance 2025 Research Paper Proceedings (40th International Conference)},
+  pages = {1--12}, year = {2025}, doi = {10.23919/ISC.2025.11017733}}
+
+@article{Grutzmacher2020,
+  author = {Gr{\"u}tzmacher, Thomas and Cojean, Terry and Flegar, Goran and Anzt, Hartwig and Quintana-Ort{\'i}, Enrique S.},
+  title = {Acceleration of {PageRank} with Customized Precision Based on Mantissa Segmentation},
+  journal = {ACM Transactions on Parallel Computing}, volume = {7}, number = {1}, pages = {1--19}, year = {2020},
+  doi = {10.1145/3380934}}
+
+@misc{cuBLASEmu,
+  author = {{NVIDIA}},
+  title = {{cuBLAS} Library Documentation, Section 1.5: Floating Point Emulation (v13.4; archived 13.2.1)},
+  howpublished = {\url{https://docs.nvidia.com/cuda/cublas/index.html#floating-point-emulation}},
+  note = {Accessed Oct.~5, 2026}}
+
+@inproceedings{Schwarz2026,
+  author = {Schwarz, Angelika and Anders, Anton and Brower, Cole and Bayraktar, Harun and Gunnels, John and Clark, Kate and Xu, RuQing G. and Rodriguez, Samuel and Cayrols, Sebastien and Tabaszewski, Pawe{\l} and Podlozhnyuk, Victor},
+  title = {Guaranteed {DGEMM} Accuracy While Using Reduced Precision Tensor Cores Through Extensions of the {Ozaki} Scheme},
+  booktitle = {Proceedings of the Supercomputing Asia and International Conference on High Performance Computing in Asia Pacific Region (SCA/HPCAsia)},
+  pages = {91--101}, year = {2026}, doi = {10.1145/3773656.3773670}}

@@ -1,0 +1,145 @@
+== host work2  Mon Oct  5 01:56:48 PM UTC 2026
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+cmake version 3.31.12
+== stage exageostat Mon Oct  5 01:56:48 PM UTC 2026
+-- cmake -Wno-dev -S /nfs/home/koying/mantissa-optimize/apps/exageostatcpp -B /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -G Unix Makefiles -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -Wl,--no-as-needed -w -fpic -DUSE_CUDA=ON -DEXAGEOSTAT_ALLOW_NEW_CUDA=ON -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.3/bin/nvcc -DCMAKE_CUDA_ARCHITECTURES=90 -DUSE_MPI=OFF -DUSE_HICMA=OFF -DUSE_R=OFF -DUSE_CLIMATE_EMULATOR=OFF -DRUNTIME_TYPE=starpu -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_HEAVY_TESTS=OFF -DBUILD_DOCS=OFF -DCREATE_PACKAGE=OFF -DBLA_VENDOR=OpenBLAS -DBLA_STATIC=OFF -DBUILD_SHARED_LIBS=OFF -Dgpu_backend=none (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/exageostat.cfg.log)
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features - done
+-- Detecting CUDA compiler ABI info - done
+-- Detecting CUDA compile features - done
+-- Found CUDAToolkit: /usr/local/cuda-13.3/targets/sbsa-linux/include;/usr/local/cuda-13.3/targets/sbsa-linux/include/cccl (found version "13.3.73")
+-- Found Threads: TRUE
+-- Looking for sgemm_ - found
+-- Found BLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Found BLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Found BLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Looking for cheev_ - found
+-- Found LAPACK: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Found LAPACK: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Looking for LAPACKE_dgeqrf - found
+-- Found LAPACKE: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Installation path : /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install
+-- Found PkgConfig: /usr/bin/pkg-config (found version "2.5.1")
+--   Found hwloc, version 2.10.0
+-- Found hwloc 2.10.0 in /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/HWLOC/include;/usr/include:hwloc
+   Found HWLOC;  hwloc
+-- Hwloc done
+   Found NLOHMANN_JSON; /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/NLOHMANN_JSON/share/cmake/nlohmann_json 
+-- nlohmann_json done
+   Found NLOPT;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/NLOPT/lib/libnlopt.so
+-- NLOPT done
+   Found GSL;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/GSL/lib/libgsl.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/GSL/lib/libgslcblas.so
+-- GSL done
+-- Found CUDA: /usr/local/cuda-13.3 (found version "13.3")
+   Found STARPU;  starpu-1.3;pthread;hwloc
+-- STARPU done
+   Found CHAMELEON;  chameleon;chameleon_starpu;hqr;coreblas;cudablas
+-- CHAMELEON_DIR_FOUND: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON
+-- CHAMELEON done
+   Found BLAS;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+-- BLAS done
+   Can't find BLASPP, Installing it instead ..
+-- Found OpenMP_C: -fopenmp (found version "4.5")
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP_CUDA: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5")
+[34m   Found CBLAS library [39m
+-- Found LAPACK: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- blaspp done
+   Found LAPACK;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+-- LAPACK done
+ 	 ** Configurations of ExaGeoStatCPP and installation of dependence is done successfully ** 
+-- Configuring done (5.7s)
+-- Generating done (0.2s)
+-- cmake --build /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/exageostat.make.log)
+!! FAILED: cmake --build /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -j 72
+140-[ 85%] Building CXX object src/CMakeFiles/ExaGeoStatCPP.dir/configurations/Validator.cpp.o
+141-[ 85%] Building CXX object src/CMakeFiles/ExaGeoStatCPP.dir/data-generators/concrete/runtime/StarpuGenerator.cpp.o
+142-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:15:
+143:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:28:5: error: ‘uint64_t’ does not name a type
+144-   28 |     uint64_t SpreadBits(uint64_t aInputByte);
+145-      |     ^~~~~~~~
+146-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:19:1: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+147-   18 | #include <memory>
+148-  +++ |+#include <cstdint>
+149-   19 | 
+150:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:36:5: error: ‘uint64_t’ does not name a type
+151-   36 |     uint64_t ReverseSpreadBits(uint64_t aInputByte);
+152-      |     ^~~~~~~~
+153-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:36:5: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+154:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:45:30: error: ‘uint64_t’ does not name a type
+155-   45 |     bool CompareUint64(const uint64_t &aFirstValue, const uint64_t &aSecondValue);
+156-      |                              ^~~~~~~~
+157-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:45:30: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+158:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:45:59: error: ‘uint64_t’ does not name a type
+159-   45 |     bool CompareUint64(const uint64_t &aFirstValue, const uint64_t &aSecondValue);
+160-      |                                                           ^~~~~~~~
+161-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/helpers/ByteHandler.hpp:45:59: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+162:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:19:5: error: ‘uint64_t’ does not name a type
+163-   19 |     uint64_t SpreadBits(uint64_t aInputByte) {
+164-      |     ^~~~~~~~
+165-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:16:1: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+166-   15 | #include <helpers/ByteHandler.hpp>
+167-  +++ |+#include <cstdint>
+168-   16 | 
+169:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:34:5: error: ‘uint64_t’ does not name a type
+170-   34 |     uint64_t ReverseSpreadBits(uint64_t aInputByte) {
+171-      |     ^~~~~~~~
+172-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:34:5: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+173:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:49:30: error: ‘uint64_t’ does not name a type
+174-   49 |     bool CompareUint64(const uint64_t &aFirstValue, const uint64_t &aSecondValue) {
+175-      |                              ^~~~~~~~
+176-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:49:30: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+177:/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:49:59: error: ‘uint64_t’ does not name a type
+178-   49 |     bool CompareUint64(const uint64_t &aFirstValue, const uint64_t &aSecondValue) {
+179-      |                                                           ^~~~~~~~
+180-/nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/helpers/ByteHandler.cpp:49:59: note: ‘uint64_t’ is defined in header ‘<cstdint>’; this is probably fixable by adding ‘#include <cstdint>’
+181:gmake[2]: *** [src/CMakeFiles/ExaGeoStatCPP.dir/build.make:639: src/CMakeFiles/ExaGeoStatCPP.dir/helpers/ByteHandler.cpp.o] Error 1
+182-gmake[2]: *** Waiting for unfinished jobs....
+183-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON/include/coreblas.h:39,
+184-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/linear-algebra-solvers/concrete/ChameleonHeaders.hpp:19,
+185-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/data-units/descriptor/ExaGeoStatDescriptor.hpp:20,
+186-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/data-units/DescriptorData.hpp:20,
+187-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/data-units/ExaGeoStatData.hpp:18,
+188-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/linear-algebra-solvers/LinearAlgebraMethods.hpp:30,
+189-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/inst/include/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.hpp:19,
+190-                 from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp:24:
+191:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON/include/coreblas/cblas.h:30:6: error: multiple definition of ‘enum CBLAS_ORDER’
+192-   30 | enum CBLAS_ORDER {CblasRowMajor=101, CblasColMajor=102};
+193-      |      ^~~~~~~~~~~
+194-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostatcpp/src/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp:22:
+195-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/include/cblas.h:104:14: note: previous definition here
+196-  104 | typedef enum CBLAS_ORDER     {CblasRowMajor=101, CblasColMajor=102} CBLAS_ORDER;
+197-      |              ^~~~~~~~~~~
+198:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON/include/coreblas/cblas.h:31:6: error: multiple definition of ‘enum CBLAS_TRANSPOSE’
+199-   31 | enum CBLAS_TRANSPOSE {CblasNoTrans=111, CblasTrans=112, CblasConjTrans=113};
+200-      |      ^~~~~~~~~~~~~~~
+201-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/include/cblas.h:105:14: note: previous definition here
+202-  105 | typedef enum CBLAS_TRANSPOSE {CblasNoTrans=111, CblasTrans=112, CblasConjTrans=113, CblasConjNoTrans=114} CBLAS_TRANSPOSE;
+203-      |              ^~~~~~~~~~~~~~~
+204:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON/include/coreblas/cblas.h:32:6: error: multiple definition of ‘enum CBLAS_UPLO’
+205-   32 | enum CBLAS_UPLO {CblasUpper=121, CblasLower=122};
+206-      |      ^~~~~~~~~~
+207-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/include/cblas.h:106:14: note: previous definition here
+208-  106 | typedef enum CBLAS_UPLO      {CblasUpper=121, CblasLower=122} CBLAS_UPLO;
+209-      |              ^~~~~~~~~~
+210:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON/include/coreblas/cblas.h:33:6: error: multiple definition of ‘enum CBLAS_DIAG’
+211-   33 | enum CBLAS_DIAG {CblasNonUnit=131, CblasUnit=132};
+212-      |      ^~~~~~~~~~
+213-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/include/cblas.h:107:14: note: previous definition here
+214-  107 | typedef enum CBLAS_DIAG      {CblasNonUnit=131, CblasUnit=132} CBLAS_DIAG;
+215-      |              ^~~~~~~~~~
+216:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON/include/coreblas/cblas.h:34:6: error: multiple definition of ‘enum CBLAS_SIDE’
+217-   34 | enum CBLAS_SIDE {CblasLeft=141, CblasRight=142};
+218-      |      ^~~~~~~~~~
+219-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/include/cblas.h:108:14: note: previous definition here
+220-  108 | typedef enum CBLAS_SIDE      {CblasLeft=141, CblasRight=142} CBLAS_SIDE;
+221-      |              ^~~~~~~~~~
+222:gmake[2]: *** [src/CMakeFiles/ExaGeoStatCPP.dir/build.make:135: src/CMakeFiles/ExaGeoStatCPP.dir/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp.o] Error 1
+223:gmake[1]: *** [CMakeFiles/Makefile2:786: src/CMakeFiles/ExaGeoStatCPP.dir/all] Error 2
+224:gmake: *** [Makefile:136: all] Error 2

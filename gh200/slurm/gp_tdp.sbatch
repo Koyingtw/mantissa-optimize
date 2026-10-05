@@ -27,6 +27,6 @@ echo "job=$SLURM_JOB_ID host=$HOST n=${GP_N:-60000} variants=[$VARIANTS] tdps=[$
 for tdp in $TDPS; do
   nv_power --hosts "$HOST" "$tdp" >/dev/null
   GP_CAP=$tdp GP_VARIANTS="$VARIANTS" python "$A/geostat/gp_mle.py" > "$OUT/tdp$tdp.out" 2>&1 || echo "=== RUN FAILED tdp=$tdp rc=$?"
-  grep -E "^(RESULT|RANGE|CAP RESET|n=)" "$OUT/tdp$tdp.out" | sed 's/^/    /' || true
+  grep -E "^(RESULT|RANGE|MP_GP|CAP RESET|n=)" "$OUT/tdp$tdp.out" | sed 's/^/    /' || true
 done
 echo "=== ALL DONE"

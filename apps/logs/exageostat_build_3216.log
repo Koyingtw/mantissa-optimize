@@ -1,0 +1,193 @@
+== host work2  Mon Oct  5 01:52:08 PM UTC 2026
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+cmake version 3.31.12
+== stage hwloc Mon Oct  5 01:52:08 PM UTC 2026
+-- ./configure --prefix=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/HWLOC CFLAGS=-O2 -fPIC -std=gnu17 --disable-cuda --disable-nvml --disable-opencl --disable-rsmi --disable-levelzero --disable-gl --disable-libxml2 --disable-cairo (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/hwloc.cfg.log)
+-- make -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/hwloc.make.log)
+-- make install (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/hwloc.install.log)
+lstopo-no-graphics 2.10.0
+== stage hwloc done Mon Oct  5 01:52:18 PM UTC 2026
+== stage openblas Mon Oct  5 01:52:18 PM UTC 2026
+-- make -j 72 TARGET=NEOVERSEV2 USE_THREAD=0 USE_LOCKING=1 NO_AFFINITY=1 DYNAMIC_ARCH=0 CC=gcc FC=gfortran (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/openblas.make.log)
+-- make PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS install (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/openblas.install.log)
+/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/include:
+cblas.h
+f77blas.h
+lapack.h
+lapacke.h
+lapacke_config.h
+lapacke_mangling.h
+lapacke_utils.h
+openblas_config.h
+
+/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib:
+cmake
+libopenblas.a
+libopenblas.so
+libopenblas.so.0
+libopenblas_neoversev2-r0.3.34.a
+libopenblas_neoversev2-r0.3.34.so
+pkgconfig
+== stage openblas done Mon Oct  5 01:53:11 PM UTC 2026
+== stage gsl Mon Oct  5 01:53:11 PM UTC 2026
+-- ./configure --prefix=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/GSL CFLAGS=-O2 -fPIC -std=gnu17 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/gsl.cfg.log)
+-- make -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/gsl.make.log)
+-- make install (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/gsl.install.log)
+== stage gsl done Mon Oct  5 01:53:47 PM UTC 2026
+== stage nlopt Mon Oct  5 01:53:47 PM UTC 2026
+-- cmake -S nlopt-2.7.1 -B nlopt-build -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/NLOPT -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=ON -DNLOPT_PYTHON=OFF -DNLOPT_SWIG=OFF -DNLOPT_OCTAVE=OFF -DNLOPT_MATLAB=OFF -DNLOPT_GUILE=OFF -DNLOPT_TESTS=OFF (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/nlopt.cfg.log)
+-- cmake --build nlopt-build -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/nlopt.make.log)
+-- cmake --install nlopt-build (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/nlopt.install.log)
+== stage nlopt done Mon Oct  5 01:53:50 PM UTC 2026
+== stage json Mon Oct  5 01:53:50 PM UTC 2026
+-- cmake -S json-3.11.2 -B json-build -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/NLOHMANN_JSON -DJSON_BuildTests=OFF -DJSON_Install=ON (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/json.cfg.log)
+-- cmake --install json-build (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/json.install.log)
+== stage json done Mon Oct  5 01:53:50 PM UTC 2026
+== stage starpu Mon Oct  5 01:53:50 PM UTC 2026
+-- /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/starpu-1.3.11/configure --prefix=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/STARPU --enable-cuda --with-cuda-dir=/usr/local/cuda-13.3 --disable-opencl --disable-mpi --disable-fortran --disable-build-doc --disable-build-examples --disable-build-tests --disable-export-dynamic --enable-shared --disable-static --disable-socl --disable-starpufft --disable-mlr --disable-hdf5 --disable-simgrid --disable-openmp --enable-maxcpus=128 --enable-maxcudadev=4 --with-hwloc=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/HWLOC CFLAGS=-O2 -fPIC -std=gnu17 CXXFLAGS=-O2 -fPIC NVCCFLAGS=-arch=sm_90 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/starpu.cfg.log)
+	(change these with --enable-maxcpus, --enable-maxcudadev,
+	--enable-maxopencldev, --enable-maxmicdev, --enable-maxnodes,
+        --enable-maxbuffers)
+        (Note these numbers do not represent the number of detected
+	devices, but the maximum number of devices StarPU can manage)
+
+	Maximum number of CPUs:                     128
+	Maximum number of CUDA devices:             4
+	Maximum number of OpenCL devices:           0
+	Maximum number of MIC threads:              0
+	Maximum number of MPI master-slave devices: 1
+	Maximum number of memory nodes:             8
+	Maximum number of task buffers:             8
+
+	GPU-GPU transfers: yes
+	Allocation cache:  yes
+
+	Magma enabled:     no
+	BLAS library:      none
+	hwloc:             yes
+	FxT trace enabled: no
+
+        Documentation HTML:  no
+        Documentation PDF:   no
+        Examples:            no
+
+	StarPU Extensions:
+	       StarPU MPI enabled:                            no
+	       StarPU MPI(nmad) enabled:                      no
+	       MPI test suite:                                no
+	       Master-Slave MPI enabled:                      no
+	       FFT Support:                                   no
+	       Resource Management enabled:                   no
+	       OpenMP runtime support enabled:                no
+	       Cluster support enabled:                       no
+	       SOCL enabled:                                  no
+	       SOCL test suite:                               no
+	       Scheduler Hypervisor:                          no
+	       simgrid enabled:                               no
+	       ayudame enabled:                               no
+	       HDF5 enabled:                                  no
+	       Native fortran support:                        no
+	       Native MPI fortran support:                    no
+	       Support for multiple linear regression models: no
+
+-- make -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/starpu.make.log)
+-- make install (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/starpu.install.log)
+#define STARPU_USE_CUDA 1
+#define STARPU_MAXCPUS 128
+#define STARPU_HAVE_CUDA_MEMCPY_PEER 1
+#define STARPU_HAVE_HWLOC 1
+== stage starpu done Mon Oct  5 01:54:20 PM UTC 2026
+== stage chameleon Mon Oct  5 01:54:20 PM UTC 2026
+-- cmake -S /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0 -B /tmp/exageostat-build-3216/chameleon-build -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS=-fPIC -std=gnu17 -DBUILD_SHARED_LIBS=ON -DCHAMELEON_SCHED=STARPU -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_DOC=OFF -DBLA_VENDOR=OpenBLAS -DBLAS_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DCBLAS_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DLAPACKE_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DLAPACK_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DTMG_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DSTARPU_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/STARPU -DHWLOC_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/HWLOC -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-13.3 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/chameleon.cfg.log)
+CMake Deprecation Warning at CMakeLists.txt:32 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/FindMorseCommon.cmake:22 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/LibrariesAbsolutePath.cmake:22 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/Sanitizer.cmake:1 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/RulesPrecisions.cmake:29 (cmake_minimum_required):
+CMake Warning (dev) at cmake_modules/morse_cmake/modules/RulesPrecisions.cmake:164 (find_package):
+  the cmake_policy command to set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+-- CHAMELEON_SCHED is set to use STARPU runtime
+-- CHAMELEON_SIMULATION is set to OFF, turn it ON to use SIMULATION mode (only with StarPU compiled with SimGrid)
+CMake Deprecation Warning at hqr/CMakeLists.txt:12 (cmake_minimum_required):
+CMake Warning (dev) at hqr/src/CMakeLists.txt:100 (install):
+  command to set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/FindMorseCommon.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindCBLAS.cmake:83 (include)
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/LibrariesAbsolutePath.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindCBLAS.cmake:83 (include)
+-- Looking for cblas_dscal
+-- Looking for cblas_dscal - found
+-- Looking for cblas_zgemm3m
+-- Looking for cblas_zgemm3m - not found
+-- Looking for cblas_cgemm3m
+-- Looking for cblas_cgemm3m - not found
+-- Looking for cblas: test with blas succeeded
+-- Found CBLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/FindMorseCommon.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindLAPACKE.cmake:78 (include)
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/LibrariesAbsolutePath.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindLAPACKE.cmake:78 (include)
+-- Looking for LAPACKE_dgeqrf
+-- Looking for LAPACKE_dgeqrf - found
+-- Looking for LAPACKE_dlascl_work
+-- Looking for LAPACKE_dlascl_work - found
+-- Looking for lapacke: test with lapack succeeded
+-- Found LAPACKE: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+CMake Warning (dev) at CMakeLists.txt:295 (find_package):
+  Policy CMP0146 is not set: The FindCUDA module is removed.  Run "cmake
+  set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+-- cmake --build /tmp/exageostat-build-3216/chameleon-build -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/chameleon.make.log)
+!! FAILED: cmake --build /tmp/exageostat-build-3216/chameleon-build -j 72
+1594-[ 58%] Building C object runtime/starpu/CMakeFiles/chameleon_starpu.dir/codelets/codelet_zlascal.c.o
+1595-[ 58%] Building C object runtime/starpu/CMakeFiles/chameleon_starpu.dir/codelets/codelet_clascal.c.o
+1596-/tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_zherk.c: In function ‘cl_zherk_cuda_func’:
+1597:/tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_zherk.c:73:9: error: passing argument 5 of ‘CUDA_zherk’ from incompatible pointer type [-Wincompatible-pointer-types]
+1598-   73 |         (cuDoubleComplex*)&(clargs.alpha),
+1599-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1600-      |         |
+1601-      |         cuDoubleComplex * {aka double2 *}
+1602-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0/cudablas/include/cudablas.h:81,
+1603-                 from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0/runtime/starpu/include/runtime_codelet_z.h:34,
+1604-                 from /tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_zherk.c:27:
+1605-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0/cudablas/include/cudablas/cudablas_z.h:33:78: note: expected ‘double *’ but argument is of type ‘cuDoubleComplex *’ {aka ‘double2 *’}
+1606-   33 | int CUDA_zherk(  cham_uplo_t uplo, cham_trans_t trans, int n, int k, double *alpha, const cuDoubleComplex *A, int lda, double *beta, cuDoubleComplex *B, int ldb, CUBLAS_STREAM_PARAM );
+1607-      |                                                                      ~~~~~~~~^~~~~
+1608:/tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_zherk.c:75:9: error: passing argument 8 of ‘CUDA_zherk’ from incompatible pointer type [-Wincompatible-pointer-types]
+1609-   75 |         (cuDoubleComplex*)&(clargs.beta),
+1610-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1611-      |         |
+1612-      |         cuDoubleComplex * {aka double2 *}
+1613-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0/cudablas/include/cudablas/cudablas_z.h:33:128: note: expected ‘double *’ but argument is of type ‘cuDoubleComplex *’ {aka ‘double2 *’}
+1614-   33 | int CUDA_zherk(  cham_uplo_t uplo, cham_trans_t trans, int n, int k, double *alpha, const cuDoubleComplex *A, int lda, double *beta, cuDoubleComplex *B, int ldb, CUBLAS_STREAM_PARAM );
+1615-      |                                                                                                                        ~~~~~~~~^~~~
+1616-/tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_cherk.c: In function ‘cl_cherk_cuda_func’:
+1617:/tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_cherk.c:73:9: error: passing argument 5 of ‘CUDA_cherk’ from incompatible pointer type [-Wincompatible-pointer-types]
+1618-   73 |         (cuFloatComplex*)&(clargs.alpha),
+1619-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1620-      |         |
+1621-      |         cuFloatComplex * {aka float2 *}
+1622-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0/cudablas/include/cudablas.h:83,
+1623-                 from /tmp/exageostat-build-3216/chameleon-build/runtime/starpu/include/runtime_codelet_c.h:34,
+1624-                 from /tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_cherk.c:27:
+1625-/tmp/exageostat-build-3216/chameleon-build/cudablas/include/cudablas/cudablas_c.h:33:77: note: expected ‘float *’ but argument is of type ‘cuFloatComplex *’ {aka ‘float2 *’}
+1626-   33 | int CUDA_cherk(  cham_uplo_t uplo, cham_trans_t trans, int n, int k, float *alpha, const cuFloatComplex *A, int lda, float *beta, cuFloatComplex *B, int ldb, CUBLAS_STREAM_PARAM );
+1627-      |                                                                      ~~~~~~~^~~~~
+1628:/tmp/exageostat-build-3216/chameleon-build/runtime/starpu/codelets/codelet_cherk.c:75:9: error: passing argument 8 of ‘CUDA_cherk’ from incompatible pointer type [-Wincompatible-pointer-types]
+1629-   75 |         (cuFloatComplex*)&(clargs.beta),
+1630-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1631-      |         |
+1632-      |         cuFloatComplex * {aka float2 *}
+1633-/tmp/exageostat-build-3216/chameleon-build/cudablas/include/cudablas/cudablas_c.h:33:125: note: expected ‘float *’ but argument is of type ‘cuFloatComplex *’ {aka ‘float2 *’}
+1634-   33 | int CUDA_cherk(  cham_uplo_t uplo, cham_trans_t trans, int n, int k, float *alpha, const cuFloatComplex *A, int lda, float *beta, cuFloatComplex *B, int ldb, CUBLAS_STREAM_PARAM );
+1635-      |                                                                                                                      ~~~~~~~^~~~
+1636:gmake[2]: *** [runtime/starpu/CMakeFiles/chameleon_starpu.dir/build.make:2235: runtime/starpu/CMakeFiles/chameleon_starpu.dir/codelets/codelet_zherk.c.o] Error 1
+1637-gmake[2]: *** Waiting for unfinished jobs....
+1638:gmake[2]: *** [runtime/starpu/CMakeFiles/chameleon_starpu.dir/build.make:2249: runtime/starpu/CMakeFiles/chameleon_starpu.dir/codelets/codelet_cherk.c.o] Error 1
+1639:gmake[1]: *** [CMakeFiles/Makefile2:2036: runtime/starpu/CMakeFiles/chameleon_starpu.dir/all] Error 2
+1640:gmake: *** [Makefile:166: all] Error 2

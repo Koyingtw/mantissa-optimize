@@ -1,0 +1,64 @@
+		 ** Initialize ExaGeoStat hardware **
+		 ********************SUMMARY**********************
+		 #Synthetic Data generation
+		 #Number of Locations: 9600
+		 #Threads per node: 64
+		 #GPUs: 1
+		 #Precision: Double
+		 #Dense Tile Size: 960
+		 #Computation: Exact
+		 #Dimension: 2D
+		 #Kernel: UnivariateMaternStationary
+		 #Distance Metric: Euclidean distance
+		 #p: 1		 #q: 1
+		 *************************************************
+		 ** ExaGeoStat data generation/loading **
+		 	Initializing Covariance Matrix (Synthetic Dataset Generation Phase).....
+		 	Done.
+		 	Generate Normal Random Distribution Vector Z (Synthetic Dataset Generation Phase) .....
+		 Done.
+		 	Cholesky factorization of Sigma (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Triangular matrix-matrix multiplication Z=L.e (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Done Z Vector Generation Phase. (Chameleon Synchronous)
+		 	---- Facto Time: 0.125074841000
+		 	---- dtrmm Time: 0.011086633000
+		 	---- Matrix Generation Time: 0.127840492000
+		 	---- Total Time: 0.136161474000
+		 	---- Gflop/s: 2166
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	*Data generation/loading finished*
+		 ** ExaGeoStat data Modeling **
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	1 - Model Parameters (0.100000, 0.100000, 0.100000)----> LogLi: -6691.171526477964107471
+		 ---- Facto Time: 0.090831777000
+		 ---- Log Determent Time: 0.000266495000
+		 ---- dtrsm Time: 0.004272139000
+		 ---- Matrix Generation Time: 0.295397652000
+		 ---- Total Time: 0.095370411000
+		 ---- Gflop/s: 3102.398551075436
+		 --> Final Theta Values (0.100000, 0.100000, 0.100000)		 
+		 ********************SUMMARY**********************
+		 #Final Log Likelihood Value: -6691.171526
+		 #Found Maximum Theta at: [ 0.10000000 0.10000000 0.10000000 ]
+		 #Logger Enabled: Yes
+		 #Logger Path: configurations
+		 #Number of Locations: 9600
+		 #Number of MLE Iterations: 1
+		 #Total Data Generation Execution Time: 0.136161
+		 #Total Data Generation Gflop/s: 2166.000000
+		 #Total Modeling Execution Time: 0.095370
+		 #Total Modeling Flops: 3102.398551
+		 *************************************************

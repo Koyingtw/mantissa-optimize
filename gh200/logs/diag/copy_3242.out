@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/nfs/home/koying/mantissa-optimize/gh200/logs/diag/copy.py", line 3, in <module>
+    import cupy as cp
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/__init__.py", line 18, in <module>
+    from cupy import _core  # NOQA
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/_core/__init__.py", line 5, in <module>
+    from cupy._core import core  # NOQA
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "cupy/_core/core.pyx", line 1, in init cupy._core.core
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/cuda/__init__.py", line 13, in <module>
+    from cupy.cuda import compiler  # NOQA
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/apps/pyscf-venv/lib/python3.12/site-packages/cupy/cuda/compiler.py", line 3, in <module>
+    import copy
+  File "/nfs/home/koying/mantissa-optimize/gh200/logs/diag/copy.py", line 6, in <module>
+    A = cp.asfortranarray(cp.random.standard_normal((n, n // 4)))  # 60000 x 15000 column-major stand-in
+        ^^^^^^^^^^^^^^^^^
+AttributeError: partially initialized module 'cupy' has no attribute 'asfortranarray' (most likely due to a circular import)

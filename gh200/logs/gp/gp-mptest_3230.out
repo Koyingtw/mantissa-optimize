@@ -1,0 +1,11 @@
+job=3230 host=work1 n=8000 variants=[native mp100 mp2 mp2+t28n mp2+h5 t28n] tdps=[1000]
+    n=8000 nb=1024 ranges=[0.02, 0.05, 0.08] nugget=0.0001 order=morton
+    RESULT_GP tdp=1000 variant=native pass=A status=ok loglik=[412.293231 6007.025956 1395.379932] dll=[0.000e+00 0.000e+00 0.000e+00] wall=0.178s t_begin=1791209824.739 t_end=1791209824.918
+    RANGE_GP frac_below24=2.124e-01 frac_below32=1.224e-01 frac_below40=6.861e-02
+    RESULT_GP tdp=1000 variant=mp100 pass=A status=ok loglik=[412.293231 6007.025956 1395.379932] dll=[0.000e+00 0.000e+00 0.000e+00] wall=0.066s t_begin=1791209824.940 t_end=1791209825.007
+    RESULT_GP tdp=1000 variant=mp2 pass=A status=failed(LinAlgError) loglik=[412.293304 nan nan] dll=[7.349e-05 nan nan] wall=0.282s t_begin=1791209825.029 t_end=1791209825.311
+    RESULT_GP tdp=1000 variant=mp2+t28n pass=A status=failed(LinAlgError) loglik=[412.293305 nan nan] dll=[7.358e-05 nan nan] wall=0.072s t_begin=1791209825.334 t_end=1791209825.406
+    RESULT_GP tdp=1000 variant=mp2+h5 pass=A status=failed(LinAlgError) loglik=[412.294175 nan nan] dll=[9.444e-04 nan nan] wall=0.201s t_begin=1791209825.428 t_end=1791209825.629
+    RESULT_GP tdp=1000 variant=t28n pass=A status=ok loglik=[412.293231 6007.025954 1395.379898] dll=[6.754e-08 -1.848e-06 -3.450e-05] wall=0.076s t_begin=1791209825.651 t_end=1791209825.727
+    RANGE_GP frac_below24=2.124e-01 frac_below32=1.224e-01 frac_below40=6.861e-02
+=== ALL DONE

@@ -1,0 +1,221 @@
+[starpu][check_bus_config_file] No performance model for the bus, calibrating...
+[starpu][benchmark_all_gpu_devices] CUDA 0...
+[starpu][measure_bandwidth_between_numa_nodes_and_dev] with NUMA 0...
+[starpu][check_bus_config_file] ... done
+[starpu][_starpu_history_based_job_expected_perf] Warning: model dpotrf is not calibrated enough for cpu0_impl0 (Comb1) size 7372800 footprint 617e5fe6 (only 0 measurements), forcing calibration for this run. Use the STARPU_CALIBRATE environment variable to control this. You probably need to run again to continue calibrating the model, until this warning disappears.
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 159.871000us vs average 64.223333us, 3 such errors against 3 samples (+148.929776%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 118.047000us vs average 20.095000us, 1 such errors against 1 samples (+487.444638%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 130.463000us vs average 19.648000us, 1 such errors against 1 samples (+564.001425%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 48.928000us vs average 23.200000us, 1 such errors against 1 samples (+110.896552%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 14.560000us vs average 50.752000us, 3 such errors against 3 samples (-71.311475%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 45.471000us vs average 14.016000us, 1 such errors against 1 samples (+224.422089%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 22.240000us vs average 47.423500us, 4 such errors against 4 samples (-53.103419%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 12.352000us vs average 47.583000us, 1 such errors against 1 samples (-74.041149%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 47.584000us vs average 128.810591us, 22 such errors against 22 samples (-63.058938%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dlacpy on cpu0_impl0 (Comb1): 1.280000us vs average 906.339889us, 9 such errors against 9 samples (-99.858773%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 150.559000us vs average 11.776000us, 1 such errors against 1 samples (+1178.524117%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 21.216000us vs average 127.977762us, 21 such errors against 21 samples (-83.422120%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dlacpy on cpu0_impl0 (Comb1): 3.872000us vs average 1.312000us, 1 such errors against 1 samples (+195.121951%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 11.488000us vs average 56.320000us, 1 such errors against 1 samples (-79.602273%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dsyrk on cuda0_impl0 (Comb0): 47.840000us vs average 129.261636us, 22 such errors against 22 samples (-62.989792%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+[starpu][_starpu_update_perfmodel_history] Too big deviation for model dgemm on cuda0_impl0 (Comb0): 6.976000us vs average 18.533681us, 72 such errors against 72 samples (-62.360417%), flushing the performance model. Use the STARPU_HISTORY_MAX_ERROR environement variable to control the threshold (currently 50%)
+
+#---------------------
+Worker stats:
+CUDA 0.0 (NVIDIA GH200 480GB 85.6 GiB 0009:01:00.0)
+	974 task(s)
+	total: 1383.58 ms executing: 123.42 ms sleeping: 1255.23 ms overhead 4.92 ms
+CPU 0                           
+	153 task(s)
+	total: 1383.59 ms executing: 1008.67 ms sleeping: 364.27 ms overhead 10.64 ms
+CPU 1                           
+	34 task(s)
+	total: 1383.59 ms executing: 721.90 ms sleeping: 660.96 ms overhead 0.73 ms
+CPU 2                           
+	15 task(s)
+	total: 1383.60 ms executing: 529.38 ms sleeping: 853.52 ms overhead 0.70 ms
+CPU 3                           
+	15 task(s)
+	total: 1383.60 ms executing: 562.02 ms sleeping: 820.96 ms overhead 0.62 ms
+CPU 4                           
+	16 task(s)
+	total: 1383.61 ms executing: 643.54 ms sleeping: 739.50 ms overhead 0.57 ms
+CPU 5                           
+	14 task(s)
+	total: 1383.61 ms executing: 499.53 ms sleeping: 883.49 ms overhead 0.60 ms
+CPU 6                           
+	15 task(s)
+	total: 1383.61 ms executing: 598.14 ms sleeping: 785.04 ms overhead 0.43 ms
+CPU 7                           
+	13 task(s)
+	total: 1383.62 ms executing: 511.16 ms sleeping: 872.16 ms overhead 0.29 ms
+CPU 8                           
+	12 task(s)
+	total: 1383.62 ms executing: 464.44 ms sleeping: 918.89 ms overhead 0.29 ms
+CPU 9                           
+	11 task(s)
+	total: 1383.63 ms executing: 442.01 ms sleeping: 941.49 ms overhead 0.13 ms
+CPU 10                          
+	11 task(s)
+	total: 1383.63 ms executing: 628.96 ms sleeping: 753.95 ms overhead 0.72 ms
+CPU 11                          
+	11 task(s)
+	total: 1383.63 ms executing: 516.27 ms sleeping: 866.70 ms overhead 0.67 ms
+CPU 12                          
+	10 task(s)
+	total: 1383.64 ms executing: 434.68 ms sleeping: 948.37 ms overhead 0.59 ms
+CPU 13                          
+	10 task(s)
+	total: 1383.64 ms executing: 430.68 ms sleeping: 952.39 ms overhead 0.57 ms
+CPU 14                          
+	10 task(s)
+	total: 1383.65 ms executing: 451.90 ms sleeping: 931.22 ms overhead 0.53 ms
+CPU 15                          
+	9 task(s)
+	total: 1383.65 ms executing: 408.23 ms sleeping: 974.93 ms overhead 0.48 ms
+CPU 16                          
+	9 task(s)
+	total: 1383.66 ms executing: 406.80 ms sleeping: 976.36 ms overhead 0.49 ms
+CPU 17                          
+	8 task(s)
+	total: 1383.66 ms executing: 399.00 ms sleeping: 984.20 ms overhead 0.46 ms
+CPU 18                          
+	9 task(s)
+	total: 1383.66 ms executing: 360.48 ms sleeping: 1023.04 ms overhead 0.15 ms
+CPU 19                          
+	7 task(s)
+	total: 1383.67 ms executing: 515.17 ms sleeping: 868.43 ms overhead 0.07 ms
+CPU 20                          
+	7 task(s)
+	total: 1383.67 ms executing: 426.52 ms sleeping: 957.10 ms overhead 0.05 ms
+CPU 21                          
+	7 task(s)
+	total: 1383.68 ms executing: 389.15 ms sleeping: 994.47 ms overhead 0.05 ms
+CPU 22                          
+	6 task(s)
+	total: 1383.68 ms executing: 396.39 ms sleeping: 987.26 ms overhead 0.04 ms
+CPU 23                          
+	6 task(s)
+	total: 1383.68 ms executing: 364.13 ms sleeping: 1019.51 ms overhead 0.04 ms
+CPU 24                          
+	6 task(s)
+	total: 1383.69 ms executing: 370.79 ms sleeping: 1012.86 ms overhead 0.04 ms
+CPU 25                          
+	7 task(s)
+	total: 1383.69 ms executing: 362.46 ms sleeping: 1021.19 ms overhead 0.05 ms
+CPU 26                          
+	6 task(s)
+	total: 1383.70 ms executing: 354.34 ms sleeping: 1029.32 ms overhead 0.03 ms
+CPU 27                          
+	4 task(s)
+	total: 1383.70 ms executing: 537.88 ms sleeping: 845.79 ms overhead 0.03 ms
+CPU 28                          
+	4 task(s)
+	total: 1383.71 ms executing: 435.36 ms sleeping: 948.32 ms overhead 0.03 ms
+CPU 29                          
+	4 task(s)
+	total: 1383.71 ms executing: 358.78 ms sleeping: 1024.90 ms overhead 0.03 ms
+CPU 30                          
+	4 task(s)
+	total: 1383.71 ms executing: 352.23 ms sleeping: 1031.45 ms overhead 0.03 ms
+CPU 31                          
+	4 task(s)
+	total: 1383.72 ms executing: 362.27 ms sleeping: 1021.42 ms overhead 0.03 ms
+CPU 32                          
+	4 task(s)
+	total: 1383.72 ms executing: 362.09 ms sleeping: 1021.60 ms overhead 0.03 ms
+CPU 33                          
+	4 task(s)
+	total: 1383.73 ms executing: 353.67 ms sleeping: 1030.03 ms overhead 0.03 ms
+CPU 34                          
+	4 task(s)
+	total: 1383.73 ms executing: 547.56 ms sleeping: 836.14 ms overhead 0.03 ms
+CPU 35                          
+	4 task(s)
+	total: 1383.73 ms executing: 365.19 ms sleeping: 1018.52 ms overhead 0.03 ms
+CPU 36                          
+	4 task(s)
+	total: 1383.74 ms executing: 359.61 ms sleeping: 1024.09 ms overhead 0.04 ms
+CPU 37                          
+	4 task(s)
+	total: 1383.74 ms executing: 393.00 ms sleeping: 990.72 ms overhead 0.03 ms
+CPU 38                          
+	4 task(s)
+	total: 1383.74 ms executing: 406.04 ms sleeping: 977.68 ms overhead 0.02 ms
+CPU 39                          
+	4 task(s)
+	total: 1383.75 ms executing: 361.07 ms sleeping: 1022.65 ms overhead 0.03 ms
+CPU 40                          
+	4 task(s)
+	total: 1383.75 ms executing: 551.74 ms sleeping: 831.99 ms overhead 0.03 ms
+CPU 41                          
+	4 task(s)
+	total: 1383.76 ms executing: 436.28 ms sleeping: 947.44 ms overhead 0.03 ms
+CPU 42                          
+	4 task(s)
+	total: 1383.76 ms executing: 388.43 ms sleeping: 995.30 ms overhead 0.03 ms
+CPU 43                          
+	4 task(s)
+	total: 1383.76 ms executing: 362.19 ms sleeping: 1021.54 ms overhead 0.03 ms
+CPU 44                          
+	4 task(s)
+	total: 1383.77 ms executing: 356.98 ms sleeping: 1026.76 ms overhead 0.03 ms
+CPU 45                          
+	4 task(s)
+	total: 1383.77 ms executing: 534.19 ms sleeping: 849.54 ms overhead 0.04 ms
+CPU 46                          
+	4 task(s)
+	total: 1383.78 ms executing: 423.24 ms sleeping: 960.50 ms overhead 0.03 ms
+CPU 47                          
+	4 task(s)
+	total: 1383.78 ms executing: 367.20 ms sleeping: 1016.55 ms overhead 0.03 ms
+CPU 48                          
+	4 task(s)
+	total: 1383.78 ms executing: 361.85 ms sleeping: 1021.90 ms overhead 0.03 ms
+CPU 49                          
+	4 task(s)
+	total: 1383.80 ms executing: 518.11 ms sleeping: 865.65 ms overhead 0.03 ms
+CPU 50                          
+	4 task(s)
+	total: 1383.80 ms executing: 422.63 ms sleeping: 961.14 ms overhead 0.03 ms
+CPU 51                          
+	4 task(s)
+	total: 1383.80 ms executing: 389.53 ms sleeping: 994.24 ms overhead 0.03 ms
+CPU 52                          
+	4 task(s)
+	total: 1383.81 ms executing: 541.71 ms sleeping: 842.07 ms overhead 0.03 ms
+CPU 53                          
+	4 task(s)
+	total: 1383.81 ms executing: 433.37 ms sleeping: 950.41 ms overhead 0.03 ms
+CPU 54                          
+	4 task(s)
+	total: 1383.81 ms executing: 552.44 ms sleeping: 831.33 ms overhead 0.04 ms
+CPU 55                          
+	0 task(s)
+	total: 1383.82 ms executing: 0.00 ms sleeping: 1383.82 ms overhead 0.00 ms
+CPU 56                          
+	0 task(s)
+	total: 1383.82 ms executing: 0.00 ms sleeping: 1383.82 ms overhead 0.00 ms
+CPU 57                          
+	0 task(s)
+	total: 1383.82 ms executing: 0.00 ms sleeping: 1383.82 ms overhead 0.00 ms
+CPU 58                          
+	0 task(s)
+	total: 1383.83 ms executing: 0.00 ms sleeping: 1383.83 ms overhead 0.00 ms
+CPU 59                          
+	0 task(s)
+	total: 1383.83 ms executing: 0.00 ms sleeping: 1383.83 ms overhead 0.00 ms
+CPU 60                          
+	0 task(s)
+	total: 1383.83 ms executing: 0.00 ms sleeping: 1383.83 ms overhead 0.00 ms
+CPU 61                          
+	0 task(s)
+	total: 1383.84 ms executing: 0.00 ms sleeping: 1383.84 ms overhead 0.00 ms
+CPU 62                          
+	0 task(s)
+	total: 1383.84 ms executing: 0.00 ms sleeping: 1383.84 ms overhead 0.00 ms
+CPU 63                          
+	0 task(s)
+	total: 1383.84 ms executing: 0.00 ms sleeping: 1383.84 ms overhead 0.00 ms
+#---------------------
+ELAPSED 2.14 s  MAXRSS 3382656 KB

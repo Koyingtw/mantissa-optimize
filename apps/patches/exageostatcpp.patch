@@ -1,0 +1,95 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 366ae6e..d88691c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -32,10 +32,14 @@ option(USE_CLIMATE_EMULATOR "Enable climate emulator examples and NetCDF support
+ set(RUNTIME_TYPE "starpu" CACHE STRING "Specify the runtime type (e.g., starpu or parsec)")
+ # Cmake Module Paths
+ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
+-if (${BUILD_SHARED_LIBS})
+-    set(BLA_STATIC OFF)
+-else ()
+-    set(BLA_STATIC ON)
++# GH200 port: allow -DBLA_STATIC=OFF (static OpenBLAS needs -lgfortran, so the LAPACK check fails and
++# ImportLapack starts building OpenBLAS 0.3.21 from source at configure time)
++if (NOT DEFINED BLA_STATIC)
++    if (${BUILD_SHARED_LIBS})
++        set(BLA_STATIC OFF)
++    else ()
++        set(BLA_STATIC ON)
++    endif ()
+ endif ()
+ 
+ # Project Name and Version
+@@ -62,12 +66,16 @@ if (USE_CUDA)
+     add_definitions(-DUSE_CUDA=TRUE)
+     enable_language(CUDA)
+     include(toolchains/CudaToolchain)
+-    # Set BLA_VENDOR to NVHPC for CUDA-enabled builds
+-    set(BLA_VENDOR NVHPC)
++    # Set BLA_VENDOR to NVHPC for CUDA-enabled builds (GH200 port: keep a vendor given with -DBLA_VENDOR=...)
++    if (NOT BLA_VENDOR)
++        set(BLA_VENDOR NVHPC)
++    endif ()
+     list(APPEND STARPU_COMPONENT_LIST "CUDA")
+ 
+     # ---- Enforce CUDA version constraint ----
+-    if (CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL "12.0")
++    # GH200 port: StarPU 1.3.11 + Chameleon 1.1.0 patched for CUDA 13 (apps/patches/exageostat-deps.patch);
++    # set -DEXAGEOSTAT_ALLOW_NEW_CUDA=ON to accept CUDA >= 12.
++    if (CMAKE_CUDA_COMPILER_VERSION VERSION_GREATER_EQUAL "12.0" AND NOT EXAGEOSTAT_ALLOW_NEW_CUDA)
+         message(FATAL_ERROR
+             "CUDA ${CMAKE_CUDA_COMPILER_VERSION} detected. "
+             "This project only supports CUDA < 12. Please install an older CUDA toolkit.")
+diff --git a/inst/include/helpers/ByteHandler.hpp b/inst/include/helpers/ByteHandler.hpp
+index 2a7f41d..d5bd1c7 100644
+--- a/inst/include/helpers/ByteHandler.hpp
++++ b/inst/include/helpers/ByteHandler.hpp
+@@ -16,6 +16,7 @@
+ #define EXAGEOSTATCPP_BYTEHANDLER_HPP
+ 
+ #include <memory>
++#include <cstdint>  // GH200 port: needed explicitly with GCC >= 13
+ 
+ namespace exageostat::helpers {
+ 
+diff --git a/src/configurations/Configurations.cpp b/src/configurations/Configurations.cpp
+index f7e03a9..c731cba 100644
+--- a/src/configurations/Configurations.cpp
++++ b/src/configurations/Configurations.cpp
+@@ -137,17 +137,18 @@ void Configurations::ValidateConfiguration() {
+     if (GetMaxRank() == -1) {
+         SetMaxRank(1);
+     }
+-//#else
++#else
++    // GH200 port: the "//#else" above made the StarPU build demand --datapath, i.e. synthetic data could not
++    // be generated at all; restored the runtime split as on the upstream devel branch.
+     if(GetMaxRank() == -1){
+         SetMaxRank(GetDenseTileSize() / 2);
+     }
+     if (mDictionary.find("tolerance") == mDictionary.end()) {
+         SetTolerance(8);
+     }
+-     if (GetDataPath().empty()) {
++     if (GetDataPath().empty() && !GetIsSynthetic()) {
+         throw domain_error("You need to set the data path, before starting");
+     }
+-#else
+     if(GetMeanTrendRemoval() && GetKernelName().empty()){
+         throw domain_error("You need to set the Kernel for Mean Trend Removal, before starting");
+     }
+diff --git a/src/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp b/src/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp
+index 8ec6abe..2399157 100644
+--- a/src/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp
++++ b/src/linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.cpp
+@@ -19,7 +19,8 @@
+ 
+ #endif
+ 
+-#include <cblas.h>
++// GH200 port: <cblas.h> resolved to OpenBLAS's header, which clashes with Chameleon's coreblas/cblas.h
++// (pulled in through ChameleonHeaders.hpp, which already declares the CBLAS routines)
+ 
+ #include <linear-algebra-solvers/concrete/chameleon/ChameleonImplementation.hpp>
+ 

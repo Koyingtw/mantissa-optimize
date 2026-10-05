@@ -1,0 +1,143 @@
+		 ** Initialize ExaGeoStat hardware **
+		 ********************SUMMARY**********************
+		 #Real Data loader
+		 #Number of Locations: 60000
+		 #Threads per node: 64
+		 #GPUs: 1
+		 #Precision: Double
+		 #Dense Tile Size: 1920
+		 #Computation: Exact
+		 #Dimension: 2D
+		 #Kernel: UnivariateMaternStationary
+		 #Distance Metric: Euclidean distance
+		 #p: 1		 #q: 1
+		 *************************************************
+		 ** ExaGeoStat data generation/loading **
+		 	Data is read from /nfs/home/koying/mantissa-optimize/gh200/logs/exageostat/exa-tdp_3229/data.csv successfully.
+		 	*Data generation/loading finished*
+		 ** ExaGeoStat data Modeling **
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	1 - Model Parameters (0.100000, 0.100000, 0.100000)----> LogLi: -3462.566510429649952130
+		 ---- Facto Time: 7.519130746000
+		 ---- Log Determent Time: 0.001000251000
+		 ---- dtrsm Time: 0.036791659000
+		 ---- Matrix Generation Time: 9.164811489000
+		 ---- Total Time: 7.556922656000
+		 ---- Gflop/s: 9529.663780341587
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	2 - Model Parameters (1.325000, 0.100000, 0.100000)----> LogLi: -50485.639866802419419400
+		 ---- Facto Time: 7.563980734000
+		 ---- Log Determent Time: 0.001052283000
+		 ---- dtrsm Time: 0.039918619000
+		 ---- Matrix Generation Time: 9.095852756000
+		 ---- Total Time: 7.604951636000
+		 ---- Gflop/s: 9469.536184956392
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	3 - Model Parameters (0.100000, 1.325000, 0.100000)----> LogLi: -9298.344516558994655497
+		 ---- Facto Time: 7.407981758000
+		 ---- Log Determent Time: 0.000906011000
+		 ---- dtrsm Time: 0.033843514000
+		 ---- Matrix Generation Time: 5.441865375000
+		 ---- Total Time: 7.442731283000
+		 ---- Gflop/s: 9675.771391854845
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	4 - Model Parameters (0.100000, 0.100000, 1.325000)----> LogLi: -178334322.463612377643585205
+		 ---- Facto Time: 7.549982883000
+		 ---- Log Determent Time: 0.000886300000
+		 ---- dtrsm Time: 0.035084755000
+		 ---- Matrix Generation Time: 8.934856011000
+		 ---- Total Time: 7.585953938000
+		 ---- Gflop/s: 9493.046536495500
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	5 - Model Parameters (2.550000, 0.100000, 0.100000)----> LogLi: -68930.111830665162415244
+		 ---- Facto Time: 7.460135421000
+		 ---- Log Determent Time: 0.000946300000
+		 ---- dtrsm Time: 0.033344700000
+		 ---- Matrix Generation Time: 9.099336259000
+		 ---- Total Time: 7.494426421000
+		 ---- Gflop/s: 9609.073342065652
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	6 - Model Parameters (0.100000, 2.550000, 0.100000)----> LogLi: -12958.633616215251095127
+		 ---- Facto Time: 7.384080243000
+		 ---- Log Determent Time: 0.000949500000
+		 ---- dtrsm Time: 0.033846329000
+		 ---- Matrix Generation Time: 5.218380746000
+		 ---- Total Time: 7.418876072000
+		 ---- Gflop/s: 9706.944301901618
+		 --> Final Theta Values (0.100000, 0.100000, 0.100000)		 
+		 ********************SUMMARY**********************
+		 #Average Flops per Iteration: 11496.807108
+		 #Average Time Modeling per Iteration: 9.020772
+		 #Final Log Likelihood Value: -12958.633616
+		 #Found Maximum Theta at: [ 0.10000000 2.55000000 0.10000000 ]
+		 #Logger Enabled: Yes
+		 #Logger Path: configurations
+		 #Number of Locations: 60000
+		 #Number of MLE Iterations: 6
+		 #Total Modeling Execution Time: 45.103862
+		 #Total Modeling Flops: 57484.035538
+		 *************************************************

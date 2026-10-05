@@ -23,6 +23,7 @@ apps/lammps/
 apps/mfem/
 apps/sw4/
 apps/sw4-tpl/
+apps/exageostat-deps/
 
 # Pseudopotentials copied into run directories (originals are in apps/qe-inputs/)
 gh200/logs/**/*.UPF
@@ -33,3 +34,7 @@ gh200/HPL.out
 
 # Copyrighted full-text PDFs used for citation checks (kept locally only)
 gh200/refs/pdf/
+# ExaGeoStat writes its synthetic data into every run directory; gh200/logs/exageostat/*/data.csv keeps the copy each
+# experiment actually read
+apps/logs/exageostat_run_*/configurations/
+gh200/logs/exageostat/*/gen/configurations/

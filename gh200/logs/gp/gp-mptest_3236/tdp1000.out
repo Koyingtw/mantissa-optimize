@@ -1,0 +1,9 @@
+n=60000 nb=1024 ranges=[0.02, 0.05, 0.08] nugget=0.0001 order=morton
+RESULT_GP tdp=1000 variant=native pass=A status=ok loglik=[77761.983471 118407.207575 97068.788370] dll=[0.000e+00 0.000e+00 0.000e+00] wall=8.764s t_begin=1791210143.557 t_end=1791210152.320
+RANGE_GP frac_below24=4.035e-02 frac_below32=8.594e-03 frac_below40=1.349e-03
+RESULT_GP tdp=1000 variant=mpn pass=A status=ok loglik=[77761.983484 118407.223598 97068.745079] dll=[1.308e-05 1.602e-02 -4.329e-02] wall=5.634s t_begin=1791210157.355 t_end=1791210162.989
+MP_GP frac_fp16=[0.524 0.164 0.031]
+RESULT_GP tdp=1000 variant=mpn+t28n pass=A status=ok loglik=[77761.983482 118407.223592 97068.745602] dll=[1.111e-05 1.602e-02 -4.277e-02] wall=5.616s t_begin=1791210168.023 t_end=1791210173.639
+MP_GP frac_fp16=[0.524 0.164 0.031]
+RESULT_GP tdp=1000 variant=mpn+t28n+h5 pass=A status=ok loglik=[77761.983503 118407.258970 97068.776679] dll=[3.247e-05 5.139e-02 -1.169e-02] wall=6.034s t_begin=1791210178.673 t_end=1791210184.706
+MP_GP frac_fp16=[0.524 0.164 0.031]

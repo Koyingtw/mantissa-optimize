@@ -1,0 +1,242 @@
+== host work2  Mon Oct  5 01:55:08 PM UTC 2026
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+cmake version 3.31.12
+== stage chameleon Mon Oct  5 01:55:08 PM UTC 2026
+-- cmake -S /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/src/chameleon-1.1.0 -B /tmp/exageostat-build-3217/chameleon-build -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS=-fPIC -std=gnu17 -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration -Wno-error=int-conversion -DBUILD_SHARED_LIBS=ON -DCHAMELEON_SCHED=STARPU -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_DOC=OFF -DBLA_VENDOR=OpenBLAS -DBLAS_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DCBLAS_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DLAPACKE_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DLAPACK_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DTMG_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS -DSTARPU_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/STARPU -DHWLOC_DIR=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/HWLOC -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-13.3 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/chameleon.cfg.log)
+CMake Deprecation Warning at CMakeLists.txt:32 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/FindMorseCommon.cmake:22 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/LibrariesAbsolutePath.cmake:22 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/Sanitizer.cmake:1 (cmake_minimum_required):
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/RulesPrecisions.cmake:29 (cmake_minimum_required):
+CMake Warning (dev) at cmake_modules/morse_cmake/modules/RulesPrecisions.cmake:164 (find_package):
+  the cmake_policy command to set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+-- CHAMELEON_SCHED is set to use STARPU runtime
+-- CHAMELEON_SIMULATION is set to OFF, turn it ON to use SIMULATION mode (only with StarPU compiled with SimGrid)
+CMake Deprecation Warning at hqr/CMakeLists.txt:12 (cmake_minimum_required):
+CMake Warning (dev) at hqr/src/CMakeLists.txt:100 (install):
+  command to set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/FindMorseCommon.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindCBLAS.cmake:83 (include)
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/LibrariesAbsolutePath.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindCBLAS.cmake:83 (include)
+-- Looking for cblas_dscal
+-- Looking for cblas_dscal - found
+-- Looking for cblas_zgemm3m
+-- Looking for cblas_zgemm3m - not found
+-- Looking for cblas_cgemm3m
+-- Looking for cblas_cgemm3m - not found
+-- Looking for cblas: test with blas succeeded
+-- Found CBLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/FindMorseCommon.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindLAPACKE.cmake:78 (include)
+CMake Deprecation Warning at cmake_modules/morse_cmake/modules/find/LibrariesAbsolutePath.cmake:22 (cmake_minimum_required):
+  cmake_modules/morse_cmake/modules/find/FindLAPACKE.cmake:78 (include)
+-- Looking for LAPACKE_dgeqrf
+-- Looking for LAPACKE_dgeqrf - found
+-- Looking for LAPACKE_dlascl_work
+-- Looking for LAPACKE_dlascl_work - found
+-- Looking for lapacke: test with lapack succeeded
+-- Found LAPACKE: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+CMake Warning (dev) at CMakeLists.txt:295 (find_package):
+  Policy CMP0146 is not set: The FindCUDA module is removed.  Run "cmake
+  set the policy and suppress this warning.
+This warning is for project developers.  Use -Wno-dev to suppress it.
+-- cmake --build /tmp/exageostat-build-3217/chameleon-build -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/chameleon.make.log)
+-- cmake --install /tmp/exageostat-build-3217/chameleon-build (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/chameleon.install.log)
+/* #undef CHAMELEON_SCHED_QUARK */
+/* #undef CHAMELEON_SCHED_PARSEC */
+#define CHAMELEON_SCHED_STARPU
+/* #undef CHAMELEON_SCHED_OPENMP */
+#define CHAMELEON_USE_CUDA
+#define CHAMELEON_USE_CUBLAS_V2
+	libcublas.so.13 => /usr/local/cuda-13.3/lib64/libcublas.so.13 (0x0000fffff3a00000)
+	libcublasLt.so.13 => /usr/local/cuda-13.3/lib64/libcublasLt.so.13 (0x0000ffffc8c00000)
+== stage chameleon done Mon Oct  5 01:55:50 PM UTC 2026
+== stage exageostat Mon Oct  5 01:55:50 PM UTC 2026
+-- cmake -Wno-dev -S /nfs/home/koying/mantissa-optimize/apps/exageostatcpp -B /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -G Unix Makefiles -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -Wl,--no-as-needed -w -fpic -DUSE_CUDA=ON -DEXAGEOSTAT_ALLOW_NEW_CUDA=ON -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.3/bin/nvcc -DCMAKE_CUDA_ARCHITECTURES=90 -DUSE_MPI=OFF -DUSE_HICMA=OFF -DUSE_R=OFF -DUSE_CLIMATE_EMULATOR=OFF -DRUNTIME_TYPE=starpu -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_HEAVY_TESTS=OFF -DBUILD_DOCS=OFF -DCREATE_PACKAGE=OFF -DBLA_VENDOR=OpenBLAS -DBUILD_SHARED_LIBS=OFF -Dgpu_backend=none (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/exageostat.cfg.log)
+!! FAILED: cmake -Wno-dev -S /nfs/home/koying/mantissa-optimize/apps/exageostatcpp -B /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -G Unix Makefiles -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -Wl,--no-as-needed -w -fpic -DUSE_CUDA=ON -DEXAGEOSTAT_ALLOW_NEW_CUDA=ON -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.3/bin/nvcc -DCMAKE_CUDA_ARCHITECTURES=90 -DUSE_MPI=OFF -DUSE_HICMA=OFF -DUSE_R=OFF -DUSE_CLIMATE_EMULATOR=OFF -DRUNTIME_TYPE=starpu -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_HEAVY_TESTS=OFF -DBUILD_DOCS=OFF -DCREATE_PACKAGE=OFF -DBLA_VENDOR=OpenBLAS -DBUILD_SHARED_LIBS=OFF -Dgpu_backend=none
+2621-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/zgemm_thread_tn.c.o
+2622-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/bin/lapack/CMakeFiles/sgetrs_T_parallel.c:8:
+2623-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c: In function ‘sgetrs_T_parallel’:
+2624:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:102:45: error: passing argument 5 of ‘gemm_thread_n’ from incompatible pointer type [-Wincompatible-pointer-types]
+2625-  102 |       gemm_thread_n(mode, args, NULL, NULL, inner_thread, sa, sb,  args -> nthreads);
+2626-      |                                             ^~~~~~~~~~~~
+2627-      |                                             |
+2628-      |                                             int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG) {aka int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)}
+2629-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common.h:855,
+2630-                 from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:40:
+2631-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common_thread.h:191:74: note: expected ‘int (*)(void)’ but argument is of type ‘int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG)’ {aka ‘int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)’}
+2632-  191 | int gemm_thread_n (int mode, blas_arg_t *, BLASLONG *, BLASLONG *, int (*function)(), void *, void *, BLASLONG);
+2633-      |                                                                    ~~~~~~^~~~~~~~~~~
+2634-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:42:12: note: ‘inner_thread’ declared here
+--
+2636-      |            ^~~~~~~~~~~~
+2637-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/bin/lapack/CMakeFiles/sgetrs_N_parallel.c:7:
+2638-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c: In function ‘sgetrs_N_parallel’:
+2639:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:86:45: error: passing argument 5 of ‘gemm_thread_n’ from incompatible pointer type [-Wincompatible-pointer-types]
+2640-   86 |       gemm_thread_n(mode, args, NULL, NULL, inner_thread, sa, sb,  args -> nthreads);
+2641-      |                                             ^~~~~~~~~~~~
+2642-      |                                             |
+2643-      |                                             int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG) {aka int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)}
+2644-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common.h:855,
+2645-                 from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:40:
+2646-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common_thread.h:191:74: note: expected ‘int (*)(void)’ but argument is of type ‘int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG)’ {aka ‘int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)’}
+2647-  191 | int gemm_thread_n (int mode, blas_arg_t *, BLASLONG *, BLASLONG *, int (*function)(), void *, void *, BLASLONG);
+2648-      |                                                                    ~~~~~~^~~~~~~~~~~
+2649-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:42:12: note: ‘inner_thread’ declared here
+2650-   42 | static int inner_thread(blas_arg_t *args, BLASLONG *range_m, BLASLONG *range_n,
+2651-      |            ^~~~~~~~~~~~
+2652:make[2]: *** [lapack/CMakeFiles/lapack.dir/build.make:1073: lapack/CMakeFiles/lapack.dir/CMakeFiles/sgetrs_T_parallel.c.o] Error 1
+2653-make[2]: *** Waiting for unfinished jobs....
+2654-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/sspmv_U.c.o
+2655-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/sgemm_tt.c.o
+2656-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/srotmg.c.o
+2657-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/dgemm_tt.c.o
+2658-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/dspmv_U.c.o
+2659-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/srot.c.o
+2660:make[2]: *** [lapack/CMakeFiles/lapack.dir/build.make:1045: lapack/CMakeFiles/lapack.dir/CMakeFiles/sgetrs_N_parallel.c.o] Error 1
+2661-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/cspmv_U.c.o
+2662-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/sasum.c.o
+2663-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/zspmv_U.c.o
+2664-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/cgemm_tt.c.o
+2665-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/sspr_U.c.o
+2666-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/ssum.c.o
+2667-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/zgemm_tt.c.o
+2668-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/drotm.c.o
+2669-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/dspr_U.c.o
+2670-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/cspr_U.c.o
+--
+2694-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/strmm_LNUN.c.o
+2695-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/bin/lapack/CMakeFiles/dgetrs_N_parallel.c:8:
+2696-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c: In function ‘dgetrs_N_parallel’:
+2697:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:86:45: error: passing argument 5 of ‘gemm_thread_n’ from incompatible pointer type [-Wincompatible-pointer-types]
+2698-   86 |       gemm_thread_n(mode, args, NULL, NULL, inner_thread, sa, sb,  args -> nthreads);
+2699-      |                                             ^~~~~~~~~~~~
+2700-      |                                             |
+2701-      |                                             int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, double *, double *, BLASLONG) {aka int (*)(blas_arg_t *, long int *, long int *, double *, double *, long int)}
+2702-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common.h:855,
+2703-                 from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:40:
+2704-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common_thread.h:191:74: note: expected ‘int (*)(void)’ but argument is of type ‘int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, double *, double *, BLASLONG)’ {aka ‘int (*)(blas_arg_t *, long int *, long int *, double *, double *, long int)’}
+2705-  191 | int gemm_thread_n (int mode, blas_arg_t *, BLASLONG *, BLASLONG *, int (*function)(), void *, void *, BLASLONG);
+2706-      |                                                                    ~~~~~~^~~~~~~~~~~
+2707-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/lapack/getrs/getrs_parallel.c:42:12: note: ‘inner_thread’ declared here
+2708-   42 | static int inner_thread(blas_arg_t *args, BLASLONG *range_m, BLASLONG *range_n,
+2709-      |            ^~~~~~~~~~~~
+2710:make[2]: *** [lapack/CMakeFiles/lapack.dir/build.make:1101: lapack/CMakeFiles/lapack.dir/CMakeFiles/dgetrs_N_parallel.c.o] Error 1
+2711-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/dtrmm_LNUN.c.o
+2712-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/sdot.c.o
+2713-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/ctrmm_LNUN.c.o
+2714-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/ztrmm_LNUN.c.o
+2715-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/strmm_LNLU.c.o
+2716-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/dtrmm_LNLU.c.o
+2717-[  2%] Building C object interface/CMakeFiles/interface.dir/CMakeFiles/srotg.c.o
+2718-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/zsyr_U.c.o
+2719-[  2%] Building C object driver/level3/CMakeFiles/driver_level3.dir/CMakeFiles/ctrmm_LNLU.c.o
+2720-[  2%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/ssyr2_U.c.o
+--
+3408-[  9%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/dtbsv_TLN.c.o
+3409-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/bin/interface/CMakeFiles/strsm.c:7:
+3410-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/interface/trsm.c: In function ‘strsm_’:
+3411:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/interface/trsm.c:396:50: error: passing argument 5 of ‘gemm_thread_n’ from incompatible pointer type [-Wincompatible-pointer-types]
+3412-  396 |       gemm_thread_n(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+3413-      |                                              ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3414-      |                                                  |
+3415-      |                                                  int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG) {aka int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)}
+3416-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common.h:855,
+3417-                 from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/interface/trsm.c:41:
+3418-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common_thread.h:191:74: note: expected ‘int (*)(void)’ but argument is of type ‘int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG)’ {aka ‘int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)’}
+3419-  191 | int gemm_thread_n (int mode, blas_arg_t *, BLASLONG *, BLASLONG *, int (*function)(), void *, void *, BLASLONG);
+3420-      |                                                                    ~~~~~~^~~~~~~~~~~
+3421:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/interface/trsm.c:398:50: error: passing argument 5 of ‘gemm_thread_m’ from incompatible pointer type [-Wincompatible-pointer-types]
+3422-  398 |       gemm_thread_m(mode, &args, NULL, NULL, trsm[(side<<4) | (trans<<2) | (uplo<<1) | unit], sa, sb, args.nthreads);
+3423-      |                                              ~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3424-      |                                                  |
+3425-      |                                                  int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG) {aka int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)}
+3426-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/common_thread.h:189:74: note: expected ‘int (*)(void)’ but argument is of type ‘int (*)(blas_arg_t *, BLASLONG *, BLASLONG *, float *, float *, BLASLONG)’ {aka ‘int (*)(blas_arg_t *, long int *, long int *, float *, float *, long int)’}
+3427-  189 | int gemm_thread_m (int mode, blas_arg_t *, BLASLONG *, BLASLONG *, int (*function)(), void *, void *, BLASLONG);
+3428-      |                                                                    ~~~~~~^~~~~~~~~~~
+3429-[  9%] Building ASM object kernel/CMakeFiles/kernel.dir/CMakeFiles/sgemm_oncopy.S.o
+3430:make[2]: *** [interface/CMakeFiles/interface.dir/build.make:1787: interface/CMakeFiles/interface.dir/CMakeFiles/strsm.c.o] Error 1
+3431-make[2]: *** Waiting for unfinished jobs....
+3432-[  9%] Building C object kernel/CMakeFiles/kernel.dir/CMakeFiles/sgemm_otcopy.c.o
+3433-[  9%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/src/lapacke_sgemqr_work.c.o
+3434-[  9%] Building ASM object kernel/CMakeFiles/kernel.dir/CMakeFiles/sgemm_beta.S.o
+3435-[  9%] Building Fortran object CMakeFiles/LAPACK_OVERRIDES.dir/lapack-netlib/SRC/sgeqlf.f.o
+3436-[  9%] Building ASM object kernel/CMakeFiles/kernel.dir/CMakeFiles/strmm_kernel_RN.S.o
+3437-[  9%] Building Fortran object CMakeFiles/LAPACK_OVERRIDES.dir/lapack-netlib/SRC/sgeqp3.f.o
+3438-[  9%] Building Fortran object CMakeFiles/LAPACK_OVERRIDES.dir/lapack-netlib/SRC/sgeqr2.f.o
+3439-[  9%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/src/lapacke_sgemqrt.c.o
+3440-[ 10%] Building ASM object kernel/CMakeFiles/kernel.dir/CMakeFiles/strmm_kernel_LN.S.o
+--
+3444-[ 10%] Building C object driver/level2/CMakeFiles/driver_level2.dir/CMakeFiles/dtbsv_TLU.c.o
+3445-In file included from /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/bin/interface/CMakeFiles/ssyr2k.c:7:
+3446-/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/interface/syr2k.c: In function ‘ssyr2k_’:
+3447:/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/LAPACK/lapack-src/interface/syr2k.c:382:47: error: passing argument 5 of ‘syrk_thread’ from incompatible pointer type [-Wincompatible-pointer-types]
+3448-  382 |     syrk_thread(mode, &args, NULL, NULL, syr2k[(uplo << 1) | trans ], sa, sb, args.nthreads);
+3449-      |                                          ~~~~~^~~~~~~~~~~~~~~~~~~~~~
+3450-      |                                               |
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_csp_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dsy_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ssy_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_zst_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_cst_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtb_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_stb_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_zsy_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_csy_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtb_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_stb_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_zsy_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_csy_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtf_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_stf_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztb_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctb_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtf_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_stf_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztb_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctb_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtp_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_stp_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztf_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctf_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtp_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_stp_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztf_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctf_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtr_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_str_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztp_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctp_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_dtr_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_str_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztp_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctp_trans.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_lsame.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_xerbla.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztr_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ctr_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_make_complex_double.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_z_nancheck.c.o
+[ 76%] Building C object CMakeFiles/LAPACKE.dir/lapack-netlib/LAPACKE/utils/lapacke_ztr_trans.c.o
+[ 76%] Built target driver_level2
+make[1]: *** [CMakeFiles/Makefile2:763: lapack/CMakeFiles/lapack.dir/all] Error 2
+[ 76%] Built target LAPACKE
+make: *** [Makefile:146: all] Error 2
+CMake Error at cmake/macros/BuildDependency.cmake:108 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 2"
+
+Call Stack (most recent call first):
+  cmake/macros/ImportDependency.cmake:61 (BuildDependency)
+  cmake/ImportLapack.cmake:34 (ImportDependency)
+  CMakeLists.txt:198 (include)
+
+
+-- Configuring incomplete, errors occurred!

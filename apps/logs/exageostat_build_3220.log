@@ -1,0 +1,50 @@
+== host work2  Mon Oct  5 01:58:06 PM UTC 2026
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+Cuda compilation tools, release 13.3, V13.3.73
+Build cuda_13.3.r13.3/compiler.38244171_0
+cmake version 3.31.12
+== stage exageostat Mon Oct  5 01:58:06 PM UTC 2026
+-- cmake -Wno-dev -S /nfs/home/koying/mantissa-optimize/apps/exageostatcpp -B /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -G Unix Makefiles -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install -DCMAKE_CXX_FLAGS_RELEASE=-O3 -DNDEBUG -Wl,--no-as-needed -w -fpic -DUSE_CUDA=ON -DEXAGEOSTAT_ALLOW_NEW_CUDA=ON -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.3/bin/nvcc -DCMAKE_CUDA_ARCHITECTURES=90 -DUSE_MPI=OFF -DUSE_HICMA=OFF -DUSE_R=OFF -DUSE_CLIMATE_EMULATOR=OFF -DRUNTIME_TYPE=starpu -DBUILD_EXAMPLES=ON -DBUILD_TESTS=OFF -DBUILD_HEAVY_TESTS=OFF -DBUILD_DOCS=OFF -DCREATE_PACKAGE=OFF -DBLA_VENDOR=OpenBLAS -DBLA_STATIC=OFF -DBUILD_SHARED_LIBS=OFF -Dgpu_backend=none (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/exageostat.cfg.log)
+-- Found BLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Found BLAS: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Found LAPACK: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Found LAPACK: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so  
+-- Looking for LAPACKE_dgeqrf - found
+-- Installation path : /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install
+-- Found hwloc 2.10.0 in /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/HWLOC/include;/usr/include:hwloc
+   Found HWLOC;  hwloc
+-- Hwloc done
+   Found NLOHMANN_JSON; /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/NLOHMANN_JSON/share/cmake/nlohmann_json 
+-- nlohmann_json done
+   Found NLOPT;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/NLOPT/lib/libnlopt.so
+-- NLOPT done
+   Found GSL;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/GSL/lib/libgsl.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/GSL/lib/libgslcblas.so
+-- GSL done
+   Found STARPU;  starpu-1.3;pthread;hwloc
+-- STARPU done
+   Found CHAMELEON;  chameleon;chameleon_starpu;hqr;coreblas;cudablas
+-- CHAMELEON_DIR_FOUND: /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/CHAMELEON
+-- CHAMELEON done
+   Found BLAS;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+-- BLAS done
+   Found BLASPP; /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/BLASPP/blaspp-build/ 
+-- blaspp done
+   Found LAPACK;  /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so;/nfs/home/koying/mantissa-optimize/apps/exageostat-deps/install/OPENBLAS/lib/libopenblas.so
+-- LAPACK done
+ 	 ** Configurations of ExaGeoStatCPP and installation of dependence is done successfully ** 
+-- Configuring done (0.2s)
+-- Generating done (0.2s)
+-- cmake --build /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp -j 72 (> /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/logs/exageostat.make.log)
+total 512
+drwxrwxr-x+8 koying koying  4096 Oct  5 13:58 CMakeFiles
+-rwxrwxr-x+1 koying koying 79840 Oct  5 13:58 Example_Data_Generation
+-rwxrwxr-x+1 koying koying 80256 Oct  5 13:58 Example_Data_Generation_Modeling_and_Prediction
+-rwxrwxr-x+1 koying koying 80032 Oct  5 13:58 Example_Data_Generation_and_Modeling
+-rwxrwxr-x+1 koying koying 80064 Oct  5 13:58 Example_Data_Generation_and_Prediction
+-rwxrwxr-x+1 koying koying 80920 Oct  5 13:58 Example_Data_Modeling
+-rwxrwxr-x+1 koying koying 80952 Oct  5 13:58 Example_Data_Prediction
+-rw-rw-r--+1 koying koying 22260 Oct  5 13:56 Makefile
+-rw-rw-r--+1 koying koying  1671 Oct  5 13:56 cmake_install.cmake
+== stage exageostat done Mon Oct  5 01:58:14 PM UTC 2026
+== all done Mon Oct  5 01:58:14 PM UTC 2026

@@ -10,5 +10,7 @@
 | lammps | 9c5ab448c78a14fd534619622162ba418d6a1fb1（stable_22Jul2025_update6） | KOKKOS EAM／LJ 的係數截斷（`MANT_BITS`、`MANT_ROUND`） |
 | mfem | c362dea2470d2d27be15df6e55ae1f3c85d031f3 | 免組裝擴散／質量積分器的求積點資料截斷 |
 | sw4 | 52b51c9253c0c30b608744ef17ee7a28661939bc | `setupRun.C` 在設定階段截斷材料參數 |
+| exageostatcpp | bd9240a1da5b163f060f310286b37c660785759c（main HEAD，提交訊息標 v2.0.1；submodule） | 建置修正（允許 CUDA ≥ 12、`BLA_STATIC` 可覆寫、`<cstdint>`、cblas.h 衝突）與 StarPU 版本誤要求 `--datapath` 的錯誤；不含截斷，截斷用 LD_PRELOAD shim |
+| exageostat-deps | StarPU 1.3.11 tarball、Chameleon v1.1.0（4db899ca30d29927018d83964b9b6d517269abe1） | CUDA 13 相容：StarPU 改用 `cudaDevAttrComputeMode`；Chameleon 不再同時 include `cublas.h` 與 `cublas_v2.h`。於 `apps/exageostat-deps/src` 下 `patch -p1 < ../../patches/exageostat-deps.patch` |
 
 未設定 `MANT_BITS`（或 ≥ 52）時，四個程式的結果都與原版逐位相同或在重跑雜訊內。

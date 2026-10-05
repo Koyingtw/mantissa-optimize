@@ -1,0 +1,10 @@
+astype only      1.377 ms
+astype+reduce16  6.590 ms
+fp16 full    gemm 10.55 ms
+fp16 5 bits  gemm 10.81 ms
+subnormal/zero fraction 5 bits: 0.0009568123653017241  full: 0.0009711577316810345
+astype+fused16   3.988 ms
+fp64 two-op      3.128 ms
+fp64 fused       1.573 ms
+fp64 copy (asfortranarray of a strided block) 0.003 ms
+fused == two-op: True

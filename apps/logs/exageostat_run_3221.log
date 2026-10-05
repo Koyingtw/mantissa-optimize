@@ -1,0 +1,152 @@
+== host work2 Mon Oct  5 01:58:33 PM UTC 2026
+name, driver_version, power.limit [W], temperature.gpu, clocks.max.sm [MHz]
+NVIDIA GH200 480GB, 615.71.09, 900.00 W, 26, 1980 MHz
+=== RUN tag=single PRELOAD=<none> MANT_BITS=<unset> MANT_ROUND=<unset> MANT_VERBOSE=<unset>
+    /nfs/home/koying/mantissa-optimize/apps/exageostat-deps/build/exageostatcpp/examples/end-to-end/Example_Data_Generation_and_Modeling --N=9600 --dts=960 --kernel=univariate_matern_stationary --computation=exact --precision=double --cores=64 --gpus=1  --initial_theta=1:0.1:0.5 --lb=0.01:0.01:0.01 --ub=5:5:5 --max_mle_iterations=3 --tolerance=9 --seed=0 --verbose=detailed
+		 ** Initialize ExaGeoStat hardware **
+		 ********************SUMMARY**********************
+		 #Synthetic Data generation
+		 #Number of Locations: 9600
+		 #Threads per node: 64
+		 #GPUs: 1
+		 #Precision: Double
+		 #Dense Tile Size: 960
+		 #Computation: Exact
+		 #Dimension: 2D
+		 #Kernel: UnivariateMaternStationary
+		 #Distance Metric: Euclidean distance
+		 #p: 1		 #q: 1
+		 *************************************************
+		 ** ExaGeoStat data generation/loading **
+		 	Initializing Covariance Matrix (Synthetic Dataset Generation Phase).....
+		 	Done.
+		 	Generate Normal Random Distribution Vector Z (Synthetic Dataset Generation Phase) .....
+		 Done.
+		 	Cholesky factorization of Sigma (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Triangular matrix-matrix multiplication Z=L.e (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	Done.
+		 	Done Z Vector Generation Phase. (Chameleon Synchronous)
+		 	---- Facto Time: 0.322678297000
+		 	---- dtrmm Time: 0.016153192000
+		 	---- Matrix Generation Time: 0.126428145000
+		 	---- Total Time: 0.338831489000
+		 	---- Gflop/s: 870
+		 Writing generated data to the disk (Synthetic Dataset Generation Phase) .....
+		 	*Data generation/loading finished*
+		 ** ExaGeoStat data Modeling **
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	1 - Model Parameters (0.010000, 0.010000, 0.010000)----> LogLi: -417965.152208255021832883
+		 ---- Facto Time: 0.089384677000
+		 ---- Log Determent Time: 0.000212351000
+		 ---- dtrsm Time: 0.005656918000
+		 ---- Matrix Generation Time: 0.143303091000
+		 ---- Total Time: 0.095253946000
+		 ---- Gflop/s: 3104.432866472832
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	2 - Model Parameters (1.257500, 0.010000, 0.010000)----> LogLi: -13349.769893761282219202
+		 ---- Facto Time: 0.088837353000
+		 ---- Log Determent Time: 0.000200895000
+		 ---- dtrsm Time: 0.002958538000
+		 ---- Matrix Generation Time: 0.143216244000
+		 ---- Total Time: 0.091996786000
+		 ---- Gflop/s: 3214.198892627994
+		 	Re-store the original Z vector...
+		 	Done.
+		 	Generate New Covariance Matrix...
+		 	Done.
+		 	Cholesky factorization of Sigma...
+		 	Done.
+		 	Calculating the log determinant ...
+		 	Done.
+		 	Solving the linear system ...
+		 	Done.
+		 Calculating the MLE likelihood function ...
+		 	Done.
+		 	3 - Model Parameters (0.010000, 1.257500, 0.010000)----> LogLi: -160075.259788482566364110
+		 ---- Facto Time: 0.088978696000
+		 ---- Log Determent Time: 0.000198719000
+		 ---- dtrsm Time: 0.002565676000
+		 ---- Matrix Generation Time: 0.160034039000
+		 ---- Total Time: 0.091743091000
+		 ---- Gflop/s: 3223.029933505907
+		 --> Final Theta Values (1.257500, 0.010000, 0.010000)		 
+		 ********************SUMMARY**********************
+		 #Average Flops per Iteration: 4770.830846
+		 #Average Time Modeling per Iteration: 0.139497
+		 #Final Log Likelihood Value: -160075.259788
+		 #Found Maximum Theta at: [ 0.01000000 1.25750000 0.01000000 ]
+		 #Logger Enabled: Yes
+		 #Logger Path: configurations
+		 #Number of Locations: 9600
+		 #Number of MLE Iterations: 3
+		 #Total Data Generation Execution Time: 0.338831
+		 #Total Data Generation Gflop/s: 870.000000
+		 #Total Modeling Execution Time: 0.278994
+		 #Total Modeling Flops: 9541.661693
+		 *************************************************
+    rc=0 wall=2.2 s
+	4 task(s)
+	total: 1383.80 ms executing: 389.53 ms sleeping: 994.24 ms overhead 0.03 ms
+CPU 52                          
+	4 task(s)
+	total: 1383.81 ms executing: 541.71 ms sleeping: 842.07 ms overhead 0.03 ms
+CPU 53                          
+	4 task(s)
+	total: 1383.81 ms executing: 433.37 ms sleeping: 950.41 ms overhead 0.03 ms
+CPU 54                          
+	4 task(s)
+	total: 1383.81 ms executing: 552.44 ms sleeping: 831.33 ms overhead 0.04 ms
+CPU 55                          
+	0 task(s)
+	total: 1383.82 ms executing: 0.00 ms sleeping: 1383.82 ms overhead 0.00 ms
+CPU 56                          
+	0 task(s)
+	total: 1383.82 ms executing: 0.00 ms sleeping: 1383.82 ms overhead 0.00 ms
+CPU 57                          
+	0 task(s)
+	total: 1383.82 ms executing: 0.00 ms sleeping: 1383.82 ms overhead 0.00 ms
+CPU 58                          
+	0 task(s)
+	total: 1383.83 ms executing: 0.00 ms sleeping: 1383.83 ms overhead 0.00 ms
+CPU 59                          
+	0 task(s)
+	total: 1383.83 ms executing: 0.00 ms sleeping: 1383.83 ms overhead 0.00 ms
+CPU 60                          
+	0 task(s)
+	total: 1383.83 ms executing: 0.00 ms sleeping: 1383.83 ms overhead 0.00 ms
+CPU 61                          
+	0 task(s)
+	total: 1383.84 ms executing: 0.00 ms sleeping: 1383.84 ms overhead 0.00 ms
+CPU 62                          
+	0 task(s)
+	total: 1383.84 ms executing: 0.00 ms sleeping: 1383.84 ms overhead 0.00 ms
+CPU 63                          
+	0 task(s)
+	total: 1383.84 ms executing: 0.00 ms sleeping: 1383.84 ms overhead 0.00 ms
+#---------------------
+ELAPSED 2.14 s  MAXRSS 3382656 KB
+    GPU samples=5 meanPower=102.4W maxPower=135.1W meanUtil=1.6% maxMem=1228MiB
+== done Mon Oct  5 01:58:35 PM UTC 2026
