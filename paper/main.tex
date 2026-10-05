@@ -29,8 +29,8 @@
 \begin{abstract}
 We study a software knob exploiting data-dependent GPU power---zeroing unneeded low-order mantissa bits of FP64,
 BF16 and FP8 operands---on 14 NVIDIA GH200 nodes under module power caps, with paired measurements and an
-equivalent-power metric (the extra cap the unmodified program needs). Under a binding cap, every tested HPC program
-that truncates internally and checks its results gains. At 400--800\W, tuned 8-node HPL keeping 36 significand bits
+equivalent-power metric (the extra cap the unmodified program needs). Under a binding cap, every tested GEMM-dominated HPC
+program that truncates internally and checks its results gains. At 400--800\W, tuned 8-node HPL keeping 36 significand bits
 (${\approx}100\times$ residual margin) runs 4.0--11.0\pct{} faster, worth 39--127\W{} per node, and HPL-MxP keeping
 3 bits 1.8--12.7\pct{} on a diagonally dominant test matrix; at 450--550\W{} Quantum ESPRESSO, with bits tied to its
 Davidson tolerance, runs 2.4--4.2\pct{} faster (partly from fewer iterations) with all printed energy digits
@@ -318,15 +318,15 @@ The HPL residual check determines the usable bit count, and it must be checked a
 (Table~\ref{tab:hpl}). From 36 to 28 bits the residual grows 86--410$\times$, of the order of $2^8=256$, so 28 bits
 sits less than one bit from the threshold and is not an operating point, whereas 36 bits leaves a margin of about
 100$\times$ (at least 98$\times$, about seven bits). We first tuned native HPL at 1000\W. The configuration inherited from an H200 study ($N=262144$, NB 1024,
-$2\times4$, default NCCL) gave 374.8\,TFLOP/s; fixing NCCL at 8 channels with 2\,MiB buffers (+4.5\pct) and raising
-$N$ to 286720 (+2\pct) gave 390.2--398.8\,TFLOP/s in three runs, and every neighboring setting of $N$, NB, split
-fraction and NCCL parameters fell within this ${\approx}2\pct$ run-to-run spread (26 settings; $4\times2$ grids were
-14\pct{} slower). With 36 bits at the tuned configuration, HPL is 4.0--11.0\pct{} faster at 400--800\W{}
+$2\times4$, default NCCL) gave 374.8--376.0\,TFLOP/s; fixing NCCL at 8 channels with 2\,MiB buffers (+4.5\pct) and
+raising $N$ to 286720 (+2\pct) gave 390.2--398.8\,TFLOP/s in three runs, and no neighboring setting of $N$, NB, split
+fraction or NCCL parameters beat this ${\approx}2\pct$ run-to-run spread (24 settings, 26 runs; $f=0.15$ and
+$4\times2$ grids were 3 and 14\pct{} slower). With 36 bits at the tuned configuration, HPL is 4.0--11.0\pct{} faster at 400--800\W{}
 (Fig.~\ref{fig:hpl}), $\Delta W=39$--127\W{} (the 127\W{} at 800\W{} interpolates across the 800--1000\W{} gap and
 overestimates), and uses 4.1--9.3\pct{} less energy. At the default 1000\W{} cap native HPL is still capped in
 75\pct{} of the samples (SM 1936\,MHz) against 7\pct{} for the 36-bit run, which is therefore 3.9\pct{} faster and
 uses 7.5\pct{} less energy per solve. The untuned configuration gave 3.4--8.3\pct{} at 400--800\W{} and
-0.7/7.7\pct{} at 1000\W. (28 bits is 3.8--16.3\pct{} faster, but its residual reaches 15.4 at $N=286720$; we list
+0.7/7.7\pct{} at 1000\W. (28 bits is 5.7--16.3\pct{} faster at 400--800\W, but its residual reaches 15.4 at $N=286720$; we list
 it only as a boundary reference.)
 
 \begin{figure}[t]
@@ -366,7 +366,7 @@ reported here may be a property of this matrix and cannot be assumed for the gen
 use 3 kept bits (Table~\ref{tab:hplperf} lists the delivered rates of both benchmarks), stable at all four sizes
 $N=245760$--491520 (residual 1.4--3.8, always 3 refinement iterations). At $N=491520$ this is
 12.7/6.5/2.5/2.0/1.8\pct{} faster at 400/500/600/700/800\W, $\Delta W=34$--45\W{} (35/45/37/34/38\W; at 800\W{} the
-native curve is extended with a 900\W{} point, 3827\,TFLOP/s, measured on the same nodes in a separate job), with
+native curve is extended with a 900\W{} point, 3830\,TFLOP/s (mean of two runs), measured on the same nodes in a separate job), with
 3.4--10.7\pct{} less energy. Refinement grows from 1 iteration (native) to 3 at every cap, while the speedup of the LU
 itself shrinks from 16.0\pct{} at 400\W{} to 6.0\pct{} at 800\W, so above 600\W{} only about 2\pct{} remains after the
 extra refinement. Keeping 0 bits gives 7.1--26.0\pct{} ($\Delta W$ 72--146\W) at $N=491520$ with a residual of
@@ -425,9 +425,9 @@ the wavefunction error; fixed 24 bits, coarser than the late threshold, leaves $
 
 The gain is not only a power effect. On the gold surface the rule beats fixed 24 bits in all 6 pairs by 0.6--1.8
 points, but Davidson also does about 7--9\pct{} less work (311 versus 336 Hamiltonian applications), and in a run
-whose cap had been externally reset to 1000\W{} (not power-bound, equal clocks) its SCF part was still about 9\pct{}
-faster than native and fixed 24 bits (13.6 versus 14.9--15.0\,s): about half of the gold-surface gain comes from fewer
-Davidson iterations, for reasons not yet identified. On Si\,1000 the work is unchanged (206 versus 205), so its
+whose cap had been externally reset to 1000\W{} (not power-bound, equal clocks) it was still about 2\pct{} faster
+than native and fixed 24 bits (73.5--73.7 versus 74.8--75.1\,s), as large as its lead over fixed 24 bits at 450\W:
+about half of the gold-surface gain comes from fewer Davidson iterations, for reasons not yet identified. On Si\,1000 the work is unchanged (206 versus 205), so its
 2.4\pct{} reads as a power effect; the rule beats fixed 28 bits in all 6 pairs, but only by $0.18\pm0.14$ points. Its
 value is that no safe bit count must be known in advance: one margin leaves both systems unchanged and matches or
 beats the best fixed count, found only after the fact.
@@ -739,7 +739,7 @@ is 1.60--1.63$\times$ faster than native FP64 at 1000, 700 and 500\W, with log-l
 Truncating its remaining FP64 tiles to 28 bits adds 1.9\pct{} at 1000\W{} and 7.0\pct{} and 6.1\pct{} at 700 and
 500\W{} with an unchanged deviation, so truncation composes with format changes rather than competing with them.
 
-\textbf{ExaGeoStat itself.} Through the shim, the MLE of ExaGeoStatCPP (cuBLAS~13.6; $N=60000$) factorizes
+\textbf{ExaGeoStat itself.} Through the shim, the MLE of ExaGeoStatCPP (cuBLAS~13.6; $N=60000$, 6 BOBYQA evaluations) factorizes
 3.0/4.0\pct{} faster with 36/28 bits than a same-copy baseline at 1000\W, where its GPU part is already partly
 power-limited, 5.0/8.0\pct{} at 600\W{} and 5.6/9.4\pct{} at 450\W{} (means of two ABBA rounds, which differ widely at
 450\W, +6.9 and +11.9\pct{} with 28 bits, as the CPU shares the module cap), with
@@ -760,7 +760,7 @@ versus 3456), so we read this only as evidence that FP8's 3 mantissa bits leave 
 in~\cite{Gupta2015}, show no consistent order.
 
 \textbf{Inference: FP8 has already taken most of the benefit.} BF16 rounded to nearest at 3 bits has FP8 E4M3's
-mantissa width and accuracy (GEMM error on uniform data: 3.34\pct{} versus 3.6--3.9\pct; truncation needs 4 bits): on
+mantissa width and accuracy (GEMM error on uniform data: 3.34\pct{} versus 3.6--3.9\pct; truncation needs 4 bits to come close, 4.35\pct): on
 six language models (6.7B--70B) WikiText-2 perplexity rises by 0.41--2.00\pct{} versus 0.45--2.23\pct{} (per-tensor)
 and 0.32--0.88\pct{} (per-channel) for FP8, and the two tie where FP8 is known to fail~\cite{Zhang2025} (attention
 perplexity at 2k/8k context: +0.49/+1.06\pct{} versus +0.52/+1.08\pct{} for emulated FP8; 8k--32k key retrieval: both
