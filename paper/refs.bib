@@ -1,6 +1,9 @@
 % References for the mantissa-truncation paper. Every entry was checked against the publisher page,
 % arXiv, a patent office record or Crossref (see gh200/refs/round4_refs.md and round5_refs.md);
 % Tong2000, Pool2008, Pool2011, Jahadi2024 and Woo2023 were also checked against the full text.
+% Added or updated on 2026-10-05 after checking Crossref and the full text or official page: Ozaki2012, Ootomo2024
+% (IJHPCA version), Rountree2012, Patki2013, Inadomi2015, Malossi2018, Klower2021, Dongarra2025 (IJHPCA version),
+% He2024, Zeus2023, NVIDIAGH200, TOP500Linpack, HPLMxPRules.
 
 @misc{Bhalachandra2022,
   author = {Bhalachandra, Sridutt and Austin, Brian and Williams, Samuel and Wright, Nicholas J.},
@@ -15,9 +18,9 @@
 
 @misc{He2024,
   author = {He, Horace},
-  title = {Strangely, Matrix Multiplications on {GPUs} Run Faster When Given ``Predictable'' Data!},
-  howpublished = {Thonk From First Principles (blog), \url{https://www.thonking.ai/p/strangely-matrix-multiplications}},
-  year = {2024}, note = {April 29, 2024}}
+  title = {Strangely, Matrix Multiplications on {GPUs} Run Faster When Given ``Predictable'' Data! [short]},
+  howpublished = {Thonk From First Principles (Substack blog), \url{https://www.thonking.ai/p/strangely-matrix-multiplications}},
+  year = {2024}, note = {Published Apr.~29, 2024}}
 
 @inproceedings{Antepara2025,
   author = {Antepara, Oscar and Zhao, Zhengji and Austin, Brian and Ding, Nan and Oliker, Leonid and Wright, Nicholas J. and Williams, Samuel},
@@ -172,17 +175,27 @@
 @article{Dongarra2025,
   author = {Dongarra, Jack and Luszczek, Piotr},
   title = {{HPL-MxP} Benchmark: Mixed-Precision Algorithms, Iterative Refinement, and Scalable Data Generation},
-  journal = {International Journal of High Performance Computing Applications}, year = {2025}, note = {arXiv:2509.19618}}
+  journal = {The International Journal of High Performance Computing Applications},
+  volume = {40}, number = {1}, pages = {52--62}, year = {2026},
+  note = {Published online Sep.~25, 2025; arXiv:2509.19618}, doi = {10.1177/10943420251382476}}
 
 @article{Klower2021,
   author = {Kl{\"o}wer, Milan and Razinger, Miha and Dominguez, Juan J. and D{\"u}ben, Peter D. and Palmer, Tim N.},
   title = {Compressing Atmospheric Data into Its Real Information Content},
-  journal = {Nature Computational Science}, volume = {1}, pages = {713--724}, year = {2021},
+  journal = {Nature Computational Science}, volume = {1}, number = {11}, pages = {713--724}, year = {2021},
   doi = {10.1038/s43588-021-00156-2}}
 
-@misc{Ootomo2024,
-  author = {Ootomo, Hiroyuki and others},
-  title = {{DGEMM} on Integer Matrix Multiplication Unit}, year = {2024}, howpublished = {arXiv preprint arXiv:2306.11975}}
+@article{Ozaki2012,
+  author = {Ozaki, Katsuhisa and Ogita, Takeshi and Oishi, Shin'ichi and Rump, Siegfried M.},
+  title = {Error-Free Transformations of Matrix Multiplication by Using Fast Routines of Matrix Multiplication and Its Applications},
+  journal = {Numerical Algorithms}, volume = {59}, number = {1}, pages = {95--118}, year = {2012},
+  doi = {10.1007/s11075-011-9478-1}}
+
+@article{Ootomo2024,
+  author = {Ootomo, Hiroyuki and Ozaki, Katsuhisa and Yokota, Rio},
+  title = {{DGEMM} on Integer Matrix Multiplication Unit},
+  journal = {The International Journal of High Performance Computing Applications},
+  volume = {38}, number = {4}, pages = {297--313}, year = {2024}, doi = {10.1177/10943420241239588}}
 
 @misc{Ozaki2025,
   author = {Ozaki, Katsuhisa and Uchino, Yuki and Imamura, Toshiyuki},
@@ -312,3 +325,52 @@
   title = {Guaranteed {DGEMM} Accuracy While Using Reduced Precision Tensor Cores Through Extensions of the {Ozaki} Scheme},
   booktitle = {Proceedings of the Supercomputing Asia and International Conference on High Performance Computing in Asia Pacific Region (SCA/HPCAsia)},
   pages = {91--101}, year = {2026}, doi = {10.1145/3773656.3773670}}
+
+@inproceedings{Rountree2012,
+  author = {Rountree, Barry and Ahn, Dong H. and de Supinski, Bronis R. and Lowenthal, David K. and Schulz, Martin},
+  title = {Beyond {DVFS}: A First Look at Performance under a Hardware-Enforced Power Bound},
+  booktitle = {IEEE 26th International Parallel and Distributed Processing Symposium Workshops \& PhD Forum (IPDPSW)},
+  pages = {947--953}, year = {2012}, publisher = {IEEE}, doi = {10.1109/IPDPSW.2012.116}}
+
+@inproceedings{Patki2013,
+  author = {Patki, Tapasya and Lowenthal, David K. and Rountree, Barry and Schulz, Martin and de Supinski, Bronis R.},
+  title = {Exploring Hardware Overprovisioning in Power-Constrained, High Performance Computing},
+  booktitle = {Proceedings of the 27th International ACM Conference on Supercomputing (ICS '13)},
+  pages = {173--182}, year = {2013}, publisher = {ACM}, doi = {10.1145/2464996.2465009}}
+
+@inproceedings{Inadomi2015,
+  author = {Inadomi, Yuichi and Patki, Tapasya and Inoue, Koji and Aoyagi, Mutsumi and Rountree, Barry and Schulz, Martin and Lowenthal, David and Wada, Yasutaka and Fukazawa, Keiichiro and Ueda, Masatsugu and Kondo, Masaaki and Miyoshi, Ikuo},
+  title = {Analyzing and Mitigating the Impact of Manufacturing Variability in Power-Constrained Supercomputing},
+  booktitle = {Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC '15)},
+  note = {Article 78}, pages = {1--12}, year = {2015}, publisher = {ACM}, doi = {10.1145/2807591.2807638}}
+
+@inproceedings{Malossi2018,
+  author = {Malossi, A. Cristiano I. and Schaffner, Michael and Molnos, Anca and Gammaitoni, Luca and Tagliavini, Giuseppe and Emerson, Andrew and Tom{\'a}s, Andr{\'e}s and Nikolopoulos, Dimitrios S. and Flamand, Eric and Wehn, Norbert},
+  title = {The Transprecision Computing Paradigm: Concept, Design, and Applications},
+  booktitle = {Design, Automation \& Test in Europe Conference \& Exhibition (DATE)},
+  pages = {1105--1110}, year = {2018}, publisher = {IEEE}, doi = {10.23919/DATE.2018.8342176}}
+
+@inproceedings{Zeus2023,
+  author = {You, Jie and Chung, Jae-Won and Chowdhury, Mosharaf},
+  title = {Zeus: Understanding and Optimizing {GPU} Energy Consumption of {DNN} Training},
+  booktitle = {20th USENIX Symposium on Networked Systems Design and Implementation (NSDI 23)},
+  pages = {119--139}, year = {2023}, publisher = {USENIX Association},
+  url = {https://www.usenix.org/conference/nsdi23/presentation/you}}
+
+@misc{NVIDIAGH200,
+  author = {{NVIDIA}},
+  title = {{NVIDIA} {GH200} {Grace} {Hopper} Superchip Datasheet},
+  howpublished = {Document 3773000, linked from \url{https://www.nvidia.com/en-us/data-center/grace-hopper-superchip/}},
+  month = mar, year = {2025}, note = {Accessed Oct.~5, 2026}}
+
+@misc{TOP500Linpack,
+  author = {{TOP500.org}},
+  title = {The {Linpack} Benchmark},
+  howpublished = {\url{https://www.top500.org/project/linpack/}},
+  note = {Accessed Oct.~5, 2026}}
+
+@misc{HPLMxPRules,
+  author = {{HPL-MxP}},
+  title = {{HPL-MxP} Rules},
+  howpublished = {\url{https://hpl-mxp.org/rules.md}},
+  note = {Accessed Oct.~5, 2026}}
