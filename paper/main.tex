@@ -915,6 +915,12 @@ gain little; and for FP8 AI inference, further zeroing trades accuracy for speed
 no hardware support, and complements format changes. All numbers are research results, not official TOP500 or
 MLPerf scores.
 
+\section*{Data and Code Availability}
+The mantissa shim, the in-program truncation of each application, the Slurm scripts, the raw measurement logs, the
+summarized CSV files and the scripts that draw every figure are in the project repository (branch
+\texttt{gh200-mantissa-study}); \texttt{gh200/analysis/paper\_figures.py} regenerates the figures of this paper from
+\texttt{gh200/results/}.
+
 \bibliographystyle{IEEEtran}
 \bibliography{refs}
 
