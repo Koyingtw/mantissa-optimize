@@ -59,18 +59,21 @@ def fig_gemm():
 
 
 def fig_hpl():
-    e3 = pd.read_csv("results/e3_summary.csv")
+    # HPL: the tuned configuration (job 3315: N = 286720, NCCL 8 channels / 2 MiB); its native run is still
+    # power-capped at 1000 W, so that point stays. HPL-MxP's native 1000 W point tripped the power brake.
+    e3 = pd.read_csv("results/e3_tuned_summary.csv")
     e2 = pd.read_csv("results/e2_summary.csv")
     fig, ax = plt.subplots(figsize=(COL, 1.9))
     g = e3[e3.variant == "36:36"].sort_values("tdp")
-    g = g[g.tdp < 1000]
     ax.plot(g.tdp, g.gain_pct, "o-", color=C[0], ms=3, lw=1, label="HPL, 36 bits (8 nodes)")
     g2 = e2[e2.variant.astype(str) == "3"].sort_values("tdp")
     g2 = g2[g2.tdp < 1000]
     ax.plot(g2.tdp, g2.gain_pct, "s-", color=C[1], ms=3, lw=1, label="HPL-MxP, 3 bits (8 nodes)")
-    for _, r in g.iterrows():
-        ax.annotate(f"+{r.dw_cap:.0f} W", (r.tdp, r.gain_pct), textcoords="offset points", xytext=(0, 4),
-                    ha="center", fontsize=6, color=C[0])
+    off = {400: (5, 2), 500: (0, -9)}  # keep the labels clear of the frame and of the HPL-MxP line
+    for _, r in g[g.tdp < 1000].iterrows():
+        dx, dy = off.get(int(r.tdp), (0, 4))
+        ax.annotate(f"+{r.dw_cap:.0f} W", (r.tdp, r.gain_pct), textcoords="offset points", xytext=(dx, dy),
+                    ha="left" if dx > 0 else "center", fontsize=6, color=C[0])
     ax.set_xlabel("Module power cap per node (W)")
     ax.set_ylabel("Speedup vs. native (%)")
     ax.set_ylim(0, 15)

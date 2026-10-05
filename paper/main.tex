@@ -17,6 +17,7 @@
 \newcommand{\pct}{\%}
 
 \begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
 
 \title{Trading Mantissa Bits for Watts: Software Mantissa Zeroing under Module Power Caps on the NVIDIA GH200}
 
@@ -29,15 +30,14 @@
 We study a software knob exploiting data-dependent GPU power---zeroing unneeded low-order mantissa bits of FP64,
 BF16 and FP8 operands---on 14 NVIDIA GH200 nodes under module power caps, with paired measurements and an
 equivalent-power metric (the extra cap the unmodified program needs). Under a binding cap, every tested HPC program
-that truncates internally and checks its results gains. At 400--800\W, 8-node HPL keeping 36 significand bits
-(${\approx}100\times$ residual margin) runs 3.4--8.3\pct{} faster, worth 39--97\W{} per node, and HPL-MxP keeping
+that truncates internally and checks its results gains. At 400--800\W, tuned 8-node HPL keeping 36 significand bits
+(${\approx}100\times$ residual margin) runs 4.0--11.0\pct{} faster, worth 39--127\W{} per node, and HPL-MxP keeping
 3 bits 1.8--12.7\pct{} on a diagonally dominant test matrix; at 450--550\W{} Quantum ESPRESSO, with bits tied to its
 Davidson tolerance, runs 2.4--4.2\pct{} faster (partly from fewer iterations) with all printed energy digits
 unchanged; at 500--700\W{} DF-MP2 keeping 20--32 bits runs 4.9--8.3\pct{} faster, and a wide-range
 Gaussian-process likelihood keeping 28 bits 7.4--8.2\pct, where FP32 fails and INT8 emulation is slower. At the
-default 1000\W{} cap, HPL uses 7.7\pct{} less energy per solve. Fill controls attribute 62--97\pct{} of the saving,
-in arithmetic units and memory traffic, to bits that stop toggling. Safe bit counts need validation across problem
-sizes; the crossover with INT8 emulation of FP64 moves with matrix shape and cap. With wide per-row exponent spans,
+default 1000\W{} cap HPL is still 3.9\pct{} faster and uses 7.5\pct{} less energy per solve. Fill controls attribute
+62--97\pct{} of the saving to bits that stop toggling. Safe bit counts need validation across problem sizes; the crossover with INT8 emulation of FP64 moves with matrix shape and cap. With wide per-row exponent spans,
 fixed-width INT8 emulation can silently fail: at 36 bits it shifts a Gaussian-basis DFT energy by
 52\,mE$_\mathrm{h}$, whereas rounding to 36 bits errs by $10^{-6}$\Eh. All-FP32 or 3xTF32 GEMMs fail on long inner
 products, and in Hopper AI inference FP8 already captures most of the benefit.
@@ -50,189 +50,135 @@ power capping, energy efficiency, floating-point precision, mantissa truncation,
 %==================================================================================================
 \section{Introduction}
 
-Power is becoming the ceiling on delivered performance. Data centers cap rack power, student cluster
-competitions cap the power of a whole cluster, and superchips such as the NVIDIA GH200 let users cap the power
-of the entire module. Under a cap, the power manager lowers the clock until the module fits; the speed of a
-program then depends on how much energy each of its operations consumes.
+Power is becoming the ceiling on delivered performance: data centers cap rack power, student cluster competitions
+cap whole clusters, and the NVIDIA GH200 lets users cap the entire module. Under a cap the power manager lowers the
+clock until the module fits, so a program's speed depends on how much energy its operations consume.
 
-That GPU power depends on input data is known. Bhalachandra et al.\ measured 67\pct{} more power for DGEMM on
-random than on constant operands on A100~\cite{Bhalachandra2022}; Gregersen et al.\ varied the distribution and
-bit patterns of GEMM inputs and found that zeroing the least significant bits lowers power~\cite{Gregersen2024};
-He showed an all-zero matrix multiplication on A100 running about 15\pct{} faster than a random one, with a gap
-that widens as the power limit is lowered~\cite{He2024}; Antepara et al.\ measured 563\W{} for a zero-input DGEMM
-on GH200 versus 898\W{} for random input~\cite{Antepara2025}; and the TensorRT documentation warns that all-zero
-inputs draw less power because fewer DRAM and L2 bits toggle~\cite{TensorRTDocs}. In hardware, Tong et al.\
-narrowed floating-point multipliers~\cite{Tong2000}, Pool et al.\ selected precision for graphics
-shaders~\cite{Pool2008,Pool2011}, Guenther et al.\ masked mantissas at the inputs of arithmetic
-units~\cite{Guenther2016}, and an AMD patent adds a hardware zeroing module to shaders~\cite{AMD2022}.
-
-These works either demonstrate the effect with special inputs such as all-zero or constant data (He also swept the
-power limit, but only for all-zero against random inputs) or require new hardware or simulated energy. None answers
-three practical questions. How much performance does software truncation of the low-order mantissa bits of
-\emph{real} data buy under a power cap on a production GPU? How much accuracy does it cost? And where does it still
-pay off against format changes such as FP8 or INT8 emulation of FP64~\cite{Ozaki2025,Uchino2025}? To our knowledge
-this is the first study that truncates part of the mantissa of real FP64/BF16 operands in software on a production
-GPU and measures, on multi-node benchmarks and real HPC applications checked by their own correctness criteria, how
-much throughput the saved switching power buys under power caps. Our contributions are:
+That GPU power depends on input data is known: random operands draw far more power than constant or all-zero
+ones~\cite{Bhalachandra2022,Antepara2025}, zeroed low-order bits lower GEMM power~\cite{Gregersen2024}, the gap
+between all-zero and random GEMMs widens as the power limit is lowered~\cite{He2024}, and hardware can narrow or mask
+mantissas~\cite{Tong2000,Pool2008,Pool2011,Guenther2016,AMD2022}. These works use special inputs such as all-zero or
+constant data (He also swept the power limit, but only for all-zero against random inputs) or require new hardware or
+simulated energy. To our knowledge this is the first study to truncate part of the mantissa of \emph{real} FP64/BF16
+operands in software on a production GPU and measure, on multi-node benchmarks and real HPC applications checked by
+their own correctness criteria, how much throughput the saved switching power buys under power caps, at what accuracy
+cost, and where it still pays off against FP8 or INT8 emulation of FP64~\cite{Ozaki2025,Uchino2025}. Our contributions
+are:
 
 \begin{enumerate}
 \item \textbf{Gains on real applications under power caps.} We express the benefit as the extra cap the unmodified
-program needs to catch up, from GEMM (with paired confidence intervals) to 8-node HPL (36 significand bits:
-3.4--8.3\pct{} faster at 400--800\W, 39--97\W), HPL-MxP on a diagonally dominant test matrix, Quantum ESPRESSO,
+program needs to catch up, from GEMM (with paired confidence intervals) to tuned 8-node HPL (36 significand bits:
+4.0--11.0\pct{} faster at 400--800\W, 39--127\W), HPL-MxP on a diagonally dominant test matrix, Quantum ESPRESSO,
 power-hungry DF-MP2 (4.9--8.3\pct{} at 500--700\W) and a wide-range, power-bound Gaussian-process likelihood
 (7.4--8.2\pct{} at 500--700\W), and check residuals and energies with each code's own criterion
 (Sections~\ref{sec:gemm}--\ref{sec:mp2}, \ref{sec:gp}).
-\item \textbf{The mechanism, across compute and data movement.} Filling the discarded bits with ones or a fixed
-pattern instead of zeros separates ``no toggling'' from ``value is zero'' in tensor-core GEMM, FP64 FMA units and
-memory traffic, quantifying the toggling hypothesis on GH200 module power (Section~\ref{sec:why}).
-\item \textbf{Tolerance-driven bit counts and failure boundaries.} A rule that uses only the solver's own tolerance
-leaves every printed digit of the Quantum ESPRESSO energies unchanged; we measure how far HPL (several sizes),
-PySCF, third-party non-GEMM codes, LoRA fine-tuning and six language models can be truncated, and the role of the
-rounding mode (Sections~\ref{sec:results}--\ref{sec:ai}).
+\item \textbf{The mechanism.} Fills of ones or a fixed pattern instead of zeros separate ``no toggling'' from ``value
+is zero'' in tensor-core GEMM, FP64 FMA units and memory traffic, quantifying the toggling hypothesis on GH200 module
+power (Section~\ref{sec:why}).
+\item \textbf{Bit counts and failure boundaries.} A rule using only the solver's own tolerance leaves every printed
+digit of the Quantum ESPRESSO energies unchanged; we test how far HPL (several sizes), PySCF, third-party non-GEMM
+codes, LoRA fine-tuning and six language models can be truncated, and the role of rounding
+(Sections~\ref{sec:results}--\ref{sec:ai}).
 \item \textbf{The boundary with format changes.} Against INT8 emulation (cuBLAS, GEMMul8) and FP32/3xTF32 for FP64,
-and FP8 for AI, the crossover moves with matrix shape, power cap, accumulation precision and exponent span; on
-data with a wide per-row exponent span, fixed-width INT8 emulation can silently return wrong results, a risk that a
-cheap measurement of per-row spans flags beforehand (Sections~\ref{sec:format}--\ref{sec:ai}).
+and FP8 for AI, the crossover moves with shape, power cap, accumulation precision and exponent span; with wide
+per-row exponent spans, fixed-width INT8 emulation can silently err, a risk that cheap per-row span measurements
+flag beforehand (Sections~\ref{sec:format}--\ref{sec:ai}).
 \end{enumerate}
-
-Compared with the closest work: Gregersen et al.\ observed input-dependent power and proposed the toggling
-hypothesis but avoided throttling and studied only GEMM; He swept the A100 power limit, and Antepara et al.\
-measured GH200, but both contrasted all-zero with random inputs without truncating real data or evaluating
-accuracy. We quantify the toggling hypothesis on GH200 module power, show that the data-movement part is consistent
-with DRAM energy studies~\cite{Chatterjee2017,Ghose2018}, and quantify speed and accuracy on real applications under
-caps. Uchino et al.\ evaluated the speed and energy efficiency of INT8-emulated GEMM~\cite{Uchino2025}; we compare it
-with truncation at the same cap and comparable accuracy and find that the winner depends on matrix shape and cap.
 
 %==================================================================================================
 \section{Background and Related Work}\label{sec:related}
 
-\textbf{Input-dependent GPU power.} Bhalachandra et al.\ argue that power budgets and benchmarks must account for
-input entropy~\cite{Bhalachandra2022}. Gregersen et al.\ varied value distribution, bit similarity, ordering and
-sparsity of CUTLASS GEMM inputs on A100, H100 and V100 and saw power differ by up to almost 40\pct, with zeroed
-low bits lowering power~\cite{Gregersen2024}; they chose sizes that do not throttle, so performance under a cap
-was not measured. He reported 295 versus 257\,TFLOP/s for all-zero versus random $8192^3$ GEMMs on A100 and, lowering
-the power limit from 330 to 100\W, saw the relative speedup of such predictable inputs grow from about 1.2$\times$ to
-about 2.3$\times$ at 150\W{} before it fell at 100\W~\cite{He2024}. Antepara et al.\ measured zero-input DGEMM on
-GH200 at 563\W{} and 65.4\,TFLOP/s against 898\W{} and 57.8\,TFLOP/s for random input~\cite{Antepara2025}; their
-GH200 roofline study found no significant difference in vector FP64 performance between zero and random
-inputs~\cite{Antepara2025W}, consistent with our finding that when the GPU is not power-bound the difference shows
-only in power. Ujeniya et al.\ note that constant and random data can differ
-by about 100\W{} on H100/H200 but leave it out of scope~\cite{Ujeniya2026}. Lucas and Juurlink built a
-data-dependent ALU power model for GTX\,580 whose main term is the number of toggles, with the number of ones a
-secondary term~\cite{Lucas2016}. All of these use all-zero, constant or special bit patterns; none truncates part
-of the mantissa of real data or evaluates accuracy or applications.
+\textbf{Input-dependent GPU power.} Bhalachandra et al.\ measured 67\pct{} more DGEMM power on random than on constant
+operands on A100~\cite{Bhalachandra2022}. Gregersen et al.\ varied CUTLASS GEMM inputs on V100, A100 and H100, saw
+power differ by up to almost 40\pct{} with zeroed low bits lowering it, and proposed that toggling drives it, but
+studied only GEMM at sizes that do not throttle~\cite{Gregersen2024}. He found all-zero $8192^3$ GEMMs on A100 faster
+than random ones, a speedup that grew from about 1.2$\times$ to about 2.3$\times$ as the power limit fell from 330 to
+150\W, before falling at 100\W~\cite{He2024}. On GH200, zero-input DGEMM draws 563\W{} against 898\W{} for random
+input~\cite{Antepara2025}, while vector FP64 performance shows no significant difference~\cite{Antepara2025W}.
+Constant and random data can differ by about 100\W{} on H100/H200~\cite{Ujeniya2026}, and a GTX\,580 ALU power model
+is dominated by toggles, with the number of ones secondary~\cite{Lucas2016}. None of these truncates part of the
+mantissa of real data or evaluates accuracy or applications.
 
-\textbf{Power-constrained HPC.} Rountree et al.\ took a first look at performance under a hardware-enforced power
-bound and found that manufacturing variation makes nominally identical processors differ by about 6\pct{} in
-execution time under the same bound~\cite{Rountree2012}; Inadomi et al.\ measured up to 64\pct{} variation in per-rank DGEMM
-performance under a module power cap on a large system and allocated power by variability~\cite{Inadomi2015}.
-Patki et al.\ overprovision nodes under a fixed system power budget and enforce per-node bounds~\cite{Patki2013},
-and Zeus tunes the GPU power limit together with the batch size to cut DNN training energy~\cite{Zeus2023}. These
-works decide how power is distributed; we lower the energy each operation needs, so the two compose. The 13--17\pct{}
-node-to-node clock spread we see at equal caps (Section~\ref{sec:setup}) is consistent with their observations.
+\textbf{Power-constrained HPC.} Under a power bound, manufacturing variation makes nominally identical processors
+differ by about 6\pct{} in execution time~\cite{Rountree2012} and per-rank DGEMM performance by up to 64\pct, which
+variability-aware power allocation mitigates~\cite{Inadomi2015}; overprovisioning adds nodes under a fixed system
+budget~\cite{Patki2013}, and Zeus co-tunes GPU power limit and batch size for DNN training energy~\cite{Zeus2023}.
+These works distribute power; we lower the energy per operation, so the two compose. GH200 CPU and GPU share module
+power, and the GPU clock drops near the cap~\cite{Patrou2025}; nvidia-smi samples only about 25\pct{} of runtime on
+A100/H100~\cite{Yang2024}, which our long steady windows and pairing mitigate.
 
-\textbf{Hardware mantissa masking and data-movement energy.} Mantissa masking itself is not new. Tong et al.\
-showed that many programs tolerate halving the mantissa and that a variable-width multiplier saves up to 66\pct{}
-energy per operation~\cite{Tong2000}. Pool et al.\ estimated 23--36\pct{} energy savings in the vertex stage of
-mobile GPUs~\cite{Pool2008} and up to 71\pct{} in pixel-shader arithmetic (10--20\pct{} of GPU
-energy)~\cite{Pool2011}; Angerd et al.\ automated precision reduction in graphics and designed a register file that
-packs arbitrary precisions~\cite{Angerd2017}; Guenther et al.\ masked mantissas at functional-unit inputs of an LTE
-baseband processor for up to 23\pct{} energy per task~\cite{Guenther2016}; an AMD patent zeroes mantissa bits in
-GPU shaders according to a precision flag~\cite{AMD2022}; and Jahadi and Atoofian exploited the zero bias of
-register bits and dropped low-order bits of CNN values to cut tensor-core register-file leakage by
-77.3\pct{} in simulation~\cite{Jahadi2024}. rpe and chop use the same bit operations to emulate low precision but
-do not measure power~\cite{Dawson2017,Higham2019}. DRAM and HBM energy depend on data toggling
-rates~\cite{Chatterjee2017,OConnor2017,Ghose2018}, and compression can reduce bytes but increase
-toggles~\cite{Pekhimenko2016}. We differ in being pure software, changing neither hardware nor data format, and in
-measuring clocks and performance under caps on a production GPU with validated application accuracy.
+\textbf{Hardware masking and data-movement energy.} Narrower floating-point multipliers save up to 66\pct{} energy
+per operation~\cite{Tong2000}, and precision has been reduced or masked in mobile-GPU shaders~\cite{Pool2008,Pool2011},
+graphics register files~\cite{Angerd2017}, a baseband processor~\cite{Guenther2016}, GPU shaders~\cite{AMD2022} and,
+in simulation, tensor-core register files~\cite{Jahadi2024}; rpe and chop emulate low precision with the same bit
+operations without measuring power~\cite{Dawson2017,Higham2019}. DRAM energy depends on toggling
+rates~\cite{Chatterjee2017,OConnor2017,Ghose2018}, all-zero inputs draw less power as fewer DRAM and L2 bits
+toggle~\cite{TensorRTDocs}, and compression can increase toggles~\cite{Pekhimenko2016}. We change neither hardware
+nor data format.
 
-\textbf{Precision tuning, mixed precision and power caps.} Tools such as Precimonious lower variable precision for
-speed~\cite{RubioGonzalez2013}, and mixed-precision storage reduces bytes per value~\cite{Higham2022}; mantissa
-zeroing changes neither type nor bytes and composes with both. Transprecision computing argues for controlling
-precision at fine grain in space and time~\cite{Malossi2018}. Closest in form, Grützmacher et al.\ store FP64 values
-as mantissa segments that keep the full exponent and read only the leading segments, speeding up memory-bound
-PageRank by 10--30\pct~\cite{Grutzmacher2020}; there the truncation saves bandwidth, here switching power.
-Low-precision LU with iterative refinement recovers FP64 accuracy~\cite{Haidar2018} and underlies
-HPL-MxP~\cite{Dongarra2025}. Klöwer et al.\ estimate from the data itself how many mantissa bits carry real
-information and round the rest to nearest to compress atmospheric data~\cite{Klower2021}; the same analysis could
-estimate in advance how many bits GEMM operands need, here for power rather than storage. GH200 shares module power
-between CPU and GPU and lowers the GPU clock near the cap~\cite{Patrou2025}; Yang et al.\ found that nvidia-smi
-samples only about 25\pct{} of runtime on A100/H100~\cite{Yang2024}, which we mitigate with long steady windows,
-pairing and energy integrated from 1-s averaged power (Section~\ref{sec:setup}).
+\textbf{Precision tuning and mixed precision.} Precision tuning~\cite{RubioGonzalez2013}, mixed-precision
+storage~\cite{Higham2022} and transprecision computing~\cite{Malossi2018} change types or bytes; zeroing changes
+neither and composes with them. Reading only leading mantissa segments speeds up memory-bound PageRank by 10--30\pct{}
+by saving bandwidth~\cite{Grutzmacher2020}. Low-precision LU with iterative refinement~\cite{Haidar2018} underlies
+HPL-MxP~\cite{Dongarra2025}. The information content of mantissa bits, estimated from the data~\cite{Klower2021},
+could predict how many bits GEMM operands need.
 
-\textbf{Emulating FP64 on low-precision units.} The Ozaki scheme~\cite{Ozaki2012} splits a matrix product into a sum
-of products of lower-precision slices that are computed exactly; Ootomo et al.\ run it on integer matrix
-units~\cite{Ootomo2024}, and Ozaki scheme~II uses modular arithmetic~\cite{Ozaki2025} and is implemented in GEMMul8,
-with performance and power evaluated by Uchino et al.~\cite{Uchino2025}. cuBLAS ships an
-Ozaki-type fixed-point emulation that scales each row of $A$ and column of $B$ by a shared factor, so the dynamic
-range within a row is encoded in the mantissa; its automatic mode picks the slice count from the exponent span and
-dispatches to native FP64 when more than a library-defined maximum of bits would be needed~\cite{cuBLASEmu,Schwarz2026}.
-These change the arithmetic format; zeroing keeps the original FP64 (or BF16, FP8) units and lowers input entropy, so
-the two can be complementary.
+\textbf{Emulating FP64 on low-precision units.} The Ozaki scheme~\cite{Ozaki2012} splits a matrix product into
+exactly computed products of lower-precision slices; it runs on integer units~\cite{Ootomo2024}, and Ozaki
+scheme~II~\cite{Ozaki2025} uses modular arithmetic in GEMMul8, whose speed and energy efficiency Uchino et al.\
+evaluated~\cite{Uchino2025}. cuBLAS's Ozaki-type emulation scales each row of $A$ and column of $B$ by a shared factor,
+so a row's range is encoded in the mantissa; its automatic mode picks the slice count from the exponent span and falls
+back to native FP64 beyond a library-defined maximum~\cite{cuBLASEmu,Schwarz2026}. Zeroing keeps the original units,
+so the two can be complementary; we compare them at equal cap and comparable accuracy.
 
 \textbf{Mixed precision in geostatistics.} ExaGeoStat evaluates Gaussian-process likelihoods with an FP64 tile
-Cholesky~\cite{Abdulah2018}. Its mixed-precision successors order the locations along a space-filling curve so that
-strong correlations sit near the diagonal, keep diagonal tiles in FP64 and convert tiles chosen by their distance from
-the diagonal or their norm to FP32, FP16 or FP8: 1.6$\times$ on average with FP64/FP32~\cite{Abdulah2019}, up to
-2.64$\times$ with FP64/FP32/FP16~\cite{Abdulah2022}, up to 12$\times$ when combined with tile low-rank
-compression~\cite{Cao2022}, and 3$\times$ over FP64 on a GH200 with four precisions~\cite{Ren2025}; the same tile method
-drove a climate emulator on GH200 systems~\cite{Abdulah2024}. Cao et al.\ also measured the power and energy of such
-factorizations on single V100, A100 and H100 GPUs~\cite{Cao2023}, without caps or a clock analysis. Uniform single
-precision is insufficient for these likelihoods~\cite{Abdulah2022}, as we also find. All of these convert whole tiles to
-another format; we keep FP64 and truncate operand mantissas, and the two compose (Section~\ref{sec:gp}).
-Olivares-Amaya et al.\ similarly ran RI-MP2 with single- and mixed-precision GEMMs on GPUs~\cite{OlivaresAmaya2010}.
+Cholesky~\cite{Abdulah2018}; its successors keep diagonal tiles in FP64 and convert others, chosen by distance or
+norm, to FP32, FP16 or FP8 (1.6$\times$ on average with FP32~\cite{Abdulah2019}, up to 2.64$\times$ adding
+FP16~\cite{Abdulah2022}, 12$\times$ with tile low-rank compression~\cite{Cao2022}, 3$\times$ on a
+GH200~\cite{Ren2025}), also in a climate emulator~\cite{Abdulah2024}. Cao et al.\ measured power and energy of such
+factorizations on single GPUs, without caps or a clock analysis~\cite{Cao2023}. Uniform single precision is
+insufficient here~\cite{Abdulah2022}, as we also find; truncation composes with tile conversion
+(Section~\ref{sec:gp}).
 
-\textbf{Convergence-driven precision.} Woo et al.\ switch LOBPCG between FP32, FP64 and mixed precision by
-convergence state for up to 8.5$\times$ speedup on GPUs~\cite{Woo2023}; Huang, Shao and Hammond choose the number of
-INT8 emulation slices in GPU4PySCF from the relative SCF energy change, keeping errors below
-$10^{-7}$\,hartree (E$_\mathrm{h}$; 1\,E$_\mathrm{h}$ = 2\,Ry = 627.5\,kcal/mol)~\cite{Huang2026}; Dawson et al.\ found with MPFR that about 37 significant bits suffice for density
-matrix purification~\cite{Dawson2024}. All of these gain speed by moving to a higher-throughput format or unit, and
-none studies power. We stay on FP64 units, adjust the kept bits one at a time from the Davidson threshold of a
-plane-wave code, and gain mainly from clock headroom under a cap (on one of our two systems also from fewer
-Davidson iterations; Section~\ref{sec:adaptive}).
-
-\textbf{FP8 inference and its failures.} FP8 training keeps high-precision master weights with per-tensor
-scaling, E4M3 for weights and activations and E5M2 for gradients~\cite{Micikevicius2022}; Gupta et al.\ showed that
-rounding decides the fate of low-precision training~\cite{Gupta2015}. The clearest FP8 failure is attention:
-FlashAttention-3's FP8 mode degrades CogVideoX and HunyuanVideo quality and long-context retrieval, which
-SageAttention2 repairs inside FP8 by smoothing outliers and using a fixed scale for softmax
-probabilities~\cite{Zhang2025}. MLPerf Inference closed division allows any pure, reproducible mathematical
-quantization but forbids pruning non-zero weights~\cite{MLPerfInfRules}; mantissa zeroing is the former.
+\textbf{Convergence-driven precision.} LOBPCG switched between FP32, FP64 and mixed precision by convergence state
+runs up to 8.5$\times$ faster on GPUs~\cite{Woo2023}; GPU4PySCF can set its number of INT8 emulation slices from the
+SCF energy change, keeping errors below $10^{-7}$\,hartree (E$_\mathrm{h}$; 1\,E$_\mathrm{h}$ = 2\,Ry =
+627.5\,kcal/mol)~\cite{Huang2026}; RI-MP2 has run with single- and mixed-precision GEMMs~\cite{OlivaresAmaya2010}.
+These gain speed from a faster format or unit and do not study power; we stay on FP64 units with bit counts set by the
+Davidson threshold and gain mainly from clock headroom under a cap (on one system also from fewer Davidson iterations;
+Section~\ref{sec:adaptive}).
 
 %==================================================================================================
 \section{Why Fewer Mantissa Bits Save Power}\label{sec:why}
 
-CMOS dynamic power is roughly $\alpha_\mathrm{sw} C V^2 f$, where the switching activity $\alpha_\mathrm{sw}$ depends
-on the data. Under a cap, the power manager lowers $f$ (and $V$) until the module fits, so a lower $\alpha_\mathrm{sw}$
-turns directly into higher clock and throughput; below the cap it appears as lower power at the same clock. We see both on GH200. At the default
-1000\W{} cap the native FP64 GEMM is still capped 95\pct{} of the time and runs at 1822\,MHz, whereas keeping 0 bits
-it runs at the maximum 1980\,MHz while module power falls from 984 to 707\W. Under a 700\W{} cap the FP64 GEMM SM
-clock is 1502\,MHz native, 1668\,MHz with 27 kept bits and 1965\,MHz with 0 kept bits, all at about 694\W.
+CMOS dynamic power is roughly $\alpha_\mathrm{sw} C V^2 f$ with data-dependent switching activity
+$\alpha_\mathrm{sw}$. Under a cap the power manager lowers $f$ (and $V$) until the module fits, so a lower
+$\alpha_\mathrm{sw}$ yields higher clock and throughput, and below the cap lower power. GH200 shows both: at the
+default 1000\W{} cap the native FP64 GEMM is still capped 95\pct{} of the time at 1822\,MHz, while keeping 0 bits it
+runs at the maximum 1980\,MHz and module power falls from 984 to 707\W; under a 700\W{} cap the SM clock is
+1502\,MHz native, 1668\,MHz with 27 kept bits and 1965\,MHz with 0, all at about 694\W.
 
-\textbf{Toggling or zero?} Zeroing changes two things at once: the low bits stop varying from element to element,
-and their value becomes zero. To separate the two we fill the discarded bits with all ones, or with a fixed
-nonzero pattern shared by all elements; neither toggles, but neither is zero. At 1000\W{} all three fills run at the
-maximum 1980\,MHz, so we compare module power; since the cap holds the native GEMM at 984\W, the share we attribute
-to ``no toggling'' is conservative. At 500\W{} every configuration is capped 100\pct{} of the time, so we compare
-throughput (one node, two runs each; Table~\ref{tab:fill}).
-
-Merely stopping the low bits from toggling captures 68--92\pct{} of the benefit in tensor-core GEMM, which quantifies
-the toggling hypothesis~\cite{Gregersen2024} on GH200 module power. Zeros save somewhat more than ones or a fixed
-pattern. With 20 kept bits this matches multiplier structure: partial products are $a_i b_j$, so low bits of $a$
-fixed at one still form partial products that toggle with the kept bits of the other operand, whereas zeros keep
-that whole slice at zero. With 0 kept bits both mantissas are constant, so the partial products do not toggle under
-any fill, yet zeros still save more than ones (707 versus 774\W); this may come from simpler alignment and
-accumulation of products that are exact powers of two, which we have not verified. We have no gate-level
-measurement, so both are inferences consistent with the data. The result also matches the GTX\,580 ALU model of
-Lucas and Juurlink, in which toggles dominate and the number of ones in constant inputs is
+\textbf{Toggling or zero?} Zeroing both stops the low bits from varying between elements and makes them zero. Fills
+of all ones or of a fixed nonzero pattern shared by all elements separate the two: neither toggles, neither is zero.
+At 1000\W{} all fills run at 1980\,MHz, so we compare module power (as the cap holds the native GEMM at 984\W, the
+share attributed to ``no toggling'' is conservative); at 500\W{} every configuration is always capped, so we compare
+throughput (one node, two runs each; Table~\ref{tab:fill}). Merely stopping the toggling captures 68--92\pct{} of the
+benefit in tensor-core GEMM, quantifying the toggling hypothesis~\cite{Gregersen2024} on GH200 module power; zeros
+save somewhat more. With 20 kept bits this fits multiplier structure: low bits of $a$ fixed at one still form partial
+products $a_i b_j$ that toggle with the kept bits of $b$, while zeros keep that slice at zero. With 0 kept bits no
+partial product toggles under any fill, yet zeros still save more than ones (707 versus 774\W), perhaps because exact
+powers of two align and accumulate more simply (unverified). Lacking gate-level data, both are
+inferences, consistent with a GTX\,580 ALU model in which toggles dominate and the number of ones is
 secondary~\cite{Lucas2016}.
 
-\textbf{Not just tensor cores.} In an FP64 CUDA-core multiply-add loop ($8{\times}8$ outer product per thread, no
-tensor cores), keeping 0 bits lowers module power at 1000\W{} from 862 to 553\W; ones and the fixed pattern keep
-87\pct{} and 62\pct{} of that saving. In pure memory traffic (a STREAM-like copy at 3.33\,TB/s) power falls from 672
-to 549\W{} ($-18\pct$), with ones and the pattern keeping 97\pct{} and 86\pct. Fewer toggles on data wires and in
-arithmetic units are therefore the main cause, and the effect also exists for bandwidth-bound code; the
-data-movement part is consistent with DRAM energy that depends on toggling rates~\cite{Chatterjee2017,Ghose2018}.
+\textbf{Not just tensor cores.} Keeping 0 bits lowers module power at 1000\W{} from 862 to 553\W{} in an FP64
+CUDA-core multiply-add loop and from 672 to 549\W{} ($-18\pct$) in a STREAM-like copy at 3.33\,TB/s, and ones or the
+fixed pattern keep 62--87\pct{} and 86--97\pct{} of these savings (Table~\ref{tab:fill}): fewer toggles in arithmetic
+units and on data wires are the main cause, also for bandwidth-bound code, consistent with toggle-dependent DRAM
+energy~\cite{Chatterjee2017,Ghose2018}. An Altera patent's qualitative claim that zeroing low bits at an FPGA
+floating-point multiplier's input barely reduces power, as the compression tree keeps switching~\cite{Altera2017},
+does not contradict this: on a GPU the bits also travel through registers, buses and memory, and even GH200
+multipliers save more with zeros than with ones.
 
 \begin{table}[t]
 \caption{Filling the discarded bits with zeros, ones or a fixed pattern (TC: tensor core). 1000\W{} rows give module
@@ -256,113 +202,81 @@ Memory copy, 0, 1000\W & 672 & 566 & 553 & 549 & 86--97\pct \\
 %==================================================================================================
 \section{Method}\label{sec:method}
 
-\textbf{Mantissa zeroing.} For a floating-point operand with $p$ fraction bits (52 for FP64, 7 for BF16, 3 for FP8
-E4M3) we keep the top $k$ fraction bits and set the remaining $p-k$ to zero. Sign and exponent are untouched, so
-the representable range is the format's full range. We compare truncation toward zero (one bit mask),
-round-to-nearest (add half a unit of the last kept bit, then mask) and stochastic rounding (add a uniform random
-integer below the weight of the discarded bits, then mask). Ties go away from zero in the shim, the GEMM
-microbenchmark, Quantum ESPRESSO, DF-MP2 and the Gaussian-process code, and to even in HPL, the LoRA weight loading
-and LLM inference. We write ``truncate to $k$ bits'' for keeping $k$ bits either way: unless stated otherwise, the
-applications (Quantum ESPRESSO, PySCF, DF-MP2, Gaussian process, ExaGeoStat, third-party codes) and HPL round to
-nearest, while the GEMM microbenchmarks, the crossover sweeps and HPL-MxP truncate toward zero. HPL counts
-significand bits including the hidden bit, as rocHPL does: its 36 bits are 35 fraction bits. Each element costs one
-integer AND (plus an add for rounding), which can be fused into the kernel that produces the operand; here HPL runs
-a separate rounding kernel and the shim makes a copy, and both costs are included in the measured times.
+\textbf{Mantissa zeroing.} For an operand with $p$ fraction bits (52 for FP64, 7 for BF16, 3 for FP8 E4M3) we keep the
+top $k$ and zero the rest; sign and exponent are untouched. Truncation toward zero is one bit mask; round-to-nearest
+first adds half a unit of the last kept bit, stochastic rounding a uniform random integer below the weight of the
+discarded bits. Ties go away from zero in the shim, GEMM microbenchmark, Quantum ESPRESSO, DF-MP2 and Gaussian-process
+code, and to even in HPL, LoRA weight loading and LLM inference. ``Truncate to $k$ bits'' covers both: unless stated
+otherwise, the applications (Quantum ESPRESSO, PySCF, DF-MP2, Gaussian process, ExaGeoStat, third-party codes) and HPL
+round to nearest, and the GEMM microbenchmarks, crossover sweeps and HPL-MxP truncate toward zero. HPL counts
+significand bits including the hidden bit, as rocHPL does (36 bits are 35 fraction bits).
 
-\textbf{Error model.} For operands uniform on $[-1,1)$ with both $A$ and $B$ zeroed, the relative error of $C=AB$ is
-\begin{equation}
-\lVert \hat C - C\rVert_F \,/\, \lVert C\rVert_F \approx \alpha\,2^{-k},
-\end{equation}
-with $\alpha\approx0.27$ for round-to-nearest, 0.38 for stochastic rounding and 0.70 for truncation ($k\ge4$;
-truncation errs about 2.6 times more than round-to-nearest), independent of the inner dimension from 256 to 16384
-(measured by splitting the error terms exactly in FP64). Truncation's error is almost entirely a systematic
-shrinkage: the least-squares slope of $\hat C$ against $C$
-departs from 1 by about $-0.6\cdot 2^{-k}$ ($-0.59$ to $-0.64$ across $k$). This matters little for solvers that
-iterate to self-consistency or correct with a residual, but hurts processes that accumulate bias, which is why the
-rounding mode matters so much in Sections~\ref{sec:results}--\ref{sec:ai}.
+\textbf{Implementation and cost.} Each element costs one integer AND (plus an add for rounding), fusable into the
+kernel that produces the operand, as in our microbenchmarks and HPL-MxP; HPL rounds both operands in a separate kernel
+before each DGEMM; Quantum ESPRESSO (Davidson vectors), DF-MP2 and the Gaussian-process code zero operands in place;
+LoRA zeroes the frozen FP8 base weights once after loading. Unmodified software runs under an \texttt{LD\_PRELOAD} shim
+that intercepts cuBLAS and CPU GEMM calls, writes zeroed copies of $A$ and $B$ to scratch buffers and can record
+exponent histograms and per-row spans. Measured times include HPL's extra
+kernel and the shim's copies.
 
-On real Llama2-70B layer-40 activations and weights, $\alpha=0.22$ (nearest) and 0.66--0.68 (truncation) for
-$k=2$--4, within about 20\pct{} of uniform data. On four real FP64 GEMMs of Quantum ESPRESSO Si\,1000, $\alpha$ is
-0.19--0.32 (nearest) and 0.72--0.81 (truncation). On four real GEMMs of a gold surface, $\alpha$ is nearly constant
-across $k$ within each GEMM, confirming the $2^{-k}$ law, but ranges from 0.07 to 9.6 (nearest) across GEMMs
-with the amount of cancellation: for nearly orthogonal overlaps such as $\langle\psi|\psi\rangle$ the result norm is
-far below the product of operand norms, amplifying the relative error. The form of the model holds broadly, but the
-prefactor must be measured per application; self-consistent iteration corrects these errors, which is why Quantum
+\textbf{Error model.} For operands uniform on $[-1,1)$ with $A$ and $B$ zeroed,
+$\lVert \hat C - C\rVert_F/\lVert C\rVert_F \approx \alpha\,2^{-k}$ for $C=AB$, with $\alpha\approx0.27$ (nearest),
+0.38 (stochastic) and 0.70 (truncation) for $k\ge4$, independent of the inner dimension from 256 to 16384.
+Truncation's error is almost entirely a systematic shrinkage (least-squares slope of $\hat C$ against $C$ about
+$1-0.6\cdot 2^{-k}$), which matters little for solvers that iterate to self-consistency or correct with a residual but
+hurts where bias accumulates. On real data the $2^{-k}$ law holds within each GEMM, but $\alpha$ grows with
+cancellation (nearest: 0.19--0.32 on four Quantum ESPRESSO Si\,1000 GEMMs, 0.07 to 9.6 on four gold-surface GEMMs),
+so it must be measured per application; self-consistent iteration corrects these errors, which is why Quantum
 ESPRESSO tolerates 20--28 bits even with $\alpha\approx 10$.
 
-\textbf{Equivalent power saving.} Under cap $P$, let the zeroed program reach performance $p'(P)$. Its equivalent
-power saving is
-\begin{equation}
-\Delta W(P) = P_\mathrm{native}\bigl(p'(P)\bigr) - P,
-\end{equation}
-where $P_\mathrm{native}(x)$ is the cap at which the native program reaches performance $x$, linearly interpolated
-along the measured performance--cap curve. $\Delta W$ is the extra per-node power budget the unmodified program
-needs to match the zeroed one. If $p'$ exceeds every native point we report a lower bound; if the GPU is not
-power-bound, the saving appears as lower measured power at the same speed. Because performance is concave in the
-cap, linear interpolation between widely spaced caps (e.g., 800 and 1000\W) slightly overestimates $\Delta W$.
+\textbf{Equivalent power saving.} If the zeroed program reaches performance $p'(P)$ under cap $P$, its equivalent
+power saving $\Delta W(P) = P_\mathrm{native}\bigl(p'(P)\bigr) - P$ is the extra per-node power the native program
+needs to match, with $P_\mathrm{native}(x)$, the cap at which native reaches $x$, interpolated linearly along the
+measured performance--cap curve. If $p'$ exceeds every native point we report a lower bound; if the GPU is not
+power-bound, the saving appears as lower power at equal speed. As performance is concave in the cap, interpolating
+between widely spaced caps (e.g., 800 and 1000\W) slightly overestimates $\Delta W$.
 
-\textbf{Tolerance-driven precision.} Many solvers tighten their tolerance as they converge. In plane-wave DFT each
-Davidson diagonalization receives a threshold $\mathit{ethr}$ that tightens from about $10^{-2}$ to $10^{-12}$
-during the self-consistent-field (SCF) iteration. We keep
-\begin{equation}
-k = \mathrm{clamp}\bigl(\lceil -\log_2 \mathit{ethr}\rceil + m,\ k_{\min},\ 52\bigr)
-\end{equation}
-fraction bits (margin $m$, floor $k_{\min}=16$), so early iterations use fewer bits and the last ones use what the
-tolerance requires. This is an empirical rule, not a guarantee: $\mathit{ethr}$ is an absolute eigenvalue tolerance
-(in Ry), not a relative mantissa error, and the margin absorbs the difference. It needs no application model, only
-a tolerance the application already computes.
+\textbf{Tolerance-driven precision.} In plane-wave DFT each Davidson diagonalization gets a threshold
+$\mathit{ethr}$ that tightens from about $10^{-2}$ to $10^{-12}$ during the self-consistent-field (SCF) iteration. We
+keep $k = \mathrm{clamp}(\lceil -\log_2 \mathit{ethr}\rceil + m,\ k_{\min},\ 52)$ fraction bits (margin $m$, floor
+$k_{\min}=16$). This empirical rule is not a guarantee: $\mathit{ethr}$ is an absolute eigenvalue tolerance (in Ry),
+not a relative mantissa error, and the margin absorbs the difference; it needs only a tolerance the application
+already computes.
 
 %==================================================================================================
 \section{Experimental Setup}\label{sec:setup}
 
-\textbf{System.} Fourteen nodes, each with one NVIDIA GH200 480GB superchip (72-core Neoverse-V2 Grace; Hopper GPU
-with 96\,GB HBM3, maximum SM clock 1980\,MHz, FP64 tensor-core peak 67\,TFLOP/s~\cite{NVIDIAGH200}), connected by
-200\,Gb/s InfiniBand and managed by Slurm. The module power cap covers GPU, CPU and memory; the driver accepts caps
-from 200 to 1000\W{} (default 1000\W), while the datasheet lists 450--1000\W~\cite{NVIDIAGH200}, so our caps below
-450\W{} lie outside that range (measured power still follows them). The GPU alone has a separate 900\W{} limit.
-The default of 1000\W{} is also the highest cap, not an uncapped state: native HPL and FP64 GEMM still hit it much of
-the time. Software: NVHPC 26.5 (CUDA 13.2, cuBLAS 13.4, NCCL 2.29, HPC-X Open MPI 5), driver 615.71.
+\textbf{System.} Fourteen nodes, each with one GH200 480GB superchip (72-core Grace; Hopper GPU with 96\,GB HBM3,
+maximum SM clock 1980\,MHz, FP64 tensor-core peak 67\,TFLOP/s~\cite{NVIDIAGH200}), 200\,Gb/s InfiniBand, NVHPC 26.5
+(CUDA 13.2, cuBLAS 13.4). The module power cap covers GPU, CPU and memory (the GPU alone also has a 900\W{} limit);
+the driver accepts 200--1000\W, the datasheet lists 450--1000\W~\cite{NVIDIAGH200}, so our caps below 450\W{} lie
+outside it (measured power still follows them). The default 1000\W{} is the highest cap, not an uncapped state: native
+HPL and FP64 GEMM still hit it often.
 
-\textbf{Workloads.} (1)~cuBLAS GEMM microbenchmarks (FP64 $32768{\times}32768{\times}2048$; BF16 and FP8 E4M3
-$32768{\times}32768{\times}6144$ with FP32 accumulation) on operands uniform on $[-1,1)$. (2)~HPL (a CUDA port of
-rocHPL, FP64, 8 nodes, $N=262144$) and HPL-MxP (BF16 LU, FP32 accumulation, FP64 iterative refinement, 8 nodes,
-$N=491520$, on a diagonally dominant test matrix; Section~\ref{sec:hpl}). (3)~Quantum ESPRESSO 7.6
-GPU~\cite{Giannozzi2020} (Si 1000-atom supercell at $\Gamma$, DGEMM; Au
-112-atom surface with $k$ points, ZGEMM), GPU4PySCF 1.8.1~\cite{Wu2025,Li2025} (valinomycin B3LYP/def2-TZVP with density
-fitting; taxol RHF and DF-MP2), three non-GEMM FP64 codes (MFEM, SW4, LAMMPS), and a Gaussian-process likelihood
-(Section~\ref{sec:gp}). (4)~MLPerf Training Llama\,2 70B LoRA with NVIDIA's v5.0 implementation (FP8 weights and
-GEMMs, activations offloaded to Grace memory), 8 nodes, global batch 8, and inference on six language models.
+\textbf{Workloads.} cuBLAS GEMMs on operands uniform on $[-1,1)$ (BF16 and FP8 E4M3 at
+$32768{\times}32768{\times}6144$, FP32 accumulation); HPL (CUDA
+port of rocHPL) and HPL-MxP (BF16 LU, FP32 accumulation, FP64 refinement) on 8 nodes; Quantum ESPRESSO 7.6
+GPU~\cite{Giannozzi2020} (Si 1000-atom supercell, DGEMM; Au 112-atom surface with $k$ points, ZGEMM);
+GPU4PySCF 1.8.1~\cite{Wu2025,Li2025} (valinomycin B3LYP/def2-TZVP with density fitting; taxol RHF and DF-MP2); MFEM,
+SW4, LAMMPS; a Gaussian-process likelihood; MLPerf Training Llama\,2 70B LoRA (NVIDIA's v5.0 FP8 code, 8
+nodes, global batch 8); and LLM inference (six models).
 
-\textbf{Implementation.} Microbenchmarks and HPL-MxP zero operands in the kernel that produces them; HPL rounds both
-operands in a separate kernel before each FP64 DGEMM. For
-unmodified scientific software an \texttt{LD\_PRELOAD} shim intercepts cuBLAS DGEMM/ZGEMM, GemmEx and
-strided-batched calls and CPU dgemm/zgemm, writes zeroed copies of $A$ and $B$ to scratch buffers (the caller's data
-are unchanged) and can record exponent histograms and per-row exponent spans of the operands. Quantum ESPRESSO is
-additionally modified to zero the Davidson vectors in place; DF-MP2 and the Gaussian-process code zero their
-operands in place; LoRA zeroes the frozen FP8 base weights once after loading.
+\textbf{Measurement protocol.} nvidia-smi samples power, SM clock, temperature and throttle reasons on every node
+every 250--500\,ms. Each measurement starts below 45\,\textdegree C, and within a cap the variants run in ABBA order
+(native, zeroed, zeroed, native) on the same nodes. Windows whose recorded cap differs from the intended one are
+discarded (another user's tool reset the cluster's caps at least twice; affected measurements were rerun).
+Power-brake counters were enabled only in a diagnostic job, not in the main HPL and HPL-MxP sweeps. The first native
+run of a job is often slower (warm-up), so, as ABBA sequences usually start with native, the first pair can overstate
+the gain (Section~\ref{sec:adaptive}).
 
-\textbf{Measurement protocol.} On every node nvidia-smi samples power, SM clock, temperature and throttle reasons
-every 250--500\,ms. Every measurement starts from a GPU below 45\,\textdegree C; within a cap the variants run in
-ABBA order (native, zeroed, zeroed, native) on the same nodes. Each sample records the module cap actually in
-effect, and windows whose cap differs from the intended one are discarded (another user's tool reset caps on the
-cluster at least twice; the affected measurements were rerun). Hardware power-brake events are read from cumulative
-throttle counters, which were enabled only in a diagnostic job, not in the main HPL and HPL-MxP sweeps. The first
-native run of a job is often slower (warm-up), and since ABBA sequences usually start with native, the first pair
-can overstate the gain (Section~\ref{sec:adaptive}). MLPerf comparisons always use the same seed, i.e., the same data
-order.
-
-\textbf{Power, energy and statistics.} Energy integrates the driver's 1-s averaged module power over the measurement
-window, summed over nodes. Power in watts in tables and text is the mean of the instantaneous samples in a steady
-window; over 845 steady windows it agrees with the 1-s average within $\pm0.6\pct$, but on bursty kernels (e.g.,
-cuBLAS FP64 emulation) single instantaneous readings deviate by $-37\pct$ to $+41\pct$, so energy does not use them.
-While the cap is hit, the 1-s average is often below the cap, so the limiter acts on a shorter, unknown time scale.
-Module power includes GPU, CPU and memory; under GEMM load the GPU accounts for 88--90\pct{} of it at
-900--1000\W, falling to 77\pct{} at 400\W. Confidence intervals use paired differences: each
-``zeroed\,/\,native$\,-\,1$'' on the same node, cap and ABBA round is one sample, and we report 95\pct{} $t$
-intervals, which removes the 13--17\pct{} node-to-node clock spread. We give intervals only for the GEMM
-microbenchmarks (3 nodes $\times$ 2 pairs; the two pairs on one node are not fully independent, so the intervals may
-be narrow) and the Quantum ESPRESSO adaptive runs (6 pairs). HPL, HPL-MxP, DF-MP2 and the Gaussian-process cells
-have two rounds on one node set; we list both rounds or their mean, without intervals.
+\textbf{Power, energy and statistics.} Energy integrates the driver's 1-s averaged module power, summed over nodes.
+Reported power is the mean of instantaneous samples in a steady window, within $\pm0.6\pct$ of the 1-s average over
+845 windows (energy avoids single readings, which deviate by $-37$ to $+41\pct$ on bursty kernels). While
+capped, the 1-s average often lies below the cap, so the limiter acts on a shorter, unknown time scale. Under GEMM load
+the GPU draws 88--90\pct{} of module power at 900--1000\W{} and 77\pct{} at 400\W. Intervals are 95\pct{} $t$
+intervals of paired differences (same node, cap and ABBA round), removing the 13--17\pct{} node-to-node clock spread;
+only GEMM (3 nodes $\times$ 2 pairs, not fully independent, so possibly narrow) and the Quantum ESPRESSO adaptive runs
+(6 pairs) have them, while HPL, HPL-MxP, DF-MP2 and Gaussian-process cells have two rounds on one node set.
 
 %==================================================================================================
 \section{Results: Gains Under Power Caps}\label{sec:results}
@@ -377,23 +291,14 @@ $32768{\times}32768{\times}6144$; 95\pct{} paired intervals, 3 nodes $\times$ AB
 
 Zeroing speeds up GEMM at every cap, but the gain does not grow monotonically as the cap tightens
 (Fig.~\ref{fig:gemm}). FP64 keeping 27 bits is $9.1\pm1.0$, $8.1\pm0.2$, $11.1\pm0.3$ and $8.9\pm1.0\pct$ faster at
-500, 600, 700 and 800\W{} (95\pct{} intervals, 6 paired samples per point), an equivalent saving $\Delta W$ of
-79--162\W; BF16 keeping 0 bits is 11.9--28.3\pct{} faster, $\Delta W$ from 121\W{} to above 200\W. The most
-energy-efficient cap also shifts: native FP64 peaks at 82\,GFLOP/J at 500\W{} and FP64 keeping 27 bits at
-90\,GFLOP/J at 400\W; native BF16 peaks at 950\,GFLOP/J at 600\W{} and BF16 keeping 0 bits at 1159\,GFLOP/J at
-500\W.
-
-Against quantizing to FP8 (575\W, relative to native BF16), BF16 zeroed to 0 bits gives 1.15$\times$, native FP8
-E4M3 1.87$\times$ and FP8 zeroed to 0 bits 2.12$\times$. On uniform data FP8 E4M3 errs by 3.6--3.9\pct, close to
-BF16 truncated to 4 bits (4.35\pct) or rounded to nearest at 3 bits (3.34\pct). On narrow-range data, including
-the real Llama\,2 70B weights, FP8 wins in both speed and accuracy. On data whose rows span $2^{-24}$ to $2^{24}$,
-however, FP8 flushes 63\pct{} of the values to zero (median elementwise error 100\pct) while the Frobenius error is
-only 3.9\pct; BF16 keeps every value's magnitude even at 0 bits.
+500, 600, 700 and 800\W{} (95\pct{} intervals, 6 pairs each), a $\Delta W$ of
+79--162\W; BF16 keeping 0 bits is 11.9--28.3\pct{} faster, $\Delta W$ from 121\W{} to above 200\W.
 
 \subsection{HPL and HPL-MxP on 8 Nodes}\label{sec:hpl}
 
 \begin{table}[t]
-\caption{HPL scaled residuals on 8 nodes at 1000\W{} (threshold 16; two runs per cell reproduce exactly). Bits are
+\caption{HPL scaled residuals on 8 nodes at 1000\W{} (threshold 16; repeated runs reproduce exactly; $N=286720$ is the
+tuned configuration of the cap sweep). Bits are
 significand bits including the hidden bit (36 bits = 35 fraction bits), rounded to nearest even. (F): fails the
 check; bold: the failure that rules out 28 bits.}\label{tab:hpl}
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
@@ -404,27 +309,34 @@ $N$ & Native & 36 bits & 28 bits & 24 bits & 20 bits \\
 131072 & $\ee{1.5}{-4}$ & 0.16 & 13.97 & 456 (F) & 9510 (F) \\
 196608 & $\ee{1.3}{-4}$ & 0.072 & \textbf{18.09 (F)} & 462 (F) & 2850 (F) \\
 262144 & $\ee{2.6}{-5}$ & 0.042 & 14.70 & 91 (F) & 599 (F) \\
+286720 & $\ee{7.6}{-5}$ & 0.038 & 15.40 & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The HPL residual check determines the usable bit count, and it must be checked at several sizes
-(Table~\ref{tab:hpl}). From 36 to 28 bits the residual grows 86--350$\times$, of the order of $2^8=256$, so 28 bits
+(Table~\ref{tab:hpl}). From 36 to 28 bits the residual grows 86--410$\times$, of the order of $2^8=256$, so 28 bits
 sits less than one bit from the threshold and is not an operating point, whereas 36 bits leaves a margin of about
-100$\times$ (at least 98$\times$, about seven bits). With 36 bits at $N=262144$, HPL is 3.4--8.3\pct{} faster at
-400--800\W{} (Fig.~\ref{fig:hpl}), $\Delta W=39$--97\W, and uses 4.3--7.0\pct{} less energy. At the default
-1000\W{} cap native HPL is still capped in 75\pct{} of the samples (SM 1957\,MHz) while the 36-bit run reaches
-1980\,MHz; it is only 0.7\pct{} faster but uses 7.7\pct{} less energy per solve. (28 bits, which passes at
-$N=262144$, is 5.6--11.9\pct{} faster there; we list it only as a boundary reference.)
+100$\times$ (at least 98$\times$, about seven bits). We first tuned native HPL at 1000\W. The configuration inherited from an H200 study ($N=262144$, NB 1024,
+$2\times4$, default NCCL) gave 374.8\,TFLOP/s; fixing NCCL at 8 channels with 2\,MiB buffers (+4.5\pct) and raising
+$N$ to 286720 (+2\pct) gave 390.2--398.8\,TFLOP/s in three runs, and every neighboring setting of $N$, NB, split
+fraction and NCCL parameters fell within this ${\approx}2\pct$ run-to-run spread (26 settings; $4\times2$ grids were
+14\pct{} slower). With 36 bits at the tuned configuration, HPL is 4.0--11.0\pct{} faster at 400--800\W{}
+(Fig.~\ref{fig:hpl}), $\Delta W=39$--127\W{} (the 127\W{} at 800\W{} interpolates across the 800--1000\W{} gap and
+overestimates), and uses 4.1--9.3\pct{} less energy. At the default 1000\W{} cap native HPL is still capped in
+75\pct{} of the samples (SM 1936\,MHz) against 7\pct{} for the 36-bit run, which is therefore 3.9\pct{} faster and
+uses 7.5\pct{} less energy per solve. The untuned configuration gave 3.4--8.3\pct{} at 400--800\W{} and
+0.7/7.7\pct{} at 1000\W. (28 bits is 3.8--16.3\pct{} faster, but its residual reaches 15.4 at $N=286720$; we list
+it only as a boundary reference.)
 
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/hpl_caps.pdf}
-\caption{8-node HPL (36 significand bits, $N=262144$) and HPL-MxP (3 kept bits, $N=491520$, diagonally dominant
+\caption{8-node HPL (36 significand bits, tuned, $N=286720$) and HPL-MxP (3 kept bits, $N=491520$, diagonally dominant
 test matrix) speedups; labels give the equivalent power saving $\Delta W$ of HPL per node.}\label{fig:hpl}
 \end{figure}
 
 \begin{table}[t]
-\caption{Delivered performance on 8 nodes in TFLOP/s (means of two runs). HPL: $N=262144$; HPL-MxP: $N=491520$,
+\caption{Delivered performance on 8 nodes in TFLOP/s (means of two runs). HPL: tuned, $N=286720$; HPL-MxP: $N=491520$,
 reportable rate including refinement. The 8 GPUs' FP64 tensor-core peak is about 536\,TFLOP/s
 ($8\times67$\,TFLOP/s~\cite{NVIDIAGH200}).}\label{tab:hplperf}
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
@@ -434,74 +346,57 @@ reportable rate including refinement. The 8 GPUs' FP64 tensor-core peak is about
 \cmidrule(lr){2-3}\cmidrule(l){4-5}
 Cap per node & Native & 36 bits & Native & 3 bits \\
 \midrule
-400\W & 228.3 & 247.2 & 2076 & 2340 \\
-500\W & 276.3 & 288.6 & 2823 & 3007 \\
-600\W & 305.3 & 320.1 & 3229 & 3310 \\
-700\W & 331.6 & 345.9 & 3449 & 3519 \\
-800\W & 351.5 & 363.4 & 3655 & 3720 \\
-1000\W & 376.0 & 378.7 & 3015$^{*}$ & 3976 \\
+400\W & 225.0 & 249.9 & 2076 & 2340 \\
+500\W & 288.0 & 300.7 & 2823 & 3007 \\
+600\W & 318.0 & 334.0 & 3229 & 3310 \\
+700\W & 346.2 & 362.9 & 3449 & 3519 \\
+800\W & 370.8 & 385.6 & 3655 & 3720 \\
+1000\W & 393.9 & 409.2 & 3015$^{*}$ & 3976 \\
 \bottomrule
 \end{tabular}
 \\[2pt]{\scriptsize $^{*}$Native HPL-MxP trips the chassis power brake at 1000\W.}
 \end{table}
 
-HPL-MxP (BF16 LU with FP64 refinement) zeroes the BF16 operands each time they are written back. Our runs use a test
+HPL-MxP (BF16 LU with FP64 refinement) zeroes the BF16 operands whenever they are written back. Our runs use a test
 matrix whose diagonal entries equal the sum of the magnitudes of the off-diagonal entries in their row (diagonal
 dominance), factor the diagonal tiles approximately (\texttt{-{}-approx-diag}), and refine with Richardson iteration
 and an FP32 preconditioner. The HPL-MxP rules allow strict diagonal dominance ``for testing purposes
 only''~\cite{HPLMxPRules}, and on such a matrix even coarse $L$ and $U$ factors precondition well, so the stability
-reported here may be a property of this matrix and cannot be assumed for the generators allowed in official runs.
-Like HPL, HPL-MxP has a failure boundary, and we use 3 kept bits (Table~\ref{tab:hplperf} lists the delivered rates
-of both benchmarks). This is stable at all four sizes $N=245760$--491520 (residual 1.4--3.8, always 3 refinement
-iterations). At $N=491520$ it is 12.7/6.5/2.5/2.0/1.8\pct{} faster at 400/500/600/700/800\W, $\Delta W=34$--45\W{}
-(35/45/37/34/38\W; at 800\W{} the native curve is extended with a 900\W{} point, 3827\,TFLOP/s, measured on the same
-nodes in a separate job), with 3.4--10.7\pct{} less energy. Refinement grows from 1 iteration (native) to 3 at every
-cap; what shrinks as the cap rises is the speedup of the LU itself, from 16.0\pct{} at 400\W{} to 6.0\pct{} at
-800\W, so above 600\W{} only about 2\pct{} remains after the extra refinement. Keeping 0 bits gives 7.1--26.0\pct{}
-($\Delta W$ 72--146\W) at $N=491520$, with a residual of 10.6--11.1 (a margin of only about 1.5$\times$), and at
-$N=245760$ refinement jumps from 1 to 52 iterations and performance falls by 70\pct: passing the residual check does
-not imply being faster. With fans at full speed, native HPL-MxP at 1000\W{} trips the chassis hardware power brake
-(4--10\,s each time); in the diagnostic job with counters enabled, the 0-bit version did not. We exclude the
-1000\W{} point from speedups.
+reported here may be a property of this matrix and cannot be assumed for the generators allowed in official runs. We
+use 3 kept bits (Table~\ref{tab:hplperf} lists the delivered rates of both benchmarks), stable at all four sizes
+$N=245760$--491520 (residual 1.4--3.8, always 3 refinement iterations). At $N=491520$ this is
+12.7/6.5/2.5/2.0/1.8\pct{} faster at 400/500/600/700/800\W, $\Delta W=34$--45\W{} (35/45/37/34/38\W; at 800\W{} the
+native curve is extended with a 900\W{} point, 3827\,TFLOP/s, measured on the same nodes in a separate job), with
+3.4--10.7\pct{} less energy. Refinement grows from 1 iteration (native) to 3 at every cap, while the speedup of the LU
+itself shrinks from 16.0\pct{} at 400\W{} to 6.0\pct{} at 800\W, so above 600\W{} only about 2\pct{} remains after the
+extra refinement. Keeping 0 bits gives 7.1--26.0\pct{} ($\Delta W$ 72--146\W) at $N=491520$ with a residual of
+10.6--11.1 (a margin of only about 1.5$\times$), but at $N=245760$ refinement jumps from 1 to 52 iterations and
+performance falls by 70\pct: passing the residual check does not imply being faster. With fans at full speed, native
+HPL-MxP at 1000\W{} trips the chassis hardware power brake (4--10\,s each time; in the diagnostic job with counters
+enabled, the 0-bit version did not), so we exclude 1000\W{} from speedups.
 
 \subsection{Plane-Wave DFT and Quantum Chemistry}\label{sec:sci}
 
-Plane-wave DFT is tolerant. With 28 kept bits, the total energies of QE Si\,1000 and Au\,112 move by
+Plane-wave DFT is tolerant: with 28 kept bits the total energies of Quantum ESPRESSO Si\,1000 and Au\,112 move by
 $\ee{1.0}{-5}$ and $\ee{2.3}{-5}$\Ry{} under truncation and by $\ee{3.5}{-7}$ and $\ee{2.8}{-7}$\Ry{} under
-round-to-nearest. The gold surface still converges at 20 bits with nearest rounding ($\ee{5.5}{-5}$\Ry, both runs);
-for Si\,1000, 20 bits is the failure edge (one run converges with $\ee{1.1}{-4}$\Ry, the other aborts at iteration
-24), and truncation diverges or slows at 20 bits. Gaussian-basis quantum chemistry needs more bits. GPU4PySCF
-valinomycin DFT errs by $\ee{1.1}{-8}$\Eh{} at 44 bits; at 36 bits the energy oscillates near $10^{-8}$\Eh{} and
-cannot meet a $10^{-10}$ convergence threshold, but with the chemically sufficient $10^{-7}$ threshold 40, 36 and 32
-bits converge in the same 12 iterations as native, with a 32-bit nearest error of $\ee{1.2}{-5}$\Eh{}
-($\approx$0.007\,kcal/mol). At 36--40 bits the error is then set mainly by the threshold (32 bits errs an order of
-magnitude more), consistent with the $\approx$37 significant bits found sufficient by Dawson et
-al.~\cite{Dawson2024}.
+round-to-nearest. With nearest rounding the gold surface still converges at 20 bits ($\ee{5.5}{-5}$\Ry, both runs),
+while for Si\,1000 20 bits is the failure edge (one run converges with $\ee{1.1}{-4}$\Ry, the other aborts at
+iteration 24); truncation diverges or slows at 20 bits. Gaussian-basis chemistry needs more: GPU4PySCF valinomycin DFT
+errs by $\ee{1.1}{-8}$\Eh{} at 44 bits; at 36 bits the energy oscillates near $10^{-8}$\Eh{} and misses a $10^{-10}$
+threshold, but with the chemically sufficient $10^{-7}$ threshold 40, 36 and 32 bits converge in the native 12
+iterations (32-bit nearest error $\ee{1.2}{-5}$\Eh, $\approx$0.007\,kcal/mol), consistent with the $\approx$37
+significant bits that suffice for density-matrix purification~\cite{Dawson2024}.
 
-Under caps, with the shim truncating every GEMM and compared against a baseline that takes the same copy path
-without truncating, Si\,1000 at 550\W{} with 28-bit nearest rounding is 6.2\pct{} faster and uses 6.4\pct{} less
-energy (SM clock 1348$\to$1446\,MHz), and Au\,112 at 450\W{} is 4.9\pct{} faster with 5.1\pct{} less energy (one
-truncated run each, between baseline runs before and after).
-These are upper bounds for a library that truncated internally; against the unmodified program the shim is
-0.4\pct{} slower (Au\,112, 450\W) because of its $\approx$5\pct{} copy cost. The in-program version of
-Section~\ref{sec:adaptive} truncates only Davidson blocks without copies and is the deployable number.
-
-For GPU4PySCF, nsys shows FP64 GEMM kernels at 46\pct{} of GPU kernel time and 32\pct{} of total runtime for
-valinomycin DFT (31\pct{} and 27\pct{} of kernel time for taxol and tamoxifen); the rest is dominated by copies of
-computed intermediates (36--50\pct) and integrals. With 32--36 bits needed and FP64 GEMM keeping 35 bits
-5.1--6.5\pct{} faster at 500--800\W, truncation alone is bounded at about $32\pct\times5$--$6.5\pct\approx1.6$--2.1\pct{}
-end to end (3.9\pct{} at 400\W). This estimate assumes the default grid and GEMM time proportional to flops at
-1000\W{} speed; on a finer grid (level 6), valinomycin measured at 450--550\W{} is 3.3--3.5\pct{} faster
-(Section~\ref{sec:span}). Neither number implies that truncation beats INT8 emulation here: the two
-dominant GEMM shapes favor different methods (Section~\ref{sec:crossover}), and choosing by shape bounds the gain at
-about 3.5\pct{} with cuBLAS emulation for the long-$k$ shape, or 6.6\pct{} with the less accurate GEMMul8.
+Through the shim (every GEMM truncated; the baseline takes the same copy path), Si\,1000 at 550\W{} with 28-bit
+nearest rounding is 6.2\pct{} faster with 6.4\pct{} less energy and Au\,112 at 450\W{} 4.9\pct{} faster with 5.1\pct{}
+less energy (one run each, between baseline runs). These are upper bounds for in-library truncation; against the
+unmodified program the shim's $\approx$5\pct{} copy cost makes it 0.4\pct{} slower (Au\,112, 450\W).
 
 \subsection{Tolerance-Driven Bit Counts in Quantum ESPRESSO}\label{sec:adaptive}
 
 \begin{table}[t]
 \caption{Quantum ESPRESSO with in-program truncation (round to nearest) of Davidson blocks: mean $\pm$ 95\pct{} $t$
-interval over 6 interleaved pairs ($m=2$: 2 runs); native rows give the mean of the 6 native runs. Energy integrates
-1-s averaged module power.}\label{tab:qe}
+interval over 6 interleaved pairs ($m=2$: 2 runs); native rows give the mean of the 6 native runs.}\label{tab:qe}
 \centering\footnotesize\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{@{}llrrcc@{}}
 \toprule
@@ -520,41 +415,31 @@ System & Setting & Time & Energy & $\Delta E$ (Ry) & SCF \\
 \end{tabular}
 \end{table}
 
-The adaptive rule truncates the wavefunction blocks before and after applying the Hamiltonian in the Davidson
-diagonalization. It reproduces the native total energy in every printed digit ($10^{-8}$\Ry) on both systems with
-the same number of SCF iterations, while cutting time by 2.4--4.2\pct{} and module energy by 2.5--3.9\pct{}
-(Table~\ref{tab:qe}); on the gold surface $k$ rises from 16 to 39 as the SCF converges. The first native run of each
-job is slower (gold surface: 96.9\,s versus 94.2--94.7\,s); excluding the pair that contains it, the adaptive rule
-saves 3.9\pct{} of the time on the gold surface and 2.3\pct{} on Si\,1000. The energies stay unchanged for three
-reasons. SCF is a self-correcting fixed-point iteration that already solves early iterations to a loose
-$\mathit{ethr}$, and the rule keeps the truncation error roughly within what the current Davidson step already
-tolerates, so later iterations correct it. In the last iterations $\mathit{ethr}\approx10^{-12}$ and $k\approx39$,
-and the total energy is second order in the wavefunction error. And $10^{-8}$\Ry{} on a total of about $10^4$\Ry{}
-is a relative $10^{-12}$. Fixed 24 bits is coarser than the threshold late in the SCF and leaves $\ee{3}{-8}$\Ry.
+The adaptive rule truncates the wavefunction blocks before and after the Hamiltonian is applied in the Davidson
+diagonalization. On both systems it keeps every printed digit of the native total energy ($10^{-8}$\Ry) and the SCF
+iteration count while cutting time by 2.4--4.2\pct{} and module energy by 2.5--3.9\pct{} (Table~\ref{tab:qe}); on the
+gold surface $k$ rises from 16 to 39. Excluding the pair with each job's slower first native run (gold surface:
+96.9\,s versus 94.2--94.7\,s), it saves 3.9\pct{} of the time on the gold surface and 2.3\pct{} on Si\,1000. The
+self-consistent iteration corrects errors within each Davidson step's tolerance, and the energy is second order in
+the wavefunction error; fixed 24 bits, coarser than the late threshold, leaves $\ee{3}{-8}$\Ry.
 
-On the gold surface the adaptive rule beats fixed 24 bits in all 6 pairs by 0.6--1.8 points with no energy error,
-but not only through power. It makes Davidson do about 7--9\pct{} less work (311 versus 336 calls of the
-Hamiltonian application), and in one run whose cap had been externally reset to 1000\W, where the code is not power-bound and
-the clocks are equal, its SCF part was still about 9\pct{} faster than native and fixed 24 bits (13.6 versus
-14.9--15.0\,s). About half of the gold-surface gain thus comes from fewer Davidson iterations, for reasons we have
-not identified. On Si\,1000 the work is unchanged (206 versus 205 calls), so its 2.4\pct{} can be read as a power
-effect, and the rule beats fixed 28 bits in all 6 pairs, but only by $0.18\pm0.14$ points. Its main value is that no
-safe bit count must be known in advance: one margin leaves both systems unchanged and matches or beats the best
-fixed count, which can only be found after the fact. Unlike Woo et al.\ and Huang et al., the arithmetic stays on
-native FP64 units with one-bit granularity, the signal is the Davidson threshold, and the gain comes mainly from
-clock headroom under a cap (plus, on the gold surface, fewer iterations) rather than a higher-throughput format.
+The gain is not only a power effect. On the gold surface the rule beats fixed 24 bits in all 6 pairs by 0.6--1.8
+points, but Davidson also does about 7--9\pct{} less work (311 versus 336 Hamiltonian applications), and in a run
+whose cap had been externally reset to 1000\W{} (not power-bound, equal clocks) its SCF part was still about 9\pct{}
+faster than native and fixed 24 bits (13.6 versus 14.9--15.0\,s): about half of the gold-surface gain comes from fewer
+Davidson iterations, for reasons not yet identified. On Si\,1000 the work is unchanged (206 versus 205), so its
+2.4\pct{} reads as a power effect; the rule beats fixed 28 bits in all 6 pairs, but only by $0.18\pm0.14$ points. Its
+value is that no safe bit count must be known in advance: one margin leaves both systems unchanged and matches or
+beats the best fixed count, found only after the fact.
 
 \subsection{A Power-Hungry Application: DF-MP2}\label{sec:mp2}
 
-The codes above do not fill a 1000\W{} cap on average (Quantum ESPRESSO: about 795--828\W{} for Si\,1000 and
-535--600\W{} for the gold surface). The density-fitted MP2 module of GPU4PySCF~\cite{Wu2025} draws more: during MP2
-the GPU draws about 800\W{} and the module 869--876\W, although at 1000\W{} only 24--53\pct{} of the samples hit the
-cap, and matrix multiplication takes 78\pct{} of GPU kernel time, nearly all of it the contraction
-$g_{ab}=B_iB_j^{\mathsf T}$ over slices of the three-index tensor $B$ (FP64 DGEMM whose inner dimension is the
-auxiliary basis). We zero $B$ in place once after it is built, so every later contraction benefits without copies,
-and compare with GPU4PySCF's built-in FP32 path and cuBLAS emulation. One process runs DF-RHF once and then the
-variants interleaved (taxol def2-TZVP, 113 atoms, 2228 basis functions; two rounds per cap, which differ by less than
-0.6 points for the truncated variants).
+Quantum ESPRESSO does not fill a 1000\W{} cap on average (795--828\W{} for Si\,1000, 535--600\W{} for the gold
+surface); GPU4PySCF's density-fitted MP2~\cite{Wu2025} draws more (GPU about 800\W, module 869--876\W), though at
+1000\W{} only 24--53\pct{} of the samples hit the cap; matrix multiplication takes 78\pct{} of its GPU kernel time,
+nearly all of it the FP64 contraction $g_{ab}=B_iB_j^{\mathsf T}$ over slices of the three-index tensor $B$, which we
+zero in place once after it is built; GPU4PySCF's FP32 path and cuBLAS emulation run interleaved after one DF-RHF
+(taxol def2-TZVP, 2228 basis functions; two rounds per cap, agreeing within 0.6 points for the truncated variants).
 
 \begin{table}[t]
 \caption{DF-MP2 (taxol def2-TZVP): speed relative to native in two rounds, and the error $|\Delta E|$ of the MP2
@@ -574,76 +459,64 @@ $|\Delta E|$ & --- & 1.2--$\ee{1.6}{-11}$ & $\ee{1.2}{-8}$ & 2.8--$\ee{4.2}{-8}$
 \end{tabular}
 \end{table}
 
-Keeping 32 bits changes the MP2 correlation energy by about $10^{-11}$\Eh{} and 20 bits by $\ee{1.2}{-8}$\Eh{}
-(Table~\ref{tab:mp2}); under caps the gains are on par with HPL. The built-in FP32 path is faster still (its two
-rounds at 1000\W{} differ widely), and its error of a few $10^{-8}$\Eh{} is within chemical accuracy: the tensor's
-exponent span is narrow (27 binades, i.e., powers of two, overall and a median of 18 within a row), so FP32 fits
-(Section~\ref{sec:span}). cuBLAS emulation errs by $\ee{2.2}{-8}$\Eh{} but is 18--36\pct{} slower than native at this
-shape ($m=n=2002$, $k=5477$).
+Truncation changes the MP2 correlation energy by at most $\ee{1.2}{-8}$\Eh{} (Table~\ref{tab:mp2}). FP32 is faster
+still (its two rounds at 1000\W{} differ widely) and errs by only a few $10^{-8}$\Eh, within chemical accuracy, as the
+tensor's exponent span is narrow (27 binades, i.e., powers of two, overall; a median of 18 within a row); cuBLAS
+emulation errs by $\ee{2.2}{-8}$\Eh{} but is 18--36\pct{} slower than native at this shape ($m=n=2002$, $k=5477$).
 
 \subsection{FP64 Beyond GEMM}\label{sec:nongemm}
 
-Ozaki-type emulation applies only to dense matrix multiplication, so we also measured FP64 work that bypasses the
-tensor cores (Table~\ref{tab:nongemm}). The benefit depends on how many operations separate the truncation point
-from the multiplier and on what share of the data traffic is truncated. In the FMA loop the inputs feed the
-multiplier directly; in N-body the position differences regrow full mantissas, and masking the intermediates inside
-the loop costs more issue slots than it saves; a copy speeds up only when its bandwidth is power-capped; and in CG
-the vectors dominate the traffic and the indices cannot be truncated. CG keeps the same 490 iterations, with a true
-residual of $\ee{4}{-9}$ at 36 bits.
+Ozaki-type emulation covers only dense GEMM, so we also measured FP64 work beyond tensor cores
+(Table~\ref{tab:nongemm}). Gains shrink with the operations between truncation and multiplier and with the
+untruncated share of the traffic: N-body position differences regrow full mantissas, and masking them inside the loop
+costs more issue slots than it saves; a copy gains only when its bandwidth is power-capped; CG's traffic is dominated
+by vectors and untruncatable indices (it keeps its 490 iterations; true residual $\ee{4}{-9}$ at 36 bits). In MFEM,
+SW4 and LAMMPS we zeroed per-step coefficient arrays (about 43\pct{} and 9\pct{} of MFEM's and SW4's memory traffic;
+cache-resident EAM tables), so the rest of the full-mantissa computation dilutes kernel-level gains of 7--18\pct;
+unzeroed builds match the originals bitwise or within noise, and solutions change by at most $\ee{2.3}{-11}$ (MFEM)
+and $\ee{3.4}{-11}$/$\ee{3.4}{-6}$ (SW4 receivers, 36/20 bits; doubling its grid changes them by 4--10\pct). MFEM is
+unchanged at 1000\W.
 
 \begin{table}[t]
-\caption{FP64 kernels without tensor cores: speedup at 400--700\W{} with 36 and 20 kept bits, and module power
-saved at 1000\W{} with 20 bits.}\label{tab:nongemm}
+\caption{FP64 work without tensor cores: speedup with 36 and 20 kept bits (own kernels at 400--700\W; third-party
+codes, rounded to nearest, at the caps given), and module power saved at 1000\W{} with 20 bits.}\label{tab:nongemm}
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}lccr@{}}
 \toprule
-Kernel & 36 bits & 20 bits & Saved \\
+Kernel or code & 36 bits & 20 bits & Saved \\
 \midrule
 FMA loop & +2.7--4.8\pct & +5.6--9.0\pct & 138\W \\
 N-body, inputs only & +1.3--2.0\pct & +2.6--3.9\pct & 59\W \\
 N-body, also in loop & --- & $-7.7$ to $-8.7\pct$ & 60\W \\
 Memory copy (450\W) & +7.7\pct & +14.0\pct & 70\W \\
 CG, matrix values & \multicolumn{2}{c}{$\le$+1.7\pct} & 7\W \\
+\midrule
+MFEM (450/550\W) & +0.9/+0.7\pct & +2.0/+1.4\pct & --- \\
+SW4 (350/450\W) & +0.6/+0.3\pct & +1.3/+0.5\pct & --- \\
+LAMMPS EAM & \multicolumn{2}{c}{0.0--0.4\pct{} (noise)} & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Third-party codes.} We zeroed, once at setup, the coefficient arrays that are stored and multiplied in every
-step in three GPU FP64 codes: MFEM's partial-assembly quadrature data (about 43\pct{} of CG memory traffic), SW4's
-material parameters (about 9\pct) and LAMMPS EAM tables (cache resident). Without zeroing all three are bitwise
-identical to the originals or within rerun noise. MFEM (38.27\,M unknowns, $p=3$) is 0.9/2.0\pct{} faster with
-36/20 bits (nearest) at 450\W{} and 0.7/1.4\pct{} at 550\W, unchanged at 1000\W; the solution changes by at most
-$\ee{2.3}{-11}$. SW4 (126\,M grid points) is 0.6/1.3\pct{} faster at 350\W{} and 0.3/0.5\pct{} at 450\W{}, with
-receiver waveforms changing by at most $\ee{3.4}{-11}$/$\ee{3.4}{-6}$ (doubling the grid changes them by 4--10\pct);
-LAMMPS EAM (16.38\,M atoms) moves 0.0--0.4\pct, within noise. The gain order, MFEM $\ge$ SW4 $>$ LAMMPS, follows
-the coefficients' share of memory traffic: kernel-level gains of 7--18\pct{} are diluted by the rest of the
-full-mantissa computation. Zeroing fits best when inputs flow directly and in volume into multipliers or data
-paths.
-
 %==================================================================================================
 \section{When Format Changes Win and When They Fail}\label{sec:format}
 
-\subsection{Range versus Precision}\label{sec:range}
-
-From the exponent histograms recorded by the shim (central 99.9\pct), operands span 12--14 binades in HPL, about 13
-in Llama\,2 70B weights, 71--93 in Quantum ESPRESSO, 55--64 in GPU4PySCF taxol and 371--690 in valinomycin (down to
-$2^{-691}$, beyond even FP32's range). Every scientific code fills the FP64 mantissa, so how many bits are needed
-must be found by zeroing experiments, or estimated from the bitwise information content of the
-data~\cite{Klower2021}. Placing range against needed bits, plane-wave DFT (a range too wide for FP16 or FP8, modest
-precision) is where mantissa zeroing has no smaller-format alternative, Gaussian-basis quantum chemistry needs both
-range and precision, and LLMs and HPL have narrow ranges and can move to smaller formats.
+Truncation keeps every element's exponent, whereas per-tensor scaled formats (FP32, FP8) need the whole tensor
+inside their range and Ozaki-type emulation slices each row (column) relative to its maximum, losing elements more
+than $2^{-k}$ below it for $k$ kept bits. Operands span 12--14 binades (central 99.9\pct) in HPL, about 13 in
+Llama\,2 70B weights, 71--93 in Quantum ESPRESSO and 371--690 in valinomycin (down to $2^{-691}$, beyond FP32's
+range): plane-wave DFT (too wide for FP16 or FP8, modest precision) has no smaller-format alternative to zeroing,
+Gaussian-basis chemistry needs both range and precision, and LLMs and HPL can move to smaller formats.
 
 \subsection{Crossover with INT8 Emulation of FP64}\label{sec:crossover}
 
-cuBLAS~13 includes an Ozaki-type FP64 fixed-point emulation with a settable number of mantissa bits. On the same
-node and cap we compare truncated native FP64 with emulation at similar error ($32768{\times}32768{\times}2048$,
-400--1000\W, ABBA). Emulation works in 8-bit slices, $\lceil(b+1)/8\rceil$ of them for $b$ bits: 24 and 28 bits
-both use four and give identical results ($\ee{2.3}{-9}$), and 32 and 36 bits both use five. On this square-ish
-shape, three slices ($\ee{5}{-7}$) beat truncation to 20 bits by 51--73\pct; four slices ($\ee{2}{-9}$) beat 28 bits
-by 6\pct{} at 1000\W{} to 23\pct{} at 400\W; at $10^{-11}$ truncation (about 36 bits) is 11--28\pct{} faster than
-five slices; and at $10^{-13}$ and below truncation is more than 40\pct{} faster. The crossover is thus near 28--32
-needed bits, and on this shape lower caps favor emulation (the caps were measured on different nodes, but the
-single-node data of Table~\ref{tab:methods} show the same trend).
+cuBLAS~13 emulates FP64 with a settable number of mantissa bits $b$ in $\lceil(b+1)/8\rceil$ 8-bit slices: 24 and 28
+bits both use four (identical results, $\ee{2.3}{-9}$), 32 and 36 bits five. Against truncated native FP64 at similar
+error on the same node and cap ($32768{\times}32768{\times}2048$, 400--1000\W, ABBA), three slices ($\ee{5}{-7}$) beat
+truncation to 20 bits by 51--73\pct{} and four slices ($\ee{2}{-9}$) beat 28 bits by 6\pct{} (1000\W) to 23\pct{}
+(400\W), whereas truncation to about 36 bits ($10^{-11}$) is 11--28\pct{} faster than five slices and over 40\pct{}
+faster at $10^{-13}$ and below. The crossover is thus near 28--32 needed bits, and on this shape lower caps favor
+emulation (caps on different nodes; single-node Table~\ref{tab:methods} shows the same trend).
 
 \begin{table}[t]
 \caption{The two GEMM shapes that each carry 35\pct{} of valinomycin DFT flops: tall-skinny
@@ -666,48 +539,39 @@ GEMMul8, 10 moduli & 17.9 & 16.7 & 102 & 75.6 \\
 \end{tabular}
 \end{table}
 
-\textbf{The crossover depends on shape.} Intercepting all 45,574 GEMMs of the valinomycin DFT run reveals two
-shapes that each carry 35\pct{} of the flops (Table~\ref{tab:shape}). With $n=300$, emulation cannot amortize its
-splitting and scaling: even at 28 bits it runs at 0.47--0.57$\times$ native speed, and truncation wins at every
-accuracy. With $k=76800$ the fixed costs amortize: emulation is still 21--22\pct{} faster than truncation at the
-$10^{-11}$ level, and GEMMul8 (errors $\ee{1.0}{-10}$ and $\ee{8.2}{-10}$ on the two shapes) is nearly twice as fast at
-$10^{-9}$. Within one application the best choice is per call: truncation for tall-skinny shapes, emulation for long
-$k$.
+\textbf{The crossover depends on shape.} Two shapes each carry 35\pct{} of the flops of the valinomycin DFT run
+(Table~\ref{tab:shape}). With $n=300$ emulation cannot amortize its splitting and scaling (even at 28 bits it runs at
+0.47--0.57$\times$ native speed), so truncation wins at every accuracy; with $k=76800$ emulation is 21--22\pct{}
+faster than truncation at $10^{-11}$ and the less accurate GEMMul8 nearly twice as fast at $10^{-9}$. The best choice
+is thus per call, even within one application.
 
 \begin{figure*}[t]
 \centering\includegraphics[width=\textwidth]{figs/crossover.pdf}
-\caption{Time of INT8 emulation relative to truncation to 36 bits, $T_\mathrm{emu}/T_\mathrm{trunc36}$ ($m=8192$;
-blue: truncation faster). Top: cuBLAS emulation with 32 bits (error comparable to truncation, $\approx10^{-11}$);
-bottom: GEMMul8 with 10 moduli (about ten times larger error, $\approx10^{-10}$); columns: module caps. Means of two
-rounds.}\label{fig:crossover}
+\caption{Time of INT8 emulation relative to truncation to 36 bits ($m=8192$; blue: truncation faster) for cuBLAS
+emulation with 32 bits (top; error comparable to truncation, $\approx10^{-11}$) and GEMMul8 with 10 moduli (bottom;
+about ten times larger error); columns: module caps; means of two rounds.}\label{fig:crossover}
 \end{figure*}
 
-\textbf{A shape sweep and a predictive model.} We fixed $m=8192$ and swept $n\in\{256,1024,4096,8192\}$ and
-$k\in\{256,1024,4096,16384,81920\}$ at 1000, 575 and 450\W, two rounds each (480 records; Fig.~\ref{fig:crossover}).
-Truncation to 36 bits beat native in all 60 shape--cap combinations (3.8--11.9\pct{} at 450\W, 3.6--5.9\pct{} at
-575\W, 0.5--4.8\pct{} at 1000\W). cuBLAS emulation with 32 bits wins roughly when $n\ge4096$ and $k\ge16384$ (at
-best 0.74$\times$ truncation time at 1000\W), and its winning region shrinks at lower caps: 5 of 20 shapes at 1000
-and 575\W, 2 at 450\W. Where the emulation itself is not power-bound, however, lower caps favor it: at $n=8192$,
-$k=4096$ its time relative to truncation falls from 1.17 to 1.08 to 1.05 as the cap goes from 1000 to 575 to
-450\W. The direction thus depends on whether the emulation itself is power-limited. The four values of $n$ were
-measured on different nodes; each ratio is paired on one node, but trends across shapes and caps may include node
-differences. GEMMul8 with 10 moduli needs only 0.47--0.80$\times$ the truncation time when $n,k\ge4096$,
-at an order of magnitude larger error ($\approx10^{-10}$ versus $10^{-11}$), and is up to 4.5$\times$ slower when $n$ or
-$k$ is small. Emulation's extra work is input splitting ($\propto mk+nk$) and output accumulation ($\propto mn$);
-dividing by the $mnk$ multiply gives
-\begin{equation}
-T_\mathrm{emu}/T_\mathrm{trunc} = A + B\,(1/m + 1/n) + C/k,
-\end{equation}
-where $A$ is the ratio of per-flop speeds. Least-squares fits per cap reach $R^2=0.98$--0.99 for GEMMul8, versus
-0.86--0.89 for a single effective size $1/(1/m+1/n+1/k)$, so for GEMMul8 input and output costs must be separated;
-cuBLAS emulation reaches only 0.88--0.89, no better than the single-size model, the residual likely reflecting
-different internal kernels per shape. On the two held-out valinomycin shapes (two caps $\times$ two methods), the
-model picks the winner in 8 of 8 cases, with ratio errors of 6--15\pct{} for cuBLAS and 24--37\pct{} for GEMMul8
-($m=757248$ lies far outside the fitted range). All eight cases lie far from the crossover (emulation takes
-0.5--0.8$\times$ or more than twice the truncation time), so this is a loose test, and with $m$ fixed at 8192 in the
-fit the dependence on $m$ is untested. On GH200 the model can serve as a starting point for choosing per call from
-$(m,n,k)$ and the cap; and at the GEMM level, with truncation in the kernel that produces the operands, truncation
-was never slower than native in these 60 shape--cap combinations.
+\textbf{A shape sweep and a predictive model.} With $m=8192$ we swept $n\in\{256,1024,4096,8192\}$ and
+$k\in\{256,1024,4096,16384,81920\}$ at 1000, 575 and 450\W{} (two rounds; Fig.~\ref{fig:crossover}). Truncation to 36
+bits in the producing kernel beat native in all 60 shape--cap combinations (3.8--11.9\pct{} at 450\W, 3.6--5.9\pct{}
+at 575\W, 0.5--4.8\pct{} at 1000\W). cuBLAS emulation with 32 bits wins roughly when $n\ge4096$ and $k\ge16384$ (at
+best 0.74$\times$ the truncation time, at 1000\W), and its winning region shrinks at lower caps (5 of 20 shapes at
+1000 and 575\W, 2 at 450\W), yet where it is not itself power-bound, lower caps favor it ($n=8192$, $k=4096$: time
+ratio 1.17, 1.08, 1.05 at 1000, 575, 450\W). The direction depends on the emulation's own power: on the square shape
+(Table~\ref{tab:methods}) GEMMul8 draws about 970\W{} at a 1000\W{} cap and slows to 650--720\,MHz at 450\W, where
+truncation wins, while cuBLAS emulation with 28 bits draws only about 706\W{} and gains ground at lower caps. Ratios
+are paired on one node, but the four $n$ ran on different nodes, so cross-shape and cross-cap trends may include node
+differences. GEMMul8 with 10 moduli needs only 0.47--0.80$\times$ the truncation time when $n,k\ge4096$, at an order
+of magnitude larger error, and is up to 4.5$\times$ slower when $n$ or $k$ is small. As emulation adds input splitting
+($\propto mk+nk$) and output accumulation ($\propto mn$) to the $mnk$ multiply, we fit
+$T_\mathrm{emu}/T_\mathrm{trunc} = A + B\,(1/m + 1/n) + C/k$, reaching $R^2=0.98$--0.99 for GEMMul8 versus 0.86--0.89
+for a single effective size $1/(1/m+1/n+1/k)$; cuBLAS emulation reaches only 0.88--0.89, no better than the
+single-size model. On the two held-out valinomycin shapes (two caps $\times$ two methods) the model picks the winner in
+8 of 8 cases (ratio errors 6--15\pct{} for cuBLAS and 24--37\pct{} for GEMMul8; $m=757248$ lies far outside the
+fitted range), but all eight lie far from the crossover (0.5--0.8$\times$ or over twice the truncation time), so this
+is a loose test, and with $m$ fixed at 8192 the dependence on $m$ is untested: a starting point for choosing per call
+from $(m,n,k)$ and the cap on GH200.
 
 \begin{table}[t]
 \caption{Square GEMM ($32768{\times}32768{\times}2048$) in TFLOP/s by cap on one node, native FP64 first and the
@@ -720,7 +584,6 @@ Method (error) & 1000\W & 575\W & 450\W \\
 FP64 native & 59.2 & 43.2 & 35.8 \\
 Trunc., 36 bits ($\ee{1.0}{-11}$) & 61.8 & 45.5 & 38.6 \\
 GEMMul8, 10 moduli ($\ee{1.0}{-10}$) & 70.8 & 51.4 & 34.7 \\
-GEMMul8, 9 moduli ($\ee{1.6}{-9}$) & 78.2 & 56.6 & 38.2 \\
 cuBLAS emu., 28 bits ($\ee{2.3}{-9}$) & 67.8 & 55.2 & 47.5 \\
 Trunc., 28 bits ($\ee{2.6}{-9}$) & 63.2 & 46.6 & 39.6 \\
 FP32 SGEMM ($\ee{8.1}{-7}$) & 51.2 & 40.4 & 34.6 \\
@@ -729,46 +592,28 @@ FP32 SGEMM ($\ee{8.1}{-7}$) & 51.2 & 40.4 & 34.6 \\
 \end{tabular}
 \end{table}
 
-\textbf{The power of the emulation itself changes the winner.} GEMMul8 draws about 970\W{} at a 1000\W{} cap and at
-450\W{} its clock drops to 650--720\,MHz, where truncation becomes faster; cuBLAS fixed-point emulation with 28 bits draws only
-about 706\W{} at 1000\W{} and gains relative ground at lower caps on the square shape (Table~\ref{tab:methods}).
-Which way a tighter cap tips the balance thus depends on how much power the emulation itself draws. Truncation is
-faster than native at every cap, though its gain does not grow monotonically as the cap tightens
-(Section~\ref{sec:gemm}).
-
 \subsection{FP32 and 3xTF32: Accumulation, Not Range}\label{sec:fp32}
 
-3xTF32 (our own implementation, in the shim and in a benchmark script, not the CUTLASS one) is the fastest method in
-Table~\ref{tab:methods} but has only FP32-level accuracy, and its error grows with the inner dimension: on $4096{\times}4096$ it is $\ee{6.4}{-7}$, $\ee{4.8}{-6}$ and $\ee{3.8}{-5}$ at $k=256$, 2048 and
-16384, whereas FP32 SGEMM grows as $\sqrt{k}$ ($\ee{2.9}{-7}$, $\ee{8.1}{-7}$, $\ee{2.3}{-6}$) and FP64 truncation
-is independent of $k$. The measured log slope of about one (7.5--7.9$\times$ per 8$\times$ in $k$) points to a
-systematic error in TF32 tensor-core accumulation rather than random rounding, consistent with the round-toward-zero
-accumulation Fasi et al.\ found on V100, T4 and A100~\cite{Fasi2021} (bit-accurate Hopper models:~\cite{Khattak2025}).
-At $k=2048$ its error is 18 times that of FP64 rounded to nearest at 20 bits ($\ee{2.6}{-7}$) and 7 times that of
-FP64 truncated to 20 bits ($\ee{6.7}{-7}$).
+3xTF32 (our own implementation in the shim and a benchmark script, not CUTLASS's) is the fastest method in
+Table~\ref{tab:methods} but only FP32-accurate: its error grows almost linearly with the inner dimension
+(7.5--7.9$\times$ per 8$\times$ in $k$; $\ee{4.8}{-6}$ at $k=2048$ on $4096{\times}4096$, 18 and 7 times that of FP64
+rounded to nearest and truncated to 20 bits), whereas FP32 SGEMM grows as $\sqrt{k}$ and FP64 truncation not at all.
+This points to systematic error in TF32 tensor-core accumulation, consistent with the round-toward-zero accumulation
+found on V100, T4 and A100~\cite{Fasi2021} (bit-accurate Hopper models:~\cite{Khattak2025}).
 
-Quantum ESPRESSO's operands fit in FP32's range, so we replaced every FP64 and complex FP64 GEMM with single
-precision through the shim (inputs to FP32; 3xTF32 additionally splits into big and small parts multiplied three
-times on TF32 tensor cores; $C$ combined in FP64). On the gold surface at 450\W{} (2 interleaved runs each), FP32
-aborts at SCF iteration 26 and 3xTF32 and TF32 at iteration 2 when the Davidson bands fail to converge, and the
-integrated charge drifts from 1232 electrons (FP32 $+0.012$, 3xTF32 $+0.074$); FP64 rounded to 24 and 20 bits
-differs from native by $\ee{8.1}{-6}$ and $\ee{5.5}{-5}$\Ry{} and converges in 28 iterations. Si\,1000 at 550\W{}
-behaves the same: FP32 aborts at iteration 14 and 3xTF32 at 9, with 4000.18 and 4001.52 electrons instead of 4000.
-The difference is accumulation: truncated FP64 still accumulates in FP64, while Quantum ESPRESSO's inner dimension
-is the number of plane waves (95386 on the gold surface plus a real GEMM with $k=4.3{\times}10^{6}$; 375286 for
-Si\,1000), where 3xTF32 already errs by $\ee{5.6}{-5}$ to $\ee{2.2}{-4}$, the same order as plain TF32. FP32 GEMM on
-Hopper is also slower than FP64 tensor cores (on the gold surface about 1.5$\times$ per SCF iteration, estimated).
-Replacing every GEMM with single precision thus fails for this long-inner-product solver even though the range fits;
-mixed precision that uses FP32 only in selected steps, as Woo et al.\ do~\cite{Woo2023}, is a different matter. FP64
-truncation is the reduced-precision choice here that leaves the algorithm unchanged.
+Quantum ESPRESSO's operands fit in FP32's range, so we replaced every FP64 and complex FP64 GEMM with single precision
+through the shim (3xTF32 multiplies big and small FP32 parts three times on TF32 tensor cores; $C$ is combined in
+FP64). On the gold surface at 450\W{} (two interleaved runs each) FP32 aborts at SCF iteration 26, and 3xTF32 and TF32
+at iteration 2, as the Davidson bands fail to converge and the integrated charge drifts, while FP64 rounded to 24 and
+20 bits stays within $\ee{8.1}{-6}$ and $\ee{5.5}{-5}$\Ry{} of native in 28 iterations; on Si\,1000 at 550\W{} FP32
+and 3xTF32 abort at iterations 14 and 9. The cause is accumulation over the plane waves (inner dimension 95386 on the
+gold surface plus a real GEMM with $k=4.3{\times}10^{6}$; 375286 for Si\,1000), where 3xTF32 already errs by
+$\ee{5.6}{-5}$ to $\ee{2.2}{-4}$, the same order as plain TF32. FP32 GEMM on Hopper is also slower than FP64 tensor
+cores (an estimated 1.5$\times$ per SCF iteration on the gold surface). Replacing every GEMM with single precision
+thus fails for this long-inner-product solver although the range fits; FP32 in selected steps only~\cite{Woo2023} is a
+different matter.
 
 \subsection{Exponent Span Limits Format Changes}\label{sec:span}
-
-Truncation keeps every element's 11-bit exponent and changes only its mantissa; format changes must handle the
-exponent. Per-tensor scaled formats (FP32, FP8) need the whole tensor inside the format's range, and Ozaki-type INT8
-emulation slices each row (column) relative to its maximum, so with $k$ kept bits elements more than $2^{-k}$ below
-the row maximum are lost. The exponent span of the data therefore limits format changes, whereas truncation is
-unaffected.
 
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/spread_error.pdf}
@@ -776,21 +621,19 @@ unaffected.
 $S$ binades within each row (1000\W).}\label{fig:spread}
 \end{figure}
 
-\textbf{Synthetic data.} On $8192{\times}8192{\times}16384$, a shape where emulation is faster at narrow spans, we
-draw element exponents uniformly over $S$ binades (1000/575\W, two rounds; Fig.~\ref{fig:spread}). Truncation to 36
-bits keeps a median elementwise error of 1.0--1.1$\times10^{-11}$ and a speedup of 4.4--6.3\pct. cuBLAS emulation with
-a fixed 32 bits degrades by 4--9$\times$ in median and 5--19$\times$ at p99 ($S=16$--256), the equivalent of 2--3
-fewer bits, which costs a whole extra 8-bit slice to recover. Its dynamic mode, which targets FP64-equivalent
-accuracy, raises the bit count from 58 to 301 and falls back to native FP64 beyond its maximum, but with the extra
-work of determining the span it takes 1.6--2.6$\times$ the truncation time (2.6$\times$ at $S=16$); FP32 overflows
-at $S=256$. GEMMul8 is barely affected on uniformly spread data. If the spread is only between rows (one scale per
-row), emulation is unaffected while FP32 still overflows.
+\textbf{Synthetic data.} On $8192{\times}8192{\times}16384$, where emulation is faster at narrow spans, we draw
+element exponents uniformly over $S$ binades (1000/575\W, two rounds; Fig.~\ref{fig:spread}). Truncation to 36 bits
+keeps a median elementwise error of 1.0--1.1$\times10^{-11}$ and a 4.4--6.3\pct{} speedup. Fixed 32-bit cuBLAS
+emulation degrades by 4--9$\times$ in median and 5--19$\times$ at p99 ($S=16$--256), as if 2--3 bits were lost, which
+costs a whole extra slice to recover; its dynamic mode (58 to 301 bits, native FP64 beyond its maximum) takes
+1.6--2.6$\times$ the truncation time, including the work of determining the span. FP32 overflows at $S=256$; GEMMul8
+is barely affected by uniform spreads.
 
 \begin{table}[t]
 \caption{Real data (1000\W): flop-weighted fraction of nonzeros more than $2^{-32}$ below their row maximum, and the
-total-energy error of each method. The ``Nearest'' rows keep 36 or 32 bits with round-to-nearest; cuBLAS emulation
-with 36 and 32 bits uses five slices, with 40 bits six; auto: its automatic mode (at most 79 bits). The Au\,112
-fraction comes from a two-iteration benchmark input, its errors from the fully converged input.}\label{tab:span}
+total-energy error of each method. ``Nearest'': 36 or 32 bits rounded to nearest; cuBLAS emulation uses five slices
+for 36 and 32 bits, six for 40; auto: its automatic mode (at most 79 bits). Au\,112: fraction from a two-iteration
+input, errors from the fully converged input.}\label{tab:span}
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}llll@{}}
 \toprule
@@ -807,52 +650,50 @@ GEMMul8, 10 moduli & diverges & out of memory & $\ee{3.7}{-7}$\Ry \\
 \end{tabular}
 \end{table}
 
-\textbf{Real data.} The shim samples 256 rows of op($A$) and 256 columns of op($B$) per GEMM and records the fraction
-of nonzeros more than $2^{-32}$ below their row maximum, weighted by flops (validated against theory on synthetic
-data). In Gaussian-basis DFT the atomic-orbital values on the grid decay exponentially with distance, and in the worst
-shape 87\pct{} of elements are more than $2^{-32}$ below their row maximum. There, fixed 36-bit cuBLAS emulation
-(five slices, like 32 bits) lets the SCF converge normally in 12 iterations to a total energy that is off by
-52\,mE$_\mathrm{h}$ ($\approx$33\,kcal/mol), and GEMMul8 diverges; rounding to the same 36 bits errs by
-$\ee{9.6}{-7}$\Eh{} (Table~\ref{tab:span}). What fails is the user-fixed bit count. With 40 bits (six slices) the
-emulation is correct ($\ee{8}{-8}$\Eh) but takes about 1.5$\times$ the time of truncation to 36 bits (see below), and
-cuBLAS's automatic mode, capped at 79 bits, is correct too ($\ee{4}{-9}$\Eh): 89\pct{} of the flops would need 80 or
-more bits and fall back to native FP64, the rest is emulated with 72--79 bits, and the run takes 2.1$\times$ the
-native time. On wide-span data emulation is therefore not impossible, but not worthwhile. HPL sits at the other
-extreme: only $\ee{2.7}{-6}$ of its flop-weighted elements are more than $2^{-32}$ below their row maximum, and fixed
-36-bit emulation passes the residual check (0.197, against 0.057 for HPL's own rounding to 36 bits) but runs at
-0.65$\times$ native speed on one GPU ($N=81920$; automatic mode 0.35$\times$). On Quantum ESPRESSO, with narrow
-per-row spans, fixed 36-bit emulation errs by only 5--$\ee{6}{-8}$\Ry. Uniform synthetic spreads understate the
-problem, since in real data many elements of a row lie far below its maximum. A wide per-row span, which the shim measures cheaply beforehand (Fig.~\ref{fig:map}), is thus a risk indicator: a
-necessary but not sufficient condition for failure, and tile-level mixed precision can also handle such data
-(Section~\ref{sec:gp}). DF-MP2 (Section~\ref{sec:mp2}) sits at the narrow end, where FP32 works.
+\textbf{Real data.} Per GEMM the shim samples 256 rows of op($A$) and 256 columns of op($B$) and records the
+flop-weighted fraction of nonzeros more than $2^{-32}$ below their row maximum (validated on synthetic data).
+Gaussian-basis orbitals decay exponentially with distance, so in the worst valinomycin shape 87\pct{} of the elements
+lie that far below their row maximum. There fixed 36-bit cuBLAS emulation (five slices, like 32 bits) converges
+normally in 12 SCF iterations to a total energy off by 52\,mE$_\mathrm{h}$ ($\approx$33\,kcal/mol) and GEMMul8
+diverges, whereas rounding to 36 bits errs by $\ee{9.6}{-7}$\Eh{} (Table~\ref{tab:span}). The user-fixed bit count is
+what fails: with 40 bits (six slices) emulation is correct ($\ee{8}{-8}$\Eh) but slower (below), and the automatic mode
+(at most 79 bits) is correct ($\ee{4}{-9}$\Eh) but sends the 89\pct{}
+of flops that would need 80 or more bits to native FP64, emulates the rest with 72--79 bits and takes 2.1$\times$ the
+native time: not impossible, but not worthwhile. HPL is the other extreme: only $\ee{2.7}{-6}$ of its flop-weighted
+elements lie that far below their row maximum, and fixed 36-bit emulation passes the residual check (0.197, against
+0.057 for HPL's own rounding to 36 bits) at 0.65$\times$ native speed on one GPU ($N=81920$; automatic mode
+0.35$\times$); on Quantum ESPRESSO, with narrow per-row spans, it errs by only 5--$\ee{6}{-8}$\Ry. Uniform synthetic
+spreads understate the problem, as in real data many elements of a row lie far below its maximum; a wide per-row span,
+which the shim measures cheaply beforehand (Fig.~\ref{fig:map}), is a risk indicator, necessary but not sufficient for
+failure, and tile-level mixed precision can also handle such data (Section~\ref{sec:gp}).
 
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/range_map.pdf}
 \caption{Global exponent span (central 99.9\pct) against the flop-weighted fraction of elements more than $2^{-32}$
 below their row maximum, with the measured outcome of fixed 32--36-bit cuBLAS emulation (e.g., HPL: residual 0.197,
-passes; Gaussian-basis DFT: 52\,mE$_\mathrm{h}$ error; Gaussian process: global span 162, estimate unchanged). All
-points are measured; coordinates and their sources are listed in
-\texttt{gh200/results/range\_map\_points.csv}.}\label{fig:map}
+passes; Gaussian-basis DFT: 52\,mE$_\mathrm{h}$ error; Gaussian process: span 162, estimate unchanged). All points
+are measured; sources in \texttt{gh200/results/range\_map\_points.csv}.}\label{fig:map}
 \end{figure}
 
-\textbf{Wide range, partly power-bound DFT.} These DFT runs draw only 650--690\W{} at 1000\W, but are power-bound
-below that. For valinomycin (grid level 6) at 550 and 450\W, rounding to 36 bits through the shim is 3.3--3.5\pct{}
-faster than the copy baseline with 2--3\pct{} less energy and an error of $\ee{9.5}{-7}$\Eh; emulation must keep 40
-bits to stay correct, which is then about ten times more accurate ($\ee{8.4}{-8}$\Eh) but takes 1.48--1.53$\times$
-the baseline time (two rounds each).
+\textbf{Wide range, partly power-bound DFT.} These DFT runs draw only 650--690\W{} at 1000\W{} but are power-bound
+below. For valinomycin (grid level 6) at 550 and 450\W, rounding to 36 bits through the shim is 3.3--3.5\pct{} faster
+than the copy baseline, with 2--3\pct{} less energy and an error of $\ee{9.5}{-7}$\Eh, while correct emulation with
+40 bits, about ten times more accurate ($\ee{8.4}{-8}$\Eh), takes 1.48--1.53$\times$ the baseline time (two rounds
+each). On the default grid, where FP64 GEMM takes 32\pct{} of the runtime, we estimate only
+$32\pct\times5$--$6.5\pct\approx1.6$--2.1\pct{} at 500--800\W{} (GEMM speedup at 35 bits; GEMM time assumed
+proportional to flops at 1000\W{} speed). Neither number means truncation beats INT8 emulation here: choosing by shape
+(Table~\ref{tab:shape}) bounds the gain at about 3.5\pct{} with cuBLAS emulation for the long-$k$ shape, or 6.6\pct{}
+with the less accurate GEMMul8.
 
 \subsection{Wide Range and Power-Bound: Gaussian-Process Geostatistics}\label{sec:gp}
 
-Maximum-likelihood estimation of a Gaussian process in geostatistics factors an $n{\times}n$ Matérn covariance matrix
-by Cholesky at every likelihood evaluation. As in HPL, almost all work is FP64 matrix multiplication, but the
-covariance decays exponentially with distance. We implemented an ExaGeoStat-like kernel: $n=80000$ random 2-D
-locations, Matérn-3/2 covariance (nugget $10^{-4}$), blocked Cholesky ($n_b=1024$, trailing updates by cuBLAS DGEMM),
-and the log-likelihood at six range parameters (0.02--0.08). Each panel $L_{21}$ keeps $k$ bits in place before the
-trailing update, in one fused pass that walks the panel in memory order (an earlier version with two separate,
-uncoalesced passes left 28 bits at 5.2--5.7\pct{} under caps, so the reduction itself must be cheap). We compare
-with cuBLAS emulation and FP32 (1000/700/500\W, two interleaved rounds). Native draws
-953--970\W{} of module power at 1000\W{} and is capped 91--94\pct{} of the time; the sampled panel rows span 162
-binades (central 99.9\pct), and 88\pct{} of the panels' nonzeros are more than $2^{-32}$ below their row maximum.
+Gaussian-process maximum-likelihood estimation factors an $n{\times}n$ Matérn covariance matrix by Cholesky at every
+likelihood evaluation; as in HPL almost all work is FP64 GEMM, but the covariance decays exponentially with distance.
+Our ExaGeoStat-like kernel uses $n=80000$ random 2-D locations, Matérn-3/2 covariance (nugget $10^{-4}$), blocked
+Cholesky ($n_b=1024$, cuBLAS DGEMM trailing updates) and six range parameters (0.02--0.08); each panel $L_{21}$ keeps
+$k$ bits in place before the trailing update in one fused pass. Native draws 953--970\W{} at 1000\W{} and is capped
+91--94\pct{} of the time; the sampled panel rows span 162 binades, and 88\pct{} of panel nonzeros lie over $2^{-32}$
+below their row maximum.
 
 \begin{table}[t]
 \caption{Gaussian-process likelihood ($n=80000$, six range parameters): largest log-likelihood deviation from
@@ -871,224 +712,139 @@ $\max|\Delta\ell|$ & $\ee{2.4}{-5}$ & $\ee{7.2}{-4}$ & $\ee{2.2}{-3}$ & 87 \\
 \end{tabular}
 \end{table}
 
-The log-likelihood is about 1.2--1.7$\times10^5$, so a deviation of $\ee{7.2}{-4}$ at 28 bits is far below what
-matters for estimation (Table~\ref{tab:gp}). At 1000\W, where this native factorization is capped 91--94\pct{} of
-the time, 28 bits is 3.0--3.9\pct{} faster (36 bits 2.4--3.2\pct), but the 1000\W{} gain depends on the setting:
-with the Morton ordering used below ($n=60000$), where native is capped in only 19--54\pct{} of the samples, 28 bits
-gains +0.0/+0.1\pct, and the maximum-likelihood fit below gains 1.8--2.3\pct. FP32's deviation makes it unusable for
-estimation; it may stem from the conditioning of the covariance, which worsens with $n$ (at $n=8000$ FP32 still finds
-the same estimate).
-cuBLAS emulation is less accurate than 28-bit truncation and slower, partly because the trailing update's inner
-dimension equals the block size, 1024, a shape that already favors truncation in the crossover model
-(Section~\ref{sec:crossover}). The per-row span is wider than in the DFT case, yet emulation does not go wrong, only
-loses accuracy: a wide per-row span is necessary but not sufficient for emulation failure, which also depends on how
-much the dropped small elements contribute.
+The log-likelihood is about 1.2--1.7$\times10^5$, so the 28-bit deviation of $\ee{7.2}{-4}$ is far below what matters
+(Table~\ref{tab:gp}). At 1000\W, where native is capped 91--94\pct{} of the time, 28 bits is
+3.0--3.9\pct{} faster (36 bits 2.4--3.2\pct), but this depends on the setting: with the Morton ordering used below
+($n=60000$; native capped in only 19--54\pct{} of the samples) 28 bits gains +0.0/+0.1\pct, and the fit below
+1.8--2.3\pct. FP32's deviation makes it unusable, possibly because the covariance's conditioning worsens with $n$ (at
+$n=8000$ FP32 still finds the same estimate). cuBLAS emulation is less accurate than 28-bit truncation and slower,
+partly because the trailing update's inner dimension equals the block size, 1024, a shape that favors truncation
+(Section~\ref{sec:crossover}); despite a wider per-row span than in the DFT case it only loses accuracy instead of
+going wrong, so a wide span is necessary but not sufficient for failure, which
+also depends on what the dropped small elements contribute.
 
-\textbf{A one-parameter maximum-likelihood fit.} To check that the estimate itself is unchanged, we fitted the range
-parameter with variance and smoothness fixed: golden-section search over its logarithm, 17 likelihood evaluations
-per variant ($n=60000$; 1000 and 700\W; two interleaved rounds). Truncation to 36 and 28 bits and cuBLAS emulation
-return the native estimate
-$\hat\theta=0.05007952$ in every printed digit, with maximized log-likelihoods within $\ee{4.8}{-6}$ (36 bits) and
-$\ee{2.3}{-4}$ (28 bits) of native; FP32 moves $\hat\theta$ by 0.49\pct{} and loses 0.72 in log-likelihood. At
-700\W{} the fit is 7.1--7.3\pct{} faster with 28 bits
-and 4.8--4.9\pct{} faster with 36 bits, using 6.6--6.8\pct{} and 4.5--4.8\pct{} less energy; at 1000\W{} it is
-1.8--2.3\pct{} and 1.6--2.2\pct{} faster with 9.1--9.9\pct{} and 3.5--5.6\pct{} less energy; cuBLAS emulation is
-32--41\pct{} slower. Of the three whole-matrix choices we tested (FP32, 36-bit cuBLAS emulation and truncation), only
-truncation is both fast and accurate on this wide-range, power-bound workload.
+\textbf{A one-parameter maximum-likelihood fit.} We fitted the range parameter, with variance and smoothness
+fixed ($n=60000$; 1000 and 700\W; two interleaved rounds).
+Truncation to 36 and 28 bits and cuBLAS emulation return the native $\hat\theta=0.05007952$ in every printed digit,
+with maximized log-likelihoods within $\ee{4.8}{-6}$ (36 bits) and $\ee{2.3}{-4}$ (28 bits) of native, while FP32
+moves $\hat\theta$ by 0.49\pct{} and loses 0.72. With 28 and 36 bits the fit is 7.1--7.3\pct{} and 4.8--4.9\pct{}
+faster at 700\W{} (6.6--6.8\pct{} and 4.5--4.8\pct{} less energy) and 1.8--2.3\pct{} and 1.6--2.2\pct{} faster at
+1000\W{} (9.1--9.9\pct{} and 3.5--5.6\pct{} less energy); emulation is 32--41\pct{} slower. Of the three whole-matrix
+choices tested (FP32, 36-bit emulation, truncation), only truncation is both fast and accurate here.
 
-\textbf{Composing with tile mixed precision.} The mixed-precision Cholesky factorizations of the ExaGeoStat line change
-the format of whole tiles instead (Section~\ref{sec:related}). To see whether truncation still helps there, we ordered
-the locations along a Morton curve and added such a variant to our kernel: in the trailing update, tiles below each
-column's FP64 extent, chosen by the tile-norm rule with a required accuracy of $10^{-9}$ as in~\cite{Cao2023}, use FP16
-inputs with FP32 accumulation on the tensor cores (52\pct{} of the tiles at range 0.02, 3\pct{} at 0.08). Over the six
-ranges ($n=60000$, two ABBA rounds) it runs 1.60--1.63$\times$ faster than native FP64 at 1000, 700 and 500\W, with
-log-likelihood deviations up to 0.043. Truncating its remaining FP64 tiles to 28 bits makes it another 1.9\pct{}
-faster at 1000\W{} and 7.0\pct{} and 6.1\pct{} faster at 700 and 500\W, with an unchanged deviation, so truncation
-composes with format changes rather than competing with them. Zeroing the FP16 operands to 5 mantissa bits as well
-added nothing.
+\textbf{Composing with tile mixed precision.} With the locations in Morton order, we let the trailing update use FP16
+inputs with FP32 accumulation on the tensor cores for tiles below each column's FP64 extent, chosen by the tile-norm
+rule for a required accuracy of $10^{-9}$ as in~\cite{Cao2023}. Over the six ranges ($n=60000$, two ABBA rounds) this
+is 1.60--1.63$\times$ faster than native FP64 at 1000, 700 and 500\W, with log-likelihood deviations up to 0.043.
+Truncating its remaining FP64 tiles to 28 bits adds 1.9\pct{} at 1000\W{} and 7.0\pct{} and 6.1\pct{} at 700 and
+500\W{} with an unchanged deviation, so truncation composes with format changes rather than competing with them.
 
-\textbf{ExaGeoStat itself.} We also built ExaGeoStatCPP (StarPU and Chameleon tile Cholesky with cuBLAS~13.6; tile
-size 1920) and ran its MLE ($N=60000$, six BOBYQA likelihood evaluations per run, data generated once natively and
-read by every run) with the shim on its FP64 tile GEMMs. Matérn covariance generation runs on the CPU and takes about
-9\,s per evaluation against 2.3\,s of GPU factorization at 1000\W, and the factorization is partly power-limited even
-there (GPU power 650--690\W, frequent power-cap events). Relative to a baseline that copies the operands without
-truncating, the factorization is 3.0\pct{} (36 bits) and 4.0\pct{} (28 bits) faster at 1000\W, 5.0\pct{} and
-8.0\pct{} at 600\W, and 5.6\pct{} and 9.4\pct{} at 450\W{} (means of two ABBA rounds; at 450\W{} the rounds differ
-widely, +6.9 and +11.9\pct{} with 28 bits at 707 and 926\,MHz, because the CPU shares the module cap while generating
-the covariance); with 28 bits the mean SM clock during factorization rises from 1913 to 1975\,MHz at 1000\W{} and
-from 1166 to 1305\,MHz at 600\W. The log-likelihoods change by at most $\ee{1.2}{-10}$ and $\ee{9.8}{-8}$ relative.
-The shim's own copy costs 7--9\pct, which leaves it 0.5--3.1\pct{} slower than unmodified ExaGeoStat, so the gain
-needs an implementation inside the library. ExaGeoStatCPP's mixed-precision option (\texttt{-{}-computation=mixed}) is
-only an enumeration value without an implementation, so we could not compare with its own mixed precision.
+\textbf{ExaGeoStat itself.} Through the shim, the MLE of ExaGeoStatCPP (cuBLAS~13.6; $N=60000$) factorizes
+3.0/4.0\pct{} faster with 36/28 bits than a same-copy baseline at 1000\W, where its GPU part is already partly
+power-limited, 5.0/8.0\pct{} at 600\W{} and 5.6/9.4\pct{} at 450\W{} (means of two ABBA rounds, which differ widely at
+450\W, +6.9 and +11.9\pct{} with 28 bits, as the CPU shares the module cap), with
+log-likelihoods within $\ee{9.8}{-8}$ relative. The shim's 7--9\pct{} copy cost leaves it 0.5--3.1\pct{} slower than
+unmodified ExaGeoStat, so the gain needs an in-library implementation; its \texttt{-{}-computation=mixed} option is not
+implemented, so we could not compare with its own mixed precision.
 
 %==================================================================================================
 \section{AI Workloads: Training and Inference}\label{sec:ai}
 
-MLPerf Training measures time to target quality (eval loss $\le0.925$ on GovReport for Llama\,2 70B LoRA); a faster
-step that needs more samples to converge loses.
+\textbf{Training: truncating FP8 base weights is a negative result.} MLPerf Training measures time to target quality
+(eval loss $\le0.925$ on GovReport for Llama\,2 70B LoRA). Truncating only the frozen FP8 base weights to 2 bits after
+loading (the rest follows the FP8 recipe~\cite{Micikevicius2022}) made each 384 samples 0.9--1.2\pct{} faster but
+raised the samples to target from 3456 to 4224 with the same seed (22\pct{} slower at 575\W, 19\pct{} at 800\W; a
+second seed at 800\W: 3072 to 4224, +39\pct); 1 bit did not converge. The first evaluation is always 0.008--0.010
+higher (two seeds, three pairs), but native convergence differs by one evaluation interval between node sets (3072
+versus 3456), so we read this only as evidence that FP8's 3 mantissa bits leave no room; rounding modes, decisive
+in~\cite{Gupta2015}, show no consistent order.
 
-\textbf{Training: truncating the FP8 base weights is a negative result.} We truncated only the frozen FP8 base weights
-of Llama\,2 70B LoRA (once, after loading); activations, gradients, LoRA weights and updates and per-tensor scaling
-follow~\cite{Micikevicius2022}. On 8 nodes with the same seed, native FP8 at 575\W{} reached the target after 3456
-samples in 28.34\,min. Keeping 2 bits made each 384 samples only 0.9--1.2\pct{} faster but needed 4224 samples (22\pct{}
-slower at 575\W, 19\pct{} at 800\W); 1 bit did not converge (it also lowers the largest representable E4M3 value
-from 448 to 384, compressing the top weights by about 14\pct). The eval-loss curve shifts up by 0.006--0.008, while
-the train-loss gap varies (with 2 bits $-0.031$ at the first logged step, then $+0.003$ to $+0.017$): truncation
-weakens the base model at load time, and a rank-16 adapter does not compensate. A second seed (5678, 800\W) agrees: native 3072 samples in 22.74\,min,
-2 bits 4224 samples in 31.56\,min (+39\pct). Across two seeds and three pairs, the first evaluation is always
-0.008--0.010 higher and convergence takes 2--3 more evaluation intervals. Native convergence differs by one interval
-between node sets (3072 versus 3456), so we read this only as evidence that FP8's 3 mantissa bits leave no room. The
-rounding mode shows no consistent order (at 800\W{} truncation and stochastic rounding converge at 4224 samples,
-nearest at 5376). Truncating only MLP layers needs 4224 samples, attention only 3840 (one interval, within node-set
-noise, but attention is only about 18\pct{} of the linear weights); the first-evaluation gaps of $+0.0064$ (MLP) and
-$+0.0028$ (attention) roughly add up to the $+0.0086$ of full truncation (their sum is 0.0092). A repeat of the
-attention-only run gave nearly the
-same first evaluation (0.9428 versus 0.9425) but converged one interval later (4224 versus 3840, missing the target by
-$10^{-5}$ at 3840), so the first-evaluation gap, not the convergence point, is the robust metric.
-
-\begin{table}[t]
-\caption{WikiText-2 perplexity (sequence 2048) relative to BF16 for the linear layers' formats; FP8 uses real FP8
-tensor-core GEMMs, and kept bits are rounded to nearest (ties to even).}\label{tab:llm}
-\centering\footnotesize\setlength{\tabcolsep}{2.2pt}
-\begin{tabular}{@{}lrrrrrr@{}}
-\toprule
-Format & L2-7B & L3.1-8B & Qw2.5-7B & Mis-7B & OPT-6.7B & L2-70B \\
-\midrule
-BF16, 4 b & +0.09 & +0.19 & +0.13 & +0.09 & +0.45 & +0.10 \\
-BF16, 3 b & +0.44 & +1.02 & +0.65 & +0.41 & +2.00 & +0.51 \\
-FP8 per tensor & +0.63 & +0.95 & +0.70 & +0.45 & +2.23 & +0.48 \\
-FP8 per channel & +0.32 & +0.88 & +0.61 & +0.34 & +0.69 & +0.42 \\
-FP8 p.c., 2 b & +3.2 & +6.5 & +4.0 & +2.5 & +7.0 & +3.4 \\
-FP8, wts.\ 2 b & +1.9 & +4.0 & +2.6 & +1.3 & +2.8 & --- \\
-\bottomrule
-\end{tabular}
-\\[2pt]{\scriptsize Values in percent. b: kept bits; L: Llama, Qw: Qwen, Mis: Mistral; p.c.: per channel; wts.: weights only.}
-\end{table}
-
-\textbf{Inference: FP8 has already taken most of the benefit.} BF16 rounded to nearest at 3 bits has as many mantissa
-bits as FP8 E4M3 and matches its accuracy on six language models (Table~\ref{tab:llm}; with truncation, 4 bits are
-needed for a similar GEMM error, 4.35\pct{} on uniform data). We then compared the two where FP8 is known to fail:
-attention perplexity at 2k/8k context (BF16 3 bits +0.49/+1.06\pct, emulated FP8 attention +0.52/+1.08\pct), key
-retrieval at 8k--32k context on Llama-3.1-8B (both 100\pct), BERT-large SQuAD (all formats above 99.9\pct{} of FP32
-F1) and CogVideoX-2B video generation (PSNR against native 18--38\,dB for FP8 attention, 20--29\,dB for BF16 3 bits).
-With proper scaling the two tie, and FP8 GEMMs are about 1.7--1.9$\times$ as fast (at 575\W, 1.67--1.72$\times$
-BF16 with 3 bits and 1.80--1.87$\times$ native BF16). A naive FP8 attention that does not scale the softmax probabilities fails as sequences grow (74\pct{}
-error at 4096 tokens), and on CogVideoX-2B (about 18k tokens) it changes the composition and adds noise (PSNR
-10--12\,dB, SSIM 0.07--0.66) where BF16 with 3 bits keeps 20--21\,dB and SSIM 0.82--0.91. This is a range problem,
-not a mantissa problem: the smallest positive E4M3 value, about $2^{-9}$, exceeds the mean attention probability over
-18k tokens, while BF16 has 8 exponent bits; correct implementations already fix it inside FP8~\cite{Zhang2025}.
-
-Without switching to 2:4 structured sparsity or INT4 weights, zeroing on top of FP8 is the remaining way to go faster
-than FP8 on Hopper, which lacks FP4. On real layer-40 activations and weights of Llama2-70B
-($8192{\times}57344{\times}8192$), keeping 2 bits on both sides is 4.4/3.2/5.0/8.2\pct{} faster at
-1000/700/575/450\W, weights only 1.3--3.3\pct, but 70B perplexity rises by 3.4\pct. Per-layer sensitivity shows
-q/k/v as least sensitive but a small share of the compute (with grouped-query attention, q is about 7.8\pct{} and k
-and v about 1\pct{} each), and the MLP layers as most of the compute but more sensitive. FP8's
-advantage comes mainly from halving the data path: at 575\W{} BF16 with 3 bits is only 8\pct{} faster than BF16,
-while FP8 is 1.8$\times$. Power savings are limited too. Decode (64 tokens) is bandwidth-bound; at 1000\W{} zeroing
-leaves its speed unchanged on uniform data, though on real Llama2-70B weights zeroed FP8 is still 2.6--3.0\pct{}
-faster at the same clock. FP8 zeroed to 0 bits saves
-104\W{} on uniform data but only 61\W{} on real Llama2-70B weights, and truncating weights to 2 or 0 bits saves only
-1.5\pct{} or 5.5\pct{} of power at an accuracy cost. Below 575\W{} these savings turn into 2--16\pct{} speedups, and
-prefill is power-bound even at 1000\W.
-
-For weights and activations that directly set model quality and have no residual correction, zeroing turns directly
-into quality loss, in contrast with solvers such as HPL-MxP and SCF that correct errors. For GPUs without FP8 tensor
-cores, or pipelines that must stay in BF16, BF16 with 3--4 kept bits is a nearly lossless option; for FP8 deployments,
-zeroing saves only 1.5--5.5\pct{} of power in memory-bound phases, at an accuracy cost.
+\textbf{Inference: FP8 has already taken most of the benefit.} BF16 rounded to nearest at 3 bits has FP8 E4M3's
+mantissa width and accuracy (GEMM error on uniform data: 3.34\pct{} versus 3.6--3.9\pct; truncation needs 4 bits): on
+six language models (6.7B--70B) WikiText-2 perplexity rises by 0.41--2.00\pct{} versus 0.45--2.23\pct{} (per-tensor)
+and 0.32--0.88\pct{} (per-channel) for FP8, and the two tie where FP8 is known to fail~\cite{Zhang2025} (attention
+perplexity at 2k/8k context: +0.49/+1.06\pct{} versus +0.52/+1.08\pct{} for emulated FP8; 8k--32k key retrieval: both
+100\pct). Yet FP8 GEMMs are about 1.7--1.9$\times$ as fast (575\W: 1.67--1.72$\times$ BF16 with 3 bits,
+1.80--1.87$\times$ native BF16). Without switching to 2:4 structured sparsity or INT4 weights, zeroing on top of FP8
+is the remaining way to beat FP8 on Hopper, which lacks FP4, but it trades accuracy for speed about one for one:
+keeping 2 bits of real Llama2-70B layer-40 activations and weights is 4.4/3.2/5.0/8.2\pct{} faster at
+1000/700/575/450\W{} (weights only: 1.3--3.3\pct) while 70B perplexity rises by 3.4\pct. Bandwidth-bound decode gains
+little: at 1000\W{} zeroing leaves its speed unchanged on uniform data (2.6--3.0\pct{} faster at the same clock on
+real weights), and truncating weights to 2 or 0 bits saves only 1.5\pct{} or 5.5\pct{} of power at an accuracy cost.
 
 %==================================================================================================
 \section{Discussion}\label{sec:discussion}
 
 \textbf{Benefit under a fixed power budget.} Under a fixed power budget, such as a rack limit, the equivalent power
-saving becomes usable compute. At 8 nodes $\times$ 700\W, HPL with the safe 36 bits rises from 331.6 to
-346.0\,TFLOP/s (+4.3\pct); native HPL would need about 772\W{} per node, about 0.6\,kW more for the cluster, to match.
-At the default 1000\W{} cap the gain becomes mostly energy: 7.7\pct{} per HPL solve, with 0.7\pct{} more speed. The
-cost is one bitwise operation per element, which can be fused into the kernel that produces the operand, and no
-hardware. At 575\W{} the SM clocks of our 14 nodes differ by 17\pct{} (1129--1325\,MHz), and synchronous runs move at
-the pace of the slowest node, as earlier work found for CPUs under power bounds~\cite{Rountree2012,Inadomi2015};
-zeroing and variation-aware per-node caps are complementary.
+saving becomes usable compute. At 8 nodes $\times$ 700\W, tuned HPL with the safe 36 bits rises from 346.2 to
+362.9\,TFLOP/s (+4.8\pct); native HPL would need about 768\W{} per node, about 0.5\,kW more for the cluster, to match.
+At the default 1000\W{} cap it still gains 3.9\pct{} in speed and 7.5\pct{} in energy per solve. The
+cost is one bitwise operation per element, fusable into the producing kernel, and no hardware.
 
-\textbf{Benchmark rules.} The TOP500 Linpack rules require full 64-bit floating-point arithmetic and explicitly
-exclude solving in lower precision with iterative refinement, and emulating floating point with integer
-arithmetic~\cite{TOP500Linpack}; HPL on truncated operands does not meet the full-precision requirement either.
-Since June 2025 the HPL-MxP rules require at least 16-bit floating point and allow strictly diagonally dominant
-matrices for testing only~\cite{HPLMxPRules}; BF16 keeping 3 bits is effectively a 12-bit format, and our test matrix
-is not allowed for official runs. All HPL and HPL-MxP numbers here are therefore research results, not official
-scores. MLPerf Inference closed division allows any mathematical quantization but forbids
-pruning~\cite{MLPerfInfRules}; zeroing is the former. Whether MLPerf Training permits truncated weights depends on
-each round's rules; in our results uniform truncation does not pay anyway. Scientific software has no such
-restriction; the criterion is whether physical results stay within the required accuracy.
+\textbf{Benchmark rules.} TOP500 Linpack requires full 64-bit floating-point arithmetic and excludes lower-precision
+solves with iterative refinement and integer emulation of floating point~\cite{TOP500Linpack}; HPL on truncated
+operands misses the full-precision requirement too. Since June 2025 HPL-MxP requires at least 16-bit floating point
+and allows strictly diagonally dominant matrices for testing only~\cite{HPLMxPRules}; BF16 keeping 3 bits is
+effectively 12-bit, and our test matrix is not allowed for official runs. All HPL and HPL-MxP numbers here are thus
+research results, not official scores. MLPerf Inference's closed division allows pure mathematical quantization but
+forbids pruning non-zero weights~\cite{MLPerfInfRules}, and zeroing is the former; whether MLPerf Training permits
+truncated weights depends on each round's rules.
 
-\textbf{A hardware counterexample.} An Altera patent states that zeroing low bits at the input of an FPGA
-floating-point multiplier has ``barely any effect on reducing the amount of power'' because the compression tree
-keeps switching~\cite{Altera2017}. This does not contradict our measurements: the patent is a qualitative statement
-about a $27{\times}27$ fixed-point multiplier, whereas on a GPU the truncated bits also travel through registers,
-operand buses and memory, whose toggles disappear as well. Table~\ref{tab:fill} supports this: a pure memory copy
-saves 18\pct{} of module power without any multiplication, 97\pct{} of it from the absence of toggles, while in the
-GH200 multipliers zeros still save more than ones (Section~\ref{sec:why}).
-
-\textbf{Limitations and threats to validity.} (i)~All experiments use one GH200 cluster; other GPU generations are
-not covered (an earlier report has preliminary H200 and MI350X results). (ii)~The HPL residual is a deterministic but
-chaotic function of $N$: 28 bits passes at $N=131072$ and 262144 and fails at 196608, so our operating point is 36 bits
-validated at several sizes; likewise 3 bits for HPL-MxP. (iii)~HPL-MxP used a strictly diagonally dominant test
-matrix with approximate diagonal factorization, which the rules allow only for testing~\cite{HPLMxPRules}; its
-stability at 3 kept bits may be a property of this matrix. (iv)~Each scientific code was tested on one or two input
-systems; forces, geometry optimization and larger systems are not covered. (v)~The shim costs 3--9\pct{} for copies
-depending on the application (about 5\pct{} for Quantum ESPRESSO, 7--9\pct{} for ExaGeoStat), so shim results are
-always compared with a baseline taking the same copy path; in-program zeroing has no such cost. (vi)~Nodes differ by
-13--17\pct{} at equal power, so all comparisons are paired on the same nodes by ABBA order or by seed; intervals exist
-only for the GEMM microbenchmarks and Quantum ESPRESSO, the other cells have two rounds on one node set, and the
-crossover sweep measured its four values of $n$ on different nodes. (vii)~The default 1000\W{} cap is also the
-highest, not an uncapped state; the limiter's time scale is unknown; and caps below 450\W{} lie outside the
-datasheet range~\cite{NVIDIAGH200}. (viii)~Cooling and the chassis supply change conclusions: at low
-fan speed the GPU hits its thermal limit first, and at full fan speed native HPL-MxP at 1000\W{} trips the hardware
-power brake; these conditions must be reported. (ix)~The cluster is shared and another user's tool reset caps at
-least twice, so every window checks the cap in effect. (x)~Power comes from the driver's sensor, not an external
-meter, and on A100/H100 it samples only part of the time~\cite{Yang2024}; our comparisons are paired relative values
-on one measurement path with steady windows of 10--20\,s, but absolute energy should be cross-checked with an
-external meter. (xi)~The fill-pattern controls cover only 0 and 20 kept bits, the 500\W{} rows come from one node and
-two runs, and the extra saving of zeros at 0 kept bits is unexplained. (xii)~Not all of the Quantum ESPRESSO gain is
-a power effect: on the gold surface about half comes from fewer Davidson iterations, for reasons not yet identified.
-(xiii)~The real-data emulation comparisons on Quantum ESPRESSO ran once per setting, and GEMMul8 ran out of GPU
-memory on two applications. (xiv)~The Gaussian-process results come from our ExaGeoStat-like kernel on synthetic
-data, and its mixed-precision variant is a simplified re-implementation (FP64 storage, one FP16 GEMM per panel over
-the tiles that need it), not the ExaGeoStat code; ExaGeoStat itself was measured only through the shim, whose copy
-cost offsets the gain.
+\textbf{Limitations.} (i)~One GH200 cluster (an earlier report has only preliminary H200 and MI350X results). (ii)~The
+HPL residual is a deterministic but chaotic function of $N$ (28 bits passes at $N=131072$, 262144 and 286720, all close to
+the threshold, and fails at 196608), so operating points (36 bits for HPL, 3 for HPL-MxP) were validated at several sizes. (iii)~HPL-MxP's
+strictly diagonally dominant test matrix with approximate diagonal factorization is allowed only for
+testing~\cite{HPLMxPRules}; its stability at 3 kept bits may be a property of this matrix. (iv)~Each scientific code
+ran one or two inputs, without forces, geometry optimization or larger systems. (v)~Shim copies cost 3--9\pct{} (about
+5\pct{} for Quantum ESPRESSO, 7--9\pct{} for ExaGeoStat), so shim results use a same-copy baseline. (vi)~Nodes differ
+by 13--17\pct{} at equal power, so comparisons are paired on the same nodes (ABBA or seed); only GEMM and Quantum
+ESPRESSO have intervals, other cells two rounds on one node set, and the crossover sweep ran its four $n$ on different
+nodes. (vii)~The default 1000\W{} cap is the highest, not uncapped; the limiter's time scale is unknown; caps below
+450\W{} lie outside the datasheet range~\cite{NVIDIAGH200}. (viii)~Cooling and the chassis supply change conclusions
+(at low fan speed the GPU hits its thermal limit first; at full fan speed native HPL-MxP at 1000\W{} trips the power
+brake) and must be reported. (ix)~Another user's tool reset the shared cluster's caps at least twice; every window
+checks the cap in effect. (x)~Power comes from the driver's sensor, which on A100/H100 samples only part of the
+time~\cite{Yang2024}; our paired relative comparisons use one path and steady 10--20\,s windows, but absolute energy
+needs an external meter. (xi)~Fill controls cover only 0 and 20 kept bits, the 500\W{} rows one node and two runs, and
+the extra saving of zeros at 0 kept bits is unexplained. (xii)~About half of the gold-surface Quantum ESPRESSO gain
+comes from fewer Davidson iterations, not power, for unidentified reasons. (xiii)~Real-data emulation comparisons on
+Quantum ESPRESSO ran once per setting; GEMMul8 ran out of GPU memory on two applications. (xiv)~The Gaussian-process
+results come from our ExaGeoStat-like kernel on synthetic data with a simplified mixed-precision re-implementation
+(FP64 storage, one FP16 GEMM per panel over the tiles that need it); ExaGeoStat itself was measured only through the
+shim, whose copy cost offsets the gain.
 
 %==================================================================================================
 \section{Conclusion}\label{sec:conclusion}
 
-On a production GH200 cluster, truncating unused mantissa bits in software buys real performance for real HPC
-applications under power caps while their physical results stay within each code's own criterion. When the GPU is
+On a production GH200 cluster, when the GPU is
 power-bound and truncation is done inside the program, the HPC programs we tested that check their own results all
-gain: at 400--800\W, HPL keeping 36 significand bits is 3.4--8.3\pct{} faster (39--97\W{} equivalent) and HPL-MxP
+gain: at 400--800\W, tuned HPL keeping 36 significand bits is 4.0--11.0\pct{} faster (39--127\W{} equivalent) and HPL-MxP
 keeping 3 bits 1.8--12.7\pct{} on a diagonally dominant test matrix; Quantum ESPRESSO with tolerance-driven bit counts
 is 2.4--4.2\pct{} faster at 450--550\W{} with every printed digit of the energies unchanged (on the gold surface about
 half of the gain comes from fewer Davidson iterations); power-hungry DF-MP2 keeping 20--32 bits is 4.9--8.3\pct{}
 faster at 500--700\W; and wide-range, power-bound Gaussian-process geostatistics keeping 28 bits is 7.4--8.2\pct{}
-faster at 500--700\W. At the default 1000\W{} cap HPL uses 7.7\pct{} less energy per solve. Microbenchmarks give
+faster at 500--700\W. At the default 1000\W{} cap HPL is still 3.9\pct{} faster and uses 7.5\pct{} less energy per
+solve. Microbenchmarks give
 upper bounds (FP64 GEMM keeping 27 bits: 6.6--21\pct{} at 300--1000\W; pure data movement: 18\pct{} less module power
 at 1000\W), not application operating points. The gain comes mainly from fewer toggles in arithmetic units and data
-paths, so it suits FP64 solvers with residual correction or self-consistent iteration whose inputs flow directly and
-in volume into multipliers. Its scope is also clear: the crossover with INT8 emulation of FP64 moves with matrix
-shape and cap and can be estimated from $(m,n,k)$ with a three-parameter model (8 of 8 held-out cases, all far from
-the crossover); on data with a wide per-row exponent span, fixed-width row-sliced emulation can silently go wrong,
-while more slices or cuBLAS's automatic mode are correct but slower than truncation; replacing every GEMM with FP32
-or 3xTF32 fails on long inner products; kernels whose intermediates regrow full mantissas gain little; and for FP8 AI
-inference, further zeroing trades accuracy for speed. Mantissa zeroing costs one bitwise operation per element, which
-can be fused into the kernel that produces the operand, needs no hardware support, and complements format changes,
-including tile-level mixed precision. All HPL, HPL-MxP and MLPerf numbers here are research results, not official
-scores.
+paths, suiting FP64 solvers with residual correction or self-consistent iteration that feed multipliers directly
+and in volume. Its limits are measurable: the crossover with INT8 emulation moves with shape and cap and
+can be estimated from $(m,n,k)$ (8 of 8 held-out cases, all far from the crossover); with wide per-row exponent spans,
+fixed-width row-sliced emulation can silently go wrong, while more slices or the automatic mode are correct but slower
+than truncation; replacing every GEMM with FP32 or 3xTF32 fails on long inner products; kernels whose intermediates
+regrow full mantissas gain little; in FP8 inference, further zeroing trades accuracy for speed. Zeroing costs one
+bitwise operation per element, fusable into the producing kernel, needs no new hardware, and complements format
+changes such as tile-level mixed precision. All HPL, HPL-MxP and MLPerf numbers here are research results, not
+official scores.
 
 \section*{Data and Code Availability}
-The mantissa shim, the in-program truncation of each application, the Slurm scripts, the raw measurement logs, the
-summarized CSV files and the scripts that draw every figure are in the project repository (branch
-\path{gh200-mantissa-study}). The script \path{gh200/analysis/paper_figures.py} regenerates every figure of this
-paper from the CSV files in \path{gh200/results/}, including Fig.~\ref{fig:map}, whose points and their sources are
-listed in \path{gh200/results/range_map_points.csv}.
+The mantissa shim, the in-program truncation of each application, the Slurm scripts, raw logs and summarized CSV
+files are in the project repository (branch \path{gh200-mantissa-study}); \path{gh200/analysis/paper_figures.py}
+regenerates every figure from the CSV files in \path{gh200/results/}, including Fig.~\ref{fig:map}, whose points and
+sources are listed in \path{gh200/results/range_map_points.csv}.
 
 \bibliographystyle{IEEEtran}
 \bibliography{refs}
 
 \end{document}
+
