@@ -78,6 +78,10 @@ run_one() {
     adapt*) bits=52; round=trunc; preload=; local am=${v#adapt}; env_extra=(QE_MANT_ADAPT=${am%%:*} QE_MANT_ROUND=${am##*:} QE_MANT_MIN=${QE_MANT_MIN:-16}) ;;
     # single-precision replacement of every FP64 GEMM (needs a shim with MANT_F32): f32:fp32|tf32|tf32x3
     f32:*) bits=52; round=trunc; env_extra=(MANT_F32=${v#f32:}) ;;
+    # cuBLAS emulation with dynamic mantissa control (cuBLAS picks the bits, native FP64 above k): emud<k>;
+    # emudl<k> also logs the bit count of every call (synchronizes, so not for timing)
+    emudl*) bits=52; round=trunc; env_extra=(MANT_EMU_BITS=${v#emudl} MANT_EMU_DYN=1 MANT_EMU_LOG=1) ;;
+    emud*) bits=52; round=trunc; env_extra=(MANT_EMU_BITS=${v#emud} MANT_EMU_DYN=1) ;;
     # every FP64 GEMM on cuBLAS fixed-point emulation with k mantissa bits (shim, no operand copy): emu<k>
     emu*)  bits=52; round=trunc; env_extra=(MANT_EMU_BITS=${v#emu}) ;;
     # every FP64 GEMM through GEMMul8 (Ozaki scheme II, INT8, fast mode) with m moduli: g8:<m>

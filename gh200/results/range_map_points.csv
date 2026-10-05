@@ -1,0 +1,7 @@
+label_en,label_zh,global_span,frac_below32,emu_bits,emu_ok,emu_outcome,source
+HPL (uniform),HPL（均勻亂數）,14,2.71e-06,36,True,residual 0.197 (passes; threshold 16),span: range_summary.csv (wider operand); rows: job 3305 MANT_SPAN (flop-weighted; wider operand); emulation: job 3304 emu36 (1 GPU; N=81920)
+DF-MP2 tensor,DF-MP2 張量（紫杉醇）,27,2.4e-05,32,True,|dE| 2.2e-8 Eh,span and rows: job 2037 RANGE; emulation: mp2_summary.csv (emu32)
+QE Au surface,QE 金表面,93,2.2e-04,36,True,|dE| 5e-8 Ry,span: range_summary.csv; rows: span_apps.csv (job 2130); emulation: emu_vs_trunc_qe.csv
+QE Si,QE 矽,91,5.4e-03,36,True,|dE| 6e-8 Ry,span: range_summary.csv; rows: span_apps.csv (job 2131); emulation: emu_vs_trunc_qe.csv
+Gaussian-basis DFT,PySCF 纈胺黴素 DFT,690,0.44,36,False,|dE| 52 mEh (fixed 36 bits; 40 bits or dynamic mode correct but slower),span: range_summary.csv; rows: span_apps.csv (job 2129); emulation: emu_vs_trunc_valino.csv (jobs 2046 2195 3292)
+GP geostatistics,高斯過程地統計（n = 80000）,162,0.88,36,True,dll 2.2e-3 (MLE range parameter unchanged),span: job 3291 RANGE_GP exp_hi - exp_lo = -3 - (-165) (sampled panel rows; the log line's global_span999=163 counted both end bins); rows: job 3248 RANGE_GP; emulation: gp_summary_v2.csv / gp_mle_summary.csv

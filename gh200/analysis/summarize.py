@@ -7,6 +7,9 @@ module power), and subtract the reduced configuration's own value. When p is abo
 every native point the saving is only a lower bound and is marked with '>'.
 
 usage: summarize.py --e1 1667,1668,1669 --hpl 1670 --mxp 1671 --out results/
+       [--mxp-native-drop 1000] [--mxp-native-add e2-diag:1675:900]
+The last two only change the native curve used for ΔW: drop native points at the listed caps (HPL-MxP native at
+1000 W trips the chassis power brake, job 1675) and add native points measured by another job at the listed caps.
 """
 import argparse
 import os
@@ -30,10 +33,10 @@ def native_power_for(perf, native, xcol):
     return float(np.interp(perf, n.perf, n[xcol])), False
 
 
-def add_delta_w(summary, key_cols, native_mask):
+def add_delta_w(summary, key_cols, native_mask, native_curve=None):
     out = []
     for key, grp in summary.groupby(key_cols):
-        nat = grp[native_mask(grp)]
+        nat = grp[native_mask(grp)] if native_curve is None else native_curve
         for _, r in grp.iterrows():
             row = r.to_dict()
             for xcol, name in [("tdp", "dw_cap"), ("mod_w", "dw_meas")]:
@@ -61,7 +64,7 @@ def summarize_e1(jobs, logdir):
     return d, s
 
 
-def summarize_hpl(job, logdir, name):
+def summarize_hpl(job, logdir, name, native_drop=(), native_add=()):
     log = f"{logdir}/{name}_{job}.out"
     r = parse_hpl_log(log)
     smi = load_smi(f"{logdir}/{name}_{job}_smi")
@@ -81,7 +84,12 @@ def summarize_hpl(job, logdir, name):
     s["gain_pct"] = (s.perf / s.perf_native - 1) * 100
     s["energy_saving_pct"] = (1 - s.energy_kj / s.energy_kj_native) * 100
     s["key"] = 0
-    s = add_delta_w(s, ["key"], lambda g: g.variant == nat_variant).drop(columns="key")
+    curve = s[(s.variant == nat_variant) & ~s.tdp.isin(native_drop)][["tdp", "perf", "mod_w"]]
+    for xname, xjob, xtdps in native_add:  # native points from another job of the same benchmark
+        xr, xs = summarize_hpl(xjob, logdir, xname)
+        xs = xs[(xs.variant == nat_variant) & xs.tdp.isin(xtdps)][["tdp", "perf", "mod_w"]]
+        curve = pd.concat([curve, xs], ignore_index=True)
+    s = add_delta_w(s, ["key"], None, curve).drop(columns="key")
     return r, s
 
 
@@ -90,6 +98,8 @@ def main():
     ap.add_argument("--e1", default="")
     ap.add_argument("--hpl", default="")
     ap.add_argument("--mxp", default="")
+    ap.add_argument("--mxp-native-drop", default="", help="caps whose native HPL-MxP point is left out of the ΔW curve")
+    ap.add_argument("--mxp-native-add", default="", help="name:job:cap[,cap...] native points from another job")
     ap.add_argument("--logdir", default="logs")
     ap.add_argument("--out", default="results")
     a = ap.parse_args()
@@ -101,9 +111,15 @@ def main():
         raw.to_csv(f"{a.out}/e1_raw.csv", index=False)
         s.to_csv(f"{a.out}/e1_summary.csv", index=False)
         print("== E1\n", s.round(3).to_string())
+    drop = [int(x) for x in a.mxp_native_drop.split(",") if x]
+    add = []
+    for spec in filter(None, a.mxp_native_add.split(";")):
+        xname, xjob, caps = spec.split(":")
+        add.append((xname, int(xjob), [int(c) for c in caps.split(",")]))
     for job, name, tag in [(a.hpl, "e3-hpl8", "e3"), (a.mxp, "e2-mxp8", "e2")]:
         if job:
-            raw, s = summarize_hpl(int(job), a.logdir, name)
+            extra = dict(native_drop=drop, native_add=add) if tag == "e2" else {}
+            raw, s = summarize_hpl(int(job), a.logdir, name, **extra)
             raw.to_csv(f"{a.out}/{tag}_raw.csv", index=False)
             s.to_csv(f"{a.out}/{tag}_summary.csv", index=False)
             print(f"== {tag}\n", s.round(3).to_string())

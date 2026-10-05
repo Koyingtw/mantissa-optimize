@@ -15,6 +15,11 @@ import numpy as np  # noqa: E402
 import pandas as pd  # noqa: E402
 from matplotlib.colors import TwoSlopeNorm  # noqa: E402
 
+# TrueType (Type 42) fonts in the PDFs: IEEE PDF eXpress rejects Type 3 fonts
+plt.rcParams.update({"pdf.fonttype": 42, "ps.fonttype": 42})
+
+RES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
+
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join("..", "paper", "figs")
 os.makedirs(OUT, exist_ok=True)
 plt.rcParams.update({
@@ -130,17 +135,19 @@ def fig_spread():
 
 
 def fig_map():
-    pts = [("HPL (uniform)", 14, 1e-6, True, (-5, 6)), ("DF-MP2 tensor", 27, 2.4e-5, True, (4, -9)),
-           ("QE Au surface", 93, 2.2e-4, True, (-4, 4)), ("QE Si", 91, 5.4e-3, True, (-4, 4)),
-           ("Gaussian-basis DFT", 690, 0.44, False, (-4, -10)), ("GP geostatistics", 150, 0.88, True, (-4, 4))]
-    fig, ax = plt.subplots(figsize=(COL, 2.2))
+    # coordinates and outcomes come from results/range_map_points.csv (sources listed there)
+    off = {"HPL (uniform)": (0, 7), "DF-MP2 tensor": (4, -9), "QE Au surface": (-4, 4), "QE Si": (-4, 4),
+           "Gaussian-basis DFT": (-4, -10), "GP geostatistics": (-4, 4)}
+    t = pd.read_csv(os.path.join(RES, "range_map_points.csv"))
+    pts = [(r.label_en, r.global_span, r.frac_below32, bool(r.emu_ok), off[r.label_en]) for r in t.itertuples()]
+    fig, ax = plt.subplots(figsize=(COL, 2.5))
     for x, lab in [(18, "FP8 E4M3"), (40, "FP16"), (254, "FP32/BF16")]:
         ax.axvline(x, color="#999999", lw=0.6, ls="--")
         ax.text(x * 1.05, 7e-7, f"{lab}\nrange", fontsize=6, color="#666666", va="bottom")
     for lab, g, r, ok, off in pts:
         ax.scatter([g], [r], s=22, color=C[0] if ok else C[1], zorder=3)
         ax.annotate(lab, (g, r), textcoords="offset points", xytext=off, fontsize=6.5,
-                    ha="right" if off[0] < 0 else "left")
+                    ha="center" if off[0] == 0 else "right" if off[0] < 0 else "left")
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
     ax.set_xlim(8, 1024)
@@ -148,9 +155,9 @@ def fig_map():
     ax.set_xticks([8, 16, 32, 64, 128, 256, 512, 1024], ["8", "16", "32", "64", "128", "256", "512", "1024"])
     ax.set_xlabel("Global exponent span (binades, central 99.9%)")
     ax.set_ylabel("Fraction of elements\n$>2^{-32}$ below row maximum")
-    ax.scatter([], [], color=C[0], s=18, label="INT8 emulation (32–36 bits) usable")
-    ax.scatter([], [], color=C[1], s=18, label="INT8 emulation silently wrong")
-    ax.legend(frameon=False, fontsize=6, loc="upper left")
+    ax.scatter([], [], color=C[0], s=18, label="fixed 32–36-bit emulation usable")
+    ax.scatter([], [], color=C[1], s=18, label="fixed-bit emulation silently wrong")
+    ax.legend(frameon=False, fontsize=6, loc="upper center", bbox_to_anchor=(0.45, -0.3), ncol=2)
     save(fig, "range_map.pdf")
 
 

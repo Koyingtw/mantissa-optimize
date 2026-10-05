@@ -1,0 +1,24 @@
+job=3292 host=work11 app=pyscf case=168_Valinomycin variants=[native emud79 emu40 emu40 emud79 native emudl79] tdps=[1000]
+TDP 1000 set: 1000.00 W
+=== RUN tdp=1000 variant=native pass=A t_begin=1791218852.001537063
+    RESULT converged=True E=-3795.5392524244 Eh  scf_cycles=16  wall=93.82s
+=== END tdp=1000 variant=native pass=A t_begin=1791218852.001537063 t_end=1791218948.009712479
+=== RUN tdp=1000 variant=emud79 pass=A t_begin=1791218958.060597797
+    RESULT converged=True E=-3795.5392524282 Eh  scf_cycles=16  wall=194.95s
+=== END tdp=1000 variant=emud79 pass=A t_begin=1791218958.060597797 t_end=1791219155.187640924
+=== RUN tdp=1000 variant=emu40 pass=A t_begin=1791219160.225399372
+    RESULT converged=True E=-3795.5392525087 Eh  scf_cycles=20  wall=195.94s
+=== END tdp=1000 variant=emu40 pass=A t_begin=1791219160.225399372 t_end=1791219358.317279035
+=== RUN tdp=1000 variant=emu40 pass=B t_begin=1791219363.354994987
+    RESULT converged=True E=-3795.5392525090 Eh  scf_cycles=18  wall=178.97s
+=== END tdp=1000 variant=emu40 pass=B t_begin=1791219363.354994987 t_end=1791219544.479769638
+=== RUN tdp=1000 variant=emud79 pass=B t_begin=1791219549.517775960
+    RESULT converged=True E=-3795.5392524282 Eh  scf_cycles=16  wall=194.99s
+=== END tdp=1000 variant=emud79 pass=B t_begin=1791219549.517775960 t_end=1791219746.670465508
+=== RUN tdp=1000 variant=native pass=B t_begin=1791219751.708090452
+    RESULT converged=True E=-3795.5392524244 Eh  scf_cycles=16  wall=93.53s
+=== END tdp=1000 variant=native pass=B t_begin=1791219751.708090452 t_end=1791219847.415716583
+=== RUN tdp=1000 variant=emudl79 pass=A t_begin=1791219857.465955601
+    RESULT converged=True E=-3795.5392524282 Eh  scf_cycles=16  wall=273.51s
+=== END tdp=1000 variant=emudl79 pass=A t_begin=1791219857.465955601 t_end=1791220133.136516194
+=== ALL DONE

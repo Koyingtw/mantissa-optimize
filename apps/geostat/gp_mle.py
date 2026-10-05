@@ -90,6 +90,17 @@ def covariance(xy, rng, dtype):
 
 
 SPAN = {}
+EXP_HIST = [None]
+
+
+def central_span(h, q=0.999):
+    """Binades spanned by the central q of a histogram over integer exponents (offset 1100): the difference of the
+    floor(log2) exponents at the two quantiles, the same convention as gh200/results/range_summary.csv."""
+    c = cp.asnumpy(cp.cumsum(h)).astype(float)
+    tot = c[-1]
+    lo = int(np.searchsorted(c, tot * (1 - q) / 2))
+    hi = int(np.searchsorted(c, tot * (1 + q) / 2))
+    return hi - lo, lo - 1100, hi - 1100
 
 
 def span_stats(Lt, nrows=256):
@@ -103,6 +114,9 @@ def span_stats(Lt, nrows=256):
         SPAN.setdefault(t, [0, 0])
         SPAN[t][0] += int(((below > t) & ok).sum())
         SPAN[t][1] += n
+    # global exponent histogram of the sampled panel rows (integer binades), for the central-99.9% span
+    h = cp.bincount((cp.floor(e[ok]).astype(cp.int64) + 1100), minlength=2200)
+    EXP_HIST[0] = h if EXP_HIST[0] is None else EXP_HIST[0] + h
 
 
 def cholesky(A, bits, nearest, fp32, stats=False):
@@ -416,5 +430,11 @@ for v in os.environ.get("GP_VARIANTS", "native").split():
         print("MP_GP frac_fp16=[" + " ".join(f"{x:.3f}" for x in MP_FRAC) + "]", flush=True)
         MP_FRAC.clear()
     if SPAN:
-        print("RANGE_GP " + " ".join(f"frac_below{t}={a / max(b, 1):.3e}" for t, (a, b) in sorted(SPAN.items())), flush=True)
+        extra = ""
+        if EXP_HIST[0] is not None:
+            sp, lo, hi = central_span(EXP_HIST[0])
+            extra = f" global_span999={sp} exp_lo={lo} exp_hi={hi}"
+            EXP_HIST[0] = None
+        print("RANGE_GP " + " ".join(f"frac_below{t}={a / max(b, 1):.3e}" for t, (a, b) in sorted(SPAN.items())) + extra,
+              flush=True)
         SPAN.clear()

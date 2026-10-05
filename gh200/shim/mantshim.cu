@@ -25,6 +25,11 @@
 //   MANT_EMU_BITS=<k>          instead of reducing, run each FP64 GEMM with cuBLAS fixed-point
 //                              (Ozaki-type, integer tensor core) emulation retaining at most k
 //                              mantissa bits; no copies are made
+//   MANT_EMU_DYN=1             with MANT_EMU_BITS: dynamic mantissa control, i.e. cuBLAS picks the bit
+//                              count per call from the operands' exponent spans for FP64-equivalent
+//                              accuracy and runs native FP64 when that needs more than k bits
+//   MANT_EMU_LOG=1             read back the bit count cuBLAS used for every emulated GEMM (synchronizes
+//                              after each call) and print a histogram (calls, flops) at exit
 //   mantshim_set_bits(k)       exported C function: change MANT_BITS at run time (e.g. from a
 //                              solver callback through ctypes); -1 returns the current value
 //   MANT_REDUCE_64=1           also reduce the 64-bit-index entry points (cublasDgemm_v2_64,
@@ -71,6 +76,8 @@ struct Config {
   bool reduce64 = false;
   bool force_copy = false;
   int emu_bits = -1;
+  bool emu_dyn = false;         // MANT_EMU_DYN
+  bool emu_log = false;         // MANT_EMU_LOG
   int f32 = 0;                  // MANT_F32: 1 = fp32, 2 = tf32, 3 = tf32x3
   const char* dump = nullptr;   // MANT_DUMP=<dir>: write the operands of the first MANT_DUMP_N GEMMs
   long dump_n = 4;
@@ -86,6 +93,8 @@ struct Config {
     if (const char* e = getenv("MANT_DUMP_N")) dump_n = atol(e);
     if (const char* e = getenv("MANT_DUMP_MIN_MNK")) dump_min = atof(e);
     if (const char* e = getenv("MANT_EMU_BITS")) emu_bits = atoi(e);
+    if (const char* e = getenv("MANT_EMU_DYN")) emu_dyn = atoi(e) != 0;
+    if (const char* e = getenv("MANT_EMU_LOG")) emu_log = atoi(e) != 0;
     if (const char* e = getenv("MANT_F32"))
       f32 = !strcmp(e, "fp32") ? 1 : !strcmp(e, "tf32") ? 2 : !strcmp(e, "tf32x3") ? 3 : 0;
     if (const char* e = getenv("MANT_FORCE_COPY")) force_copy = atoi(e) != 0;
@@ -106,12 +115,53 @@ Config& cfg_mut() {
 }
 const Config& cfg() { return cfg_mut(); }
 
-// Put the handle into fixed-point FP64 emulation with at most `bits` mantissa bits.
-void set_emulation(cublasHandle_t h, int bits) {
+// MANT_EMU_LOG: cuBLAS writes the bit count of each emulated GEMM to emu_bits_dev; it is read back when the
+// next emulated GEMM is set up (or at exit) and accumulated per bit count as (calls, flops).
+int* emu_bits_dev = nullptr;
+cudaStream_t emu_stream = nullptr;
+double emu_pending_flop = 0;
+std::map<int, std::pair<long, double>> emu_hist;
+
+void emu_collect() {
+  if (!emu_bits_dev || emu_pending_flop == 0) return;
+  if (cudaStreamSynchronize(emu_stream) != cudaSuccess) {
+    cudaGetLastError();
+    cudaDeviceSynchronize();
+  }
+  int b = -1;
+  cudaMemcpy(&b, emu_bits_dev, sizeof(int), cudaMemcpyDeviceToHost);
+  auto& e = emu_hist[b];
+  e.first += 1;
+  e.second += emu_pending_flop;
+  emu_pending_flop = 0;
+}
+
+void write_emu() {
+  if (!cfg().emu_log) return;
+  emu_collect();
+  double tot = 0;
+  for (auto& kv : emu_hist) tot += kv.second.second;
+  for (auto& kv : emu_hist)
+    fprintf(stderr, "[mantshim] emu bits=%d calls=%ld gflop=%.1f flop_share=%.4f\n", kv.first, kv.second.first,
+            kv.second.second / 1e9, kv.second.second / std::max(tot, 1.0));
+}
+
+// Put the handle into fixed-point FP64 emulation with at most `bits` mantissa bits (MANT_EMU_DYN: as many as
+// cuBLAS finds necessary, native FP64 above `bits`). `flop` and `s` are only used by MANT_EMU_LOG.
+void set_emulation(cublasHandle_t h, int bits, double flop, cudaStream_t s) {
   cublasSetMathMode(h, CUBLAS_FP64_EMULATED_FIXEDPOINT_MATH);
   cublasSetEmulationStrategy(h, CUBLAS_EMULATION_STRATEGY_EAGER);
-  cublasSetFixedPointEmulationMantissaControl(h, CUDA_EMULATION_MANTISSA_CONTROL_FIXED);
+  cublasSetFixedPointEmulationMantissaControl(
+      h, cfg().emu_dyn ? CUDA_EMULATION_MANTISSA_CONTROL_DYNAMIC : CUDA_EMULATION_MANTISSA_CONTROL_FIXED);
   cublasSetFixedPointEmulationMaxMantissaBitCount(h, bits);
+  if (cfg().emu_log) {
+    emu_collect();
+    if (!emu_bits_dev) cudaMalloc(&emu_bits_dev, sizeof(int));
+    cudaMemsetAsync(emu_bits_dev, 0xff, sizeof(int), s);
+    cublasSetFixedPointEmulationMantissaBitCountPointer(h, emu_bits_dev);
+    emu_stream = s;
+    emu_pending_flop = flop;
+  }
 }
 
 // ---- statistics ----------------------------------------------------------
@@ -321,6 +371,7 @@ void write_stats();
 void write_all() {
   write_stats();
   write_span();
+  write_emu();
 }
 void register_atexit() {
   // Registered lazily (after the CUDA runtime has initialised), so our handler
@@ -524,7 +575,7 @@ bool prepare_device(cublasHandle_t h, bool ta, bool tb, long m, long n, long k, 
     dev_record((const double*)B + i * sB * per, br, bc, ldb, per, true, sc.s);
   }
   if (cfg().emu_bits > 0 && !g_stats_only) {
-    set_emulation(h, cfg().emu_bits);
+    set_emulation(h, cfg().emu_bits, 2.0 * m * n * k * batch * (per == 2 ? 4 : 1), sc.s);
     return false;
   }
   if (g_stats_only || !want_reduce((double)m * n * k)) return false;

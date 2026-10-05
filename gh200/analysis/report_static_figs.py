@@ -11,6 +11,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib import font_manager  # noqa: E402
+import pandas as pd  # noqa: E402
+
+RES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "results")
 
 FONT, OUT = sys.argv[1], (sys.argv[2] if len(sys.argv) > 2 else "report_figs")
 os.makedirs(OUT, exist_ok=True)
@@ -145,9 +148,11 @@ def fig_spread():
 
 
 def fig_map():
-    pts = [("HPL（均勻亂數）", 14, 1e-6, True, (8, -10)), ("DF-MP2 張量（紫杉醇）", 27, 2.4e-5, True, (8, 12)),
-           ("QE 金表面", 93, 2.2e-4, True, (-8, -10)), ("QE 矽", 91, 5.4e-3, True, (-8, -10)),
-           ("PySCF 纈胺黴素 DFT", 690, 0.44, False, (-8, -12)), ("高斯過程地統計（n = 80000）", 150, 0.88, True, (-8, 14))]
+    # coordinates and outcomes come from results/range_map_points.csv (sources listed there)
+    off = {"HPL (uniform)": (8, -10), "DF-MP2 tensor": (8, 12), "QE Au surface": (-8, -10), "QE Si": (-8, -10),
+           "Gaussian-basis DFT": (-8, -12), "GP geostatistics": (-8, 14)}
+    t = pd.read_csv(os.path.join(RES, "range_map_points.csv"))
+    pts = [(r.label_zh, r.global_span, r.frac_below32, bool(r.emu_ok), off[r.label_en]) for r in t.itertuples()]
     fig, ax = plt.subplots(figsize=(W, 4.6))
     for x, lab in [(18, "FP8 E4M3"), (40, "FP16"), (254, "FP32／BF16")]:
         ax.axvline(x, color=GRAY, lw=0.9, ls=(0, (5, 4)))
@@ -164,11 +169,11 @@ def fig_map():
     ax.set_xlim(8, 1024)
     ax.set_ylim(5e-7, 3)
     ax.set_xticks([8, 16, 32, 64, 128, 256, 512, 1024], ["8", "16", "32", "64", "128", "256", "512", "1024"])
-    ax.set_yticks([1e-6, 1e-4, 1e-2, 1], ["≤0.0001%", "0.01%", "1%", "100%"])
+    ax.set_yticks([1e-6, 1e-4, 1e-2, 1], ["0.0001%", "0.01%", "1%", "100%"])
     ax.set_xlabel("整體指數跨度（中間 99.9% 的數值橫跨幾個 2 的次方，對數尺度）", color=GRAY)
     ax.set_ylabel("列內比最大值小 $2^{-32}$ 以上的元素\n（依運算量加權）", color=GRAY)
-    titled(fig, "整體跨度決定逐張量格式放不放得下，列內跨度決定 INT8 模擬會不會算錯",
-           "截斷保留每個元素自己的指數，在圖上任何位置都可用；顏色是 cuBLAS 模擬 32–36 位在該應用上的實測結果")
+    titled(fig, "整體跨度限制逐張量格式；列內跨度寬時 INT8 模擬可能算錯（必要而非充分）",
+           "截斷保留每個元素自己的指數，在圖上任何位置都可用；顏色是 cuBLAS 固定 32–36 位模擬的實測結果")
     save(fig, "fig5_13_rangemap.png")
 
 
