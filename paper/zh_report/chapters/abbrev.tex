@@ -1,0 +1,34 @@
+% 符號與縮寫說明
+\chapter*{符號與縮寫說明}
+\addcontentsline{toc}{chapter}{符號與縮寫說明}
+\markboth{符號與縮寫說明}{符號與縮寫說明}
+
+{\small\linespread{1.25}\selectfont
+\noindent\begin{tabularx}{\textwidth}{@{}p{3.2cm}L@{}}
+\toprule
+縮寫／符號 & 說明 \\
+\midrule
+3xTF32 & 把每個 FP32 數拆成兩個 TF32、以三次 tensor core 乘法近似 FP32 精度的做法 \\
+ABBA & 成對交錯的執行順序（A、B、B、A），用來消除溫度與先後順序的影響 \\
+BF16、FP16、FP8 & 16 位元的 bfloat16、16 位元的 IEEE 半精度、8 位元浮點（本報告指 E4M3） \\
+cuBLAS & NVIDIA 的 GPU 線性代數函式庫；第 13 版起內建 FP64 矩陣乘法的 INT8 模擬 \\
+DFT & 密度泛函理論（density functional theory） \\
+DF-MP2 & 密度擬合的二階 Møller–Plesset 微擾理論 \\
+$E_\mathrm{h}$、Ry & 原子單位制的能量單位 Hartree 與 Rydberg（1\Eh{} = 2~Ry） \\
+FP64、FP32、TF32 & IEEE 雙精度、IEEE 單精度，以及 tensor core 使用的 19 位元 TF32 格式 \\
+GEMM、DGEMM & 一般矩陣乘法；FP64 的一般矩陣乘法 \\
+GEMMul8 & 以中國餘數定理實作 Ozaki 第二版方法的 INT8 模擬函式庫 \\
+GH200 & NVIDIA Grace Hopper superchip（Grace CPU 與 Hopper GPU 封裝在同一模組） \\
+HBM & 高頻寬記憶體（high-bandwidth memory） \\
+HPL、HPL-MxP & TOP500 排名所用的 FP64 Linpack 基準；以低精度分解加迭代修正的混合精度 Linpack 基準 \\
+INT8 模擬 & 把 FP64 數拆成多片 8 位元整數、以整數 tensor core 計算 FP64 矩陣乘法的做法（Ozaki 方法） \\
+LoRA & 低秩適配（low-rank adaptation）微調 \\
+MLE & 最大概似估計（maximum likelihood estimation） \\
+SCF & 自洽場（self-consistent field）迭代 \\
+SM & 串流多處理器（streaming multiprocessor）；本報告的「時脈」皆指 SM 時脈 \\
+$k$ & 保留的尾數位數；HPL 的位數依 rocHPL 慣例為含隱藏位的有效位數 \\
+\DW & 等效功耗：未修改的程式要追上尾數歸零版本，每個節點需要多給的功耗上限（第 \ref{sec:dw} 節） \\
+$\alpha$ & 矩陣乘法誤差模型的係數（第 \ref{sec:errmodel} 節）；在第 \ref{sec:motivation-data} 節另指電路的切換活動率 \\
+\bottomrule
+\end{tabularx}
+\par}

@@ -1,0 +1,163 @@
+% 專題研究成果報告（正式版，繁體中文）
+% 編譯：先執行 ./fetch_fonts.sh 下載 Noto CJK TC 字型，再執行 ./build.sh（tectonic／XeLaTeX + BibTeX）。
+% 圖由 gh200/analysis/report_figs_zh.py 產生到 figs/；參考文獻與英文論文共用 ../refs.bib（以符號連結 refs.bib 引用）。
+\documentclass[a4paper,12pt,oneside,fontset=none,zihao=-4,linespread=1.5]{ctexrep}
+
+% ---------------------------------------------------------------- 封面資訊
+\newcommand{\School}{國立清華大學}
+\newcommand{\Department}{資訊工程學系}
+\newcommand{\StudentName}{陳克盈}
+\newcommand{\StudentNameEn}{Koying Chen}
+\newcommand{\StudentID}{112062205}
+\newcommand{\Advisor}{周志遠\ 教授}
+\newcommand{\ReportDate}{中華民國 115 年 10 月}
+\newcommand{\TitleZh}{以尾數位元換瓦數：在 GH200 功耗上限下以尾數歸零提升科學計算效能}
+\newcommand{\TitleEn}{Trading Mantissa Bits for Watts: Software Mantissa Zeroing under Module Power Caps on the NVIDIA GH200}
+
+% ---------------------------------------------------------------- 版面與字型
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm,headheight=15pt,headsep=0.8cm,footskip=1.2cm]{geometry}
+\setCJKmainfont[Path=fonts/,BoldFont=NotoSerifCJKtc-Bold.otf]{NotoSerifCJKtc-Regular.otf}
+\setCJKsansfont[Path=fonts/,BoldFont=NotoSansCJKtc-Bold.otf]{NotoSansCJKtc-Regular.otf}
+\setCJKmonofont[Path=fonts/]{NotoSansCJKtc-Regular.otf}
+\usepackage{amsmath}
+\usepackage{unicode-math}
+\setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
+\setmonofont{Inconsolatazi4}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold]
+\setmathfont{texgyretermes-math.otf}
+
+\usepackage{graphicx,booktabs,tabularx,longtable,multirow,array,enumitem,etoolbox,xcolor}
+\usepackage{fvextra}
+\usepackage[labelsep=quad,font=small,labelfont=bf,skip=6pt]{caption}
+\captionsetup[table]{position=top}
+\usepackage{fancyhdr}
+\usepackage[nottoc]{tocbibind}
+\usepackage{cite}
+\usepackage{xurl}
+\usepackage[unicode,hidelinks,bookmarksnumbered]{hyperref}
+\hypersetup{pdftitle={\TitleZh},pdfauthor={\StudentName（\StudentNameEn）},pdfsubject={\School\Department 專題研究成果報告}}
+\urlstyle{same}
+
+\ctexset{
+  contentsname={目錄}, listfigurename={圖目錄}, listtablename={表目錄},
+  figurename={圖}, tablename={表}, bibname={參考文獻}, appendixname={附錄}, abstractname={摘要},
+  chapter={format=\centering\sffamily\bfseries\LARGE, beforeskip=0.5cm, afterskip=1.2cm, pagestyle=fancy},
+  section={format=\sffamily\bfseries\Large},
+  subsection={format=\sffamily\bfseries\large},
+  subsubsection={format=\sffamily\bfseries\normalsize},
+}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{1}
+
+% 頁首與頁碼
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\sffamily\leftmark}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+% 浮動物件
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+\raggedbottom
+\setlength{\emergencystretch}{2em}
+\binoppenalty=10000
+\relpenalty=10000
+\setlength{\tabcolsep}{5pt}
+\AtBeginEnvironment{table}{\linespread{1.15}\selectfont}
+\AtBeginEnvironment{figure}{\linespread{1.15}\selectfont}
+\setlist{itemsep=0.2em,topsep=0.4em,leftmargin=2em}
+\setlist[description]{leftmargin=0pt,font=\normalfont\bfseries}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% 圖表下方的資料來源與註記
+% （以環境而非命令實作，內文才能使用 \path）
+\newenvironment{figsource}{\par\vspace{2pt}\footnotesize\centering 資料來源：}{\par}
+\newenvironment{tablenote}{\par\vspace{3pt}\footnotesize\raggedright}{\par}
+
+% 圖檔：以原始大小置入（圖已依版心 15.5 cm 或半欄 7.5 cm 繪製）；尚未產生時顯示佔位框
+\newcommand{\figfile}[2][]{\IfFileExists{figs/#2.pdf}{\includegraphics[#1]{figs/#2}}%
+  {\fbox{\parbox[c][4cm][c]{0.9\textwidth}{\centering 圖檔 \texttt{\detokenize{#2}} 尚未產生}}}}
+
+% 單位與數字
+\newcommand{\Eh}{\ensuremath{\,E_{\mathrm{h}}}}
+\newcommand{\mEh}{\ensuremath{\,\mathrm{m}E_{\mathrm{h}}}}
+\newcommand{\ee}[2]{\ensuremath{#1\times10^{#2}}}
+\newcommand{\DW}{\ensuremath{\Delta W}}
+
+% IEEEtran.bst 的控制項（作者超過 6 位時以 et al. 簡寫）；IEEEtran.cls 以外的文件類別需自行定義 \bstctlcite
+\makeatletter
+\def\bstctlcite{\@ifnextchar[{\@bstctlcite}{\@bstctlcite[@auxout]}}
+\def\@bstctlcite[#1]#2{\@bsphack\@for\@citeb:=#2\do{%
+  \edef\@citeb{\expandafter\@firstofone\@citeb}%
+  \if@filesw\immediate\write\csname #1\endcsname{\string\citation{\@citeb}}\fi}\@esphack}
+\makeatother
+
+\begin{document}
+\bstctlcite{IEEEexample:BSTcontrol}
+% 數字範圍（如 4.0–11.0）不在 en dash 後斷行：U+2013 視為西文字元，西文的 -- 也不斷行
+\xeCJKDeclareCharClass{Default}{"2013}
+\exhyphenpenalty=10000
+
+% ---------------------------------------------------------------- 封面
+\pagenumbering{Alph}
+\begin{titlepage}
+\centering
+\vspace*{0.5cm}
+{\sffamily\LARGE \School\par}
+\vspace{0.6em}
+{\sffamily\Large \Department\par}
+\vspace{1.2em}
+{\sffamily\bfseries\Large 專題研究成果報告\par}
+\vspace{4.2cm}
+{\sffamily\bfseries\huge 以尾數位元換瓦數：\par}
+\vspace{0.8em}
+{\sffamily\bfseries\LARGE\linespread{1.3}\selectfont 在 GH200 功耗上限下以尾數歸零\\提升科學計算效能\par}
+\vspace{1.6em}
+{\large\linespread{1.2}\selectfont Trading Mantissa Bits for Watts:\\Software Mantissa Zeroing under Module Power Caps\\on the NVIDIA GH200\par}
+\vfill
+{\large
+\begin{tabular}{@{}l@{：\hspace{0.5em}}l@{}}
+學　　生 & \StudentName（\StudentNameEn） \\
+學　　號 & \StudentID \\
+指導教授 & \Advisor \\
+\end{tabular}\par}
+\vspace{2.5cm}
+{\large \ReportDate\par}
+\vspace*{0.5cm}
+\end{titlepage}
+
+% ---------------------------------------------------------------- 前置部分
+\pagenumbering{roman}
+\input{chapters/front}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\input{chapters/abbrev}
+
+% ---------------------------------------------------------------- 本文
+\clearpage
+\pagenumbering{arabic}
+\input{chapters/ch1}
+\input{chapters/ch2}
+\input{chapters/ch3}
+\input{chapters/ch4}
+\input{chapters/ch5}
+\input{chapters/ch6}
+\input{chapters/ch7}
+
+% ---------------------------------------------------------------- 參考文獻與附錄
+\bibliographystyle{IEEEtran}
+{\raggedright\bibliography{refs}}
+
+\appendix
+\input{chapters/appA}
+
+\end{document}

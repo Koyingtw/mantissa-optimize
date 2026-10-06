@@ -21,8 +21,9 @@
 
 \title{Trading Mantissa Bits for Watts: Software Mantissa Zeroing under Module Power Caps on the NVIDIA GH200}
 
-\author{\IEEEauthorblockN{Koying Chen}}
-% Affiliation, e-mail and acknowledgments are left for the author to fill in before submission.
+\author{\IEEEauthorblockN{Koying Chen}
+\IEEEauthorblockA{Department of Computer Science, National Tsing Hua University, Hsinchu, Taiwan}}
+% E-mail, co-authors and acknowledgments are left for the author to fill in before submission.
 
 \maketitle
 
@@ -755,7 +756,7 @@ implemented, so we could not compare with its own mixed precision.
 loading (the rest follows the FP8 recipe~\cite{Micikevicius2022}) made each 384 samples 0.9--1.2\pct{} faster but
 raised the samples to target from 3456 to 4224 with the same seed (22\pct{} slower at 575\W, 19\pct{} at 800\W; a
 second seed at 800\W: 3072 to 4224, +39\pct); 1 bit did not converge. The first evaluation is always 0.008--0.010
-higher (two seeds, three pairs), but native convergence differs by one evaluation interval between node sets (3072
+higher (two seeds, four pairs), but native convergence differs by one evaluation interval between node sets (3072
 versus 3456), so we read this only as evidence that FP8's 3 mantissa bits leave no room; rounding modes, decisive
 in~\cite{Gupta2015}, show no consistent order.
 

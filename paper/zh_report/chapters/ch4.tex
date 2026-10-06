@@ -1,0 +1,61 @@
+% 第四章 研究方法
+\chapter{研究方法}\label{ch:method}
+
+\section{尾數歸零與三種捨入方式}\label{sec:rounding}
+
+對一個有 $p$ 個尾數位元的運算元（FP64 為 52、BF16 為 7、FP8 E4M3 為 3），保留最高的 $k$ 個位元，其餘 $p-k$ 個設為 0。本研究比較三種去除低位的方式：
+
+\begin{description}
+  \item[截斷：] 直接以位元遮罩清除低位，即往 0 的方向捨去。
+  \item[最近捨入：] 先加上保留的最低位權重的一半（即被捨去部分的最高位），再以遮罩清除。攔截工具、GEMM 微基準、Quantum ESPRESSO、DF-MP2 與高斯過程的實作在平手時往離零較遠的方向捨入；HPL、LoRA 的權重載入與語言模型推論的實作則是平手取偶。
+  \item[隨機捨入：] 先加上一個小於被捨去位元權重的隨機整數，再以遮罩清除。
+\end{description}
+
+每個元素只需一次整數 AND 運算（最近捨入再多一次加法，隨機捨入另需產生亂數），可以融入產生該運算元的核心；本報告的 HPL 另外執行一個捨入核心、攔截工具另外做一次複製，這些額外成本都計入量到的時間。本報告所稱「截斷到 $k$ 位」泛指保留 $k$ 位；除非特別註明，應用程式（Quantum ESPRESSO、PySCF、DF-MP2、高斯過程、ExaGeoStat 與第三方程式）與 HPL 使用最近捨入，GEMM 微基準、分界點掃描與 HPL-MxP 使用往零截斷。HPL 的位數依 rocHPL 的慣例為含隱藏位的有效位數：36 位相當於保留 35 個尾數位元。
+
+\section{四種實作層次}\label{sec:impl}
+
+\begin{enumerate}
+  \item \textbf{在基準程式中歸零。}矩陣乘法微基準在產生輸入時歸零；HPL 在每次 FP64 GEMM 之前以一個捨入核心處理兩個輸入（執行時以環境變數指定位數）；HPL-MxP 在編譯時指定位數，每次寫回 BF16 時歸零。
+  \item \textbf{攔截函式庫。}對不修改原始碼的科學軟體，以 \texttt{LD\_PRELOAD} 攔下 cuBLAS 的所有 FP64 與複數 FP64 矩陣乘法入口，把 A、B 複製並捨入後再呼叫原函式（呼叫端的資料不變）。同一個函式庫也能統計運算元的指數分佈、改用 cuBLAS 的 FP64 模擬，或改以 FP32／3xTF32 計算，用於公平比較。
+  \item \textbf{程式內改寫。}在 Quantum ESPRESSO 的 Davidson 對角化中，對波函數區塊原地歸零，不需要複製；第三方非矩陣乘法程式（MFEM、SW4、LAMMPS）在設定階段對儲存的係數陣列歸零一次；GPU4PySCF 的 DF-MP2 在三指標張量建好後原地歸零一次；高斯過程核心則在每個面板進行尾端更新之前原地歸零。
+  \item \textbf{依收斂門檻自動調整。}Davidson 每一圈會收到一個收斂門檻 ethr，在整個 SCF 過程中從約 $10^{-2}$ 收緊到 $10^{-12}$。我們保留
+  \begin{equation}
+    k = \min\bigl(52,\ \max\bigl(16,\ \lceil -\log_2 \mathrm{ethr} \rceil + m\bigr)\bigr)
+    \label{eq:adapt}
+  \end{equation}
+  個位元，其中 $m$ 為餘裕，使前期使用較少位元、最後幾圈才用足。這是一條經驗規則：ethr 是特徵值的絕對容許誤差（單位 Ry），與尾數的相對誤差不同，$m$ 用來吸收兩者的差距；此規則不需要對應用建模，只使用程式本來就會計算的容許誤差。
+\end{enumerate}
+
+LoRA 訓練則在載入後對凍結的 FP8 基底權重歸零一次；推論實驗在線性層中模擬各種格式，其中 FP8 使用真實的 FP8 tensor core 矩陣乘法。
+
+\section{實驗平台}\label{sec:platform}
+
+實驗平台為 14 個節點的叢集，每個節點有一顆 NVIDIA GH200 480GB superchip（72 核 Grace CPU、Hopper GPU 搭配 96~GB HBM3，最高 SM 時脈 1980~MHz），以 200~Gb/s InfiniBand 連接，由 Slurm 管理。模組功耗上限可設為 200–1000~W（預設 1000~W）。規格表列出的可設範圍是 450–1000~W~\cite{NVIDIAGH200}；本報告低於 450~W 的設定超出規格表的範圍，但驅動程式接受，實測功耗也貼著上限。軟體為 NVHPC 26.5（CUDA 13.2、cuBLAS 13、NCCL、HPC-X Open MPI）。多節點實驗（HPL、HPL-MxP、LoRA）使用 8 個節點。完整的軟體版本列於附錄 \ref{app:env}。
+
+\section{量測與統計}\label{sec:measure}
+
+\begin{description}
+  \item[功耗：] 每 250–500~ms 以 nvidia-smi 取樣模組功耗、SM 時脈、溫度與降頻原因。耗電量以驅動程式的 1 秒平均模組功耗對時間積分（對忽高忽低的負載，單一瞬時讀數會有 $-37\%$ 到 $+41\%$ 的偏差）；表中的平均功耗是量測視窗內瞬時取樣的平均，穩態下與 1 秒平均相差約 1\% 以內。
+  \item[公平比較：] 每次量測都等 GPU 降到 45\,°C 以下才開始；在同一功耗上限內，以交錯順序（A、B、B、A）在同一組節點上執行各變體，以消除溫度與先後順序的影響。
+  \item[信賴區間：] 同一節點、同一上限、同一輪的「歸零 ÷ 原生 $-$ 1」為一個成對樣本，以 $t$ 分布取 95\% 區間，藉此消除節點間 13–17\% 的時脈差異。區間只用於矩陣乘法微基準（3 個節點各 2 對）與 Quantum ESPRESSO 的自動調整（6 對）；同一節點的兩對並非完全獨立，區間可能偏窄。HPL、HPL-MxP、DF-MP2 與高斯過程每一格只有同一組節點上的兩輪，表中列出兩輪的值或平均，不附區間。每個工作的第一次執行常偏慢（暖機），而交錯順序的第一個多半是原生，會使第一對的收益偏大（第 \ref{sec:sci} 節）。
+  \item[資料檢查：] 每個量測視窗都記錄實際生效的功耗上限，與預定值不符者一律剔除（叢集為共用資源）；硬體功耗煞車以降頻計數器判讀（只在診斷工作 1675 中開啟，主要的 HPL／HPL-MxP 掃描沒有記錄）。
+\end{description}
+
+\section{等效功耗 \texorpdfstring{$\Delta W$}{ΔW}}\label{sec:dw}
+
+在功耗上限 $P$ 下，將尾數歸零版本的效能記為 $p'(P)$，原生版本的效能記為 $p(P)$。沿著原生版本實測的「效能對上限」曲線線性內插，找出原生版本達到 $p'(P)$ 所需的上限 $P_{\mathrm{native}}$，並定義
+\begin{equation}
+  \Delta W(P) = P_{\mathrm{native}} - P, \qquad p(P_{\mathrm{native}}) = p'(P) .
+  \label{eq:dw}
+\end{equation}
+其意義為：未修改的程式要追上尾數歸零版本，每個節點需要多給的功耗上限。這比百分比更直接地對應到機房的電力預算。上限之間以直線內插；由於效能對上限的曲線向下彎，兩個上限相隔較遠時（例如 800–1000~W），$\Delta W$ 會略為高估。
+
+\section{誤差模型}\label{sec:errmodel}
+
+兩個輸入都保留 $k$ 位時，矩陣乘法結果的相對誤差（Frobenius 範數）約為
+\begin{equation}
+  \frac{\lVert \widehat{C} - C \rVert_F}{\lVert C \rVert_F} \approx \alpha \cdot 2^{-k},
+  \label{eq:errmodel}
+\end{equation}
+與內積長度無關（累加仍為 FP64）。在均勻隨機資料上（$k \ge 4$），最近捨入的 $\alpha \approx 0.27$、隨機捨入 0.38、截斷 0.70，截斷的誤差約為最近捨入的 2.6 倍。截斷的誤差幾乎全是系統性的縮小，對會累積偏差的流程有害，這是科學軟體應採用最近捨入的原因（第 \ref{sec:sci} 節）。

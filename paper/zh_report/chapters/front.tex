@@ -1,0 +1,48 @@
+% 中文摘要與英文摘要（標題上下留白略縮，使中文摘要維持一頁）
+\ctexset{chapter={beforeskip=0pt,afterskip=0.7cm}}
+\chapter*{摘要}
+\addcontentsline{toc}{chapter}{摘要}
+\markboth{摘要}{摘要}
+
+{\linespread{1.3}\selectfont\enlargethispage{\baselineskip}
+現代超級電腦與 GPU 叢集越來越常在功耗上限下運作：機房依機櫃電力限電，學生超算競賽限制整個叢集的功率，NVIDIA GH200 也允許使用者設定整顆模組的功耗上限。在功耗上限下，GPU 會把時脈降到功耗剛好不超過上限，因此程式的速度取決於每次運算消耗的能量；而 GPU 的耗電又隨資料而變，位元翻轉越多越耗電。另一方面，許多科學應用實際需要的精度，遠少於 FP64 提供的 52 個尾數位元。
+
+本專題研究「尾數歸零」：以軟體將運算元低位的尾數位元設為 0，不改變資料格式與演算法，使運算單元與資料線路的翻轉減少，再於功耗上限下把省下的功耗轉換為更高的時脈與吞吐量。我們在 14 節點的 GH200 叢集上，以成對交錯的量測與「等效功耗」（未修改的程式需要多給多少功耗上限才能追上）評估此做法，涵蓋矩陣乘法微基準、8 節點 HPL 與 HPL-MxP、Quantum ESPRESSO 與 PySCF 等科學軟體、第三方非矩陣乘法程式，以及 AI 訓練與推論。
+
+結果顯示，在功耗受限且截斷直接實作於程式內時，所有受測、以矩陣乘法為主且具正確性檢查的完整程式皆獲得正面收益。8 節點 HPL 保留 36 位有效位數（含隱藏位，即 35 個尾數位元；殘差距門檻約百倍）在 400–800~W 快 4.0–11.0\%，相當於每節點多給 39–127~W 的功耗上限；HPL-MxP 保留 3 位快 1.8–12.7\%（對角優勢的測試矩陣）；Quantum ESPRESSO 依求解器的收斂門檻自動調整位元數，在總能量印出的每一位皆不變的情況下快 2.4–4.2\%、少耗電 2.5–3.9\%（金表面的收益約一半來自 Davidson 迭代減少）；DF-MP2 截斷到 20–32 位在 500–700~W 快 4.9–8.3\%；指數跨度寬且功耗高的高斯過程地統計截斷到 28 位在 500–700~W 快 7.4–8.2\%，估出的參數與原生相同，而 FP32 結果不可用、INT8 模擬較慢。在預設的 1000~W 上限下，HPL 仍快 3.9\%，每次求解少耗電 7.5\%。機制實驗顯示 62–97\% 的省電來自低位元不再翻轉，在 tensor core、FP64 乘加單元與記憶體搬移上皆成立。
+
+適用範圍方面，與 INT8 模擬 FP64 的分界點隨矩陣形狀與功耗上限而變；所有矩陣乘法改用 FP32 或 3xTF32 時，長內積的 Quantum ESPRESSO 無法收斂；列內指數跨度寬時，固定位數的 INT8 模擬可能在沒有警告的情況下算錯（高斯基底 DFT 上 cuBLAS 固定 36 位模擬的能量誤差達 52\mEh，同樣保留 36 位的最近捨入截斷只差 $10^{-6}$\Eh），但跨度寬不一定導致錯誤，以 tile 為單位換格式也能處理這類資料，截斷還可疊加其上；在已使用 FP8 的 AI 推論上，FP8 已取得幾乎全部的好處。尾數歸零每個元素只多一次位元運算、不需要新硬體，最適合具殘差修正或自洽迭代的科學求解器。
+
+{\small 註：本報告中所有截斷後的 HPL／HPL-MxP 與 MLPerf 數字皆為研究用途，並非 TOP500 或 MLPerf 的正式成績。\par}
+
+\vspace{0.5em}
+\noindent\textbf{關鍵詞：}功耗上限、能源效率、浮點精度、尾數截斷、GPU、混合精度、HPL
+\par}
+
+\ctexset{chapter={beforeskip=0.5cm,afterskip=1.2cm}}
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+\markboth{Abstract}{Abstract}
+
+{\linespread{1.3}\selectfont
+We study a software knob that exploits data-dependent GPU power: zeroing unneeded low-order mantissa bits of FP64,
+BF16 and FP8 operands. The study runs on 14 NVIDIA GH200 nodes under module power caps, with paired measurements and
+an equivalent-power metric (the extra cap the unmodified program needs to catch up). Under a binding cap, every tested
+GEMM-dominated HPC program that truncates internally and checks its results gains. At 400--800\,W, tuned 8-node HPL
+keeping 36 significand bits (about $100\times$ residual margin) runs 4.0--11.0\% faster, worth 39--127\,W per node,
+and HPL-MxP keeping 3 bits runs 1.8--12.7\% faster on a diagonally dominant test matrix. At 450--550\,W, Quantum
+ESPRESSO, with the bit count tied to its Davidson tolerance, runs 2.4--4.2\% faster (partly from fewer iterations)
+with every printed energy digit unchanged. At 500--700\,W, DF-MP2 keeping 20--32 bits runs 4.9--8.3\% faster, and a
+wide-range Gaussian-process likelihood keeping 28 bits runs 7.4--8.2\% faster, where FP32 fails and INT8 emulation is
+slower. At the default 1000\,W cap, HPL is still 3.9\% faster and uses 7.5\% less energy per solve. Fill controls
+attribute 62--97\% of the saving to bits that stop toggling. Safe bit counts need validation across problem sizes,
+and the crossover with INT8 emulation of FP64 moves with matrix shape and power cap. With wide per-row exponent
+spans, fixed-width INT8 emulation can fail silently: at 36 bits it shifts a Gaussian-basis DFT energy by
+52\,m$E_\mathrm{h}$, whereas rounding to 36 bits errs by $10^{-6}\,E_\mathrm{h}$. All-FP32 or 3xTF32 GEMMs fail on
+long inner products, and in Hopper AI inference FP8 already captures most of the benefit. Truncated HPL, HPL-MxP and
+MLPerf numbers in this report are research results, not official TOP500 or MLPerf scores.
+
+\vspace{1em}
+\noindent\textbf{Keywords:} power capping, energy efficiency, floating-point precision, mantissa truncation, GPU,
+mixed precision, HPL
+\par}

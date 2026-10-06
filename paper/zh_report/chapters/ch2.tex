@@ -1,0 +1,67 @@
+% 第二章 背景知識
+\chapter{背景知識}\label{ch:background}
+
+\section{浮點格式與尾數}\label{sec:formats}
+
+一個浮點數由符號 $s$、指數 $e$ 與尾數（fraction）$f$ 三部分組成，正規數的數值為
+\begin{equation}
+  x = (-1)^{s} \times 1.f \times 2^{\,e-\mathrm{bias}} .
+\end{equation}
+指數決定值域（能表示多大與多小的數），尾數決定精度（有效數字的位數）。本報告用到的格式列於表~\ref{tab:formats}。
+
+\begin{table}[htbp]
+\centering
+\caption{本報告使用的浮點格式}\label{tab:formats}
+\small
+\begin{tabularx}{\textwidth}{@{}lccL@{}}
+\toprule
+格式 & 符號／指數／尾數位元 & 約略的十進位有效位數 & 常見用途 \\
+\midrule
+FP64 & 1／11／52 & 16 & 科學計算、HPL \\
+FP32 & 1／8／23 & 7 & 一般單精度計算 \\
+TF32 & 1／8／10 & 3 & tensor core 的 FP32 加速模式 \\
+BF16 & 1／8／7 & 2–3 & AI 訓練與推論 \\
+FP8 E4M3 & 1／4／3 & 1 & AI 推論與訓練 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+本報告所稱「保留 $k$ 位」，是指保留最高的 $k$ 個尾數位元、將其餘位元設為 0。例如 FP64 保留 36 位，即把 52 個尾數位元中最低的 16 個清為 0。符號與指數不變，所以值域不變，只是每個值的精度變粗：直接截斷時，每個值的相對誤差不超過 $2^{-k}$；最近捨入時不超過 $2^{-(k+1)}$。資料格式與程式介面完全不需更動，這是它與「改用較小格式」最大的不同。
+
+\section{GPU 功耗與位元翻轉}\label{sec:toggle}
+
+依式~\eqref{eq:cmos}，GPU 的動態功耗與切換活動率成正比。資料在暫存器、運算元匯流排、乘法器與記憶體之間流動時，只要某個位元與前一筆資料不同，對應的線路就要充電或放電。隨機資料的低位尾數幾乎每次都在翻轉；若把它們全部設為 0，相鄰兩筆資料在這些位置便永遠相同，這些線路就不再切換。在乘法器中，一個運算元的低位為 0 時，對應的部分積也恆為 0，整片電路都不會動作。記憶體方面，HBM 與 DRAM 的存取能耗同樣隨資料的翻轉率變化。
+
+\section{功耗上限與時脈}\label{sec:capclock}
+
+GH200 的模組功耗上限涵蓋 GPU、Grace CPU 與記憶體。GPU 會持續調整時脈，使功耗不超過上限（實測撞上限時的 1 秒平均功耗常低於上限，限電器依據的應是更短時間尺度的功耗）。因此會出現兩種情況：
+
+\begin{itemize}
+  \item \textbf{功耗受限}（例如上限 500~W）：每次運算的耗電降低後，GPU 能在相同功耗下以更高的時脈運作，效果表現為\textbf{加速}。
+  \item \textbf{不受限}（上限高於程式的用電，時脈停在最高的 1980~MHz）：速度不變，效果表現為\textbf{省電}。
+\end{itemize}
+
+1000~W 是 GH200 的預設值，也是最高上限；但功耗很高的程式（例如 FP64 矩陣乘法與 HPL）在 1000~W 下仍有部分時間撞上限，因此兩種效果會同時出現。
+
+\section{其他以降低精度換取速度的做法}\label{sec:alternatives}
+
+\begin{description}
+  \item[INT8 模擬 FP64（Ozaki 方法）：] 把 FP64 數拆成多片低精度整數，以 INT8 tensor core 分別相乘後再合併，片數越多越精確。cuBLAS 13 內建此類模擬；GEMMul8 實作第二版 Ozaki 方法，以中國餘數定理把數值拆到多個模數上計算。
+  \item[FP32 與 3xTF32：] 以單精度取代 FP64 計算。3xTF32 把每個 FP32 數拆成兩個 TF32，以三次 tensor core 乘法達到接近 FP32 的精度。
+  \item[FP8：] Hopper 上 AI 推論的主流格式，資料寬度為 BF16 的一半，矩陣乘法的峰值是 BF16 的兩倍，以逐張量或逐通道的縮放因子彌補較窄的值域。
+  \item[混合精度迭代修正：] 以低精度完成 LU 分解，再以 FP64 迭代修正到高精度；HPL-MxP 即是這類基準。
+\end{description}
+
+這些做法都改變資料格式，依靠吞吐量更高的運算單元加速；尾數歸零則沿用原本的運算單元，只降低輸入的翻轉。兩者各有適用場合，第 \ref{sec:crossover} 節將比較兩者的分界。
+
+\section{本報告使用的基準與應用}\label{sec:workloads}
+
+\begin{description}
+  \item[HPL：] 求解稠密線性系統的 FP64 基準，為 TOP500 排名的依據。最後會檢查縮放後的殘差是否小於 16，超過即判定失敗。
+  \item[HPL-MxP：] 以 BF16 完成 LU 分解、再以 FP64 迭代修正的混合精度基準。
+  \item[Quantum ESPRESSO：] 平面波密度泛函理論軟體，以自洽場（SCF）迭代求基態，每一圈以 Davidson 方法對角化，收斂門檻逐圈收緊。
+  \item[PySCF（GPU4PySCF）：] 高斯基底的量子化學軟體，本報告用於 DFT、HF+MP2 與密度擬合 MP2（DF-MP2）。
+  \item[高斯過程地統計：] 自寫的 ExaGeoStat 式最大概似估計核心，以及 ExaGeoStatCPP（StarPU 與 Chameleon 的 tile Cholesky）。
+  \item[MFEM、SW4、LAMMPS：] 不以矩陣乘法為主的 FP64 程式，分別為有限元素、地震波傳播與分子動力學。
+  \item[MLPerf Llama 2 70B LoRA 與六個語言模型：] AI 訓練與推論。
+\end{description}

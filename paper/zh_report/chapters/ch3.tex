@@ -1,0 +1,49 @@
+% 第三章 相關研究
+\chapter{相關研究}\label{ch:related}
+
+\section{資料相依的 GPU 功耗}\label{sec:rw-power}
+
+Bhalachandra 等人在 A100 上發現，同樣大小的 DGEMM，隨機運算元比固定值多耗 67\% 的功率~\cite{Bhalachandra2022}。Gregersen 等人在 A100、H100 與 V100 上改變 GEMM 輸入的分佈與位元樣式，功耗最多相差近 40\%，其中把最低位元歸零可以降低功耗；但他們刻意選擇不會降頻的矩陣大小，沒有量測功耗上限下的效能~\cite{Gregersen2024}。He 在 A100 上示範全零輸入的矩陣乘法比隨機輸入快約 15\%，並把功耗上限從 330~W 逐步降到 100~W：可預測輸入的加速隨上限降低而變大（圖中約從 1.2 倍增加到 150~W 時的 2.3 倍），到 100~W 才轉而變小~\cite{He2024}。Antepara 等人在 GH200 上量到零輸入的 DGEMM 只用 563~W，隨機輸入則用 898~W~\cite{Antepara2025}。Lucas 與 Juurlink 建立的 GPU ALU 功耗模型中，主項是位元翻轉數~\cite{Lucas2016}。這些工作都以全零、常數等特殊輸入示範此現象，沒有截斷真實資料的部分尾數，也沒有評估數值精度或真實應用。
+
+\section{功耗受限的高效能計算}\label{sec:rw-capped}
+
+Rountree 等人最早在硬體強制的功耗上限下量測效能，發現同型處理器在同一上限下的執行時間會因製程差異而不同（約 6\%）~\cite{Rountree2012}；Inadomi 等人在大型系統上量到，同一功耗上限下各節點的 DGEMM 效能可相差 64\%，並依此變異分配功耗~\cite{Inadomi2015}。Patki 等人在固定的總功耗下配置更多節點，再以功耗上限分配電力（超量配置）~\cite{Patki2013}；Zeus 在 GPU 上依功耗上限與批次大小調整 DNN 訓練的能耗~\cite{Zeus2023}。這些工作調整的是功耗如何分配，本專題則降低每次運算所需的能量，兩者可以疊加。我們量到同一上限下節點間 13–17\% 的時脈差異（第 \ref{sec:measure} 節），也與上述觀察一致。
+
+\section{硬體層的尾數遮罩}\label{sec:rw-hw}
+
+以「把尾數設為 0 來省電」在硬體設計上早有前例：Tong 等人的可變位寬浮點乘法器，每次運算的能量最多可減少 66\%~\cite{Tong2000}；Pool 等人為行動 GPU 的著色器選擇精度，以能耗模型估計頂點轉換可省 23–36\% 的能量~\cite{Pool2008}，像素著色器的算術最多可省 71\%~\cite{Pool2011}；Guenther 等人在基頻處理器運算單元的輸入端遮罩尾數，最多省能 23\%~\cite{Guenther2016}；AMD 的專利在 GPU 著色器中加入硬體歸零模組~\cite{AMD2022}。這些做法都需要新硬體，或以模擬器估算能耗。資料搬移方面，DRAM 與 HBM 的能耗隨資料的翻轉率變化~\cite{Chatterjee2017,OConnor2017,Ghose2018}。
+
+\section{精度調校與 FP64 模擬}\label{sec:rw-precision}
+
+Precimonious 等工具自動把變數換成較低精度的型別，目標是提升速度~\cite{RubioGonzalez2013}；rpe 與 chop 以同樣的位元操作模擬低精度，但不量測功耗~\cite{Dawson2017,Higham2019}。Transprecision computing 主張依需求在時間與空間上細粒度地調整精度~\cite{Malossi2018}；Klöwer 等人從資料本身估計真正承載資訊的尾數位數，再以最近捨入去除其餘位元，用於壓縮氣候資料~\cite{Klower2021}。Ozaki 方法~\cite{Ozaki2012}可以在整數矩陣單元上模擬 FP64~\cite{Ootomo2024,Ozaki2025}，Uchino 等人評估了它的效能與功耗~\cite{Uchino2025}。cuBLAS 內建的定點模擬讓 A 的每一列共用一個縮放因子，列內的動態範圍必須由尾數位元承擔；它的自動模式依指數跨度決定切片數，所需位元超過上限時改回原生 FP64~\cite{cuBLASEmu,Schwarz2026}。形式上最接近本專題的是 Grützmacher 等人：他們把 FP64 值依尾數切段存放、保留完整指數，只讀取前面的段落，使受頻寬限制的 PageRank 快 10–30\%~\cite{Grutzmacher2020}；他們截斷是為了節省頻寬，本專題則是為了降低運算的切換功耗。
+
+\section{地統計的混合精度}\label{sec:rw-geostat}
+
+ExaGeoStat 以 FP64 的 tile Cholesky 分解計算高斯過程的概似~\cite{Abdulah2018}。之後的混合精度版本先把位置依空間填充曲線排序，使強相關集中在對角線附近；對角 tile 保留 FP64，再依離對角線的距離或 tile 的範數，把整個 tile 轉成 FP32、FP16 或 FP8：FP64／FP32 平均快 1.6 倍~\cite{Abdulah2019}，加上 FP16 最多快 2.64 倍~\cite{Abdulah2022}，結合低秩近似最多快 12 倍~\cite{Cao2022}，在 GH200 上以四種精度比 FP64 快 3 倍~\cite{Ren2025}，也用於 GH200 系統上的氣候模擬器~\cite{Abdulah2024}。Cao 等人在單張 V100、A100 與 H100 上量測過這類分解的功耗與能耗~\cite{Cao2023}，但沒有設定功耗上限，也沒有分析時脈。單一 FP32 不足以計算這類概似~\cite{Abdulah2022}，與第 \ref{sec:gp} 節的結果一致。這些做法都是把整個 tile 換成其他格式；本專題保留 FP64、只截斷運算元的尾數，兩者可以疊加。GPU 上的 RI-MP2 也曾以單精度與混合精度 GEMM 加速~\cite{OlivaresAmaya2010}。
+
+\section{依收斂程度調整精度}\label{sec:rw-adaptive}
+
+Woo 等人在 LOBPCG 特徵值求解器中，依收斂狀態在 FP32、FP64 與混合精度之間切換~\cite{Woo2023}；Huang 等人在 GPU4PySCF 中依 SCF 能量的變化選擇 INT8 模擬的切片數~\cite{Huang2026}；Dawson 等人發現量子化學的密度矩陣純化約需 37 位有效尾數即已足夠~\cite{Dawson2024}。這些工作都是改用吞吐量較高的格式來加速，並未研究功耗。
+
+\section{本研究的定位}\label{sec:positioning}
+
+表~\ref{tab:related} 比較本研究與相關研究。據我們所知，本研究是第一個在現役 GPU（GH200）上，以純軟體截斷 FP64／BF16 運算元的尾數來降低切換功耗、在功耗上限下把省下的功耗轉換為吞吐量，並在真實 HPC 應用上以物理誤差驗證的系統性研究。在 FP64 內「保留指數、捨去尾數」本身並不新~\cite{Grutzmacher2020}，地統計的混合精度也已有人量測過功耗~\cite{Cao2023}，全零輸入在不同功耗上限下的加速也已有人量測過~\cite{He2024}；本專題的不同在於目的（降低切換功耗）、做法（不改變格式）與量測條件（功耗上限下的時脈與吞吐量）。
+
+\begin{table}[htbp]
+\centering
+\caption{本研究與相關研究的比較}\label{tab:related}
+\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.9cm}LLL@{}}
+\toprule
+工作 & 需要新硬體 & 截斷真實資料 & 在功耗上限下量測效能 & 驗證應用的數值結果 \\
+\midrule
+Bhalachandra、Gregersen、Antepara & 否 & 否（全零或特殊樣式） & 否 & 否 \\
+He & 否 & 否 & 是（330 $\rightarrow$ 100~W 掃描，全零輸入） & 否 \\
+Tong、Pool、Guenther、AMD & 是 & 是 & 否 & 部分 \\
+Woo、Huang & 否 & 改變格式 & 否 & 是 \\
+Grützmacher（尾數切段儲存） & 否 & 是（保留指數、捨去尾數，目的為節省頻寬） & 否 & 是（PageRank） \\
+ExaGeoStat 系列（Abdulah、Cao、Ren） & 否 & 改變格式（整個 tile） & 否（Cao 等人量過功耗，未設上限） & 是 \\
+\textbf{本研究} & \textbf{否} & \textbf{是} & \textbf{是（含 8 節點 HPL）} & \textbf{是} \\
+\bottomrule
+\end{tabularx}
+\end{table}
