@@ -52,7 +52,7 @@ AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
 \path{paper/zh_report/} & 本報告的 LaTeX 原始檔（\path{report.tex}、\path{chapters/}、\path{figs/}） \\
 \path{gh200/refs/} & 各輪文獻查證紀錄（\path{round4_refs.md}、\path{round5_refs.md}） \\
 \path{gh200/slurm/} & 工作腳本：\path{e1_gemm_tdp.sbatch}（微基準與形狀掃描）、\path{hpl_tdp.sbatch}（HPL／HPL-MxP）、\path{sci_sweep.sbatch}（科學軟體）、\path{app_tdp.sbatch}（第三方軟體）、\path{mp2_tdp.sbatch}（DF-MP2）、\path{gp_tdp.sbatch}（高斯過程）、\path{exageostat_tdp.sbatch}（ExaGeoStat）、\path{hpl_tune.sbatch}（HPL 調參）、\path{hpl_shim.sbatch}（單 GPU HPL 經攔截工具：逐列跨度與模擬） \\
-\path{gh200/analysis/} & \path{summarize.py}、\path{sci_summary.py}、\path{app_summary.py}、\path{crossover.py}、\path{qe_adapt_ci.py}、\path{range_sweep.py}、\path{span_report.py}、\path{mp2_summary.py}、\path{gp_summary.py}、\path{exa_summary.py}、\path{paper_figures.py}（英文論文的向量圖）、\path{report_figs_zh.py}（本報告的圖 5.1–5.13）；圖 5.13 的座標來自 \path{gh200/results/range_map_points.csv} \\
+\path{gh200/analysis/} & \path{summarize.py}、\path{sci_summary.py}、\path{app_summary.py}、\path{crossover.py}、\path{qe_adapt_ci.py}、\path{range_sweep.py}、\path{span_report.py}、\path{mp2_summary.py}、\path{gp_summary.py}、\path{exa_summary.py}、\path{paper_figures.py}（英文論文的向量圖）、\path{report_figs_zh.py}（本報告的圖）；圖 5.13 的座標來自 \path{gh200/results/range_map_points.csv} \\
 \path{gh200/results/} & 所有彙整後的 CSV；圖下方、表註與內文列出的結果檔都在此目錄 \\
 \texttt{gh200/實驗日誌.md}、\texttt{gh200/應用實驗日誌.md} & 完整的實驗過程紀錄（含失敗與重做） \\
 \end{longtable}
@@ -81,6 +81,6 @@ sbatch -w work10 --export=ALL,APP=mfem slurm/app_tdp.sbatch
 
 \begin{Verbatim}[breaklines,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray}]
 paper/zh_report/fetch_fonts.sh                     # 下載並檢查字型
-gh200/.venv/bin/python gh200/analysis/report_figs_zh.py paper/zh_report/fonts   # 圖 5.1–5.13
+gh200/.venv/bin/python gh200/analysis/report_figs_zh.py paper/zh_report/fonts   # 本報告的圖
 paper/zh_report/build.sh                           # tectonic（XeLaTeX + BibTeX）→ report.pdf
 \end{Verbatim}

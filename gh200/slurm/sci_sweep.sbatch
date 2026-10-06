@@ -72,6 +72,8 @@ run_one() {
     span)  bits=52; round=trunc; env_extra=(MANT_SPAN="$WORK/span_tdp$tdp" MANT_SPAN_LINES=${SPAN_LINES:-256}) ;;
     dump)  bits=52; round=trunc; mkdir -p "$WORK/dump"; env_extra=(MANT_DUMP="$WORK/dump" MANT_DUMP_N=4 MANT_DUMP_MIN_MNK=1e10) ;;
     native) bits=52; round=trunc; preload= ;;
+    # unmodified run that only warms the GPU up before the paired (ABBA) runs; analyses ignore it
+    warmup) bits=52; round=trunc; preload= ;;
     # reduction built into the application (QE: psi/hpsi/spsi in Davidson), no shim
     src*)  bits=52; round=trunc; preload=; local sb=${v#src}; env_extra=(QE_MANT_BITS=${sb%%:*} QE_MANT_ROUND=${sb##*:}) ;;
     # tolerance-aware: bits follow the Davidson threshold (QE_MANT_ADAPT = margin in bits)

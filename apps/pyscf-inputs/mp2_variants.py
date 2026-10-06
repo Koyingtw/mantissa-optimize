@@ -156,7 +156,7 @@ for v in os.environ.get('MP2_VARIANTS', 'native').split():
         emu = 0
     elif v.startswith('emu'):
         emu = int(v[3:])
-    elif v != 'native':
+    elif v not in ('native', 'warmup'):   # warmup: native run that only warms the GPU up; never the reference
         sys.exit(f"unknown variant {v}")
     wait_cool(float(os.environ.get('MP2_START_TEMP', 45)))
     ensure_cap()

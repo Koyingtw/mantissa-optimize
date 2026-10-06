@@ -70,6 +70,8 @@ def parse_hpl_log(path):
         if not end:
             continue
         tdp, var, pas, t0, t1 = end.groups()
+        if pas == "W":  # uncounted warm-up run (hpl_tdp.sbatch WARMUP=1)
+            continue
         row = {"tdp": int(tdp), "variant": var, "pass": pas, "t0": float(t0), "t1": float(t1)}
         m = re.search(r"Final Score:\s+([\d.e+]+)\s+GFLOPS", block)
         if m:  # rocHPL

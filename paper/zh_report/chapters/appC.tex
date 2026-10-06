@@ -1,0 +1,51 @@
+% 附錄 C AI 工作負載的細節（第 \ref{sec:ai} 節的佐證）
+\chapter{AI 工作負載的細節}\label{app:ai}
+
+\section{訓練：Llama 2 70B LoRA 微調}\label{sec:ai-lora}
+
+MLPerf Training 比較的是「達到目標品質所需的時間」（驗證損失 $\le 0.925$）。基底權重已經是 FP8（只有 3 個尾數位元），我們在載入時再截斷一次，使用 8 個節點（圖~\ref{fig:lora}）。
+
+\begin{figure}[tbp]
+\centering
+\figfile{fig5_10_lora}
+\caption[Llama 2 70B LoRA 的驗證損失：原生與截斷 2 位]{Llama 2 70B LoRA 原生 FP8 與截斷保留 2 位的驗證損失隨訓練樣本數的變化（實線為 seed 1234、虛線為 seed 5678；水平線為達標門檻 0.925）。}\label{fig:lora}
+\begin{figsource}Slurm 工作 1732、1736、1760 起、1901、1904、1990、1993（分層截斷 2011、2020、2027 只列於內文）；\path{gh200/logs/lora}\end{figsource}
+\end{figure}
+
+兩個亂數種子、四組配對（575~W 一組、800~W 三組）的結果一致：截斷到 2 位的驗證損失從第一次評估起就高 0.008–0.010，需要多花 2–3 個評估區間才達標（例如 seed 5678：原生 3072 個樣本、22.74 分鐘；截斷 4224 個樣本、31.56 分鐘），而每一步只快約 1\%。截斷在載入時就削弱了基底模型，LoRA 無法補回。最近捨入與隨機捨入也沒有改善（分別需要 5376 與 4224 個樣本）。只截斷部分層的結果相同：只截斷 MLP 需要 4224 個樣本，與全部截斷相同；只截斷注意力需要 3840 個，退化落在雜訊內，但注意力只佔線性層權重約 18\%，可以節省的部分本來就很少。只截斷注意力的設定以完全相同的參數再跑一次，第一次評估幾乎相同（0.9428 對 0.9425），達標點卻差一個區間（3840 對 4224），所以我們以第一次評估的差距作為主要證據。結論是：對已經使用 FP8 的訓練，尾數已經沒有可以再節省的空間。
+
+\section{推論：BF16 截斷與 FP8 的比較}\label{sec:ai-infer}
+
+我們尋找兩種可能的機會：比 FP8 更快、精度又不會差太多的做法；或 BF16 加上尾數截斷比 FP8 更好的場景（圖~\ref{fig:llm}）。
+
+\begin{figure}[tbp]
+\centering
+\figfile{fig5_11_ppl}
+\caption[六個語言模型在各格式下的困惑度增加]{六個語言模型在各格式下的 WikiText-2 困惑度相對原生 BF16 的增加（越左越好）。}\label{fig:llm}
+\begin{figsource}\path{gh200/results/infer_ppl.csv}（70B 為逐層評估）\end{figsource}
+\end{figure}
+
+以最近捨入保留 3 位的 BF16 與 FP8 的尾數位數相同，矩陣乘法誤差也相當（均勻資料上 3.3\% 對 3.6–3.9\%；截斷需保留 4 位才接近，約 4.4\%）。我們接著在文獻中 FP8 最容易出問題的場景比較兩者，結果都打平（表~\ref{tab:infer}）。
+
+\begin{table}[tbp]
+\centering
+\caption{BF16 最近捨入保留 3 位與 FP8 在 FP8 容易出問題的場景下的比較}\label{tab:infer}
+\small
+\begin{tabularx}{\textwidth}{@{}LCC@{}}
+\toprule
+場景 & BF16 最近捨入保留 3 位 & FP8 \\
+\midrule
+注意力（2k／8k 上下文的困惑度增加） & +0.49\%／+1.06\% & +0.52\%／+1.08\% \\
+長上下文鑰匙檢索（8k–32k） & 100\% & 100\% \\
+BERT-large SQuAD（MLPerf 99.9\% 門檻） & 通過 & 通過 \\
+CogVideoX-2B 影片（相對原生的 PSNR） & 20–29~dB & 18–38~dB \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+另一方面，FP8 的矩陣乘法快 1.7–1.9 倍（575~W 實測）。在不改用結構化稀疏或 INT4 權重的前提下，更快的路只剩在 FP8 之上再截斷：以 Llama2-70B 的真實權重，兩邊都截斷到 2 位快 3.2–8.2\%，但困惑度增加 3.4\%，速度與精度大致以 1 比 1 交換；decode 階段的省電也只有 1.5–5.5\%。
+
+\section{小結}
+
+在 Hopper 上，FP8 已經取得「減少尾數位元」幾乎全部的好處。尾數歸零的價值在 FP64 科學計算，而不在已經使用 FP8 的 AI。
+

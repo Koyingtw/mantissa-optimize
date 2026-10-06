@@ -3,6 +3,7 @@
 # one rank per node, across module TDP caps and mantissa settings.
 #   sbatch -N 8 --export=ALL,BENCH=hpl  slurm/hpl_tdp.sbatch
 #   sbatch -N 8 --export=ALL,BENCH=mxp  slurm/hpl_tdp.sbatch
+# REPEAT=r gives r ABBA blocks per cap (passes A/B, C/D, ...); WARMUP=1 adds one uncounted run first (pass W).
 # Each TDP level runs the variant list forward then backward (ABBA).
 #SBATCH -J hpl-tdp
 #SBATCH --ntasks-per-node=1
@@ -128,9 +129,13 @@ for N in $NS; do
   for tdp in $TDPS; do
     nv_power --hosts "$HOSTS" "$tdp" >/dev/null
     echo "TDP $tdp set on $HOSTS"
+    # WARMUP=1: one uncounted run of the first variant before the first cap's pairs (pass W, ignored by the analyses)
+    if [[ ${WARMUP:-0} != 0 && -z ${WARMED:-} ]]; then run_one "$tdp" "${var[0]}" W; WARMED=1; fi
+    # each repeat is one ABBA block with its own pass letters (A/B, C/D, E/F, ...)
     for ((r = 0; r < REPEAT; r++)); do
-      for v in "${var[@]}"; do run_one "$tdp" "$v" A; done
-      for v in "${rev[@]}"; do run_one "$tdp" "$v" B; done
+      letters=ABCDEFGHIJKL
+      for v in "${var[@]}"; do run_one "$tdp" "$v" "${letters:$((2 * r)):1}"; done
+      for v in "${rev[@]}"; do run_one "$tdp" "$v" "${letters:$((2 * r + 1)):1}"; done
     done
   done
 done
