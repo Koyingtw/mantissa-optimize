@@ -1,0 +1,43 @@
+% 重點摘要：一頁看完主要發現與證據強度
+\chapter*{重點摘要}
+\addcontentsline{toc}{chapter}{重點摘要}
+\markboth{重點摘要}{重點摘要}
+
+{\linespread{1.3}\selectfont
+\noindent\textbf{結論：}在功耗上限壓住時脈的 GH200 上，把 FP64 運算元用不到的低位尾數歸零，可以讓以矩陣乘法為主、具正確性檢查的科學程式快數個百分點，物理結果在各程式自己的判準內不變；它與 INT8 模擬互補，在已使用 FP8 的 AI 上則沒有空間。
+
+\vspace{0.4em}
+\noindent\textbf{三個主要發現：}
+\begin{enumerate}[itemsep=0.1em,topsep=0.2em]
+  \item \textbf{機制}（第 \ref{sec:mech} 節）：省電主要來自低位元不再翻轉（1000~W 的單次對照中佔 62–97\%），在 tensor core、一般 FP64 運算單元與記憶體搬移上方向一致。
+  \item \textbf{具正確性檢查的完整程式}（第 \ref{sec:hpl}、\ref{sec:sci}、\ref{sec:mp2}、\ref{sec:gp} 節）：收益與證據強度見下表。
+  \item \textbf{與改變格式的分界}（第 \ref{sec:crossover}、\ref{sec:span} 節）：與 INT8 模擬的勝負隨矩陣形狀與功耗上限而變；列內指數跨度寬時，固定位數的 INT8 模擬可能在沒有警告的情況下算錯（高斯基底 DFT 52\mEh），截斷不受影響；把所有矩陣乘法換成 FP32／3xTF32 在長內積上無法收斂。
+\end{enumerate}
+\par}
+
+\vspace{0.3em}
+\noindent\textbf{主要結果與證據強度}\par\vspace{0.2em}
+{\footnotesize\linespread{1.15}\selectfont
+\noindent\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.2cm}L>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{2.3cm}@{}}
+\toprule
+工作負載 & 操作點 & 正確性判準 & 功耗受限時的加速 & 預設 1000~W & 證據 \\
+\midrule
+HPL（8 節點） & 36 位有效位數，最近捨入 & 殘差，距門檻約百倍 & 500–800~W：4.0–5.0\%（400~W$^{*}$：11.0\%） & 省電 7.5\%，快約 4\%（兩對差異大） & 每格兩對，同一組節點 \\
+HPL-MxP（8 節點） & BF16 保留 3 位，往零截斷 & 殘差，3 次修正 & 500~W：6.5\%；600–800~W：約 2\% & 不報（功耗煞車） & 每格兩對；對角優勢測試矩陣 \\
+Quantum ESPRESSO & 依收斂門檻 16–39 位，最近捨入 & 總能量印出的每一位 & 矽 2.4\%；金表面 4.0\%（約一半來自迭代減少） & 不受限 & 各 4 對，95\% 區間 \\
+DF-MP2 & 20–32 位，最近捨入 & MP2 能量誤差 $\le \ee{1.2}{-8}$\Eh & 500–700~W：4.9–8.3\% & 省電 8–14\% & 每格兩輪 \\
+高斯過程地統計 & 28 位，最近捨入 & 估出的範圍參數 & 500–700~W：7.4–8.2\% & 快 0–4\%，省電 7–15\%（依設定） & 每格兩輪；自寫核心 \\
+MFEM、SW4 & 36／20 位，最近捨入 & 解的相對變化 & 0.3–2.0\% & — & 每格兩輪 \\
+LAMMPS & 36／20 位 & — & 落在雜訊內 & — & 負面對照 \\
+LoRA 訓練（8 節點） & FP8 再截到 2 位 & 驗證損失達標 & 達標反而慢 19–39\% & — & 兩個 seed、四組配對 \\
+語言模型推論 & BF16 保留 3 位對 FP8 & 困惑度 & FP8 已取得大部分好處 & — & 六個模型 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+\noindent $^{*}$低於規格表的可設範圍（450–1000~W）。耗電為驅動程式讀數的模組耗電。
+\par}
+
+\vspace{0.4em}
+{\linespread{1.3}\selectfont
+\noindent\textbf{主要限制}（第 \ref{sec:limits} 節）：只在 GH200 一個平台上量測，而它的 FP64 相對強，是對截斷有利、對 INT8 模擬不利的平台；多節點與高功耗應用每格只有兩輪；功耗與耗電都是驅動程式讀數。
+\par}
