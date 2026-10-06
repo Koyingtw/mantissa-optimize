@@ -1,0 +1,99 @@
+  calculation='scf', prefix='si1000', pseudo_dir='./', outdir='./tmp',
+job=3488 host=work6 app=qe case=si1000 variants=[warmup native adapt0:nearest src28:nearest src28:nearest adapt0:nearest native native adapt0:nearest src28:nearest src28:nearest adapt0:nearest native native adapt0:nearest src28:nearest src28:nearest adapt0:nearest native ] tdps=[550]
+TDP 550 set: 550.00 W
+=== RUN tdp=550 variant=warmup pass=A t_begin=1791280377.862092230
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m35.61s CPU   3m22.23s WALL
+=== END tdp=550 variant=warmup pass=A t_begin=1791280377.862092230 t_end=1791280582.231731984
+=== RUN tdp=550 variant=native pass=A t_begin=1791280587.269512119
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m37.09s CPU   3m23.21s WALL
+=== END tdp=550 variant=native pass=A t_begin=1791280587.269512119 t_end=1791280792.556993984
+=== RUN tdp=550 variant=adapt0:nearest pass=A t_begin=1791280797.594866790
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m32.77s CPU   3m19.12s WALL
+=== END tdp=550 variant=adapt0:nearest pass=A t_begin=1791280797.594866790 t_end=1791280998.795843480
+=== RUN tdp=550 variant=src28:nearest pass=A t_begin=1791281003.833763391
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.07s CPU   3m19.43s WALL
+=== END tdp=550 variant=src28:nearest pass=A t_begin=1791281003.833763391 t_end=1791281205.356159280
+=== RUN tdp=550 variant=src28:nearest pass=B t_begin=1791281210.394403058
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.16s CPU   3m19.40s WALL
+=== END tdp=550 variant=src28:nearest pass=B t_begin=1791281210.394403058 t_end=1791281411.874208496
+=== RUN tdp=550 variant=adapt0:nearest pass=B t_begin=1791281416.912204729
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m32.67s CPU   3m19.23s WALL
+=== END tdp=550 variant=adapt0:nearest pass=B t_begin=1791281416.912204729 t_end=1791281618.225051517
+=== RUN tdp=550 variant=native pass=B t_begin=1791281623.263185701
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m37.13s CPU   3m23.51s WALL
+=== END tdp=550 variant=native pass=B t_begin=1791281623.263185701 t_end=1791281828.843069172
+=== RUN tdp=550 variant=native pass=C t_begin=1791281833.881086493
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m37.08s CPU   3m23.59s WALL
+=== END tdp=550 variant=native pass=C t_begin=1791281833.881086493 t_end=1791282039.543725252
+=== RUN tdp=550 variant=adapt0:nearest pass=C t_begin=1791282044.582528008
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.36s CPU   3m19.79s WALL
+=== END tdp=550 variant=adapt0:nearest pass=C t_begin=1791282044.582528008 t_end=1791282246.456807918
+=== RUN tdp=550 variant=src28:nearest pass=C t_begin=1791282251.494803156
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.12s CPU   3m19.56s WALL
+=== END tdp=550 variant=src28:nearest pass=C t_begin=1791282251.494803156 t_end=1791282453.132306006
+=== RUN tdp=550 variant=src28:nearest pass=D t_begin=1791282458.170251399
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.03s CPU   3m19.59s WALL
+=== END tdp=550 variant=src28:nearest pass=D t_begin=1791282458.170251399 t_end=1791282659.842866272
+=== RUN tdp=550 variant=adapt0:nearest pass=D t_begin=1791282664.880575987
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.23s CPU   3m19.31s WALL
+=== END tdp=550 variant=adapt0:nearest pass=D t_begin=1791282664.880575987 t_end=1791282866.259105825
+=== RUN tdp=550 variant=native pass=D t_begin=1791282871.297123311
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m37.66s CPU   3m23.76s WALL
+=== END tdp=550 variant=native pass=D t_begin=1791282871.297123311 t_end=1791283077.146696518
+=== RUN tdp=550 variant=native pass=E t_begin=1791283082.184594168
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m37.25s CPU   3m23.88s WALL
+=== END tdp=550 variant=native pass=E t_begin=1791283082.184594168 t_end=1791283288.143602142
+=== RUN tdp=550 variant=adapt0:nearest pass=E t_begin=1791283293.181739310
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m32.63s CPU   3m19.41s WALL
+=== END tdp=550 variant=adapt0:nearest pass=E t_begin=1791283293.181739310 t_end=1791283494.675568397
+=== RUN tdp=550 variant=src28:nearest pass=E t_begin=1791283499.713859293
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.40s CPU   3m19.42s WALL
+=== END tdp=550 variant=src28:nearest pass=E t_begin=1791283499.713859293 t_end=1791283701.227170515
+=== RUN tdp=550 variant=src28:nearest pass=F t_begin=1791283706.265092869
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.17s CPU   3m19.53s WALL
+=== END tdp=550 variant=src28:nearest pass=F t_begin=1791283706.265092869 t_end=1791283907.863811980
+=== RUN tdp=550 variant=adapt0:nearest pass=F t_begin=1791283912.902276506
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m33.36s CPU   3m19.42s WALL
+=== END tdp=550 variant=adapt0:nearest pass=F t_begin=1791283912.902276506 t_end=1791284114.397037620
+=== RUN tdp=550 variant=native pass=F t_begin=1791284119.435284324
+    !    total energy              =   -7881.17635372 Ry
+         convergence has been achieved in  24 iterations
+         PWSCF        :   3m37.34s CPU   3m23.94s WALL
+=== END tdp=550 variant=native pass=F t_begin=1791284119.435284324 t_end=1791284325.446907054
+=== ALL DONE

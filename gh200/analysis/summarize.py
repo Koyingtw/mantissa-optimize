@@ -7,6 +7,7 @@ module power), and subtract the reduced configuration's own value. When p is abo
 every native point the saving is only a lower bound and is marked with '>'.
 
 usage: summarize.py --e1 1667,1668,1669 --hpl 1670 --mxp 1671 --out results/
+       [--hpl-name e3-hpl8 --hpl-tag e3 --mxp-name e2-mxp8 --mxp-tag e2]   (log job names and output prefixes)
        [--mxp-native-drop 1000] [--mxp-native-add e2-diag:1675:900]
 The last two only change the native curve used for ΔW: drop native points at the listed caps (HPL-MxP native at
 1000 W trips the chassis power brake, job 1675) and add native points measured by another job at the listed caps.
@@ -100,6 +101,10 @@ def main():
     ap.add_argument("--mxp", default="")
     ap.add_argument("--mxp-native-drop", default="", help="caps whose native HPL-MxP point is left out of the ΔW curve")
     ap.add_argument("--mxp-native-add", default="", help="name:job:cap[,cap...] native points from another job")
+    ap.add_argument("--hpl-name", default="e3-hpl8", help="job name of the HPL log (logs/<name>_<job>.out)")
+    ap.add_argument("--mxp-name", default="e2-mxp8", help="job name of the HPL-MxP log")
+    ap.add_argument("--hpl-tag", default="e3", help="output prefix: <out>/<tag>_raw.csv, <tag>_summary.csv")
+    ap.add_argument("--mxp-tag", default="e2")
     ap.add_argument("--logdir", default="logs")
     ap.add_argument("--out", default="results")
     a = ap.parse_args()
@@ -116,9 +121,9 @@ def main():
     for spec in filter(None, a.mxp_native_add.split(";")):
         xname, xjob, caps = spec.split(":")
         add.append((xname, int(xjob), [int(c) for c in caps.split(",")]))
-    for job, name, tag in [(a.hpl, "e3-hpl8", "e3"), (a.mxp, "e2-mxp8", "e2")]:
+    for job, name, tag, kind in [(a.hpl, a.hpl_name, a.hpl_tag, "hpl"), (a.mxp, a.mxp_name, a.mxp_tag, "mxp")]:
         if job:
-            extra = dict(native_drop=drop, native_add=add) if tag == "e2" else {}
+            extra = dict(native_drop=drop, native_add=add) if kind == "mxp" else {}
             raw, s = summarize_hpl(int(job), a.logdir, name, **extra)
             raw.to_csv(f"{a.out}/{tag}_raw.csv", index=False)
             s.to_csv(f"{a.out}/{tag}_summary.csv", index=False)
