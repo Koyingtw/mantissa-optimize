@@ -1,7 +1,7 @@
 % 附錄 B 結果與 Slurm 工作對照
 \chapter{結果與 Slurm 工作對照}\label{app:jobs}
 
-正文中的結果都可以由下表找到對應的 Slurm 工作；原始輸出在 \path{gh200/logs/}，彙整後的結果檔在 \path{gh200/results/}，完整的執行過程（含失敗與重做）記錄在 \texttt{gh200/實驗日誌.md} 與 \texttt{gh200/應用實驗日誌.md}。
+正文中各項結果對應的 Slurm 工作列於下表；原始輸出在 \path{gh200/logs/}，彙整後的結果檔在 \path{gh200/results/}，完整的執行過程（含失敗與重做）記錄在 \texttt{gh200/實驗日誌.md} 與 \texttt{gh200/應用實驗日誌.md}。
 
 {\small\linespread{1.15}\selectfont\renewcommand{\arraystretch}{1.3}
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{6.2cm}>{\raggedright\arraybackslash}p{\dimexpr\textwidth-6.2cm-2\tabcolsep\relax}@{}}
@@ -19,27 +19,36 @@
 \endlastfoot
 省電機制的填值對照（圖~\ref{fig:mech}） & 1752–1753、1762、1815、1858 \\
 矩陣乘法微基準（圖~\ref{fig:gemm}） & 1667–1669 \\
+矩陣乘法的誤差模型（第 \ref{sec:errmodel} 節） & 1664 \\
 原生 HPL 的調參（第 \ref{sec:hpl-tune} 節） & 3303、3306 \\
 調參後 HPL 的功耗上限掃描（表~\ref{tab:hpl-perf}、圖~\ref{fig:hpl}） & 甲組 3315；乙組 3582（3490、3579 因網路問題取消，見第 \ref{sec:hpl-tune} 節） \\
-HPL 多組 $N$ 的殘差（表~\ref{tab:hpl-resid}） & 1820（$N = 286720$ 取自 3315） \\
+HPL 多組 $N$ 的殘差（表~\ref{tab:hpl-resid}） & 1820（$N = 286720$ 取自 3315、3582） \\
 未調參 HPL 的功耗上限掃描 & 1670 \\
 HPL-MxP 的功耗上限掃描（圖~\ref{fig:mxp}、表~\ref{tab:mxp-perf}） & 甲組 1671；乙組 3583 \\
-HPL-MxP 的功耗煞車診斷、多組 $N$ & 1675；1859 \\
+HPL-MxP 的功耗煞車診斷、多組 $N$ & 1674、1675；1821、1859 \\
 Quantum ESPRESSO 金表面攔截掃描（圖~\ref{fig:qe}） & 1729、1738 \\
+科學軟體所需的位數（表~\ref{tab:bits}） & 矽 1728；纈胺黴素 1730、1745（門檻 $10^{-7}$）；紫杉醇 1731 \\
+Quantum ESPRESSO 攔截版的效能（表~\ref{tab:qe-perf} 最後一列） & 1737 \\
+GPU4PySCF 的剖析（矩陣乘法佔時間的比例） & 1713、1717 \\
+以單精度取代 FP64 矩陣乘法（第 \ref{sec:sci-fp32} 節） & 金表面 1928、矽 1930 \\
 Quantum ESPRESSO 自動調整（表~\ref{tab:qe-perf}） & 先暖機：金表面 3479、矽 3488；先前未暖機：金表面 1758、2009，矽 1759、2010 \\
 Quantum ESPRESSO 不受功耗限制的對照執行 & 2003 \\
 方陣上的截斷、模擬與單精度（圖~\ref{fig:square}） & 1894 \\
 纈胺黴素真實形狀（圖~\ref{fig:shapes}） & 1894、1896、1897 \\
+纈胺黴素矩陣乘法的形狀統計 & 1895 \\
+單精度做法的誤差與內積長度（表~\ref{tab:tf32}） & 1934 \\
 分界點掃描（圖~\ref{fig:crossover}） & 2005–2008 \\
 非矩陣乘法核心（圖~\ref{fig:nongemm}） & 1815、1858、1860 \\
 MFEM、SW4、LAMMPS（表~\ref{tab:apps}） & 1992、1995、1996 \\
 LoRA 微調（圖~\ref{fig:lora}） & 1732、1736、1760 起、1901、1904、1990、1993；捨入方式 1922、1959；分層截斷 2011、2020、2027 \\
 語言模型推論的速度 & 1849 \\
+語言模型推論的精度（圖~\ref{fig:llm}、表~\ref{tab:infer}） & 困惑度 1817、1823、1829–1831、1837；注意力 1827、1828；鑰匙檢索 1841；影片 1852、1853；BERT 1857；解碼的省電 1903 \\
 DF-MP2（表~\ref{tab:mp2}） & 精度掃描 2037；功耗上限 2038、3489 \\
 合成資料的指數跨度（圖~\ref{fig:span}） & 2034–2036 \\
-真實應用的跨度與模擬（表~\ref{tab:span-apps}、圖~\ref{fig:rangemap}） & 纈胺黴素 2046、2195；QE 2136、2137；cuBLAS 自動模式 3292；HPL 3304、3305；高斯過程整體跨度 3291 \\
+真實應用的跨度與模擬（表~\ref{tab:span-apps}、圖~\ref{fig:rangemap}） & 纈胺黴素 2046、2195；QE 2136、2137；cuBLAS 自動模式 3292；HPL 3304、3305；高斯過程 3248、3291；各應用的逐列跨度統計 2128–2131 \\
 寬跨度 DFT 在功耗上限下（第 \ref{sec:gp} 節） & 2821 \\
 高斯過程對數概似評估（表~\ref{tab:gp}） & 3248、3501（3482 範圍參數設錯，已取消） \\
+高斯過程的舊版截斷實作；小規模 FP32 估計 & 2827；3213 \\
 高斯過程最大概似估計、tile 混合精度（表~\ref{tab:gp-mp}） & 3249；3244 \\
 ExaGeoStatCPP（表~\ref{tab:exa}） & 3229 \\
 \end{longtable}

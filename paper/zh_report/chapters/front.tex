@@ -11,9 +11,9 @@
 
 在功耗受限且截斷實作於程式內時，受測的矩陣乘法類程式都在各自的正確性判準內獲得收益：8 節點 HPL 保留 36 位有效位數（含隱藏位，即 35 個尾數位元）在 500–800~W 快 3.3–4.7\%（兩組節點共 6 對）；HPL-MxP 保留 3 位在 500~W 快 5.8\%（對角優勢的測試矩陣）；Quantum ESPRESSO 依收斂門檻調整位元數，總能量印出的每一位都不變，矽快 2.1\%；DF-MP2 在 500–700~W 快 4.7–7.7\%；跨度寬且功耗高的高斯過程地統計快 7.5–7.9\%。機制對照顯示，省電主要來自低位元不再翻轉。
 
-與改變格式的做法相比，尾數歸零與 INT8 模擬 FP64 的勝負隨矩陣形狀與功耗上限而變；列內指數跨度寬時，固定位數的 INT8 模擬可能在沒有警告的情況下算錯（高斯基底 DFT 錯 52\mEh），截斷則不受影響；把所有矩陣乘法改成 FP32 或 3xTF32 在長內積上無法收斂；在已使用 FP8 的 AI 上，FP8 已取得大部分好處。尾數歸零每個元素只多一次位元運算、不需要新硬體，最適合具殘差修正或自洽迭代的科學求解器。各結果的證據強度見「重點摘要」。
+與改變格式的做法相比，尾數歸零與 INT8 模擬 FP64 的勝負隨矩陣形狀與功耗上限而變；列內指數跨度寬時，固定位數的 INT8 模擬可能在沒有警告的情況下算錯（高斯基底 DFT 錯 52.5\mEh），截斷則不受影響；把所有矩陣乘法改成 FP32 或 3xTF32，在內積很長的 Quantum ESPRESSO 上無法收斂；在已使用 FP8 的 AI 上，FP8 已取得大部分好處。尾數歸零每個元素只多一次位元運算、不需要新硬體，最適合具殘差修正或自洽迭代的科學求解器。各結果的證據強度見「重點摘要」。
 
-{\small 註：本報告中所有截斷後的 HPL／HPL-MxP 與 MLPerf 數字皆為研究用途，並非 TOP500 或 MLPerf 的正式成績。\par}
+{\small 註：本報告中所有截斷後的 HPL/HPL-MxP 與 MLPerf 數字皆為研究用途，並非 TOP500 或 MLPerf 的正式成績。\par}
 
 \vspace{0.5em}
 \noindent\textbf{關鍵詞：}功耗上限、能源效率、浮點精度、尾數截斷、GPU、混合精度、HPL
@@ -34,8 +34,8 @@ and checks its own results gains under a binding cap: 8-node HPL keeping 36 sign
 Quantum ESPRESSO with the bit count tied to its Davidson tolerance 2.1\% (Si) with every printed energy digit
 unchanged, DF-MP2 4.7--7.7\% at 500--700\,W, and a wide-range Gaussian-process likelihood 7.5--7.9\%. Fill controls
 attribute most of the saving to bits that stop toggling. The crossover with INT8 emulation of FP64 moves with matrix
-shape and power cap; with wide per-row exponent spans, fixed-width INT8 emulation can fail silently (a 52\,m$E_\mathrm{h}$
-error in a Gaussian-basis DFT energy) while truncation does not; all-FP32 or 3xTF32 GEMMs fail on long inner products;
+shape and power cap; with wide per-row exponent spans, fixed-width INT8 emulation can fail silently (a 52.5\,m$E_\mathrm{h}$
+error in a Gaussian-basis DFT energy) while truncation does not; all-FP32 or 3xTF32 GEMMs keep Quantum ESPRESSO, whose inner products are long, from converging;
 and in Hopper AI inference FP8 already captures most of the benefit. Truncated HPL, HPL-MxP and MLPerf numbers in this
 report are research results, not official TOP500 or MLPerf scores.
 

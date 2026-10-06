@@ -27,12 +27,13 @@
 
 \usepackage{graphicx,booktabs,tabularx,longtable,multirow,array,enumitem,etoolbox,xcolor}
 \usepackage{fvextra}
+\usepackage{needspace}
 \usepackage[labelsep=quad,font=small,labelfont=bf,skip=6pt]{caption}
 \captionsetup[table]{position=top}
 \usepackage{fancyhdr}
 \usepackage[nottoc]{tocbibind}
 \usepackage{cite}
-\usepackage{xurl}
+\usepackage[hyphens]{url}
 \usepackage[unicode,hidelinks,bookmarksnumbered]{hyperref}
 \hypersetup{pdftitle={\TitleZh},pdfauthor={\StudentName},pdfsubject={\School\Department 專題研究成果報告}}
 \urlstyle{same}
@@ -40,7 +41,7 @@
 \ctexset{
   contentsname={目錄}, listfigurename={圖目錄}, listtablename={表目錄},
   figurename={圖}, tablename={表}, bibname={參考文獻}, appendixname={附錄}, abstractname={摘要},
-  chapter={format=\centering\bfseries\LARGE, beforeskip=0.5cm, afterskip=1.2cm, pagestyle=fancy},
+  chapter={format=\centering\bfseries\LARGE, beforeskip=0.5cm, afterskip=1.2cm, pagestyle=plain},
   section={format=\bfseries\Large},
   subsection={format=\bfseries\large},
   subsubsection={format=\bfseries\normalsize},
@@ -51,7 +52,7 @@
 % 頁首與頁碼
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[R]{\small\leftmark}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
 \fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 \fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
@@ -71,7 +72,7 @@
 \AtBeginEnvironment{table}{\linespread{1.15}\selectfont}
 \AtBeginEnvironment{figure}{\linespread{1.15}\selectfont}
 \setlist{itemsep=0.2em,topsep=0.4em,leftmargin=2em}
-\setlist[description]{leftmargin=0pt,font=\normalfont\bfseries}
+\setlist[description]{leftmargin=0pt,labelsep=0pt,font=\normalfont\bfseries}
 \newcolumntype{L}{>{\raggedright\arraybackslash}X}
 \newcolumntype{C}{>{\centering\arraybackslash}X}
 
@@ -89,6 +90,7 @@
 \newcommand{\mEh}{\ensuremath{\,\mathrm{m}E_{\mathrm{h}}}}
 \newcommand{\ee}[2]{\ensuremath{#1\times10^{#2}}}
 \newcommand{\DW}{\ensuremath{\Delta W}}
+\hyphenation{ExaGeoStat ExaGeoStatCPP superchip}
 
 % IEEEtran.bst 的控制項（作者超過 6 位時以 et al. 簡寫）；IEEEtran.cls 以外的文件類別需自行定義 \bstctlcite
 \makeatletter
@@ -155,7 +157,7 @@
 
 % ---------------------------------------------------------------- 參考文獻與附錄
 \bibliographystyle{IEEEtran}
-{\raggedright\bibliography{refs}}
+{\raggedright\linespread{1.1}\selectfont\bibliography{refs}}
 
 \appendix
 \input{chapters/appA}

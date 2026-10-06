@@ -25,27 +25,27 @@ MLPerf Training 比較的是「達到目標品質所需的時間」（驗證損�
 \begin{figsource}\path{gh200/results/infer_ppl.csv}（70B 為逐層評估）\end{figsource}
 \end{figure}
 
-以最近捨入保留 3 位的 BF16 與 FP8 的尾數位數相同，矩陣乘法誤差也相當（均勻資料上 3.3\% 對 3.6–3.9\%；截斷需保留 4 位才接近，約 4.4\%）。我們接著在文獻中 FP8 最容易出問題的場景比較兩者，結果都打平（表~\ref{tab:infer}）。
+以最近捨入保留 3 位的 BF16 與 FP8 的尾數位數相同，矩陣乘法誤差也相當（均勻資料上 3.3\% 對 3.6\%；截斷需保留 4 位才接近，約 4.4\%）。我們接著在文獻中 FP8 最容易出問題的場景比較兩者，結果都打平（表~\ref{tab:infer}）。
 
 \begin{table}[tbp]
 \centering
 \caption{BF16 最近捨入保留 3 位與 FP8 在 FP8 容易出問題的場景下的比較}\label{tab:infer}
 \small
-\begin{tabularx}{\textwidth}{@{}LCC@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{6.6cm}CC@{}}
 \toprule
 場景 & BF16 最近捨入保留 3 位 & FP8 \\
 \midrule
-注意力（2k／8k 上下文的困惑度增加） & +0.49\%／+1.06\% & +0.52\%／+1.08\% \\
-長上下文鑰匙檢索（8k–32k） & 100\% & 100\% \\
-BERT-large SQuAD（MLPerf 99.9\% 門檻） & 通過 & 通過 \\
+注意力（2k/8k 上下文的困惑度增加） & +0.49\%/+1.06\% & +0.52\%/+1.08\% \\ \addlinespace[3pt]
+長上下文鑰匙檢索（8k–32k） & 100\% & 100\% \\ \addlinespace[3pt]
+BERT-large SQuAD（MLPerf 99.9\% 門檻） & 通過 & 通過 \\ \addlinespace[3pt]
 CogVideoX-2B 影片（相對原生的 PSNR） & 20–29~dB & 18–38~dB \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-另一方面，FP8 的矩陣乘法快 1.7–1.9 倍（575~W 實測）。在不改用結構化稀疏或 INT4 權重的前提下，更快的路只剩在 FP8 之上再截斷：以 Llama2-70B 的真實權重，兩邊都截斷到 2 位快 3.2–8.2\%，但困惑度增加 3.4\%，速度與精度大致以 1 比 1 交換；decode 階段的省電也只有 1.5–5.5\%。
+另一方面，FP8 的矩陣乘法比 BF16 快約 1.8 倍（575~W 實測）。在不改用結構化稀疏或 INT4 權重的前提下，更快的路只剩在 FP8 之上再截斷：以 Llama 2 70B 的真實權重，兩邊都截斷到 2 位快 3.2–8.2\%，但困惑度增加 3.4\%，速度與精度大致以 1 比 1 交換；只截斷權重時，解碼（decode）階段的省電也只有 1.5–5.5\%。
 
-\section{小結}
+\paragraph{小結}
 
 在 Hopper 上，FP8 已經取得「減少尾數位元」幾乎全部的好處。尾數歸零的價值在 FP64 科學計算，而不在已經使用 FP8 的 AI。
 

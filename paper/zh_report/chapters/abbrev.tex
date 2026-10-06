@@ -11,7 +11,7 @@
 3xTF32 & 把每個 FP32 數拆成兩個 TF32、以三次 tensor core 乘法近似 FP32 精度的做法 \\
 ABBA & 成對交錯的執行順序（A、B、B、A），用來消除溫度與先後順序的影響 \\
 BF16、FP16、FP8 & 16 位元的 bfloat16、16 位元的 IEEE 半精度、8 位元浮點（本報告指 E4M3） \\
-cuBLAS & NVIDIA 的 GPU 線性代數函式庫；第 13 版起內建 FP64 矩陣乘法的 INT8 模擬 \\
+cuBLAS & NVIDIA 的 GPU 線性代數函式庫；本研究使用的第 13 版內建 FP64 矩陣乘法的 INT8 模擬 \\
 DFT & 密度泛函理論（density functional theory） \\
 DF-MP2 & 密度擬合的二階 Møller–Plesset 微擾理論 \\
 $E_\mathrm{h}$、Ry & 原子單位制的能量單位 Hartree 與 Rydberg（1\Eh{} = 2~Ry） \\

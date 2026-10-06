@@ -26,7 +26,7 @@ AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
 表~\ref{tab:code} 列出本專題的程式與資料位置（路徑相對於專案根目錄）。
 
 {\small\linespread{1.15}\selectfont\renewcommand{\arraystretch}{1.35}
-\begin{longtable}{@{}>{\raggedright\arraybackslash}p{5.2cm}>{\raggedright\arraybackslash}p{\dimexpr\textwidth-5.2cm-2\tabcolsep\relax}@{}}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{6.2cm}>{\raggedright\arraybackslash}p{\dimexpr\textwidth-6.2cm-2\tabcolsep\relax}@{}}
 \caption{程式與資料位置}\label{tab:code} \\
 \toprule
 路徑 & 用途 \\
@@ -51,8 +51,8 @@ AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
 \path{paper/} & 英文 LaTeX 論文稿（\path{main.tex}、\path{refs.bib}、\path{figs/}） \\
 \path{paper/zh_report/} & 本報告的 LaTeX 原始檔（\path{report.tex}、\path{chapters/}、\path{figs/}） \\
 \path{gh200/refs/} & 各輪文獻查證紀錄（\path{round4_refs.md}、\path{round5_refs.md}） \\
-\path{gh200/slurm/} & 工作腳本：\path{e1_gemm_tdp.sbatch}（微基準與形狀掃描）、\path{hpl_tdp.sbatch}（HPL／HPL-MxP）、\path{sci_sweep.sbatch}（科學軟體）、\path{app_tdp.sbatch}（第三方軟體）、\path{mp2_tdp.sbatch}（DF-MP2）、\path{gp_tdp.sbatch}（高斯過程）、\path{exageostat_tdp.sbatch}（ExaGeoStat）、\path{hpl_tune.sbatch}（HPL 調參）、\path{hpl_shim.sbatch}（單 GPU HPL 經攔截工具：逐列跨度與模擬） \\
-\path{gh200/analysis/} & \path{summarize.py}、\path{sci_summary.py}、\path{app_summary.py}、\path{crossover.py}、\path{qe_adapt_ci.py}、\path{range_sweep.py}、\path{span_report.py}、\path{mp2_summary.py}、\path{gp_summary.py}、\path{exa_summary.py}、\path{paper_figures.py}（英文論文的向量圖）、\path{report_figs_zh.py}（本報告的圖）；圖 5.13 的座標來自 \path{gh200/results/range_map_points.csv} \\
+\path{gh200/slurm/} & 工作腳本：\path{e1_gemm_tdp.sbatch}（微基準與形狀掃描）、\path{hpl_tdp.sbatch}（HPL/HPL-MxP）、\path{sci_sweep.sbatch}（科學軟體）、\path{app_tdp.sbatch}（第三方軟體）、\path{mp2_tdp.sbatch}（DF-MP2）、\path{gp_tdp.sbatch}（高斯過程）、\path{exageostat_tdp.sbatch}（ExaGeoStat）、\path{hpl_tune.sbatch}（HPL 調參）、\path{hpl_shim.sbatch}（單 GPU HPL 經攔截工具：逐列跨度與模擬） \\
+\path{gh200/analysis/} & \path{summarize.py}、\path{sci_summary.py}、\path{app_summary.py}、\path{crossover.py}、\path{qe_adapt_ci.py}、\path{range_sweep.py}、\path{span_report.py}、\path{mp2_summary.py}、\path{gp_summary.py}、\path{exa_summary.py}、\path{paper_figures.py}（英文論文的向量圖）、\path{report_figs_zh.py}（本報告的圖）；圖~\ref{fig:rangemap} 的座標來自 \path{gh200/results/range_map_points.csv} \\
 \path{gh200/results/} & 所有彙整後的 CSV；圖下方、表註與內文列出的結果檔都在此目錄 \\
 \texttt{gh200/實驗日誌.md}、\texttt{gh200/應用實驗日誌.md} & 完整的實驗過程紀錄（含失敗與重做） \\
 \end{longtable}
@@ -62,24 +62,25 @@ AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
 
 所有工作都以 Slurm 送出；腳本只在自己獨佔的節點上設定功耗上限，結束時恢復為 1000~W，並在每次執行前檢查實際生效的上限。以下為三個例子：
 
-\begin{Verbatim}[breaklines,breakanywhere,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray}]
+\needspace{16\baselineskip}
+\begin{Verbatim}[breaklines,breakanywhere,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray},baselinestretch=1.05]
 module load nvhpc/26.5
 cd gh200
-# 分界點掃描（第 5.5 節）
+# 分界點掃描（第 5.7 節）
 sbatch -w work1 --export=ALL,TDPS="1000 575 450",SHAPES="8192x4096x16384 8192x256x81920",CONFIGS="fp64:52 fp64:36 fp64emu:32 gemmul8:10",WARMUP=2,SECONDS_PER=6 slurm/e1_gemm_tdp.sbatch
 .venv/bin/python analysis/crossover.py <工作編號 ...>
 # Quantum ESPRESSO 自動調整位元數（第 5.4 節）
 sbatch -w work2 --export=ALL,APP=qe,CASE=si1000,INP=si1000.in,TDPS=550,VARIANTS="native adapt0:nearest src28:nearest src28:nearest adapt0:nearest native" slurm/sci_sweep.sbatch
 .venv/bin/python analysis/sci_summary.py logs/sci/<工作名>_<編號>
 .venv/bin/python analysis/qe_adapt_ci.py <彙整 CSV> src28:nearest
-# 第三方軟體（第 5.6 節）
+# 第三方軟體（第 5.1.2 節）
 sbatch -w work10 --export=ALL,APP=mfem slurm/app_tdp.sbatch
 .venv/bin/python analysis/app_summary.py logs/apps/<工作名>_<編號>
 \end{Verbatim}
 
 圖下方的資料來源、表註與引用各表的段落列出對應的 Slurm 工作編號與結果檔，原始紀錄可以在 \path{gh200/logs/} 與 \path{gh200/results/} 找到。本報告的圖與 PDF 以下列指令重新產生（在專案根目錄執行；字型約 90 MB，不納入版本控制）：
 
-\begin{Verbatim}[breaklines,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray}]
+\begin{Verbatim}[breaklines,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray},baselinestretch=1.05]
 paper/zh_report/fetch_fonts.sh                     # 下載並檢查字型
 gh200/.venv/bin/python gh200/analysis/report_figs_zh.py paper/zh_report/fonts   # 本報告的圖
 paper/zh_report/build.sh                           # tectonic（XeLaTeX + BibTeX）→ report.pdf

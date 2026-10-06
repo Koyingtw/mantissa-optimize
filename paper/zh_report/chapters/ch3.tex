@@ -19,7 +19,7 @@ Precimonious 等工具自動把變數換成較低精度的型別，目標是提�
 
 \section{地統計的混合精度}\label{sec:rw-geostat}
 
-ExaGeoStat 以 FP64 的 tile Cholesky 分解計算高斯過程的概似~\cite{Abdulah2018}。之後的混合精度版本先把位置依空間填充曲線排序，使強相關集中在對角線附近；對角 tile 保留 FP64，再依離對角線的距離或 tile 的範數，把整個 tile 轉成 FP32、FP16 或 FP8：FP64／FP32 平均快 1.6 倍~\cite{Abdulah2019}，加上 FP16 最多快 2.64 倍~\cite{Abdulah2022}，結合低秩近似最多快 12 倍~\cite{Cao2022}，在 GH200 上以四種精度比 FP64 快 3 倍~\cite{Ren2025}，也用於 GH200 系統上的氣候模擬器~\cite{Abdulah2024}。Cao 等人在單張 V100、A100 與 H100 上量測過這類分解的功耗與能耗~\cite{Cao2023}，但沒有設定功耗上限，也沒有分析時脈。單一 FP32 不足以計算這類概似~\cite{Abdulah2022}，與第 \ref{sec:gp} 節的結果一致。這些做法都是把整個 tile 換成其他格式；本專題保留 FP64、只截斷運算元的尾數，兩者可以疊加。GPU 上的 RI-MP2 也曾以單精度與混合精度 GEMM 加速~\cite{OlivaresAmaya2010}。
+ExaGeoStat 以 FP64 的 tile Cholesky 分解計算高斯過程的概似~\cite{Abdulah2018}。之後的混合精度版本先把位置依空間填充曲線排序，使強相關集中在對角線附近；對角 tile 保留 FP64，再依離對角線的距離或 tile 的範數，把整個 tile 轉成 FP32、FP16 或 FP8：FP64/FP32 平均快 1.6 倍~\cite{Abdulah2019}，加上 FP16 最多快 2.64 倍~\cite{Abdulah2022}，結合低秩近似最多快 12 倍~\cite{Cao2022}，在 GH200 上以四種精度比 FP64 快 3 倍~\cite{Ren2025}，也用於 GH200 系統上的氣候模擬器~\cite{Abdulah2024}。Cao 等人在單張 V100、A100 與 H100 上量測過這類分解的功耗與能耗~\cite{Cao2023}，但沒有設定功耗上限，也沒有分析時脈。單一 FP32 不足以計算這類概似~\cite{Abdulah2022}，與第 \ref{sec:gp} 節的結果一致。這些做法都是把整個 tile 換成其他格式；本專題保留 FP64、只截斷運算元的尾數，兩者可以疊加。GPU 上的 RI-MP2 也曾以單精度與混合精度 GEMM 加速~\cite{OlivaresAmaya2010}。
 
 \section{依收斂程度調整精度}\label{sec:rw-adaptive}
 
@@ -27,22 +27,22 @@ Woo 等人在 LOBPCG 特徵值求解器中，依收斂狀態在 FP32、FP64 與�
 
 \section{本研究的定位}\label{sec:positioning}
 
-表~\ref{tab:related} 比較本研究與相關研究。據我們所知，本研究是第一個在現役 GPU（GH200）上，以純軟體截斷 FP64／BF16 運算元的尾數來降低切換功耗、在功耗上限下把省下的功耗轉換為吞吐量，並在真實 HPC 應用上以物理誤差驗證的系統性研究。在 FP64 內「保留指數、捨去尾數」本身並不新~\cite{Grutzmacher2020}，地統計的混合精度也已有人量測過功耗~\cite{Cao2023}，全零輸入在不同功耗上限下的加速也已有人量測過~\cite{He2024}；本專題的不同在於目的（降低切換功耗）、做法（不改變格式）與量測條件（功耗上限下的時脈與吞吐量）。
+表~\ref{tab:related} 比較本研究與相關研究。據我們所知，本研究是第一個在現役 GPU（GH200）上，以純軟體截斷 FP64/BF16 運算元的尾數來降低切換功耗、在功耗上限下把省下的功耗轉換為吞吐量，並在真實 HPC 應用上以物理誤差驗證的系統性研究。在 FP64 內「保留指數、捨去尾數」本身並不新~\cite{Grutzmacher2020}，地統計的混合精度也已有人量測過功耗~\cite{Cao2023}，全零輸入在不同功耗上限下的加速也已有人量測過~\cite{He2024}；本專題的不同在於目的（降低切換功耗）、做法（不改變格式）與量測條件（功耗上限下的時脈與吞吐量）。
 
 \begin{table}[htbp]
 \centering
 \caption{本研究與相關研究的比較}\label{tab:related}
 \small
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\raggedright\arraybackslash}p{1.9cm}LLL@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{3.1cm}>{\centering\arraybackslash}p{1.2cm}LLL@{}}
 \toprule
-工作 & 需要新硬體 & 截斷真實資料 & 在功耗上限下量測效能 & 驗證應用的數值結果 \\
+工作 & 新硬體 & 截斷真實資料 & 在功耗上限下量測效能 & 驗證應用的\newline 數值結果 \\
 \midrule
-Bhalachandra、Gregersen、Antepara & 否 & 否（全零或特殊樣式） & 否 & 否 \\
-He & 否 & 否 & 是（330 $\rightarrow$ 100~W 掃描，全零輸入） & 否 \\
-Tong、Pool、Guenther、AMD & 是 & 是 & 否 & 部分 \\
-Woo、Huang & 否 & 改變格式 & 否 & 是 \\
-Grützmacher（尾數切段儲存） & 否 & 是（保留指數、捨去尾數，目的為節省頻寬） & 否 & 是（PageRank） \\
-ExaGeoStat 系列（Abdulah、Cao、Ren） & 否 & 改變格式（整個 tile） & 否（Cao 等人量過功耗，未設上限） & 是 \\
+Bhalachandra、Gregersen、Antepara & 否 & 否（全零等樣式） & 否 & 否 \\ \addlinespace[2pt]
+He & 否 & 否 & 是（330 $\rightarrow$ 100~W 掃描，全零輸入） & 否 \\ \addlinespace[2pt]
+Tong、Pool、Guenther、AMD & 是 & 是 & 否 & 部分 \\ \addlinespace[2pt]
+Woo、Huang & 否 & 改變格式 & 否 & 是 \\ \addlinespace[2pt]
+Grützmacher（尾數切段儲存） & 否 & 是（保留指數、捨去尾數，目的為節省頻寬） & 否 & 是（PageRank） \\ \addlinespace[2pt]
+ExaGeoStat 系列（Abdulah、Cao、Ren） & 否 & 改變格式（整個 tile） & 否（Cao 等人量過功耗，未設上限） & 是 \\ \addlinespace[2pt]
 \textbf{本研究} & \textbf{否} & \textbf{是} & \textbf{是（含 8 節點 HPL）} & \textbf{是} \\
 \bottomrule
 \end{tabularx}

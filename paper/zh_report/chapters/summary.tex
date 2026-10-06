@@ -9,32 +9,33 @@
 \vspace{0.4em}
 \noindent\textbf{三個主要發現：}
 \begin{enumerate}[itemsep=0.1em,topsep=0.2em]
-  \item \textbf{機制}（第 \ref{sec:mech} 節）：省電主要來自低位元不再翻轉（1000~W 的單次對照中佔 62–97\%），在 tensor core、一般 FP64 運算單元與記憶體搬移上方向一致。
+  \item \textbf{機制}（第 \ref{sec:mech} 節）：省電主要來自低位元不再翻轉（1000~W 下每個組合量測 2–4 次的對照中佔 62–97\%），在 tensor core、一般 FP64 運算單元與記憶體搬移上方向一致。
   \item \textbf{具正確性檢查的完整程式}（第 \ref{sec:hpl}、\ref{sec:sci}、\ref{sec:mp2}、\ref{sec:gp} 節）：收益與證據強度見下表。
-  \item \textbf{與改變格式的分界}（第 \ref{sec:crossover}、\ref{sec:span} 節）：與 INT8 模擬的勝負隨矩陣形狀與功耗上限而變；列內指數跨度寬時，固定位數的 INT8 模擬可能在沒有警告的情況下算錯（高斯基底 DFT 52\mEh），截斷不受影響；把所有矩陣乘法換成 FP32／3xTF32 在長內積上無法收斂。
+  \item \textbf{與改變格式的分界}（第 \ref{sec:crossover}、\ref{sec:span} 節）：與 INT8 模擬的勝負隨矩陣形狀與功耗上限而變；列內指數跨度寬時，固定位數的 INT8 模擬可能在沒有警告的情況下算錯（高斯基底 DFT 錯 52.5\mEh），截斷不受影響；全部改用 FP32/3xTF32 則讓內積很長的 Quantum ESPRESSO 無法收斂。
 \end{enumerate}
 \par}
 
 \vspace{0.3em}
 \noindent\textbf{主要結果與證據強度}\par\vspace{0.2em}
-{\footnotesize\linespread{1.15}\selectfont
-\noindent\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}>{\raggedright\arraybackslash}p{2.2cm}>{\raggedright\arraybackslash}p{2.2cm}L>{\raggedright\arraybackslash}p{2.3cm}>{\raggedright\arraybackslash}p{2.3cm}@{}}
+{\footnotesize\linespread{1.12}\selectfont\setlength{\tabcolsep}{4pt}
+\noindent\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.0cm}LL>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{2.6cm}@{}}
 \toprule
-工作負載 & 操作點 & 正確性判準 & 功耗受限時的加速 & 預設 1000~W & 證據 \\
+工作負載 & 操作點與正確性判準 & 功耗受限時的加速 & 預設 1000~W & 證據 \\
 \midrule
-HPL（8 節點） & 36 位有效位數（即 35 個尾數位元），最近捨入 & 殘差，距門檻約百倍 & 500–800~W：3.3–4.7\%（400~W$^{*}$：9.9\%） & 省電 7.5–8.6\%，快 0.6–3.9\% & 兩組節點 6 對，95\% 區間 \\
-HPL-MxP（8 節點） & BF16 保留 3 位，往零截斷 & 殘差，3 次修正 & 500~W：5.8\%；600–800~W：1.7–2.3\% & 不報（功耗煞車） & 兩組節點 6 對；對角優勢測試矩陣 \\
-Quantum ESPRESSO & 依收斂門檻 16–39 位，最近捨入 & 總能量印出的每一位 & 矽 2.1\%；金表面 3.6\%（約一半來自迭代減少） & 不受限 & 暖機後 6 對，95\% 區間 \\
-DF-MP2 & 20–32 位，最近捨入 & MP2 能量誤差 $\le \ee{1.2}{-8}$\Eh & 500–700~W：4.7–7.7\% & 速度不變，省電 8–14\% & 6 輪，95\% 區間 \\
-高斯過程地統計 & 28 位，最近捨入 & 估出的範圍參數 & 500–700~W：7.5–7.9\% & 快 0–4\%，省電 8–15\%（依設定） & 6 輪，95\% 區間；自寫核心 \\
-MFEM、SW4 & 36／20 位，最近捨入 & 解的相對變化 & 0.3–2.0\% & — & 每格兩輪 \\
-LAMMPS & 36／20 位 & — & 落在雜訊內 & — & 負面對照 \\
-LoRA 訓練（8 節點） & FP8 再截到 2 位 & 驗證損失達標 & 達標反而慢 19–39\% & — & 兩個 seed、四組配對 \\
-語言模型推論 & BF16 保留 3 位對 FP8 & 困惑度 & FP8 已取得大部分好處 & — & 六個模型 \\
+HPL & 36 位有效位數（35 個尾數位元），最近捨入；殘差距門檻約百倍 & 500–800~W：3.3–4.7\%\newline（400~W$^{*}$：9.9\%） & 省電 7.5–8.6\%，\newline 快 0.6–3.9\%$^{\dagger}$ & 兩組節點 6 對，\newline 95\% 區間 \\ \addlinespace[2pt]
+HPL-MxP & BF16 保留 3 位，往零截斷；殘差通過，修正 3 次 & 500~W：5.8\%\newline 600–800~W：1.7–2.3\% & 不報\newline（功耗煞車） & 兩組節點 6 對；\newline 對角優勢測試矩陣 \\ \addlinespace[2pt]
+Quantum\newline ESPRESSO & 依收斂門檻保留 16–42 位，最近捨入；總能量印出的每一位不變 & 矽 2.1\%；金表面 3.6\%（約一半來自迭代減少） & 金表面不受限，\newline 矽部分受限 & 暖機後 6 對，\newline 95\% 區間 \\ \addlinespace[2pt]
+DF-MP2 & 20–32 位，最近捨入；MP2 能量誤差 $\le \ee{1.2}{-8}$\Eh & 500–700~W：4.7–7.7\% & 快 0.5–0.8\%，\newline 省電 8–14\% & 6 輪，95\% 區間 \\ \addlinespace[2pt]
+高斯過程\newline 地統計 & 28 位，最近捨入；估出的範圍參數不變 & 500–700~W：7.5–7.9\% & 快 0–4\%，省電 8–15\%（依設定） & 6 輪，95\% 區間；\newline 自寫核心 \\
 \bottomrule
 \end{tabularx}
-\par\vspace{2pt}
-\noindent $^{*}$低於規格表的可設範圍（450–1000~W）。耗電為驅動程式讀數的模組耗電。
+\par\vspace{3pt}
+\noindent HPL 與 HPL-MxP 使用 8 個節點。$^{*}$低於規格表的可設範圍（450–1000~W）。$^{\dagger}$3.9\% 那組的原生同時有溫度降頻。耗電為驅動程式讀數的模組耗電。
+\par}
+
+\vspace{0.3em}
+{\linespread{1.3}\selectfont
+\noindent\textbf{其他結果：}非矩陣乘法的第三方程式 MFEM 與 SW4 只快 0.3–2.0\%，LAMMPS 落在雜訊內（第 \ref{sec:nongemm} 節）；已使用 FP8 的 AI 上，LoRA 再截到 2 位反而慢 19–40\%，推論上 BF16 保留 3 位與 FP8 打平（附錄 \ref{app:ai}）。
 \par}
 
 \vspace{0.4em}
