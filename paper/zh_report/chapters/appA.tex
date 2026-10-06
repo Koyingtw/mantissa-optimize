@@ -11,7 +11,7 @@
 \toprule
 項目 & 內容 \\
 \midrule
-硬體 & 14 個節點，各一顆 NVIDIA GH200 480GB（aarch64），200~Gb/s InfiniBand，Slurm 分區 \texttt{compute} \\
+硬體 & 14 個節點，各一顆 NVIDIA GH200 480GB（aarch64），200~Gb/s InfiniBand（2026 年 10 月 6 日起的多節點工作把 NCCL 與 MPI 固定在 \texttt{mlx5\_0}，見第 \ref{sec:hpl-tune} 節），Slurm 分區 \texttt{compute} \\
 編譯器與函式庫 & NVHPC 26.5（CUDA 13.2、cuBLAS 13、NCCL、HPC-X Open MPI）；ExaGeoStatCPP 連結 cuBLAS 13.6 \\
 基準 & HPL（rocHPL 的 CUDA 移植，分支 \texttt{feat/cuda-port}）、HPL-MxP（分支 \texttt{perf/h200-mantissa}）~\cite{Dongarra2025} \\
 科學軟體 & Quantum ESPRESSO 7.6~\cite{Giannozzi2020}、GPU4PySCF 1.8.1~\cite{Wu2025,Li2025}、MFEM（提交 \texttt{c362dea}）、SW4（提交 \texttt{52b51c9}）、LAMMPS \texttt{stable\_22Jul2025\_update6}、GEMMul8 3.5.1 \\

@@ -5,6 +5,7 @@ usage: report_figs_zh.py <font dir> [outdir]
   font dir  directory holding NotoSansTC.ttf (variable TrueType, preferred) or NotoSansCJKtc-Regular.otf
   outdir    default: <repo>/paper/zh_report/figs
   CHECK=1   also report text that leaves the figure or overlaps other text
+  PREVIEW=d also write PNG copies to directory d
 
 Every measured number (values, labels, legend errors) is read from gh200/results/ or gh200/logs/ (the source is
 named in each function); only format constants (the exponent ranges in 5.13) are written here.
@@ -174,6 +175,9 @@ def save(fig, name):
     fig.savefig(path, metadata={"Creator": "gh200/analysis/report_figs_zh.py", "CreationDate": None})
     if os.environ.get("CHECK"):
         check_layout(fig, name)
+    if os.environ.get("PREVIEW"):  # PNG copies for a quick visual check
+        os.makedirs(os.environ["PREVIEW"], exist_ok=True)
+        fig.savefig(os.path.join(os.environ["PREVIEW"], name.replace(".pdf", ".png")), dpi=200)
     plt.close(fig)
     print(f"已寫出 {os.path.relpath(path)}")
 
@@ -282,33 +286,44 @@ def fig_gemm_caps():
 
 # ----------------------------------------------------------------------------------------------- 5.3
 def fig_hpl():
-    """5.3 HPL (tuned, 8 nodes, N = 286720): TFLOP/s vs cap, gains of 36 bits, ΔW at 700 W.
-    e3_tuned_summary.csv (job 3315). rocHPL counts the hidden bit: 36 bits = 35 fraction bits."""
+    """5.3 HPL (tuned, 8 nodes, N = 286720): TFLOP/s vs cap on two node sets, mean gains of 36 bits, ΔW at 700 W.
+    Set A: e3_tuned_summary.csv (job 3315, work4-11, 2 pairs per cap); set B: e3_more_summary.csv (job 3582,
+    work3-8, 12, 13, 4 pairs per cap, slower network); the gains row is the mean of all 6 pairs (e3_pairs_ci.csv).
+    rocHPL counts the hidden bit: 36 bits = 35 fraction bits."""
     e3 = pd.read_csv(res("e3_tuned_summary.csv"))
+    eb = pd.read_csv(res("e3_more_summary.csv"))
+    ci = pd.read_csv(res("e3_pairs_ci.csv"))
     nat = e3[e3.variant == "53:53"].sort_values("tdp")
     b36 = e3[e3.variant == "36:36"].sort_values("tdp")
     b28 = e3[e3.variant == "28:28"].sort_values("tdp")
-    fig, ax = fig_axes(FULL, 7.0, 1.85, 0.3, 1.6, 0.2)
+    natb = eb[eb.variant == "53:53"].sort_values("tdp")
+    b36b = eb[eb.variant == "36:36"].sort_values("tdp")
+    fig, ax = fig_axes(FULL, 7.4, 1.85, 0.3, 1.6, 0.2)
     ax.plot(b28.tdp, b28.perf, color=GREY_L, lw=1.0, ls=(0, (4, 2.5)), marker="o", ms=2.8, zorder=2,
-            label="保留 28 位（失效邊界）")
-    ax.plot(nat.tdp, nat.perf, color=GREY_D, lw=1.3, marker="o", ms=3.6, zorder=3, label="原生 FP64")
-    ax.plot(b36.tdp, b36.perf, color=BLUE, lw=1.6, marker="o", ms=4.2, zorder=4,
-            label="保留 36 位（含隱藏位；安全設定）")
-    # ΔW at 700 W: the cap at which the native curve reaches the 36-bit performance (linear interpolation)
+            label="甲組保留 28 位（失效邊界）")
+    ax.plot(natb.tdp, natb.perf, color=GREY, lw=1.0, ls=(0, (2.5, 1.5)), marker="s", ms=3.0, mfc="white",
+            zorder=3, label="乙組原生")
+    ax.plot(b36b.tdp, b36b.perf, color=BLUE_L, lw=1.2, ls=(0, (2.5, 1.5)), marker="s", ms=3.4, mfc="white",
+            zorder=3, label="乙組保留 36 位")
+    ax.plot(nat.tdp, nat.perf, color=GREY_D, lw=1.3, marker="o", ms=3.6, zorder=4, label="甲組原生 FP64")
+    ax.plot(b36.tdp, b36.perf, color=BLUE, lw=1.6, marker="o", ms=4.2, zorder=5,
+            label="甲組保留 36 位（含隱藏位；安全設定）")
+    # ΔW at 700 W on set A: the cap at which the native curve reaches the 36-bit performance (linear interpolation)
     p36 = b36[b36.tdp == 700].perf.iloc[0]
     cap_eq = float(np.interp(p36, nat.perf, nat.tdp))
     dw = cap_eq - 700
     assert abs(dw - b36[b36.tdp == 700].dw_cap.iloc[0]) < 0.5, "ΔW differs from e3_tuned_summary.csv"
-    ax.annotate("", xy=(cap_eq, p36), xytext=(700, p36), zorder=5,
+    ax.annotate("", xy=(cap_eq, p36), xytext=(700, p36), zorder=6,
                 arrowprops=dict(arrowstyle="-|>,head_length=0.35,head_width=0.18", color=INK, lw=0.8,
                                 shrinkA=3, shrinkB=0))
-    ax.plot([cap_eq, cap_eq], [p36, p36 - 33], color=INK2, lw=0.6, ls=(0, (1.5, 1.5)), zorder=5)
-    ax.text(cap_eq + 6, p36 - 33, f"相當於多給 {dw:.0f} W 上限", ha="left", va="center", fontsize=8, color=INK)
-    # speedups of 36 bits, as a row right under the cap labels
-    for _, r in b36.iterrows():
-        g = (r.perf / nat[nat.tdp == r.tdp].perf.iloc[0] - 1) * 100
-        ax.annotate(pct(g), (r.tdp, 0), xycoords=("data", "axes fraction"), textcoords="offset points",
-                    xytext=(0, -18), ha="center", va="top", fontsize=8, color=INK)
+    ax.plot([cap_eq, cap_eq], [p36, p36 - 33], color=INK2, lw=0.6, ls=(0, (1.5, 1.5)), zorder=6)
+    ax.text(cap_eq + 6, p36 - 33, f"甲組相當於多給 {dw:.0f} W 上限", ha="left", va="center", fontsize=8,
+            color=INK)
+    # mean speedup of 36 bits over all pairs of both node sets, as a row right under the cap labels
+    pooled = ci[ci.job.astype(str) == "pooled"].set_index("tdp")
+    for cap in b36.tdp:
+        ax.annotate(pct(pooled.gain_mean[cap]), (cap, 0), xycoords=("data", "axes fraction"),
+                    textcoords="offset points", xytext=(0, -18), ha="center", va="top", fontsize=8, color=INK)
     ax.annotate("36 位加速", (0, 0), xycoords="axes fraction", textcoords="offset points",
                 xytext=(-4, -18), ha="right", va="top", fontsize=8, color=INK2)
     ax.set_xlim(370, 1030)
@@ -318,27 +333,45 @@ def fig_hpl():
     ax.set_xlabel(CAP_NODE, labelpad=20)
     ax.set_ylabel("HPL 效能（TFLOP/s）")
     h, lab = ax.get_legend_handles_labels()
-    ax.legend([h[2], h[1], h[0]], [lab[2], lab[1], lab[0]], loc="upper left")
+    order = [4, 3, 2, 1, 0]
+    ax.legend([h[i] for i in order], [lab[i] for i in order], loc="lower right")
     save(fig, "fig5_03_hpl.pdf")
 
 
 # ----------------------------------------------------------------------------------------------- 5.4
 def fig_hplmxp():
-    """5.4 HPL-MxP (8 nodes, N = 491520) speedup per cap, 3 and 0 bits kept. e2_summary.csv (job 1671).
-    The native 1000 W run tripped the chassis power brake, so 1000 W is shown as excluded."""
+    """5.4 HPL-MxP (8 nodes, N = 491520) speedup per cap. 3 bits kept: mean of the 6 pairs from two node sets with the
+    95% t interval (e2_pairs_ci.csv; set A = job 1671, 2 pairs, set B = job 3583, 4 pairs), dots = each set's mean;
+    0 bits kept: set A only (e2_summary.csv). The native 1000 W run tripped the chassis power brake, so 1000 W is
+    shown as excluded."""
     e2 = pd.read_csv(res("e2_summary.csv"))
     e2["variant"] = e2.variant.astype(str)
+    ci = pd.read_csv(res("e2_pairs_ci.csv"))
+    ci["job"] = ci.job.astype(str)
     caps = [400, 500, 600, 700, 800]
-    series = [("3", "保留 3 位（安全設定）", BLUE, INK), ("0", "保留 0 位（失效邊界）", GREY_L, INK2)]
     fig, ax = fig_axes(FULL, 6.2, 1.35, 0.3, 1.0, 0.2)
     bw = 0.34
-    for j, (v, lab, c, tc) in enumerate(series):
-        g = e2[e2.variant == v].set_index("tdp")
-        xs = [i + (j - 0.5) * (bw + 0.04) for i in range(len(caps))]
-        vals = [g.gain_pct[cap] for cap in caps]
-        ax.bar(xs, vals, width=bw, color=c, label=lab, zorder=3)
-        for x, val in zip(xs, vals):
-            ax.text(x, val + 0.5, pct(val), ha="center", va="bottom", fontsize=8, color=tc)
+    pooled = ci[ci.job == "pooled"].set_index("tdp")
+    xs = [i - 0.5 * (bw + 0.04) for i in range(len(caps))]
+    vals = [pooled.gain_mean[c] for c in caps]
+    errs = [pooled.gain_ci95[c] for c in caps]
+    ax.bar(xs, vals, width=bw, color=BLUE, label="保留 3 位（安全設定；兩組節點 6 對的平均與 95% 區間）", zorder=3)
+    ax.errorbar(xs, vals, yerr=errs, fmt="none", ecolor=INK, elinewidth=0.8, capsize=2.5, zorder=4)
+    tops = [v + e for v, e in zip(vals, errs)]
+    for j, (job, g) in enumerate(ci[ci.job != "pooled"].groupby("job")):
+        g = g.set_index("tdp")
+        ys = [g.gain_mean[c] for c in caps]
+        tops = [max(t, y) for t, y in zip(tops, ys)]
+        ax.plot([x + (j - 0.5) * 0.09 for x in xs], ys, ls="none", marker="o", ms=2.6,
+                mfc="white", mec=INK, mew=0.6, zorder=5, label="各組節點的平均" if j == 0 else None)
+    for x, val, t in zip(xs, vals, tops):
+        ax.text(x, t + 0.6, pct(val), ha="center", va="bottom", fontsize=8, color=INK)
+    g0 = e2[e2.variant == "0"].set_index("tdp")
+    xs0 = [i + 0.5 * (bw + 0.04) for i in range(len(caps))]
+    vals0 = [g0.gain_pct[c] for c in caps]
+    ax.bar(xs0, vals0, width=bw, color=GREY_L, label="保留 0 位（失效邊界；甲組）", zorder=3)
+    for x, val in zip(xs0, vals0):
+        ax.text(x, val + 0.5, pct(val), ha="center", va="bottom", fontsize=8, color=INK2)
     n = len(caps)
     ax.text(n, 1.0, "原生在 1000 W 觸發\n機箱硬體功耗煞車，\n故不列入比較", ha="center", va="bottom", fontsize=8,
             color=INK2, linespacing=1.3)
@@ -350,7 +383,9 @@ def fig_hplmxp():
     ax.tick_params(axis="x", length=0)
     ax.set_xlabel(CAP_NODE)
     ax.set_ylabel(REL_GAIN)
-    ax.legend(loc="upper right", bbox_to_anchor=(0.86, 1.0))
+    h, lab = ax.get_legend_handles_labels()
+    order = [lab.index(x) for x in sorted(lab, key=lambda t: (not t.startswith("保留 3"), t.startswith("保留 0")))]
+    ax.legend([h[i] for i in order], [lab[i] for i in order], loc="upper right", bbox_to_anchor=(0.86, 1.0))
     save(fig, "fig5_04_hplmxp.pdf")
 
 

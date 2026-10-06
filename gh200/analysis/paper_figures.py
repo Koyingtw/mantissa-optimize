@@ -59,25 +59,34 @@ def fig_gemm():
 
 
 def fig_hpl():
-    # HPL: the tuned configuration (job 3315: N = 286720, NCCL 8 channels / 2 MiB); its native run is still
-    # power-capped at 1000 W, so that point stays. HPL-MxP's native 1000 W point tripped the power brake.
-    e3 = pd.read_csv("results/e3_tuned_summary.csv")
-    e2 = pd.read_csv("results/e2_summary.csv")
-    fig, ax = plt.subplots(figsize=(COL, 1.9))
-    g = e3[e3.variant == "36:36"].sort_values("tdp")
-    ax.plot(g.tdp, g.gain_pct, "o-", color=C[0], ms=3, lw=1, label="HPL, 36 bits (8 nodes)")
-    g2 = e2[e2.variant.astype(str) == "3"].sort_values("tdp")
-    g2 = g2[g2.tdp < 1000]
-    ax.plot(g2.tdp, g2.gain_pct, "s-", color=C[1], ms=3, lw=1, label="HPL-MxP, 3 bits (8 nodes)")
-    off = {400: (5, 2), 500: (0, -9)}  # keep the labels clear of the frame and of the HPL-MxP line
-    for _, r in g[g.tdp < 1000].iterrows():
-        dx, dy = off.get(int(r.tdp), (0, 4))
-        ax.annotate(f"+{r.dw_cap:.0f} W", (r.tdp, r.gain_pct), textcoords="offset points", xytext=(dx, dy),
-                    ha="left" if dx > 0 else "center", fontsize=6, color=C[0])
+    # HPL (36 significand bits) and HPL-MxP (3 kept bits) speedups per cap: mean of all pairs from two node sets with
+    # 95% t intervals (results/e3_pairs_ci.csv, e2_pairs_ci.csv from analysis/paired_ci.py); open markers are the
+    # means of each node set. HPL-MxP's native 1000 W run tripped the chassis power brake, so that cap is left out.
+    fig, ax = plt.subplots(figsize=(COL, 2.0))
+    series = [("e3_pairs_ci.csv", "HPL, 36 bits", C[0], "o", -8, 1000),
+              ("e2_pairs_ci.csv", "HPL-MxP, 3 bits", C[1], "s", 8, 800)]
+    for fn, lab, c, mk, dx, top in series:
+        path = os.path.join(RES, fn)
+        if not os.path.exists(path):
+            continue
+        d = pd.read_csv(path)
+        d = d[d.tdp <= top]
+        d["job"] = d.job.astype(str)
+        p = d[d.job == "pooled"].sort_values("tdp")
+        ax.errorbar(p.tdp + dx, p.gain_mean, yerr=p.gain_ci95, color=c, marker=mk, ms=3, lw=1, capsize=2,
+                    label=f"{lab} (mean of 6 pairs)")
+        for i, (job, g) in enumerate(d[d.job != "pooled"].groupby("job")):
+            g = g.sort_values("tdp")
+            ax.plot(g.tdp + dx, g.gain_mean, ls="none", marker=mk, ms=3.2, mfc="none", mec=c, mew=0.6,
+                    label=f"{lab}, each node set" if i == 0 else None)
+    ax.axhline(0, color="#999999", lw=0.6)
     ax.set_xlabel("Module power cap per node (W)")
     ax.set_ylabel("Speedup vs. native (%)")
-    ax.set_ylim(0, 15)
-    ax.legend(frameon=False, loc="upper right")
+    ax.set_xticks([400, 500, 600, 700, 800, 1000])
+    ax.set_ylim(-1, 15)
+    h, lab = ax.get_legend_handles_labels()
+    order = sorted(range(len(lab)), key=lambda i: ("each node set" in lab[i], lab[i]))
+    ax.legend([h[i] for i in order], [lab[i] for i in order], frameon=False, loc="upper right", fontsize=6.5)
     save(fig, "hpl_caps.pdf")
 
 

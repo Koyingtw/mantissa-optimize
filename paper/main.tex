@@ -37,14 +37,16 @@
 We study a software knob exploiting data-dependent GPU power---zeroing unneeded low-order mantissa bits of FP64,
 BF16 and FP8 operands---on 14 NVIDIA GH200 nodes under module power caps, with paired measurements and an
 equivalent-power metric (the extra cap the unmodified program needs). Under a binding cap, every tested GEMM-dominated HPC
-program that truncates internally and checks its results gains. At 400--800\W, tuned 8-node HPL keeping 36 significand bits
-(${\approx}100\times$ residual margin) runs 4.0--11.0\pct{} faster, worth 39--127\W{} per node, and HPL-MxP keeping
-3 bits 1.8--12.7\pct{} on a diagonally dominant test matrix; at 450--550\W{} Quantum ESPRESSO, with bits tied to its
+program that truncates internally and checks its results gains. At 500--800\W, tuned 8-node HPL keeping 36 significand
+bits (35 fraction bits; ${\approx}100\times$ residual margin) runs 3.3--4.7\pct{} faster over 6 pairs on two node sets,
+worth 42--74\W{} per node at 500--700\W, and HPL-MxP keeping 3 bits 1.7--5.8\pct{} on a diagonally dominant test
+matrix; at 450--550\W{} Quantum ESPRESSO, with bits tied to its
 Davidson tolerance, runs 2.1--3.6\pct{} faster (partly from fewer iterations) with all printed energy digits
 unchanged; at 500--700\W{} DF-MP2 keeping 20--32 bits runs 4.7--7.7\pct{} faster, and a wide-range
 Gaussian-process likelihood keeping 28 bits 7.5--7.9\pct, where FP32 fails and INT8 emulation is slower. At the
-default 1000\W{} cap HPL is still 3.9\pct{} faster and uses 7.5\pct{} less energy per solve. Fill controls attribute
-62--97\pct{} of the saving to bits that stop toggling. Safe bit counts need validation across problem sizes; the crossover with INT8 emulation of FP64 moves with matrix shape and cap. With wide per-row exponent spans,
+default 1000\W{} cap HPL uses 7.5--8.6\pct{} less energy per solve and is 0.6--3.9\pct{} faster, depending on how far
+the cap lowers the native clock. In single runs at 1000\W, fill controls attribute 62--97\pct{} of the saving to bits
+that stop toggling. Safe bit counts need validation across problem sizes; the crossover with INT8 emulation of FP64 moves with matrix shape and cap. With wide per-row exponent spans,
 fixed-width INT8 emulation can silently fail: at 36 bits it shifts a Gaussian-basis DFT energy by
 52\,mE$_\mathrm{h}$, whereas rounding to 36 bits errs by $10^{-6}$\Eh. All-FP32 or 3xTF32 GEMMs fail on long inner
 products, and in Hopper AI inference FP8 already captures most of the benefit.
@@ -84,10 +86,11 @@ much throughput the saved switching power buys under power caps. Our contributio
 
 \begin{enumerate}
 \item \textbf{Gains on real applications under power caps.} We express the benefit as the extra cap the unmodified
-program needs to catch up, from GEMM (with paired confidence intervals) to tuned 8-node HPL (36 significand bits:
-4.0--11.0\pct{} faster at 400--800\W, 39--127\W), HPL-MxP on a diagonally dominant test matrix, Quantum ESPRESSO,
+program needs to catch up, from GEMM to tuned 8-node HPL (36 significand bits: 3.3--4.7\pct{} faster at 500--800\W,
+42--74\W{} at 500--700\W, 6 pairs on two node sets), HPL-MxP on a diagonally dominant test matrix, Quantum ESPRESSO,
 power-hungry DF-MP2 (4.7--7.7\pct{} at 500--700\W) and a wide-range, power-bound Gaussian-process likelihood
-(7.5--7.9\pct{} at 500--700\W), and check residuals and energies with each code's own criterion
+(7.5--7.9\pct{} at 500--700\W), all with paired 95\pct{} intervals, and check residuals and energies with each code's own
+criterion
 (Sections~\ref{sec:gemm}--\ref{sec:mp2}, \ref{sec:gp}).
 \item \textbf{The mechanism, across compute and data movement.} Filling the discarded bits with ones or a fixed
 pattern instead of zeros separates ``no toggling'' from ``value is zero'' in tensor-core GEMM, FP64 FMA units and
@@ -360,8 +363,8 @@ bit count means, how bits are removed and how many samples each experiment has.
 Experiment & Bits $k$ & Removal & Samples \\
 \midrule
 GEMM, fill controls, crossover & fraction bits & truncation & GEMM: 3 nodes $\times$ 2 pairs; fills: 1 run; crossover: 2 rounds \\
-HPL (8 nodes) & significand bits (36 = 35 fraction) & nearest, ties to even & pairs per cap on two node sets \\
-HPL-MxP (8 nodes) & BF16 fraction bits & truncation & pairs per cap on two node sets \\
+HPL (8 nodes) & significand bits (36 = 35 fraction) & nearest, ties to even & 2 node sets, 2 + 4 pairs per cap \\
+HPL-MxP (8 nodes) & BF16 fraction bits & truncation & 2 node sets, 2 + 4 pairs per cap \\
 QE, PySCF, DF-MP2, Gaussian process, ExaGeoStat, MFEM, SW4, LAMMPS & fraction bits & nearest, ties away & QE: warm-up + 6 pairs; DF-MP2, GP: 6 rounds; others 2 \\
 LoRA & FP8 fraction bits & truncation (also nearest, stochastic) & 2 seeds, 4 pairs \\
 LLM inference & BF16/FP8 fraction bits & nearest, ties to even & 6 models \\
@@ -374,9 +377,9 @@ every 250--500\,ms. Every measurement starts from a GPU below 45\,\textdegree C;
 ABBA order (native, zeroed, zeroed, native) on the same nodes. Each sample records the module cap actually in
 effect, and windows whose cap differs from the intended one are discarded (another user's tool reset caps on the
 cluster at least twice; the affected measurements were rerun). Hardware power-brake events are read from cumulative
-throttle counters, which were enabled only in a diagnostic job, not in the main HPL and HPL-MxP sweeps. The first
-native run of a job is often slower (warm-up), and since ABBA sequences usually start with native, the first pair
-can overstate the gain (Section~\ref{sec:adaptive}). MLPerf comparisons always use the same seed, i.e., the same data
+throttle counters, enabled in a diagnostic HPL-MxP job and in the second HPL sweep. The first native run of a job is
+often slower (warm-up), and since ABBA sequences usually start with native, the first pair can overstate the gain
+(Section~\ref{sec:adaptive}), so the repeat runs start with one uncounted warm-up run. MLPerf comparisons always use the same seed, i.e., the same data
 order.
 
 \textbf{Power, energy and statistics.} Energy integrates the driver's 1-s averaged module power over the measurement
@@ -387,10 +390,10 @@ While the cap is hit, the 1-s average is often below the cap, so the limiter act
 Module power includes GPU, CPU and memory; under GEMM load the GPU accounts for 88--90\pct{} of it at
 900--1000\W, falling to 77\pct{} at 400\W. Confidence intervals use paired differences: each
 ``zeroed\,/\,native$\,-\,1$'' on the same node, cap and ABBA round is one sample, and we report 95\pct{} $t$
-intervals, which removes the 13--17\pct{} node-to-node clock spread. We give intervals only for the GEMM
-microbenchmarks (3 nodes $\times$ 2 pairs; the two pairs on one node are not fully independent, so the intervals may
-be narrow) and the Quantum ESPRESSO adaptive runs (6 pairs). HPL, HPL-MxP, DF-MP2 and the Gaussian-process cells
-have two rounds on one node set; we list both rounds or their mean, without intervals.
+intervals, which removes the 13--17\pct{} node-to-node clock spread. The GEMM microbenchmarks have 3 nodes
+$\times$ 2 pairs, Quantum ESPRESSO 6 pairs after a warm-up run, DF-MP2 and the Gaussian process 6 rounds from two jobs,
+and HPL and HPL-MxP 6 pairs per cap from two node sets (2 and 4). The intervals treat pairs from one job or node set
+as independent, which they are not fully, so they may be too narrow.
 
 %==================================================================================================
 \section{Results: Gains Under Power Caps}\label{sec:results}
@@ -445,42 +448,60 @@ sits less than one bit from the threshold and is not an operating point, whereas
 $2\times4$, default NCCL) gave 374.8--376.0\,TFLOP/s; fixing NCCL at 8 channels with 2\,MiB buffers (+4.5\pct) and
 raising $N$ to 286720 (+2\pct) gave 390.2--398.8\,TFLOP/s in three runs, and no neighboring setting of $N$, NB, split
 fraction or NCCL parameters beat this ${\approx}2\pct$ run-to-run spread (24 settings, 26 runs; $f=0.15$ and
-$4\times2$ grids were 3 and 14\pct{} slower). With 36 bits at the tuned configuration, HPL is 4.0--11.0\pct{} faster at 400--800\W{}
-(Fig.~\ref{fig:hpl}), $\Delta W=39$--127\W{} (the 127\W{} at 800\W{} interpolates across the 800--1000\W{} gap and
-overestimates), and uses 4.1--9.3\pct{} less energy. At the default 1000\W{} cap native HPL is still capped in
-75\pct{} of the samples (SM 1936\,MHz) against 7\pct{} for the 36-bit run (SM 1977\,MHz), which is therefore 3.9\pct{} faster and
-uses 7.5\pct{} less energy per solve. Tuned native HPL reaches 393.9\,TFLOP/s at 1000\W{} (mean of two runs; 398.8\,TFLOP/s
-at best during tuning), about 73\pct{} of the 8 GPUs' FP64 tensor-core peak, and the 36-bit run 409.2\,TFLOP/s
-(Table~\ref{tab:hplperf}; research results, not official scores). The untuned configuration gave 3.4--8.3\pct{} at 400--800\W{} and
-0.7/7.7\pct{} at 1000\W. (28 bits is 5.7--16.3\pct{} faster at 400--800\W, but its residual reaches 15.4 at $N=286720$; we list
-it only as a boundary reference.)
+$4\times2$ grids were 3 and 14\pct{} slower). We then swept the caps with this configuration on two node sets: set
+A (work4--11) with two ABBA pairs per cap, and set B (work3--8, 12 and 13), measured a day later after one uncounted
+warm-up run, with four pairs per cap. That day the second InfiniBand port of most nodes linked at only 2.5\,Gb/s and
+NCCL and MPI routed part of the traffic over it (157\,TFLOP/s on 8 nodes); pinned to the 200\,Gb/s port, set B still
+reached only 365.5\,TFLOP/s natively at 1000\W, 7\pct{} below set A, with GPUs waiting longer for communication
+(module power 820--940\W{} versus 915--970\W). Differences between the sets thus mix nodes and network state; every
+pair is matched within one job.
+
+With 36 bits, HPL is 3.3--4.7\pct{} faster at 500--800\W{} over the 6 pairs (95\pct{} intervals of $\pm$0.1--0.5
+points; set A 4.0--5.0\pct, set B 3.0--4.6\pct; Table~\ref{tab:hplperf}, Fig.~\ref{fig:hpl}), uses 4.1--4.6\pct{} less
+energy per solve, and is worth $\Delta W=42$--74\W{} per node at 500--700\W{} (at 800\W{} the interpolation across the
+800--1000\W{} gap overestimates). The speedups stay below the SM clock gains (4.5--7.0\pct), consistent with
+communication time that does not shrink with the clock, and set B, which communicates longer, gains less. Pairs within
+a job agree to within 0.4 (set B) and 0.6 points (set A), but the sets differ by up to 0.9 points at 600--800\W, so two
+pairs on one node set understate the uncertainty, and the pooled interval, which treats the 6 pairs as independent,
+may still be too narrow. At 400\W, below the specified range, the gain is $9.9\pm1.0\pct$ (sets A/B: 11.0/9.3\pct)
+against only 6.3--6.6\pct{} more SM clock, for reasons we have not identified. At the default 1000\W{} cap both sets
+use less energy per solve (7.5/8.6\pct; pooled $8.3\pm1.1\pct$), but the speedup depends on how far the cap pulls the
+native clock down: native set A is capped in 75\pct{} of the samples at 1936\,MHz and the 36-bit run is 3.9\pct{}
+faster, whereas native set B averages 1961\,MHz, 1\pct{} below the maximum, and gains only 0.6\pct. Tuned native HPL
+reaches 393.9\,TFLOP/s at 1000\W{} on set A (mean of two runs; 398.8\,TFLOP/s at best during tuning), about 73\pct{} of
+the 8 GPUs' FP64 tensor-core peak, and the 36-bit run 409.2\,TFLOP/s (research results, not official scores). The
+untuned configuration gave 3.4--8.3\pct{} at 400--800\W{} and 0.7/7.7\pct{} at 1000\W. (On set A, 28 bits is
+5.7--16.3\pct{} faster at 400--800\W, but its residual reaches 15.4 at $N=286720$; we list it only as a boundary
+reference.)
 
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/hpl_caps.pdf}
 \caption{8-node HPL (36 significand bits, tuned, $N=286720$) and HPL-MxP (3 kept bits, $N=491520$, diagonally dominant
-test matrix) speedups; labels give the equivalent power saving $\Delta W$ of HPL per node.}\label{fig:hpl}
+test matrix) speedups: mean $\pm$ 95\pct{} $t$ interval over 6 pairs from two node sets; open markers are each set's
+mean.}\label{fig:hpl}
 \end{figure}
 
 \begin{table}[t]
-\caption{Delivered performance on 8 nodes in TFLOP/s (means of two runs). HPL: tuned, $N=286720$; HPL-MxP: $N=491520$,
-reportable rate including refinement. The 8 GPUs' FP64 tensor-core peak is about 536\,TFLOP/s
+\caption{Delivered performance on 8 nodes in TFLOP/s, node set A\,/\,B (means per set). HPL: tuned, $N=286720$;
+HPL-MxP: $N=491520$, reportable rate including refinement. The 8 GPUs' FP64 tensor-core peak is about 536\,TFLOP/s
 ($8\times67$\,TFLOP/s~\cite{NVIDIAGH200}).}\label{tab:hplperf}
-\centering\footnotesize\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lrrrr@{}}
+\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
 \toprule
 & \multicolumn{2}{c}{HPL (FP64)} & \multicolumn{2}{c}{HPL-MxP (BF16 LU)} \\
 \cmidrule(lr){2-3}\cmidrule(l){4-5}
-Cap per node & Native & 36 bits & Native & 3 bits \\
+Cap & Native & 36 bits & Native & 3 bits \\
 \midrule
-400\W & 225.0 & 249.9 & 2076 & 2340 \\
-500\W & 288.0 & 300.7 & 2823 & 3007 \\
-600\W & 318.0 & 334.0 & 3229 & 3310 \\
-700\W & 346.2 & 362.9 & 3449 & 3519 \\
-800\W & 370.8 & 385.6 & 3655 & 3720 \\
-1000\W & 393.9 & 409.2 & 3015$^{*}$ & 3976 \\
+400\W & 225.0/228.0 & 249.9/249.2 & 2076/1922 & 2340/2128 \\
+500\W & 288.0/278.2 & 300.7/291.0 & 2823/2555 & 3007/2692 \\
+600\W & 318.0/304.5 & 334.0/318.3 & 3229/2858 & 3310/2922 \\
+700\W & 346.2/328.3 & 362.9/341.3 & 3449/3039 & 3519/3094 \\
+800\W & 370.8/345.8 & 385.6/356.3 & 3655/3178 & 3720/3229 \\
+1000\W & 393.9/365.5 & 409.2/367.5 & ---$^{*}$ & --- \\
 \bottomrule
 \end{tabular}
-\\[2pt]{\scriptsize $^{*}$Native HPL-MxP trips the chassis power brake at 1000\W.}
+\\[2pt]{\scriptsize Set A: work4--11 (HPL), work4--7 and 10--13 (HPL-MxP), 2 pairs per cap; set B: work3--8, 12, 13, 4 pairs.
+$^{*}$Native HPL-MxP trips the chassis power brake at 1000\W{} on set A; set B was not run there.}
 \end{table}
 
 HPL-MxP (BF16 LU with FP64 refinement) zeroes the BF16 operands whenever they are written back. Our runs use a test
@@ -489,14 +510,17 @@ dominance), factor the diagonal tiles approximately (\texttt{-{}-approx-diag}), 
 and an FP32 preconditioner. The HPL-MxP rules allow strict diagonal dominance ``for testing purposes
 only''~\cite{HPLMxPRules}, and on such a matrix even coarse $L$ and $U$ factors precondition well, so the stability
 reported here may be a property of this matrix and cannot be assumed for the generators allowed in official runs.
-Like HPL, HPL-MxP has a failure boundary, and we use 3 kept bits (Table~\ref{tab:hplperf} lists the delivered rates
-of both benchmarks), stable at all four sizes
-$N=245760$--491520 (residual 1.4--3.8, always 3 refinement iterations). At $N=491520$ this is
-12.7/6.5/2.5/2.0/1.8\pct{} faster at 400/500/600/700/800\W, $\Delta W=34$--45\W{} (35/45/37/34/38\W; at 800\W{} the
-native curve is extended with a 900\W{} point, 3830\,TFLOP/s (mean of two runs), measured on the same nodes in a separate job), with
-3.4--10.7\pct{} less energy. Refinement grows from 1 iteration (native) to 3 at every cap, while the speedup of the LU
-itself shrinks from 16.0\pct{} at 400\W{} to 6.0\pct{} at 800\W, so above 600\W{} only about 2\pct{} remains after the
-extra refinement. Keeping 0 bits gives 7.1--26.0\pct{} ($\Delta W$ 72--146\W) at $N=491520$ with a residual of
+Like HPL, HPL-MxP has a failure boundary, and we use 3 kept bits, stable at all four sizes $N=245760$--491520
+(residual 1.4--3.8, always 3 refinement iterations). We measured it on two node sets as well (Table~\ref{tab:hplperf}):
+set A with two pairs per cap and set B, the second HPL set with the IB ports pinned, with four pairs after a warm-up
+run. Its BF16 LU is fast, so communication weighs more than in HPL, and set B's native rate is 7--13\pct{} below set
+A's. At $N=491520$, over the 6 pairs, 3 bits is $5.8\pm0.7\pct$ faster at 500\W{} (sets A/B: 6.5/5.4\pct) and
+1.7--2.3\pct{} faster at 600--800\W{} (intervals of $\pm$0.3 points; the sets differ by only 0.2--0.3 points there),
+using 3.6--5.9\pct{} less energy per solve; at 400\W{} it is $11.4\pm1.3\pct$ faster. $\Delta W$ is 34--45\W{} at
+500--700\W{} on both sets (at 800\W{} it would need a native point above the cap and is not reported). Refinement
+grows from 1 iteration (native) to 3 at every cap, while the speedup of the LU itself shrinks from 13.5--16.0\pct{} at
+400\W{} to 5.2--6.0\pct{} at 800\W, so above 600\W{} only about 2\pct{} remains after the extra refinement. Keeping 0
+bits (set A) gives 7.1--26.0\pct{} ($\Delta W$ 72--146\W) at $N=491520$ with a residual of
 10.6--11.1 (a margin of only about 1.5$\times$); at $N=393216$ its residual reaches 11.7--13.5, and at $N=245760$
 refinement jumps from 1 to 52 iterations and
 performance falls by 70\pct: passing the residual check does not imply being faster. With fans at full speed, native
@@ -1050,9 +1074,9 @@ zeroing saves only 1.5--5.5\pct{} of power in memory-bound phases, at an accurac
 
 \textbf{Benefit under a fixed power budget.} Under a fixed power budget, such as a rack limit, the equivalent power
 saving becomes usable compute. At 8 nodes $\times$ 700\W, tuned HPL with the safe 36 bits rises from 346.2 to
-362.9\,TFLOP/s (+4.8\pct); native HPL would need about 768\W{} per node, about 0.5\,kW more for the cluster, to match.
-At the default 1000\W{} cap, where native HPL is still capped 75\pct{} of the time, the gain is both: 3.9\pct{} more
-speed and 7.5\pct{} less energy per solve. The
+362.9\,TFLOP/s on set A (+4.8\pct; set B +3.9\pct); native HPL would need about 768\W{} per node (774\W{} on set B),
+about 0.5--0.6\,kW more for the cluster, to match. At the default 1000\W{} cap the gain is mainly energy: 7.5--8.6\pct{}
+less per solve, with 0.6--3.9\pct{} more speed depending on how far the cap lowers the native clock. The
 cost is one bitwise operation per element, which can be fused into the kernel that produces the operand, and no
 hardware. At 575\W{} the SM clocks of our 14 nodes differ by 17\pct{} (1129--1325\,MHz), and synchronous runs move at
 the pace of the slowest node, as earlier work found for CPUs under power bounds~\cite{Rountree2012,Inadomi2015};
@@ -1088,9 +1112,11 @@ stability at 3 kept bits may be a property of this matrix. (iv)~Each scientific 
 systems; forces, geometry optimization and larger systems are not covered. (v)~The shim costs 3--9\pct{} for copies
 depending on the application (about 5\pct{} for Quantum ESPRESSO, 7--9\pct{} for ExaGeoStat), so shim results are
 always compared with a baseline taking the same copy path; in-program zeroing has no such cost. (vi)~Nodes differ by
-13--17\pct{} at equal power, so all comparisons are paired on the same nodes by ABBA order or by seed; intervals exist
-only for the GEMM microbenchmarks and Quantum ESPRESSO, the other cells have two rounds on one node set, and the
-crossover sweep measured its four values of $n$ on different nodes. (vii)~The default 1000\W{} cap is also the
+13--17\pct{} at equal power, so all comparisons are paired on the same nodes by ABBA order or by seed; intervals treat
+pairs within a job or node set as independent; moving HPL to a second node set (measured on a day with a slower
+network) lowered its gain at 600--800\W{} by 0.5--0.9 points, more than pairs within a job differ, so node sets are
+a larger source of uncertainty than run-to-run noise; and the crossover sweep measured its four values of $n$ on
+different nodes. (vii)~The default 1000\W{} cap is also the
 highest, not an uncapped state; the limiter's time scale is unknown; and caps below 450\W{} lie outside the
 datasheet range~\cite{NVIDIAGH200}. (viii)~Cooling and the chassis supply change conclusions: at low
 fan speed the GPU hits its thermal limit first, and at full fan speed native HPL-MxP at 1000\W{} trips the hardware
@@ -1136,13 +1162,13 @@ Path & Content \\
 On a production GH200 cluster, truncating unused mantissa bits in software buys real performance for real HPC
 applications under power caps while their physical results stay within each code's own criterion. When the GPU is
 power-bound and truncation is done inside the program, the HPC programs we tested that check their own results all
-gain: at 400--800\W, tuned HPL keeping 36 significand bits is 4.0--11.0\pct{} faster (39--127\W{} equivalent) and HPL-MxP
-keeping 3 bits 1.8--12.7\pct{} on a diagonally dominant test matrix; Quantum ESPRESSO with tolerance-driven bit counts
+gain: at 500--800\W, tuned HPL keeping 36 significand bits is 3.3--4.7\pct{} faster on two node sets (42--74\W{}
+equivalent at 500--700\W) and HPL-MxP keeping 3 bits 1.7--5.8\pct{} on a diagonally dominant test matrix; Quantum ESPRESSO with tolerance-driven bit counts
 is 2.1--3.6\pct{} faster at 450--550\W{} with every printed digit of the energies unchanged (on the gold surface about
 half of the gain comes from fewer Davidson iterations); power-hungry DF-MP2 keeping 20--32 bits is 4.7--7.7\pct{}
 faster at 500--700\W; and wide-range, power-bound Gaussian-process geostatistics keeping 28 bits is 7.5--7.9\pct{}
-faster at 500--700\W. At the default 1000\W{} cap HPL is still 3.9\pct{} faster and uses 7.5\pct{} less energy per
-solve. Microbenchmarks give
+faster at 500--700\W. At the default 1000\W{} cap HPL uses 7.5--8.6\pct{} less energy per solve and is 0.6--3.9\pct{}
+faster, depending on how far the cap lowers the native clock. Microbenchmarks give
 upper bounds (FP64 GEMM keeping 27 bits: 6.6--21\pct{} at 300--1000\W; pure data movement: 18\pct{} less module power
 at 1000\W), not application operating points. The gain comes mainly from fewer toggles in arithmetic units and data
 paths, so it suits FP64 solvers with residual correction or self-consistent iteration whose inputs flow directly and
