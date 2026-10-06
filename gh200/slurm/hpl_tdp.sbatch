@@ -62,8 +62,13 @@ else
   export HPLMXP_PROF=${HPLMXP_PROF:-0}
 fi
 
+# Since 2026-10-06 the second IB port (mlx5_1) of most nodes is ACTIVE at only 2.5-10 Gb/s (1X/4X SDR); NCCL and
+# UCX then put part of the traffic on it and 8-node HPL drops from ~395 to 157 TFLOP/s. Pin both to the HDR port.
+IB_HCA=${IB_HCA:-mlx5_0}
+export NCCL_IB_HCA=$IB_HCA UCX_NET_DEVICES=$IB_HCA:1
+
 NS=${NS:-$N}   # several problem sizes in one allocation (residual distribution over N)
-echo "job=$SLURM_JOB_ID bench=$BENCH nodes=$NNODE ns=[$NS] hosts=$HOSTS P=$P Q=$Q N=$N NB=$NB f=${FRAC:-0.05} nccl_ch=${NCCL_CH:-default} nccl_buf=${NCCL_BUF:-default} variants=[$VARIANTS] tdps=[$TDPS] repeat=$REPEAT cooldown=$COOLDOWN start_temp=${START_TEMP:-45}"
+echo "job=$SLURM_JOB_ID bench=$BENCH nodes=$NNODE ns=[$NS] hosts=$HOSTS P=$P Q=$Q N=$N NB=$NB f=${FRAC:-0.05} nccl_ch=${NCCL_CH:-default} nccl_buf=${NCCL_BUF:-default} variants=[$VARIANTS] tdps=[$TDPS] repeat=$REPEAT cooldown=$COOLDOWN start_temp=${START_TEMP:-45} ib_hca=$IB_HCA"
 echo "rocHPL=$(git -C "$REPO/rocHPL" rev-parse --short HEAD) rocHPL-MxP=$(git -C "$REPO/rocHPL-MxP" rev-parse --short HEAD)"
 
 SMI_DIR="logs/${SLURM_JOB_NAME}_${SLURM_JOB_ID}_smi"
@@ -105,12 +110,14 @@ run_one() {
   if [[ $BENCH == hpl ]]; then
     export HPL_QUANT_A_BITS=${v%%:*} HPL_QUANT_B_BITS=${v##*:} HPL_QUANT_B_BITS_ALT=${v##*:}
     timeout -k 20 1800 mpirun -np "$NNODE" --map-by ppr:1:node --bind-to none \
+      -x NCCL_IB_HCA -x UCX_NET_DEVICES \
       -x LD_LIBRARY_PATH -x HPL_QUANT_A_BITS -x HPL_QUANT_B_BITS -x HPL_QUANT_B_BITS_ALT -x HPL_QUANT_C_BITS \
       -x HPL_QUANT_ROUND -x HPL_QUANT_MODE -x HPL_BCAST_RCCL -x HPL_BCAST_SPLIT -x HPL_BCAST_P2P \
       -x HPL_BCAST_OVERLAP -x HPL_HIGH_PRIORITY_COMM -x HPL_NUMA_BIND -x NCCL_ALGO -x NCCL_PROTO "${NCCL_X[@]}" \
       "$BIN" -P "$P" -Q "$Q" -p 1 -q 1 -N "$N" -NB "$NB" -f "${FRAC:-0.05}" -it 1 || echo "=== RUN FAILED rc=$?"
   else
     timeout -k 20 1800 mpirun -np "$NNODE" --map-by ppr:1:node --bind-to none \
+      -x NCCL_IB_HCA -x UCX_NET_DEVICES \
       -x LD_LIBRARY_PATH -x NCCL_MIN_NCHANNELS -x NCCL_MAX_NCHANNELS -x HPLMXP_HBM_RESERVE_GIB \
       -x HPLMXP_PRECOND_FP32 -x HPLMXP_IR_RICHARDSON -x HPLMXP_TRAILING_TN -x HPLMXP_TRAILING_HIPBLAS -x HPLMXP_PROF \
       "$REPO/rocHPL-MxP/build_gh200_mant$v/xhplmxp-cuda" --n "$N" --nb "$NB" --p "$P" --q "$Q" \
