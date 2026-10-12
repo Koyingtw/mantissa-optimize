@@ -1,0 +1,47 @@
+job=3401 host=work3 start=2026-10-06T08:36:11Z
+CMD=TORCHINDUCTOR_CACHE_DIR=/tmp/ind38-$SLURM_JOB_ID python test_inductor38.py
+shim: triton.compiler.compiler.triton_key -> triton.runtime.cache.triton_key
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 (/nfs/home/koying/mlperf-fp8attn-work/nvidia_impl/_extra/triton/__init__.py)
+FAIL bias_dropout_add(p=0): InductorError: AttributeError: type object 'CompiledKernel' has no attribute 'launch_enter_hook'
+
+Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+
+FAIL swiglu: InductorError: AttributeError: type object 'CompiledKernel' has no attribute 'launch_enter_hook'
+
+Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] Error in subprocess
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] concurrent.futures.process._RemoteTraceback: 
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] """
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] Traceback (most recent call last):
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]   File "/usr/lib/python3.12/concurrent/futures/process.py", line 263, in _process_worker
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]     r = call_item.fn(*call_item.args, **call_item.kwargs)
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]   File "/usr/local/lib/python3.12/dist-packages/torch/_inductor/compile_worker/subproc_pool.py", line 340, in do_job
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]     return pickler.dumps(result)
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]            ^^^^^^^^^^^^^^^^^^^^^
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]   File "/usr/local/lib/python3.12/dist-packages/torch/_inductor/compile_worker/subproc_pool.py", line 100, in dumps
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]     return pickle.dumps(obj, pickle.HIGHEST_PROTOCOL)
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] TypeError: cannot pickle '_thread.RLock' object
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] """
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] 
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] The above exception was the direct cause of the following exception:
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] 
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] Traceback (most recent call last):
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]   File "/usr/local/lib/python3.12/dist-packages/torch/_inductor/compile_worker/subproc_pool.py", line 319, in callback
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]     result = future.result()
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]              ^^^^^^^^^^^^^^^
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]   File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]     return self.__get_result()
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]            ^^^^^^^^^^^^^^^^^^^
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]   File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+E1006 08:36:17.430000 2500447 subproc_pool.py:321]     raise self._exception
+E1006 08:36:17.430000 2500447 subproc_pool.py:321] TypeError: cannot pickle '_thread.RLock' object
+FAIL rmsnorm: InductorError: TypeError: cannot pickle '_thread.RLock' object
+
+Set TORCHDYNAMO_VERBOSE=1 for the internal stack trace (please do this especially if you're reporting a bug to PyTorch). For even more developer context, set TORCH_LOGS="+dynamo"
+
+SOME FAILED
+end=2026-10-06T08:36:18Z
+SMI samples=39 sm_clock median(all)=1980 median(power>150W)=n/a min=345 maxtemp=29

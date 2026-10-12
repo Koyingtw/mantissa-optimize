@@ -1,0 +1,4 @@
+job=3760 host=work10 start=2026-10-06T17:43:54Z
+CMD=bash cuda_dm/run_tests.sh; bash cuda_dm/bench_all.sh; cd cuda_dm; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_prof ITERS=1 WARM=0 IMPL=cuda python bench_cuda_dm.py 2>&1 | grep PROF | sort | uniq | head -30
+== randn
+[2026-10-06T17:58:53.004] error: *** JOB 3760 ON work10 CANCELLED AT 2026-10-06T17:58:53 DUE TO TIME LIMIT ***

@@ -1,0 +1,23 @@
+job=3275 host=work1 start=2026-10-05T15:27:29Z
+CMD=for c in '{"DS_SCALE":2}' '{"DS_SCALE":0}' '{"DS_SCALE":2}'; do CFG=$c python bench_ours.py 2>&1 | grep -E 'RESULT|kernel _|regs|rror'; done; IMPL=fp8attn python bench_ours.py 2>&1 | grep -E 'RESULT'
+RESULT ours fwd_ms=1.903 (578 TF)  bwd_matched_ms=7.155 (384 TF)  bwd_stale_ms=6.628 (415 TF)
+  kernel _bwd_dkdv_kernel                                             n=1 total=4.224 ms
+  kernel _bwd_dq_kernel                                               n=1 total=2.475 ms
+  kernel _fwd_kernel                                                  n=1 total=1.707 ms
+  kernel _quant_kernel                                                n=9 total=0.382 ms
+  regs/spills/smem: {'quant': (80, 0, 16384), 'fwd': (255, 0, 66560), 'dq': (248, 0, 91136), 'kv': (254, 0, 133120)}
+RESULT ours fwd_ms=1.906 (577 TF)  bwd_matched_ms=7.822 (351 TF)  bwd_stale_ms=7.160 (384 TF)
+  kernel _bwd_dkdv_kernel                                             n=1 total=4.394 ms
+  kernel _bwd_dq_kernel                                               n=1 total=2.992 ms
+  kernel _fwd_kernel                                                  n=1 total=1.690 ms
+  kernel _quant_kernel                                                n=9 total=0.383 ms
+  regs/spills/smem: {'quant': (80, 0, 16384), 'fwd': (255, 0, 66560), 'dq': (255, 4, 91136), 'kv': (255, 0, 133120)}
+RESULT ours fwd_ms=1.907 (577 TF)  bwd_matched_ms=7.170 (383 TF)  bwd_stale_ms=6.633 (414 TF)
+  kernel _bwd_dkdv_kernel                                             n=1 total=4.230 ms
+  kernel _bwd_dq_kernel                                               n=1 total=2.488 ms
+  kernel _fwd_kernel                                                  n=1 total=1.720 ms
+  kernel _quant_kernel                                                n=9 total=0.383 ms
+  regs/spills/smem: {'quant': (80, 0, 16384), 'fwd': (255, 0, 66560), 'dq': (248, 0, 91136), 'kv': (254, 0, 133120)}
+RESULT ours fwd_ms=1.889 (582 TF)  bwd_matched_ms=10.944 (251 TF)  bwd_stale_ms=8.148 (337 TF)
+end=2026-10-05T15:27:47Z
+SMI samples=91 sm_clock median(all)=1980 median(power>150W)=1980 min=345 maxtemp=46

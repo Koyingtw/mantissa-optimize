@@ -1,0 +1,12 @@
+job=3259 host=work4 start=2026-10-05T14:59:59Z
+CMD=for m in fa3 fa3fp8; do MODE=$m python bench_te.py 2>&1 | grep -v Warning | head -12; done
+Traceback (most recent call last):
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/bench_te.py", line 35, in <module>
+    import flash_attn_interface as _fa3
+ModuleNotFoundError: No module named 'flash_attn_interface'
+Traceback (most recent call last):
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/bench_te.py", line 35, in <module>
+    import flash_attn_interface as _fa3
+ModuleNotFoundError: No module named 'flash_attn_interface'
+end=2026-10-05T15:00:04Z
+SMI samples=24 sm_clock median(all)=345.0 median(power>150W)=n/a min=345 maxtemp=27

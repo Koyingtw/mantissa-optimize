@@ -1,0 +1,91 @@
+job=3763 host=work10 start=2026-10-06T18:00:04Z
+CMD=bash cuda_dm/run_tests.sh; bash cuda_dm/bench_all.sh; cd cuda_dm; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_prof ITERS=1 WARM=0 IMPL=cuda timeout 200 python bench_cuda_dm.py 2>&1 | grep PROF | sort | uniq | head -30
+== randn
+| 實作 | backward | 列和殘差（平均） | 有號偏差 | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| cuda | Delta-Matching | 3.15e-07 | -3.4e-08 | 6.138e-02 | 6.143e-02 | 4.907e-02 |
+| cuda | stale δ | 3.65e-02 | -5.1e-03 | 6.405e-02 | 6.302e-02 | 4.907e-02 |
+| triton DS0 | Delta-Matching | 2.29e-07 | -2.2e-08 | 6.081e-02 | 6.060e-02 | 4.895e-02 |
+| triton DS0 | stale δ | 3.65e-02 | -5.1e-03 | 6.349e-02 | 6.220e-02 | 4.895e-02 |
+| triton DS2 | Delta-Matching | 2.51e-07 | -4.9e-08 | 6.374e-02 | 6.277e-02 | 4.895e-02 |
+| triton DS2 | stale δ | 3.65e-02 | -5.1e-03 | 6.656e-02 | 6.457e-02 | 4.895e-02 |
+PASS CUDA matched 列和殘差 < 1e-5
+PASS CUDA stale 列和殘差 > 1e-3
+PASS CUDA matched dQ ≤ stale dQ
+PASS CUDA matched dQ/dK/dV 不劣於 Triton DS2（容差 2%）
+PASS 沒有 NaN/Inf
+ALL PASS
+== L40_step6
+| 實作 | backward | 列和殘差（平均） | 有號偏差 | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| cuda | Delta-Matching | 2.06e-07 | +2.4e-08 | 5.921e-02 | 5.380e-02 | 2.184e-02 |
+| cuda | stale δ | 2.77e-02 | -1.8e-03 | 7.290e-02 | 6.036e-02 | 2.184e-02 |
+| triton DS0 | Delta-Matching | 1.15e-07 | +1.6e-08 | 5.895e-02 | 5.823e-02 | 2.138e-02 |
+| triton DS0 | stale δ | 2.77e-02 | -1.8e-03 | 7.260e-02 | 6.436e-02 | 2.138e-02 |
+| triton DS2 | Delta-Matching | 1.37e-07 | -3.7e-08 | 5.806e-02 | 6.762e-02 | 2.138e-02 |
+| triton DS2 | stale δ | 2.77e-02 | -1.8e-03 | 7.236e-02 | 6.897e-02 | 2.138e-02 |
+PASS CUDA matched 列和殘差 < 1e-5
+PASS CUDA stale 列和殘差 > 1e-3
+PASS CUDA matched dQ ≤ stale dQ
+FAIL CUDA matched dQ/dK/dV 不劣於 Triton DS2（容差 2%）
+PASS 沒有 NaN/Inf
+SOME FAILED
+        GPU Ceiling Power Limit
+            Current Power Limit                        : 900.00 W
+            Requested Power Limit                      : 900.00 W
+            Default Power Limit                        : 900.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 900.00 W
+    Module Power Readings
+        Current Power Limit                            : 575.00 W
+RESULT cuda matched                 bwd_ms=  7.776 (min   7.103)  354 TF  sm_clock_med=1950 MHz power_med=185 W  load=off
+RESULT cuda stale                   bwd_ms=  7.391 (min   7.306)  372 TF  sm_clock_med=1770 MHz power_med=260 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.891 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true, true>(fp8dm::DqCfg<64 n= 1   3.083 ms
+  kernel void fp8dm::quant_kernel<false, true, true, false, false>(__nv_bfloat1 n= 2   0.223 ms
+  kernel void fp8dm::quant_kernel<true, false, false, true, false>(__nv_bfloat1 n= 1   0.100 ms
+  kernel void fp8dm::quant_kernel<true, false, false, false, false>(__nv_bfloat n= 2   0.063 ms
+  kernel void fp8dm::quant_kernel<true, true, false, false, false>(__nv_bfloat1 n= 1   0.021 ms
+  kernel void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at: n= 3   0.008 ms
+  kernel void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunc n= 1   0.003 ms
+  kernel exp2_kernel_vectorized4_kernel                                         n= 1   0.002 ms
+  kernel void at::native::(anonymous namespace)::CatArrayBatchedCopy_aligned16_ n= 1   0.001 ms
+  kernel cudaLaunchKernel                                                       n=13   0.000 ms
+  kernel Activity Buffer Request                                                n= 1   0.000 ms
+  kernel INVALID                                                                n=11   0.000 ms
+  kernel cudaFuncSetAttribute                                                   n= 2   0.000 ms
+  kernel cuLaunchKernel                                                         n= 1   0.000 ms
+  kernel cudaDeviceSynchronize                                                  n= 2   0.000 ms
+  kernel sum 8.396 ms
+PROF dkdv n_block=0 g=0 wg=0 it=1024  data+SdP0=1260 alu0=683 wait1=307 alu1=619 dKV1=303 total=3174
+PROF dkdv n_block=0 g=0 wg=0 it=1024  data+SdP0=1260 alu0=683 wait1=312 alu1=615 dKV1=306 total=3178
+PROF dkdv n_block=0 g=0 wg=0 it=1024  data+SdP0=1261 alu0=682 wait1=316 alu1=612 dKV1=310 total=3182
+PROF dkdv n_block=0 g=0 wg=0 it=1024  data+SdP0=1265 alu0=683 wait1=306 alu1=620 dKV1=302 total=3178
+PROF dkdv n_block=0 g=0 wg=1 it=1024  data+SdP0=1260 alu0=673 wait1=336 alu1=593 dKV1=326 total=3190
+PROF dkdv n_block=0 g=0 wg=1 it=1024  data+SdP0=1260 alu0=675 wait1=333 alu1=596 dKV1=324 total=3189
+PROF dkdv n_block=0 g=0 wg=1 it=1024  data+SdP0=1261 alu0=670 wait1=340 alu1=590 dKV1=329 total=3192
+PROF dkdv n_block=0 g=0 wg=1 it=1024  data+SdP0=1265 alu0=670 wait1=341 alu1=588 dKV1=329 total=3196
+PROF dkdv n_block=1 g=0 wg=0 it=1008  data+SdP0=1262 alu0=686 wait1=320 alu1=612 dKV1=313 total=3196
+PROF dkdv n_block=1 g=0 wg=0 it=1008  data+SdP0=1262 alu0=687 wait1=318 alu1=615 dKV1=312 total=3195
+PROF dkdv n_block=1 g=0 wg=0 it=1008  data+SdP0=1263 alu0=689 wait1=312 alu1=618 dKV1=308 total=3192
+PROF dkdv n_block=1 g=0 wg=0 it=1008  data+SdP0=1266 alu0=687 wait1=322 alu1=611 dKV1=315 total=3203
+PROF dkdv n_block=1 g=0 wg=1 it=1008  data+SdP0=1262 alu0=678 wait1=337 alu1=598 dKV1=326 total=3203
+PROF dkdv n_block=1 g=0 wg=1 it=1008  data+SdP0=1262 alu0=680 wait1=332 alu1=601 dKV1=323 total=3200
+PROF dkdv n_block=1 g=0 wg=1 it=1008  data+SdP0=1262 alu0=682 wait1=329 alu1=602 dKV1=322 total=3199
+PROF dkdv n_block=1 g=0 wg=1 it=1008  data+SdP0=1266 alu0=683 wait1=328 alu1=605 dKV1=321 total=3204
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=838 alu=664 lazy=280 cvt_waitdata=181 turn+issue=579 per-iter total=2544
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=838 alu=673 lazy=279 cvt_waitdata=186 turn+issue=587 per-iter total=2564
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=839 alu=672 lazy=279 cvt_waitdata=185 turn+issue=586 per-iter total=2563
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=840 alu=708 lazy=285 cvt_waitdata=91 turn+issue=326 per-iter total=2252
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=857 alu=676 lazy=317 cvt_waitdata=88 turn+issue=313 per-iter total=2254
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=862 alu=659 lazy=281 cvt_waitdata=183 turn+issue=579 per-iter total=2566
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=862 alu=661 lazy=282 cvt_waitdata=183 turn+issue=579 per-iter total=2568
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=866 alu=644 lazy=284 cvt_waitdata=177 turn+issue=571 per-iter total=2544
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=837 alu=613 lazy=280 cvt_waitdata=154 turn+issue=542 per-iter total=2427
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=837 alu=720 lazy=284 cvt_waitdata=96 turn+issue=329 per-iter total=2267
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=838 alu=611 lazy=280 cvt_waitdata=154 turn+issue=543 per-iter total=2429
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=839 alu=610 lazy=280 cvt_waitdata=156 turn+issue=543 per-iter total=2430
+PROF dq m_block=62 h=1 wg=1 n=126  wait_gemm=855 alu=680 lazy=329 cvt_waitdata=90 turn+issue=315 per-iter total=2272
+PROF dq m_block=62 h=1 wg=1 n=126  wait_gemm=887 alu=565 lazy=298 cvt_waitdata=146 turn+issue=534 per-iter total=2432
+end=2026-10-06T18:00:15Z
+SMI samples=57 sm_clock median(all)=1980 median(power>150W)=1965 min=345 maxtemp=40

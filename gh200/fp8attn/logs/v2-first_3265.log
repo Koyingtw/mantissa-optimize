@@ -1,0 +1,23 @@
+job=3265 host=work3 start=2026-10-05T15:09:59Z
+CMD=python bench_ours.py 2>&1 | grep -v Warn; python test_accuracy.py 2>&1 | grep -E '^ours|^ref|Error|error' 
+cfg={'fwd_BM': 128, 'fwd_BN': 64, 'fwd_warps': 4, 'fwd_stages': 4, 'fwd_WS': False, 'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 2, 'dq_WS': False, 'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 2, 'kv_WS': False, 'DS_SCALE': 1}  clock/temp/power: 1980, 26, 76.80
+clock/temp/power after: 1980, 38, 325.26
+RESULT ours fwd_ms=1.875 (586 TF)  bwd_matched_ms=7.546 (364 TF)  bwd_stale_ms=6.572 (418 TF)
+  kernel _bwd_dkdv_kernel                                             n=1 total=4.447 ms
+  kernel _bwd_dq_kernel                                               n=1 total=2.740 ms
+  kernel _fwd_kernel                                                  n=1 total=1.711 ms
+  kernel _quant_kernel                                                n=7 total=0.298 ms
+  kernel void at::native::reduce_kernel<512, 1, at::native::ReduceOp< n=7 total=0.039 ms
+  kernel void at::native::vectorized_elementwise_kernel<4, at::native n=1 total=0.002 ms
+  kernel Activity Buffer Request                                      n=1 total=0.000 ms
+  kernel cuLaunchKernelEx                                             n=10 total=0.000 ms
+  kernel cudaLaunchKernel                                             n=8 total=0.000 ms
+  kernel cudaDeviceSynchronize                                        n=2 total=0.000 ms
+  regs/spills/smem: {'quant': (121, 0, 16384), 'fwd': (254, 0, 82944), 'dq': (250, 0, 66560), 'kv': (255, 42, 82944)}
+ref: mean softmax entropy (heads 0-3) = 7.51 nats (uniform over 4096 ~ 8.32)
+ours fp8 matched ds1         o=5.035e-02 dq=6.434e-02 dk=8.015e-02 dv=5.172e-02 rowsum|dS|/|delta|=2.81e-07 |delta-delta0|/|delta0|=3.66e-02
+ours fp8 stale ds1           o=5.035e-02 dq=6.624e-02 dk=8.165e-02 dv=5.172e-02 rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00
+ours fp8 matched ds0         o=5.035e-02 dq=6.142e-02 dk=6.147e-02 dv=5.172e-02 rowsum|dS|/|delta|=2.81e-07 |delta-delta0|/|delta0|=3.66e-02
+ours fp8 stale ds0           o=5.035e-02 dq=6.345e-02 dk=6.330e-02 dv=5.172e-02 rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00
+end=2026-10-05T15:10:17Z
+SMI samples=92 sm_clock median(all)=1980.0 median(power>150W)=1980 min=345 maxtemp=42

@@ -1,0 +1,24 @@
+job=3751 host=work10 start=2026-10-06T17:06:53Z
+CMD=cd cuda_dm; for v in s1 s0d0 s0d1500 s0d3000; do echo == $v; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_$v IMPL=cuda python bench_cuda_dm.py 2>&1 | grep -E 'RESULT|dkdv_kernel|dq_kernel'; done
+== s1
+RESULT cuda matched                 bwd_ms=  8.002 (min   7.547)  344 TF  sm_clock_med=1830 MHz power_med=167 W  load=off
+RESULT cuda stale                   bwd_ms=  7.460 (min   7.377)  368 TF  sm_clock_med=1770 MHz power_med=294 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.739 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   3.689 ms
+== s0d0
+RESULT cuda matched                 bwd_ms=  8.105 (min   7.330)  339 TF  sm_clock_med=1785 MHz power_med=192 W  load=off
+RESULT cuda stale                   bwd_ms=  7.709 (min   7.365)  357 TF  sm_clock_med=1785 MHz power_med=269 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.292 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   3.856 ms
+== s0d1500
+RESULT cuda matched                 bwd_ms=  8.058 (min   7.781)  341 TF  sm_clock_med=1770 MHz power_med=191 W  load=off
+RESULT cuda stale                   bwd_ms=  7.587 (min   7.462)  362 TF  sm_clock_med=1770 MHz power_med=267 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.101 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   3.619 ms
+== s0d3000
+RESULT cuda matched                 bwd_ms=  8.114 (min   7.637)  339 TF  sm_clock_med=1755 MHz power_med=189 W  load=off
+RESULT cuda stale                   bwd_ms=  7.582 (min   7.443)  363 TF  sm_clock_med=1755 MHz power_med=268 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.322 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   3.886 ms
+end=2026-10-06T17:07:05Z
+SMI samples=61 sm_clock median(all)=1965 median(power>150W)=1965 min=345 maxtemp=41

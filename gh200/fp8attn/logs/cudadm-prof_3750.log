@@ -1,0 +1,16 @@
+job=3750 host=work10 start=2026-10-06T17:03:09Z
+CMD=cd cuda_dm; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_prof ITERS=1 WARM=0 IMPL=cuda python bench_cuda_dm.py 2>&1 | grep PROF | sort | head -12
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=1363 alu=548 lazy=510 cvt_waitdata=82 turn+issue=345 per-iter total=2851
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=1412 alu=545 lazy=606 cvt_waitdata=162 turn+issue=626 per-iter total=3353
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=1413 alu=545 lazy=604 cvt_waitdata=163 turn+issue=634 per-iter total=3361
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=1415 alu=544 lazy=605 cvt_waitdata=163 turn+issue=627 per-iter total=3355
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=1464 alu=584 lazy=457 cvt_waitdata=59 turn+issue=317 per-iter total=2882
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=1503 alu=605 lazy=548 cvt_waitdata=132 turn+issue=587 per-iter total=3377
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=1506 alu=603 lazy=549 cvt_waitdata=131 turn+issue=588 per-iter total=3380
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=1508 alu=604 lazy=549 cvt_waitdata=132 turn+issue=589 per-iter total=3384
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=1345 alu=549 lazy=521 cvt_waitdata=83 turn+issue=355 per-iter total=2856
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=1397 alu=545 lazy=634 cvt_waitdata=159 turn+issue=626 per-iter total=3363
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=1400 alu=544 lazy=632 cvt_waitdata=161 turn+issue=624 per-iter total=3362
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=1409 alu=545 lazy=630 cvt_waitdata=160 turn+issue=623 per-iter total=3369
+end=2026-10-06T17:03:13Z
+SMI samples=20 sm_clock median(all)=345.0 median(power>150W)=n/a min=345 maxtemp=29

@@ -1,0 +1,90 @@
+job=3253 host=work4 start=2026-10-05T14:54:59Z
+CMD=for m in bf16 fp8 fp8_bf16bwd fa2; do MODE=$m python bench_te.py 2>&1 | grep -v Warning; done
+MODE=bf16 S=8192 B=1 HQ=64 HKV=8 D=128  clock/temp/power before: 1980, 27, 131.36
+clock/temp/power after: 1980, 45, 328.94
+RESULT bf16 fwd_ms=1.813 (min 1.801) fwd_TFLOPS=607  bwd_ms=5.181 (min 5.168) bwd_TFLOPS=531
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                                                      Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+cudnn_generated_fort_native_sdpa_sm90_flash_bprop_wgmma_f16_knob_26_64x64x128_1x4x1_ker...         0.00%       0.000us         0.00%       0.000us       0.000us       4.828ms        70.78%       4.828ms       4.828ms             1  
+cudnn_generated_fort_native_sdpa_sm90_flash_fprop_wgmma_f16_knob_7_64x128x128_4x1x1_ker...         0.00%       0.000us         0.00%       0.000us       0.000us       1.629ms        23.88%       1.629ms       1.629ms             1  
+void cudnn::fusion::compute_dot_do_o_specialized<true, 128>(void const*, void const*, v...         0.00%       0.000us         0.00%       0.000us       0.000us     155.584us         2.28%     155.584us     155.584us             1  
+void cudnn::fusion::convert_dq_to_16bits<true>(void const*, void*, unsigned int, unsign...         0.00%       0.000us         0.00%       0.000us       0.000us     116.512us         1.71%     116.512us     116.512us             1  
+void cudnn::fusion::fmha_reduce_head<true>(void const*, void*, unsigned int, unsigned i...         0.00%       0.000us         0.00%       0.000us       0.000us      88.544us         1.30%      88.544us      44.272us             2  
+                                                                           Memset (Device)         0.00%       0.000us         0.00%       0.000us       0.000us       2.208us         0.03%       2.208us       1.104us             2  
+                                                        unpack(at::PhiloxCudaState, long*)         0.00%       0.000us         0.00%       0.000us       0.000us       1.024us         0.02%       1.024us       1.024us             1  
+                                                                     cudaStreamIsCapturing         0.05%       3.584us         0.05%       3.584us       1.792us       0.000us         0.00%       0.000us       0.000us             2  
+                                                                   Activity Buffer Request         2.92%     195.614us         2.92%     195.614us     195.614us       0.000us         0.00%       0.000us       0.000us             1  
+                                                                          cudaLaunchKernel         0.33%      21.888us         0.33%      21.888us      21.888us       0.000us         0.00%       0.000us       0.000us             1  
+                                                                   cudaGetDriverEntryPoint         0.04%       2.592us         0.04%       2.592us       0.259us       0.000us         0.00%       0.000us       0.000us            10  
+                                                                           cudaMemsetAsync         0.21%      13.855us         0.21%      13.855us       6.928us       0.000us         0.00%       0.000us       0.000us             2  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 6.701ms
+Self CUDA time total: 6.820ms
+
+MODE=fp8 S=8192 B=1 HQ=64 HKV=8 D=128  clock/temp/power before: 1980, 27, 132.36
+clock/temp/power after: 1980, 38, 299.81
+RESULT fp8 fwd_ms=1.574 (min 1.551) fwd_TFLOPS=699  bwd_ms=8.415 (min 8.112) bwd_TFLOPS=327
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                                                      Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+cudnn_generated_fort_native_sdpa_sm90_flash_bprop_wgmma_f8_knob_26_64x64x128_1x4x1_kern...         0.00%       0.000us         0.00%       0.000us       0.000us       7.963ms        81.11%       7.963ms       7.963ms             1  
+cudnn_generated_fort_native_sdpa_sm90_flash_fprop_wgmma_f8_knob_32_64x256x128_4x1x1_ker...         0.00%       0.000us         0.00%       0.000us       0.000us       1.121ms        11.42%       1.121ms       1.121ms             1  
+void cudnn::fusion::fmha_reduce_head_fp8<false>(void const*, void*, unsigned int, unsig...         0.00%       0.000us         0.00%       0.000us       0.000us     171.584us         1.75%     171.584us      85.792us             2  
+void cudnn::fusion::convert_dq_to_8bits<false>(void const*, void*, unsigned int, unsign...         0.00%       0.000us         0.00%       0.000us       0.000us     105.600us         1.08%     105.600us     105.600us             1  
+                                                                           Memset (Device)         0.00%       0.000us         0.00%       0.000us       0.000us      90.303us         0.92%      90.303us      18.061us             5  
+void transformer_engine::unary_kernel<16, true, float, transformer_engine::detail::Dequ...         0.00%       0.000us         0.00%       0.000us       0.000us      76.127us         0.78%      76.127us      25.376us             3  
+void transformer_engine::unary_kernel<16, true, float, transformer_engine::Empty, &tran...         0.00%       0.000us         0.00%       0.000us       0.000us      75.903us         0.77%      75.903us      25.301us             3  
+void transformer_engine::unary_kernel<16, true, float, transformer_engine::detail::Dequ...         0.00%       0.000us         0.00%       0.000us       0.000us      57.471us         0.59%      57.471us      57.471us             1  
+void transformer_engine::unary_kernel<16, true, float, transformer_engine::Empty, &tran...         0.00%       0.000us         0.00%       0.000us       0.000us      57.440us         0.59%      57.440us      57.440us             1  
+void cudnn::fusion::compute_dot_do_o_fp8_specialized<false, true, 128>(void const*, voi...         0.00%       0.000us         0.00%       0.000us       0.000us      49.824us         0.51%      49.824us      49.824us             1  
+void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<unsigned char...         0.00%       0.000us         0.00%       0.000us       0.000us      28.000us         0.29%      28.000us       9.333us             3  
+void at::native::vectorized_elementwise_kernel<4, at::native::reciprocal_kernel_cuda(at...         0.00%       0.000us         0.00%       0.000us       0.000us       6.016us         0.06%       6.016us       1.203us             5  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 9.165ms
+Self CUDA time total: 9.817ms
+
+MODE=fp8_bf16bwd S=8192 B=1 HQ=64 HKV=8 D=128  clock/temp/power before: 1980, 28, 132.42
+clock/temp/power after: 1980, 44, 300.94
+RESULT fp8_bf16bwd fwd_ms=1.580 (min 1.554) fwd_TFLOPS=696  bwd_ms=5.181 (min 5.165) bwd_TFLOPS=531
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                                                      Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+cudnn_generated_fort_native_sdpa_sm90_flash_bprop_wgmma_f16_knob_26_64x64x128_1x4x1_ker...         0.00%       0.000us         0.00%       0.000us       0.000us       4.839ms        74.63%       4.839ms       4.839ms             1  
+cudnn_generated_fort_native_sdpa_sm90_flash_fprop_wgmma_f8_knob_32_64x256x128_4x1x1_ker...         0.00%       0.000us         0.00%       0.000us       0.000us       1.117ms        17.23%       1.117ms       1.117ms             1  
+void cudnn::fusion::compute_dot_do_o_specialized<true, 128>(void const*, void const*, v...         0.00%       0.000us         0.00%       0.000us       0.000us     157.919us         2.44%     157.919us     157.919us             1  
+void cudnn::fusion::convert_dq_to_16bits<true>(void const*, void*, unsigned int, unsign...         0.00%       0.000us         0.00%       0.000us       0.000us     115.743us         1.79%     115.743us     115.743us             1  
+void cudnn::fusion::fmha_reduce_head<true>(void const*, void*, unsigned int, unsigned i...         0.00%       0.000us         0.00%       0.000us       0.000us      89.984us         1.39%      89.984us      44.992us             2  
+void transformer_engine::unary_kernel<16, true, float, transformer_engine::Empty, &tran...         0.00%       0.000us         0.00%       0.000us       0.000us      71.487us         1.10%      71.487us      23.829us             3  
+void transformer_engine::unary_kernel<16, true, float, transformer_engine::detail::Dequ...         0.00%       0.000us         0.00%       0.000us       0.000us      58.080us         0.90%      58.080us      58.080us             1  
+                                                                           Memset (Device)         0.00%       0.000us         0.00%       0.000us       0.000us      21.088us         0.33%      21.088us       5.272us             4  
+transformer_engine::delayed_scaling_recipe::(anonymous namespace)::amax_and_scale_updat...         0.00%       0.000us         0.00%       0.000us       0.000us       4.640us         0.07%       4.640us       4.640us             1  
+void at::native::vectorized_elementwise_kernel<2, at::native::reciprocal_kernel_cuda(at...         0.00%       0.000us         0.00%       0.000us       0.000us       4.256us         0.07%       4.256us       1.419us             3  
+                                                            Memcpy DtoD (Device -> Device)         0.00%       0.000us         0.00%       0.000us       0.000us       1.248us         0.02%       1.248us       1.248us             1  
+void at::native::vectorized_elementwise_kernel<4, at::native::reciprocal_kernel_cuda(at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.120us         0.02%       1.120us       1.120us             1  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 6.173ms
+Self CUDA time total: 6.483ms
+
+MODE=fa2 S=8192 B=1 HQ=64 HKV=8 D=128  clock/temp/power before: 1980, 28, 136.67
+clock/temp/power after: 1980, 46, 363.53
+RESULT fa2 fwd_ms=3.108 (min 3.056) fwd_TFLOPS=354  bwd_ms=9.007 (min 8.998) bwd_TFLOPS=305
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                                                      Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void flash_bwd_dq_dk_dv_loop_seqk_parallel_kernel<Flash_bwd_kernel_traits<128, 64, 128,...         0.00%       0.000us         0.00%       0.000us       0.000us       8.590ms        71.45%       8.590ms       8.590ms             1  
+void flash_fwd_kernel<Flash_fwd_kernel_traits<128, 128, 64, 4, false, false, cutlass::b...         0.00%       0.000us         0.00%       0.000us       0.000us       3.015ms        25.08%       3.015ms       3.015ms             1  
+void flash_bwd_dot_do_o_kernel<true, Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, ...         0.00%       0.000us         0.00%       0.000us       0.000us     159.167us         1.32%     159.167us     159.167us             1  
+void flash_bwd_convert_dq_kernel<Flash_bwd_kernel_traits<128, 64, 128, 8, 2, 4, 2, fals...         0.00%       0.000us         0.00%       0.000us       0.000us     150.335us         1.25%     150.335us     150.335us             1  
+void at::native::reduce_kernel<128, 4, at::native::ReduceOp<c10::BFloat16, at::native::...         0.00%       0.000us         0.00%       0.000us       0.000us     108.351us         0.90%     108.351us      54.176us             2  
+                                                                    cudaDeviceGetAttribute         0.04%       4.192us         0.04%       4.192us       0.524us       0.000us         0.00%       0.000us       0.000us             8  
+                                                                   Activity Buffer Request         1.79%     212.830us         1.79%     212.830us     212.830us       0.000us         0.00%       0.000us       0.000us             1  
+                                                                      cudaFuncSetAttribute         0.03%       3.488us         0.03%       3.488us       1.744us       0.000us         0.00%       0.000us       0.000us             2  
+                                                                          cudaLaunchKernel         0.42%      50.432us         0.42%      50.432us       8.405us       0.000us         0.00%       0.000us       0.000us             6  
+                                                                     cudaDeviceSynchronize        97.72%      11.605ms        97.72%      11.605ms       5.803ms       0.000us         0.00%       0.000us       0.000us             2  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 11.876ms
+Self CUDA time total: 12.023ms
+
+end=2026-10-05T14:55:24Z
+SMI samples=124 sm_clock median(all)=1980.0 median(power>150W)=1980.0 min=345 maxtemp=47

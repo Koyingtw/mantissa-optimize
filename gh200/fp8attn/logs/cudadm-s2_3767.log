@@ -1,0 +1,29 @@
+job=3767 host=work10 start=2026-10-06T18:02:41Z
+CMD=bash cuda_dm/stage2_bench.sh
+        Current Power Limit                            : 575.00 W
+######## LOAD=0
+RESULT cuda matched                 bwd_ms=  7.582 (min   7.310)  363 TF  sm_clock_med=1890 MHz power_med=157 W  load=off
+RESULT cuda stale                   bwd_ms=  7.379 (min   7.286)  372 TF  sm_clock_med=1800 MHz power_med=209 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.240 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true, true>(fp8dm::DqCfg<64 n= 1   2.671 ms
+[v3] RESULT cuda matched                 bwd_ms=  7.217 (min   6.744)  381 TF  sm_clock_med=1890 MHz power_med=146 W  load=off
+[v3] RESULT cuda stale                   bwd_ms=  6.865 (min   6.818)  400 TF  sm_clock_med=1755 MHz power_med=216 W  load=off
+[v3]   kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   3.716 ms
+[v3]   kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true, true>(fp8dm::DqCfg<64 n= 1   2.725 ms
+RESULT triton matched DS2           bwd_ms=  7.901 (min   7.694)  348 TF  sm_clock_med=1980 MHz power_med=132 W  load=off
+RESULT cuDNN FP8 (TE)               bwd_ms=  6.213 (min   5.736)  442 TF  sm_clock_med=1785 MHz power_med=183 W  load=off
+RESULT FA3 bf16                     bwd_ms=  5.964 (min   5.219)  461 TF  sm_clock_med=1980 MHz power_med=138 W  load=off
+######## LOAD=1
+RESULT cuda matched                 bwd_ms= 10.574 (min   9.619)  260 TF  sm_clock_med=1290 MHz power_med=345 W  load=on
+RESULT cuda stale                   bwd_ms= 10.248 (min   9.801)  268 TF  sm_clock_med=1260 MHz power_med=458 W  load=on
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.876 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true, true>(fp8dm::DqCfg<64 n= 1   3.144 ms
+[v3] RESULT cuda matched                 bwd_ms=  9.772 (min   9.199)  281 TF  sm_clock_med=1290 MHz power_med=356 W  load=on
+[v3] RESULT cuda stale                   bwd_ms=  9.403 (min   9.189)  292 TF  sm_clock_med=1260 MHz power_med=459 W  load=on
+[v3]   kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   5.070 ms
+[v3]   kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true, true>(fp8dm::DqCfg<64 n= 1   3.837 ms
+RESULT triton matched DS2           bwd_ms= 10.719 (min   9.990)  256 TF  sm_clock_med=1275 MHz power_med=349 W  load=on
+RESULT cuDNN FP8 (TE)               bwd_ms=  7.322 (min   6.814)  375 TF  sm_clock_med=1215 MHz power_med=349 W  load=on
+RESULT FA3 bf16                     bwd_ms=  6.704 (min   6.379)  410 TF  sm_clock_med=1260 MHz power_med=372 W  load=on
+end=2026-10-06T18:03:18Z
+SMI samples=184 sm_clock median(all)=1980.0 median(power>150W)=1800 min=345 maxtemp=43

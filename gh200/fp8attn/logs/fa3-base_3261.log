@@ -1,0 +1,27 @@
+job=3261 host=work3 start=2026-10-05T15:00:59Z
+CMD=for m in fa3 fa3fp8; do MODE=$m python bench_te.py 2>&1 | grep -v Warning | head -12; done; python test_accuracy.py 2>&1 | grep -E 'FA3|^\|'
+MODE=fa3 S=8192 B=1 HQ=64 HKV=8 D=128  clock/temp/power before: 1980, 36, 76.81
+clock/temp/power after: 1905, 56, 291.52
+RESULT fa3 fwd_ms=1.554 (min 1.542) fwd_TFLOPS=708  bwd_ms=4.510 (min 4.403) bwd_TFLOPS=609
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                                                      Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+------------------------------------------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+void cutlass::device_kernel<flash::enable_sm90_or_later<flash::FlashAttnBwdSm90<flash::...         0.00%       0.000us         0.00%       0.000us       0.000us       4.133ms        69.18%       4.133ms       4.133ms             1  
+void cutlass::device_kernel<flash::enable_sm90_or_later<flash::FlashAttnFwdSm90<flash::...         0.00%       0.000us         0.00%       0.000us       0.000us       1.520ms        25.43%       1.520ms       1.520ms             1  
+void cutlass::device_kernel<flash::FlashAttnBwdPreprocess<cute::tuple<cute::C<64>, cute...         0.00%       0.000us         0.00%       0.000us       0.000us     157.855us         2.64%     157.855us     157.855us             1  
+void cutlass::device_kernel<flash::FlashAttnBwdPostprocessConvertdQ<cute::tuple<cute::C...         0.00%       0.000us         0.00%       0.000us       0.000us     110.046us         1.84%     110.046us     110.046us             1  
+void cutlass::device_kernel<flash::FlashAttnBwdPostprocessConvertdQ<cute::tuple<cute::C...         0.00%       0.000us         0.00%       0.000us       0.000us      33.023us         0.55%      33.023us      16.511us             2  
+void at::native::vectorized_elementwise_kernel<4, at::native::FillFunctor<float>, std::...         0.00%       0.000us         0.00%       0.000us       0.000us      20.383us         0.34%      20.383us       6.794us             3  
+MODE=fa3fp8 S=8192 B=1 HQ=64 HKV=8 D=128  clock/temp/power before: 1980, 37, 127.83
+RESULT fa3fp8 fwd_ms=1.309 fwd_TFLOPS=840 (no FP8 bwd in FA3)
+FA3 bf16                     o=2.084e-03 dq=2.435e-03 dk=2.421e-03 dv=2.322e-03 
+| method | O | dQ | dK | dV | note |
+|---|---|---|---|---|---|
+| ours fp8 matched | 5.04e-02 | 6.18e-02 | 6.19e-02 | 5.17e-02 | rowsum|dS|/|delta|=2.87e-07 |delta-delta0|/|delta0|=3.66e-02 |
+| ours fp8 stale   | 5.04e-02 | 6.38e-02 | 6.37e-02 | 5.17e-02 | rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| TE cuDNN bf16 | 2.09e-03 | 2.45e-03 | 2.96e-03 | 2.86e-03 |  |
+| TE cuDNN fp8 (fp8 bwd) | 5.56e-02 | 1.06e-01 | 1.06e-01 | 8.69e-02 |  |
+| TE cuDNN fp8 fwd, bf16 bwd | 5.57e-02 | 2.21e-02 | 2.12e-02 | 1.44e-02 |  |
+| FA3 bf16 | 2.08e-03 | 2.43e-03 | 2.42e-03 | 2.32e-03 |  |
+end=2026-10-05T15:01:13Z
+SMI samples=72 sm_clock median(all)=1980.0 median(power>150W)=1980 min=345 maxtemp=52

@@ -1,0 +1,59 @@
+job=3263 host=work3 start=2026-10-05T15:03:29Z
+CMD=python bench_ours.py 2>&1 | grep -E 'RESULT|kernel _|error' ; KERNEL=fwd SPACE='{"BN":[64,128],"warps":[4,8],"stages":[2,3,4]}' python tune.py 2>&1 | grep -v Warn; KERNEL=dq SPACE='{"BM":[64,128],"BN":[64,128],"warps":[4,8],"stages":[1,2]}' python tune.py 2>&1 | grep -v Warn; KERNEL=kv SPACE='{"BM":[64,128],"BN":[64,128],"warps":[4,8],"stages":[1,2]}' python tune.py 2>&1 | grep -v Warn
+RESULT ours fwd_ms=2.147 (512 TF)  bwd_matched_ms=10.472 (262 TF)  bwd_stale_ms=8.653 (318 TF)
+  kernel _bwd_dkdv_kernel                                             n=1 total=6.259 ms
+  kernel _bwd_dq_kernel                                               n=1 total=3.830 ms
+  kernel _fwd_kernel                                                  n=1 total=1.996 ms
+  kernel _quant_kernel                                                n=7 total=0.444 ms
+KERNEL=fwd space={'BN': [64, 128], 'warps': [4, 8], 'stages': [2, 3, 4]} clock=1980, 36, 126.88
+  {'fwd_BN': 64, 'fwd_warps': 4, 'fwd_stages': 2} -> 2.217 ms  (496 TF executed)
+  {'fwd_BN': 64, 'fwd_warps': 4, 'fwd_stages': 3} -> 2.098 ms  (524 TF executed)
+  {'fwd_BN': 64, 'fwd_warps': 4, 'fwd_stages': 4} -> 2.119 ms  (519 TF executed)
+  {'fwd_BN': 64, 'fwd_warps': 8, 'fwd_stages': 2} -> 2.766 ms  (398 TF executed)
+  {'fwd_BN': 64, 'fwd_warps': 8, 'fwd_stages': 3} -> 2.545 ms  (432 TF executed)
+  {'fwd_BN': 64, 'fwd_warps': 8, 'fwd_stages': 4} -> 2.594 ms  (424 TF executed)
+  {'fwd_BN': 128, 'fwd_warps': 4, 'fwd_stages': 2} -> 2.794 ms  (394 TF executed)
+  {'fwd_BN': 128, 'fwd_warps': 4, 'fwd_stages': 3} -> 3.031 ms  (363 TF executed)
+  {'fwd_BN': 128, 'fwd_warps': 4, 'fwd_stages': 4} -> 4.275 ms  (257 TF executed)
+  {'fwd_BN': 128, 'fwd_warps': 8, 'fwd_stages': 2} -> 2.010 ms  (547 TF executed)
+  {'fwd_BN': 128, 'fwd_warps': 8, 'fwd_stages': 3} -> 1.976 ms  (556 TF executed)
+  {'fwd_BN': 128, 'fwd_warps': 8, 'fwd_stages': 4} -> 1.977 ms  (556 TF executed)
+clock after 1980, 40, 158.83
+KERNEL=dq space={'BM': [64, 128], 'BN': [64, 128], 'warps': [4, 8], 'stages': [1, 2]} clock=1980, 35, 123.35
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 1} -> 4.065 ms  (541 TF executed)
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 2} -> 3.704 ms  (594 TF executed)
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 8, 'dq_stages': 1} -> 7.182 ms  (306 TF executed)
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 8, 'dq_stages': 2} -> 7.805 ms  (282 TF executed)
+  {'dq_BM': 64, 'dq_BN': 128, 'dq_warps': 4, 'dq_stages': 1} -> 5.754 ms  (382 TF executed)
+  {'dq_BM': 64, 'dq_BN': 128, 'dq_warps': 4, 'dq_stages': 2} -> 3.812 ms  (577 TF executed)
+  {'dq_BM': 64, 'dq_BN': 128, 'dq_warps': 8, 'dq_stages': 1} -> 6.158 ms  (357 TF executed)
+  {'dq_BM': 64, 'dq_BN': 128, 'dq_warps': 8, 'dq_stages': 2} -> 6.045 ms  (364 TF executed)
+  {'dq_BM': 128, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 1} -> 14.233 ms  (155 TF executed)
+  {'dq_BM': 128, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 2} -> 16.289 ms  (135 TF executed)
+  {'dq_BM': 128, 'dq_BN': 64, 'dq_warps': 8, 'dq_stages': 1} -> 4.329 ms  (508 TF executed)
+  {'dq_BM': 128, 'dq_BN': 64, 'dq_warps': 8, 'dq_stages': 2} -> 4.199 ms  (524 TF executed)
+  {'dq_BM': 128, 'dq_BN': 128, 'dq_warps': 4, 'dq_stages': 1} -> 21.326 ms  (103 TF executed)
+  {'dq_BM': 128, 'dq_BN': 128, 'dq_warps': 4, 'dq_stages': 2} -> 15.389 ms  (143 TF executed)
+  {'dq_BM': 128, 'dq_BN': 128, 'dq_warps': 8, 'dq_stages': 1} -> 4.730 ms  (465 TF executed)
+  {'dq_BM': 128, 'dq_BN': 128, 'dq_warps': 8, 'dq_stages': 2} -> 3.961 ms  (555 TF executed)
+clock after 1980, 42, 153.01
+KERNEL=kv space={'BM': [64, 128], 'BN': [64, 128], 'warps': [4, 8], 'stages': [1, 2]} clock=1980, 35, 125.06
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 1} -> 6.250 ms  (352 TF executed)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 2} -> 5.011 ms  (439 TF executed)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 1} -> 8.999 ms  (244 TF executed)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 2} -> 8.311 ms  (265 TF executed)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 1} -> 21.327 ms  (103 TF executed)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 2} -> 18.820 ms  (117 TF executed)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 1} -> 6.163 ms  (357 TF executed)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 2} -> 4.988 ms  (441 TF executed)
+  {'kv_BM': 128, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 1} -> 6.170 ms  (356 TF executed)
+  {'kv_BM': 128, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 2} -> 6.324 ms  (348 TF executed)
+  {'kv_BM': 128, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 1} -> 7.800 ms  (282 TF executed)
+  {'kv_BM': 128, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 2} -> 6.563 ms  (335 TF executed)
+  {'kv_BM': 128, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 1} -> 31.002 ms  (71 TF executed)
+  {'kv_BM': 128, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 2} -> 31.012 ms  (71 TF executed)
+  {'kv_BM': 128, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 1} -> 7.187 ms  (306 TF executed)
+  {'kv_BM': 128, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 2} -> 6.354 ms  (346 TF executed)
+clock after 1980, 39, 161.18
+end=2026-10-05T15:05:11Z
+SMI samples=508 sm_clock median(all)=1980.0 median(power>150W)=1980.0 min=345 maxtemp=50

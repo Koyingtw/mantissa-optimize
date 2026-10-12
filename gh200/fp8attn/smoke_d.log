@@ -1,0 +1,15 @@
+19:41:23 1D job=3336
+  1D no timing
+      1 fp8dm_attn: TEDotProductAttention.forward -> Triton 3.8.0 FP8 flash attention (matched=True)
+      1 [rank0]:   File "/workspace/ft-llm/fp8dm_attn.py", line 56, in forward
+Error executing job with overrides: []
+[rank0]: Traceback (most recent call last):
+[rank0]:     raise RuntimeError(f"{len(active_drivers)} active drivers ({active_drivers}). There should only be one.")
+Error executing job with overrides: []
+[rank0]:     raise RuntimeError(f"{len(active_drivers)} active drivers ({active_drivers}). There should only be one.")
+20:24:24 2A job=3340
+  2A s/step=3.461
+  loss 2.504352569580078 @ 10
+  loss 1.536241888999939 @ 20
+  loss 1.6595121622085571 @ 30
+  loss 1.492838978767395 @ 40

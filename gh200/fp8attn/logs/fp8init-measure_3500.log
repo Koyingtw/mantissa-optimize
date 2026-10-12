@@ -1,0 +1,22 @@
+/nfs/home/koying/mlperf-fp8attn-work/runs/fp8init-d1-work12-1R/dumps/L00_step1.pt: dO is all zero (FP8 delayed-scaling cold start), skipped
+Traceback (most recent call last):
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/residual_measure.py", line 372, in <module>
+    main()
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/residual_measure.py", line 360, in main
+    s = run(f, a.out, heads, a.row_min)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/residual_measure.py", line 306, in run
+    emu["dq_TEminusDM_explained_by_stalepred"] = 1 - ((Dd - Pk) ** 2).sum().item() / (Dd * Dd).sum().item()
+                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+ZeroDivisionError: float division by zero
+/nfs/home/koying/mlperf-fp8attn-work/runs/fp8init-d1-work3-1B/dumps/L00_step1.pt: dO is all zero (FP8 delayed-scaling cold start), skipped
+Traceback (most recent call last):
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/residual_measure.py", line 372, in <module>
+    main()
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/residual_measure.py", line 360, in main
+    s = run(f, a.out, heads, a.row_min)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/nfs/home/koying/mantissa-optimize/gh200/fp8attn/residual_measure.py", line 306, in run
+    emu["dq_TEminusDM_explained_by_stalepred"] = 1 - ((Dd - Pk) ** 2).sum().item() / (Dd * Dd).sum().item()
+                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~
+ZeroDivisionError: float division by zero

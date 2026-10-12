@@ -1,0 +1,10 @@
+job=3752 host=work10 start=2026-10-06T17:08:34Z
+CMD=cd cuda_dm; for v in noalu nog1 nog2 nog12; do echo == $v; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_$v ITERS=10 IMPL=cuda python bench_cuda_dm.py 2>&1 | grep -E 'dq_kernel'; done
+== noalu
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   1.508 ms
+== nog1
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   2.326 ms
+== nog2
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   2.746 ms
+== nog12
+[2026-10-06T17:19:37.848] error: *** JOB 3752 ON work10 CANCELLED AT 2026-10-06T17:19:37 DUE to SIGNAL Terminated ***

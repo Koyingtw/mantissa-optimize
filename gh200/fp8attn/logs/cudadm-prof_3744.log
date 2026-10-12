@@ -1,0 +1,38 @@
+job=3744 host=work10 start=2026-10-06T16:50:16Z
+CMD=export FP8DM_NO_BUILD=1 IMPLS=cuda; cd cuda_dm; IMPL=cuda python bench_cuda_dm.py 2>&1 | grep -E 'PROF|RESULT' | sort | uniq | head -40
+PROF dq m_block=62 h=0 wg=0 n=126  wait_data=81 gemm_SdP=736 exp=595 alu2=792 gemm_dQ=649 per-iter total=2854
+PROF dq m_block=62 h=0 wg=0 n=126  wait_data=81 gemm_SdP=739 exp=590 alu2=795 gemm_dQ=652 per-iter total=2858
+PROF dq m_block=62 h=0 wg=0 n=126  wait_data=82 gemm_SdP=741 exp=593 alu2=792 gemm_dQ=653 per-iter total=2862
+PROF dq m_block=62 h=0 wg=0 n=126  wait_data=93 gemm_SdP=736 exp=459 alu2=558 gemm_dQ=361 per-iter total=2210
+PROF dq m_block=62 h=0 wg=1 n=126  wait_data=78 gemm_SdP=751 exp=536 alu2=803 gemm_dQ=679 per-iter total=2849
+PROF dq m_block=62 h=0 wg=1 n=126  wait_data=81 gemm_SdP=746 exp=546 alu2=805 gemm_dQ=676 per-iter total=2856
+PROF dq m_block=62 h=0 wg=1 n=126  wait_data=81 gemm_SdP=750 exp=547 alu2=813 gemm_dQ=667 per-iter total=2860
+PROF dq m_block=62 h=0 wg=1 n=126  wait_data=81 gemm_SdP=805 exp=413 alu2=531 gemm_dQ=351 per-iter total=2183
+PROF dq m_block=62 h=1 wg=0 n=126  wait_data=78 gemm_SdP=734 exp=590 alu2=796 gemm_dQ=659 per-iter total=2858
+PROF dq m_block=62 h=1 wg=0 n=126  wait_data=88 gemm_SdP=729 exp=593 alu2=785 gemm_dQ=652 per-iter total=2849
+PROF dq m_block=62 h=1 wg=0 n=126  wait_data=89 gemm_SdP=737 exp=461 alu2=561 gemm_dQ=363 per-iter total=2213
+PROF dq m_block=62 h=1 wg=0 n=126  wait_data=90 gemm_SdP=730 exp=596 alu2=787 gemm_dQ=657 per-iter total=2862
+PROF dq m_block=62 h=1 wg=1 n=126  wait_data=76 gemm_SdP=753 exp=532 alu2=824 gemm_dQ=667 per-iter total=2853
+PROF dq m_block=62 h=1 wg=1 n=126  wait_data=77 gemm_SdP=800 exp=413 alu2=542 gemm_dQ=352 per-iter total=2186
+PROF dq m_block=62 h=1 wg=1 n=126  wait_data=81 gemm_SdP=761 exp=511 alu2=813 gemm_dQ=672 per-iter total=2838
+PROF dq m_block=62 h=1 wg=1 n=126  wait_data=85 gemm_SdP=758 exp=522 alu2=819 gemm_dQ=668 per-iter total=2854
+PROF dq m_block=63 h=0 wg=0 n=128  wait_data=81 gemm_SdP=733 exp=604 alu2=776 gemm_dQ=660 per-iter total=2856
+PROF dq m_block=63 h=0 wg=0 n=128  wait_data=82 gemm_SdP=734 exp=605 alu2=778 gemm_dQ=661 per-iter total=2862
+PROF dq m_block=63 h=0 wg=0 n=128  wait_data=82 gemm_SdP=735 exp=605 alu2=781 gemm_dQ=660 per-iter total=2866
+PROF dq m_block=63 h=0 wg=0 n=128  wait_data=93 gemm_SdP=735 exp=456 alu2=550 gemm_dQ=376 per-iter total=2214
+PROF dq m_block=63 h=0 wg=1 n=128  wait_data=74 gemm_SdP=755 exp=528 alu2=794 gemm_dQ=693 per-iter total=2846
+PROF dq m_block=63 h=0 wg=1 n=128  wait_data=78 gemm_SdP=753 exp=534 alu2=797 gemm_dQ=691 per-iter total=2854
+PROF dq m_block=63 h=0 wg=1 n=128  wait_data=78 gemm_SdP=806 exp=413 alu2=521 gemm_dQ=366 per-iter total=2187
+PROF dq m_block=63 h=0 wg=1 n=128  wait_data=79 gemm_SdP=749 exp=542 alu2=795 gemm_dQ=692 per-iter total=2860
+PROF dq m_block=63 h=1 wg=0 n=128  wait_data=79 gemm_SdP=733 exp=603 alu2=773 gemm_dQ=669 per-iter total=2859
+PROF dq m_block=63 h=1 wg=0 n=128  wait_data=90 gemm_SdP=732 exp=607 alu2=773 gemm_dQ=662 per-iter total=2866
+PROF dq m_block=63 h=1 wg=0 n=128  wait_data=92 gemm_SdP=734 exp=455 alu2=553 gemm_dQ=371 per-iter total=2208
+PROF dq m_block=63 h=1 wg=0 n=128  wait_data=95 gemm_SdP=732 exp=606 alu2=774 gemm_dQ=663 per-iter total=2871
+PROF dq m_block=63 h=1 wg=1 n=128  wait_data=74 gemm_SdP=755 exp=534 alu2=802 gemm_dQ=685 per-iter total=2852
+PROF dq m_block=63 h=1 wg=1 n=128  wait_data=77 gemm_SdP=803 exp=415 alu2=527 gemm_dQ=358 per-iter total=2181
+PROF dq m_block=63 h=1 wg=1 n=128  wait_data=84 gemm_SdP=757 exp=530 alu2=796 gemm_dQ=689 per-iter total=2857
+PROF dq m_block=63 h=1 wg=1 n=128  wait_data=89 gemm_SdP=757 exp=529 alu2=798 gemm_dQ=688 per-iter total=2863
+RESULT cuda matched                 bwd_ms=177.044 (min 177.044)   16 TF  sm_clock_med=1980 MHz power_med=114 W  load=off
+RESULT cuda stale                   bwd_ms=  6.737 (min   6.737)  408 TF  sm_clock_med=1980 MHz power_med=118 W  load=off
+end=2026-10-06T16:50:20Z
+SMI samples=20 sm_clock median(all)=345.0 median(power>150W)=n/a min=345 maxtemp=29

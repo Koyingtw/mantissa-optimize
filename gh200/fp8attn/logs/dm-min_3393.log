@@ -1,0 +1,57 @@
+job=3393 host=work3 start=2026-10-06T08:21:07Z
+CMD=python test_minimal.py; echo ==== DUMP; INPUT=dump:/nfs/home/koying/fp8attn-dumps/L40_step6.pt python test_minimal.py; echo ==== DUMP L00; INPUT=dump:/nfs/home/koying/fp8attn-dumps/L00_step10.pt python test_minimal.py; echo ==== TRAINING-PATH TRITON; PYTHONPATH=/nfs/home/koying/mlperf-fp8attn-work/nvidia_impl/_extra:$PYTHONPATH python -c 'import triton; from triton.runtime import driver; print(triton.__file__); print(type(driver.active))'
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=randn  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| Delta-Matching | 2.49e-07 | 2.29e-07 | 4.961e-02 | 6.081e-02 | 6.060e-02 | 4.895e-02 |
+| stale δ | 3.55e-02 | 3.65e-02 | 4.961e-02 | 6.349e-02 | 6.220e-02 | 4.895e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：3.43e-02
+PASS matched 列和殘差 < 1e-5
+PASS stale 列和殘差 > 1e-3
+PASS matched dQ 誤差 ≤ stale
+PASS matched dK 誤差 ≤ stale
+FAIL autograd 路徑一致（< 1e-3）
+SOME FAILED
+==== DUMP
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L40_step6.pt  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| Delta-Matching | 1.25e-07 | 1.15e-07 | 7.662e-02 | 5.895e-02 | 5.823e-02 | 2.138e-02 |
+| stale δ | 2.84e-02 | 2.77e-02 | 7.662e-02 | 7.260e-02 | 6.436e-02 | 2.138e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：2.67e-02
+PASS matched 列和殘差 < 1e-5
+PASS stale 列和殘差 > 1e-3
+PASS matched dQ 誤差 ≤ stale
+PASS matched dK 誤差 ≤ stale
+FAIL autograd 路徑一致（< 1e-3）
+SOME FAILED
+==== DUMP L00
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L00_step10.pt  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| Delta-Matching | 2.41e-07 | 2.10e-07 | 3.765e-02 | 3.976e-02 | 4.660e-02 | 3.820e-02 |
+| stale δ | 2.13e-02 | 2.09e-02 | 3.765e-02 | 4.432e-02 | 5.018e-02 | 3.820e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：4.04e-02
+PASS matched 列和殘差 < 1e-5
+PASS stale 列和殘差 > 1e-3
+PASS matched dQ 誤差 ≤ stale
+PASS matched dK 誤差 ≤ stale
+FAIL autograd 路徑一致（< 1e-3）
+SOME FAILED
+==== TRAINING-PATH TRITON
+/nfs/home/koying/mlperf-fp8attn-work/nvidia_impl/_extra/triton/__init__.py
+<class 'triton.backends.nvidia.driver.CudaDriver'>
+end=2026-10-06T08:21:24Z
+SMI samples=85 sm_clock median(all)=1980 median(power>150W)=n/a min=345 maxtemp=30

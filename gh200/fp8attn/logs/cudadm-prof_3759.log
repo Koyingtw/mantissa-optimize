@@ -1,0 +1,4 @@
+job=3759 host=work11 start=2026-10-06T17:30:52Z
+CMD=cd cuda_dm; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_prof4 ITERS=1 WARM=0 IMPL=cuda timeout 300 python bench_cuda_dm.py 2>&1 | grep -E 'PROF dkdv|kernel  *void fp8dm::dkdv' | sort | uniq | head -30
+end=2026-10-06T17:35:52Z
+SMI samples=1501 sm_clock median(all)=1980 median(power>150W)=n/a min=345 maxtemp=29

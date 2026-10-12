@@ -1,0 +1,19 @@
+job=3274 host=work1 start=2026-10-05T15:26:29Z
+CMD=NVTE_DEBUG=1 NVTE_DEBUG_LEVEL=2 NVTE_FUSED_ATTN=0 NVTE_FLASH_ATTN=1 MODE=bf16 python bench_te.py 2>&1 | grep -E 'RESULT|backend|Selected|flash|FlashAttention|Error|rror' | head -20; NVTE_DEBUG=1 NVTE_DEBUG_LEVEL=2 MODE=bf16 python bench_te.py 2>&1 | grep -E 'RESULT|Selected|Available' | head; NVTE_DEBUG=1 NVTE_DEBUG_LEVEL=2 MODE=fp8 python bench_te.py 2>&1 | grep -E 'RESULT|Selected' | head -4
+[DEBUG    | DotProductAttention]: Running with config={'transformer_engine_version': '2.2.0+c55e425', 'compute_capability': 'sm90', 'flash_attn_version': '2.7.3', 'flash_attn_3_version': '3.0.0b1', 'cudnn_version': '9.9.0', 'qkv_type': <class 'torch.Tensor'>, 'qkv_dtype': torch.bfloat16, 'qkv_layout': 'sbhd_sbhd_sbhd', 'batch_size': 1, 'num_heads': 64, 'num_gqa_groups': 8, 'max_seqlen_q': 8192, 'max_seqlen_kv': 8192, 'head_dim_qk': 128, 'head_dim_v': 128, 'attn_mask_type': 'causal', 'window_size': (-1, 0), 'alibi_slopes_shape': None, 'core_attention_bias_type': 'no_bias', 'core_attention_bias_shape': None, 'core_attention_bias_requires_grad': False, 'pad_between_seqs': False, 'attention_dropout': 0.0, 'context_parallel': False, 'deterministic': False, 'is_training': True, 'fp8': False, 'fp8_meta': {'fp8_checkpoint': False, 'fp8_group': None}, 'inference_params': None}
+[DEBUG    | DotProductAttention]: Available backends = {FlashAttention=True (3.0.0b1), FusedAttention=False, UnfusedDotProductAttention=True}
+[DEBUG    | DotProductAttention]: Selected backend = FlashAttention (3.0.0b1)
+[INFO     | DotProductAttention]: Running with FlashAttention backend (version 3.0.0b1)
+RESULT bf16 fwd_ms=1.664 (min 1.650) fwd_TFLOPS=661  bwd_ms=4.487 (min 4.398) bwd_TFLOPS=613
+void cutlass::device_kernel<flash::enable_sm90_or_later<flash::FlashAttnBwdSm90<flash::...         0.00%       0.000us         0.00%       0.000us       0.000us       4.092ms        69.20%       4.092ms       4.092ms             1  
+void cutlass::device_kernel<flash::enable_sm90_or_later<flash::FlashAttnFwdSm90<flash::...         0.00%       0.000us         0.00%       0.000us       0.000us       1.500ms        25.37%       1.500ms       1.500ms             1  
+void cutlass::device_kernel<flash::FlashAttnBwdPreprocess<cute::tuple<cute::C<64>, cute...         0.00%       0.000us         0.00%       0.000us       0.000us     157.441us         2.66%     157.441us     157.441us             1  
+void cutlass::device_kernel<flash::FlashAttnBwdPostprocessConvertdQ<cute::tuple<cute::C...         0.00%       0.000us         0.00%       0.000us       0.000us     110.368us         1.87%     110.368us     110.368us             1  
+void cutlass::device_kernel<flash::FlashAttnBwdPostprocessConvertdQ<cute::tuple<cute::C...         0.00%       0.000us         0.00%       0.000us       0.000us      31.968us         0.54%      31.968us      15.984us             2  
+[DEBUG    | DotProductAttention]: Available backends = {FlashAttention=False, FusedAttention=True (sub-backend 1), UnfusedDotProductAttention=True}
+[DEBUG    | DotProductAttention]: Selected backend = FusedAttention (sub-backend 1)
+RESULT bf16 fwd_ms=1.822 (min 1.812) fwd_TFLOPS=603  bwd_ms=5.163 (min 5.134) bwd_TFLOPS=532
+[DEBUG    | DotProductAttention]: Selected backend = FusedAttention (sub-backend 2)
+RESULT fp8 fwd_ms=1.575 (min 1.558) fwd_TFLOPS=698  bwd_ms=8.408 (min 8.167) bwd_TFLOPS=327
+end=2026-10-05T15:26:51Z
+SMI samples=111 sm_clock median(all)=1980 median(power>150W)=1980 min=345 maxtemp=51

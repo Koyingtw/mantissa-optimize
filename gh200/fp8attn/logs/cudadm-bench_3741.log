@@ -1,0 +1,34 @@
+job=3741 host=work10 start=2026-10-06T16:46:28Z
+CMD=bash cuda_dm/bench_all.sh
+        GPU Ceiling Power Limit
+            Current Power Limit                        : 900.00 W
+            Requested Power Limit                      : 900.00 W
+            Default Power Limit                        : 900.00 W
+        Min Power Limit                                : 100.00 W
+        Max Power Limit                                : 900.00 W
+    Module Power Readings
+        Current Power Limit                            : 600.00 W
+RESULT cuda matched                 bwd_ms=  7.647 (min   6.772)  359 TF  sm_clock_med=1755 MHz power_med=153 W  load=off
+RESULT cuda stale                   bwd_ms=  7.097 (min   6.958)  387 TF  sm_clock_med=1710 MHz power_med=280 W  load=off
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.422 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true>(fp8dm::DqCfg<64, 4>:: n= 1   3.718 ms
+  kernel void fp8dm::quant_kernel<false, true, true, false, false>(__nv_bfloat1 n= 2   0.248 ms
+  kernel void fp8dm::quant_kernel<true, false, false, true, false>(__nv_bfloat1 n= 1   0.102 ms
+  kernel void fp8dm::quant_kernel<true, false, false, false, false>(__nv_bfloat n= 2   0.064 ms
+  kernel void fp8dm::quant_kernel<true, true, false, false, false>(__nv_bfloat1 n= 1   0.022 ms
+  kernel void at::native::reduce_kernel<512, 1, at::native::ReduceOp<float, at: n= 3   0.010 ms
+  kernel void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunc n= 1   0.003 ms
+  kernel exp2_kernel_vectorized4_kernel                                         n= 1   0.002 ms
+  kernel void at::native::(anonymous namespace)::CatArrayBatchedCopy_aligned16_ n= 1   0.001 ms
+  kernel cudaLaunchKernel                                                       n=13   0.000 ms
+  kernel Activity Buffer Request                                                n= 1   0.000 ms
+  kernel INVALID                                                                n=11   0.000 ms
+  kernel cudaFuncSetAttribute                                                   n= 2   0.000 ms
+  kernel cuLaunchKernel                                                         n= 1   0.000 ms
+  kernel cudaDeviceSynchronize                                                  n= 2   0.000 ms
+  kernel sum 8.591 ms
+RESULT triton matched DS2           bwd_ms=  7.804 (min   7.348)  352 TF  sm_clock_med=1935 MHz power_med=163 W  load=off
+RESULT cuDNN FP8 (TE)               bwd_ms=  8.356 (min   5.696)  329 TF  sm_clock_med=1740 MHz power_med=176 W  load=off
+RESULT FA3 bf16                     bwd_ms=  5.824 (min   4.747)  472 TF  sm_clock_med=1485 MHz power_med=190 W  load=off
+end=2026-10-06T16:46:44Z
+SMI samples=82 sm_clock median(all)=1980.0 median(power>150W)=1965.0 min=345 maxtemp=40

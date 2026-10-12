@@ -1,0 +1,95 @@
+job=3394 host=work3 start=2026-10-06T08:21:59Z
+CMD=python test_minimal.py; echo ==== DUMP L40; INPUT=dump:/nfs/home/koying/fp8attn-dumps/L40_step6.pt python test_minimal.py; echo ==== DUMP L00; INPUT=dump:/nfs/home/koying/fp8attn-dumps/L00_step10.pt python test_minimal.py; echo ==== DUMP L79; INPUT=dump:/nfs/home/koying/fp8attn-dumps/L79_step30.pt python test_minimal.py
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=randn  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | DS_SCALE | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|
+| Delta-Matching | 0 | 2.49e-07 | 2.29e-07 | 4.961e-02 | 6.081e-02 | 6.060e-02 | 4.895e-02 |
+| stale δ | 0 | 3.55e-02 | 3.65e-02 | 4.961e-02 | 6.349e-02 | 6.220e-02 | 4.895e-02 |
+| Delta-Matching | 2 | 2.71e-07 | 2.51e-07 | 4.961e-02 | 6.374e-02 | 6.277e-02 | 4.895e-02 |
+| stale δ | 2 | 3.55e-02 | 3.65e-02 | 4.961e-02 | 6.656e-02 | 6.457e-02 | 4.895e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：0.00e+00
+PASS [DS_SCALE=0] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=0] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=0] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=0] matched dK 誤差 ≤ stale
+PASS [DS_SCALE=2] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=2] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=2] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=2] matched dK 誤差 ≤ stale
+PASS autograd 路徑與直接呼叫一致（< 1e-3）
+ALL PASS
+==== DUMP L40
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L40_step6.pt  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | DS_SCALE | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|
+| Delta-Matching | 0 | 1.25e-07 | 1.15e-07 | 7.662e-02 | 5.895e-02 | 5.823e-02 | 2.138e-02 |
+| stale δ | 0 | 2.84e-02 | 2.77e-02 | 7.662e-02 | 7.260e-02 | 6.436e-02 | 2.138e-02 |
+| Delta-Matching | 2 | 1.52e-07 | 1.37e-07 | 7.662e-02 | 5.806e-02 | 6.762e-02 | 2.138e-02 |
+| stale δ | 2 | 2.84e-02 | 2.77e-02 | 7.662e-02 | 7.236e-02 | 6.897e-02 | 2.138e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：0.00e+00
+PASS [DS_SCALE=0] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=0] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=0] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=0] matched dK 誤差 ≤ stale
+PASS [DS_SCALE=2] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=2] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=2] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=2] matched dK 誤差 ≤ stale
+PASS autograd 路徑與直接呼叫一致（< 1e-3）
+ALL PASS
+==== DUMP L00
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L00_step10.pt  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | DS_SCALE | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|
+| Delta-Matching | 0 | 2.41e-07 | 2.10e-07 | 3.765e-02 | 3.976e-02 | 4.660e-02 | 3.820e-02 |
+| stale δ | 0 | 2.13e-02 | 2.09e-02 | 3.765e-02 | 4.432e-02 | 5.018e-02 | 3.820e-02 |
+| Delta-Matching | 2 | 3.31e-07 | 2.88e-07 | 3.765e-02 | 4.163e-02 | 5.123e-02 | 3.820e-02 |
+| stale δ | 2 | 2.13e-02 | 2.09e-02 | 3.765e-02 | 4.569e-02 | 5.415e-02 | 3.820e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：0.00e+00
+PASS [DS_SCALE=0] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=0] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=0] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=0] matched dK 誤差 ≤ stale
+PASS [DS_SCALE=2] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=2] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=2] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=2] matched dK 誤差 ≤ stale
+PASS autograd 路徑與直接呼叫一致（< 1e-3）
+ALL PASS
+==== DUMP L79
+torch 2.7.0a0+79aa17489c.nv25.04  triton 3.8.0 from /nfs/home/koying/fp8attn-build/triton-3.8.0/triton
+triton active driver: CudaDriver
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L79_step30.pt  q(2048, 8, 128) k(2048, 1, 128)
+
+| backward | DS_SCALE | 列和殘差（中位數） | 列和殘差（平均） | O | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|
+| Delta-Matching | 0 | 1.35e-07 | 1.28e-07 | 4.514e-02 | 5.933e-02 | 5.898e-02 | 5.128e-02 |
+| stale δ | 0 | 3.00e-02 | 2.89e-02 | 4.514e-02 | 7.127e-02 | 5.366e-02 | 5.128e-02 |
+| Delta-Matching | 2 | 1.63e-07 | 1.45e-07 | 4.514e-02 | 7.142e-02 | 6.096e-02 | 5.128e-02 |
+| stale δ | 2 | 3.00e-02 | 2.89e-02 | 4.514e-02 | 8.158e-02 | 6.721e-02 | 5.128e-02 |
+
+autograd 路徑 vs 直接呼叫 matched 的最大相對差：0.00e+00
+PASS [DS_SCALE=0] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=0] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=0] matched dQ 誤差 ≤ stale
+FAIL [DS_SCALE=0] matched dK 誤差 ≤ stale
+PASS [DS_SCALE=2] matched 列和殘差 < 1e-5
+PASS [DS_SCALE=2] stale 列和殘差 > 1e-3
+PASS [DS_SCALE=2] matched dQ 誤差 ≤ stale
+PASS [DS_SCALE=2] matched dK 誤差 ≤ stale
+PASS autograd 路徑與直接呼叫一致（< 1e-3）
+SOME FAILED
+end=2026-10-06T08:22:12Z
+SMI samples=67 sm_clock median(all)=1980 median(power>150W)=n/a min=345 maxtemp=30

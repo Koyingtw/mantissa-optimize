@@ -1,0 +1,34 @@
+job=3757 host=work10 start=2026-10-06T17:28:35Z
+CMD=cd cuda_dm; FP8DM_NO_BUILD=1 FP8DM_BUILD=/nfs/home/koying/fp8attn-build/cuda_dm_prof3 ITERS=1 WARM=0 IMPL=cuda python bench_cuda_dm.py 2>&1 | grep -E 'PROF|kernel  *void fp8dm::d' | sort | uniq | head -30
+  kernel void fp8dm::dkdv_kernel<fp8dm::DkvCfg<64, 3>, false>(fp8dm::DkvCfg<64, n= 1   4.264 ms
+  kernel void fp8dm::dq_kernel<fp8dm::DqCfg<64, 4>, true, true>(fp8dm::DqCfg<64 n= 1   3.212 ms
+PROF dkdv n_block=62 g=0 wg=0 it=32  wait_data=112 turn1=814 gemm1=16 alu=1600 turn2=555 gemm2=22 total=3121
+PROF dkdv n_block=62 g=0 wg=0 it=32  wait_data=77 turn1=817 gemm1=16 alu=1601 turn2=562 gemm2=21 total=3097
+PROF dkdv n_block=62 g=0 wg=0 it=32  wait_data=77 turn1=818 gemm1=16 alu=1600 turn2=555 gemm2=21 total=3089
+PROF dkdv n_block=62 g=0 wg=0 it=32  wait_data=80 turn1=816 gemm1=16 alu=1597 turn2=559 gemm2=21 total=3092
+PROF dkdv n_block=62 g=0 wg=1 it=32  wait_data=112 turn1=816 gemm1=18 alu=1589 turn2=560 gemm2=23 total=3121
+PROF dkdv n_block=62 g=0 wg=1 it=32  wait_data=81 turn1=814 gemm1=18 alu=1593 turn2=561 gemm2=23 total=3093
+PROF dkdv n_block=62 g=0 wg=1 it=32  wait_data=81 turn1=815 gemm1=18 alu=1586 turn2=563 gemm2=23 total=3088
+PROF dkdv n_block=62 g=0 wg=1 it=32  wait_data=85 turn1=811 gemm1=18 alu=1594 turn2=560 gemm2=23 total=3094
+PROF dkdv n_block=63 g=0 wg=0 it=16  wait_data=121 turn1=821 gemm1=14 alu=1790 turn2=565 gemm2=20 total=3333
+PROF dkdv n_block=63 g=0 wg=0 it=16  wait_data=80 turn1=824 gemm1=14 alu=1795 turn2=562 gemm2=20 total=3297
+PROF dkdv n_block=63 g=0 wg=0 it=16  wait_data=81 turn1=823 gemm1=14 alu=1795 turn2=558 gemm2=20 total=3293
+PROF dkdv n_block=63 g=0 wg=0 it=16  wait_data=82 turn1=824 gemm1=14 alu=1797 turn2=559 gemm2=20 total=3297
+PROF dkdv n_block=63 g=0 wg=1 it=16  wait_data=137 turn1=826 gemm1=20 alu=1770 turn2=551 gemm2=25 total=3331
+PROF dkdv n_block=63 g=0 wg=1 it=16  wait_data=93 turn1=826 gemm1=20 alu=1780 turn2=546 gemm2=25 total=3293
+PROF dkdv n_block=63 g=0 wg=1 it=16  wait_data=94 turn1=827 gemm1=20 alu=1777 turn2=552 gemm2=25 total=3297
+PROF dkdv n_block=63 g=0 wg=1 it=16  wait_data=95 turn1=823 gemm1=20 alu=1779 turn2=546 gemm2=25 total=3289
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=838 alu=670 lazy=279 cvt_waitdata=185 turn+issue=587 per-iter total=2561
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=839 alu=664 lazy=280 cvt_waitdata=181 turn+issue=582 per-iter total=2548
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=840 alu=664 lazy=281 cvt_waitdata=181 turn+issue=579 per-iter total=2546
+PROF dq m_block=62 h=0 wg=0 n=126  wait_gemm=840 alu=710 lazy=284 cvt_waitdata=93 turn+issue=324 per-iter total=2255
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=856 alu=677 lazy=317 cvt_waitdata=89 turn+issue=315 per-iter total=2257
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=863 alu=658 lazy=283 cvt_waitdata=180 turn+issue=579 per-iter total=2564
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=864 alu=646 lazy=284 cvt_waitdata=179 turn+issue=573 per-iter total=2548
+PROF dq m_block=62 h=0 wg=1 n=126  wait_gemm=865 alu=644 lazy=283 cvt_waitdata=178 turn+issue=572 per-iter total=2545
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=837 alu=611 lazy=280 cvt_waitdata=156 turn+issue=544 per-iter total=2431
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=838 alu=610 lazy=282 cvt_waitdata=155 turn+issue=544 per-iter total=2432
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=841 alu=715 lazy=286 cvt_waitdata=93 turn+issue=328 per-iter total=2265
+PROF dq m_block=62 h=1 wg=0 n=126  wait_gemm=842 alu=674 lazy=282 cvt_waitdata=187 turn+issue=588 per-iter total=2576
+end=2026-10-06T17:28:39Z
+SMI samples=20 sm_clock median(all)=345.0 median(power>150W)=n/a min=345 maxtemp=28

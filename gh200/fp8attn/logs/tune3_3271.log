@@ -1,0 +1,36 @@
+job=3271 host=work1 start=2026-10-05T15:19:59Z
+CMD=KERNEL=kv SPACE='{"BM":[32,64],"BN":[64,128],"warps":[4,8],"stages":[2,3,4]}' python tune.py 2>&1 | grep -E '^  \{|KERNEL'; KERNEL=dq SPACE='{"BM":[64],"BN":[32,64],"warps":[4],"stages":[2,3,4]}' python tune.py 2>&1 | grep -E '^  \{|KERNEL'
+KERNEL=kv space={'BM': [32, 64], 'BN': [64, 128], 'warps': [4, 8], 'stages': [2, 3, 4]} clock=1980, 35, 132.49
+  {'kv_BM': 32, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 2} -> 5.836 ms  (377 TF executed) regs/spill/smem=(241, 0, 49492)
+  {'kv_BM': 32, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 3} -> 5.377 ms  (409 TF executed) regs/spill/smem=(243, 0, 66560)
+  {'kv_BM': 32, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 4} -> 5.436 ms  (405 TF executed) regs/spill/smem=(250, 0, 82944)
+  {'kv_BM': 32, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 2} -> 11.406 ms  (193 TF executed) regs/spill/smem=(186, 0, 49492)
+  {'kv_BM': 32, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 3} -> 10.763 ms  (204 TF executed) regs/spill/smem=(178, 0, 66560)
+  {'kv_BM': 32, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 4} -> 10.951 ms  (201 TF executed) regs/spill/smem=(186, 0, 82944)
+  {'kv_BM': 32, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 2} -> 18.430 ms  (119 TF executed) regs/spill/smem=(255, 202, 66388)
+  {'kv_BM': 32, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 3} -> 16.999 ms  (129 TF executed) regs/spill/smem=(255, 176, 83096)
+  {'kv_BM': 32, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 4} -> 18.190 ms  (121 TF executed) regs/spill/smem=(255, 192, 99740)
+  {'kv_BM': 32, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 2} -> 6.179 ms  (356 TF executed) regs/spill/smem=(230, 0, 65876)
+  {'kv_BM': 32, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 3} -> 5.939 ms  (370 TF executed) regs/spill/smem=(234, 0, 82584)
+  {'kv_BM': 32, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 4} -> 6.014 ms  (366 TF executed) regs/spill/smem=(241, 0, 99228)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 2} -> 4.420 ms  (498 TF executed) regs/spill/smem=(255, 28, 82944)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 3} -> 5.594 ms  (393 TF executed) regs/spill/smem=(255, 22, 116736)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 4, 'kv_stages': 4} -> 5.553 ms  (396 TF executed) regs/spill/smem=(255, 14, 149504)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 2} -> 7.840 ms  (281 TF executed) regs/spill/smem=(255, 4, 82944)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 3} -> 6.887 ms  (319 TF executed) regs/spill/smem=(227, 0, 116736)
+  {'kv_BM': 64, 'kv_BN': 64, 'kv_warps': 8, 'kv_stages': 4} -> 7.033 ms  (313 TF executed) regs/spill/smem=(233, 0, 149504)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 2} -> 21.250 ms  (103 TF executed) regs/spill/smem=(255, 320, 99412)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 3} -> 16.466 ms  (134 TF executed) regs/spill/smem=(255, 286, 133120)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 4, 'kv_stages': 4} -> 19.580 ms  (112 TF executed) regs/spill/smem=(255, 294, 166912)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 2} -> 4.648 ms  (473 TF executed) regs/spill/smem=(255, 10, 98900)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 3} -> 4.161 ms  (528 TF executed) regs/spill/smem=(254, 0, 133120)
+  {'kv_BM': 64, 'kv_BN': 128, 'kv_warps': 8, 'kv_stages': 4} -> 4.228 ms  (520 TF executed) regs/spill/smem=(255, 2, 165888)
+KERNEL=dq space={'BM': [64], 'BN': [32, 64], 'warps': [4], 'stages': [2, 3, 4]} clock=1980, 35, 133.00
+  {'dq_BM': 64, 'dq_BN': 32, 'dq_warps': 4, 'dq_stages': 2} -> 3.450 ms  (637 TF executed) regs/spill/smem=(213, 0, 41028)
+  {'dq_BM': 64, 'dq_BN': 32, 'dq_warps': 4, 'dq_stages': 3} -> 3.334 ms  (660 TF executed) regs/spill/smem=(223, 0, 54272)
+  {'dq_BM': 64, 'dq_BN': 32, 'dq_warps': 4, 'dq_stages': 4} -> 3.313 ms  (664 TF executed) regs/spill/smem=(223, 0, 66560)
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 2} -> 2.612 ms  (842 TF executed) regs/spill/smem=(244, 0, 66560)
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 3} -> 2.477 ms  (888 TF executed) regs/spill/smem=(248, 0, 91136)
+  {'dq_BM': 64, 'dq_BN': 64, 'dq_warps': 4, 'dq_stages': 4} -> 2.505 ms  (878 TF executed) regs/spill/smem=(248, 0, 115712)
+end=2026-10-05T15:20:44Z
+SMI samples=226 sm_clock median(all)=1980.0 median(power>150W)=1980.0 min=345 maxtemp=45

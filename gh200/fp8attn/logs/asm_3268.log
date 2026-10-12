@@ -1,0 +1,16 @@
+job=3268 host=work3 start=2026-10-05T15:13:59Z
+CMD=CFG='{"fwd_stages":3,"dq_stages":3,"kv_BN":128,"kv_warps":8,"kv_stages":3}' python inspect_asm.py 2>&1 | grep -v Warn
+nvdisasm warning : Disassembling Std Elf to Old format or Old Elf to Std format not supported yet, switching to Old format
+nvdisasm warning : Disassembling Std Elf to Old format or Old Elf to Std format not supported yet, switching to Old format
+nvdisasm warning : Disassembling Std Elf to Old format or Old Elf to Std format not supported yet, switching to Old format
+== _fwd_kernel: regs=255 spills=0 smem=66560
+   ttgir convert_layout: 8  local_alloc: 14  warp_group_dot: 4  local_load: 4
+   SASS static mix: 
+== _bwd_dq_kernel: regs=252 spills=0 smem=91136
+   ttgir convert_layout: 7  local_alloc: 20  warp_group_dot: 8  local_load: 4
+   SASS static mix: 
+== _bwd_dkdv_kernel: regs=255 spills=10 smem=133120
+   ttgir convert_layout: 6  local_alloc: 28  warp_group_dot: 8  local_load: 8
+   SASS static mix: 
+end=2026-10-05T15:14:04Z
+SMI samples=24 sm_clock median(all)=345.0 median(power>150W)=n/a min=345 maxtemp=29

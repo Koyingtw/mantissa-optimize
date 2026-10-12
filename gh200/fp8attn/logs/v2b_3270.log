@@ -1,0 +1,57 @@
+job=3270 host=work3 start=2026-10-05T15:17:29Z
+CMD=python bench_ours.py 2>&1 | grep -E 'RESULT|kernel _|regs|rror'; for c in '{"DS_SCALE":1}' '{"DS_SCALE":0}'; do CFG=$c python bench_ours.py 2>&1 | grep -E 'RESULT|rror'; done; DS_SCALES='[2,1,0]' python test_accuracy.py 2>&1 | grep -E '^ours|^ref|rror|^\|'; for f in L40_step6 L00_step10; do INPUT=dump:/nfs/home/koying/fp8attn-dumps/$f.pt DS_SCALES='[2,0]' python test_accuracy.py 2>&1 | grep -E '^INPUT|^ref|rror|^\|'; done
+RESULT ours fwd_ms=1.894 (580 TF)  bwd_matched_ms=6.949 (396 TF)  bwd_stale_ms=6.478 (424 TF)
+  kernel _bwd_dkdv_kernel                                             n=1 total=4.120 ms
+  kernel _bwd_dq_kernel                                               n=1 total=2.475 ms
+  kernel _fwd_kernel                                                  n=1 total=1.701 ms
+  kernel _quant_kernel                                                n=7 total=0.297 ms
+  regs/spills/smem: {'quant': (121, 0, 16384), 'fwd': (255, 0, 66560), 'dq': (248, 0, 91136), 'kv': (254, 0, 133120)}
+RESULT ours fwd_ms=1.921 (572 TF)  bwd_matched_ms=7.003 (392 TF)  bwd_stale_ms=6.393 (430 TF)
+RESULT ours fwd_ms=1.904 (577 TF)  bwd_matched_ms=7.768 (354 TF)  bwd_stale_ms=7.086 (388 TF)
+ref: mean softmax entropy (heads 0-3) = 7.51 nats (uniform over 4096 ~ 8.32)
+ours fp8 matched ds2         o=5.035e-02 dq=6.434e-02 dk=8.015e-02 dv=5.172e-02 rowsum|dS|/|delta|=3.11e-07 |delta-delta0|/|delta0|=3.66e-02
+ours fp8 stale ds2           o=5.035e-02 dq=6.624e-02 dk=8.165e-02 dv=5.172e-02 rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00
+ours fp8 matched ds1         o=5.035e-02 dq=6.434e-02 dk=8.015e-02 dv=5.172e-02 rowsum|dS|/|delta|=2.81e-07 |delta-delta0|/|delta0|=3.66e-02
+ours fp8 stale ds1           o=5.035e-02 dq=6.624e-02 dk=8.165e-02 dv=5.172e-02 rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00
+ours fp8 matched ds0         o=5.035e-02 dq=6.142e-02 dk=6.147e-02 dv=5.172e-02 rowsum|dS|/|delta|=2.81e-07 |delta-delta0|/|delta0|=3.66e-02
+ours fp8 stale ds0           o=5.035e-02 dq=6.345e-02 dk=6.330e-02 dv=5.172e-02 rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00
+| method | O | dQ | dK | dV | note |
+|---|---|---|---|---|---|
+| ours fp8 matched ds2 | 5.03e-02 | 6.43e-02 | 8.02e-02 | 5.17e-02 | rowsum|dS|/|delta|=3.11e-07 |delta-delta0|/|delta0|=3.66e-02 |
+| ours fp8 stale ds2 | 5.03e-02 | 6.62e-02 | 8.17e-02 | 5.17e-02 | rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| ours fp8 matched ds1 | 5.03e-02 | 6.43e-02 | 8.02e-02 | 5.17e-02 | rowsum|dS|/|delta|=2.81e-07 |delta-delta0|/|delta0|=3.66e-02 |
+| ours fp8 stale ds1 | 5.03e-02 | 6.62e-02 | 8.17e-02 | 5.17e-02 | rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| ours fp8 matched ds0 | 5.03e-02 | 6.14e-02 | 6.15e-02 | 5.17e-02 | rowsum|dS|/|delta|=2.81e-07 |delta-delta0|/|delta0|=3.66e-02 |
+| ours fp8 stale ds0 | 5.03e-02 | 6.34e-02 | 6.33e-02 | 5.17e-02 | rowsum|dS|/|delta|=3.66e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| TE cuDNN bf16 | 2.09e-03 | 2.45e-03 | 2.96e-03 | 2.86e-03 |  |
+| TE cuDNN fp8 (fp8 bwd) | 5.56e-02 | 1.06e-01 | 1.06e-01 | 8.69e-02 |  |
+| TE cuDNN fp8 fwd, bf16 bwd | 5.57e-02 | 2.21e-02 | 2.12e-02 | 1.44e-02 |  |
+| FA3 bf16 | 2.08e-03 | 2.43e-03 | 2.42e-03 | 2.32e-03 |  |
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L40_step6.pt shape q=(8192, 1, 64, 128) k=(8192, 1, 8, 128)  |q|max=20.8 |k|max=29.4 |v|max=4.12 |do|max=0.00037
+ref: mean softmax entropy (heads 0-3) = 3.11 nats (uniform over 4096 ~ 8.32)
+| method | O | dQ | dK | dV | note |
+|---|---|---|---|---|---|
+| TE fp8 in training (dump) | 1.22e-01 | 1.91e-01 | 1.28e-01 | 7.34e-02 |  |
+| ours fp8 matched ds2 | 1.11e-01 | 1.22e-01 | 1.46e-01 | 5.24e-02 | rowsum|dS|/|delta|=5.39e-07 |delta-delta0|/|delta0|=2.70e-02 |
+| ours fp8 stale ds2 | 1.11e-01 | 1.42e-01 | 1.47e-01 | 5.24e-02 | rowsum|dS|/|delta|=2.70e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| ours fp8 matched ds0 | 1.11e-01 | 1.18e-01 | 1.39e-01 | 5.24e-02 | rowsum|dS|/|delta|=2.67e-07 |delta-delta0|/|delta0|=2.70e-02 |
+| ours fp8 stale ds0 | 1.11e-01 | 1.38e-01 | 1.40e-01 | 5.24e-02 | rowsum|dS|/|delta|=2.70e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| TE cuDNN bf16 | 1.75e-03 | 4.11e-03 | 2.35e-03 | 2.50e-03 |  |
+| TE cuDNN fp8 (fp8 bwd) | 1.60e-01 | 9.86e-01 | 9.94e-01 | 6.33e-01 |  |
+| TE cuDNN fp8 fwd, bf16 bwd | 1.60e-01 | 3.64e-01 | 4.89e-01 | 4.16e-02 |  |
+| FA3 bf16 | 1.73e-03 | 4.34e-03 | 1.96e-03 | 1.77e-03 |  |
+INPUT=dump:/nfs/home/koying/fp8attn-dumps/L00_step10.pt shape q=(8192, 1, 64, 128) k=(8192, 1, 8, 128)  |q|max=5.12 |k|max=9.81 |v|max=0.781 |do|max=0.112
+ref: mean softmax entropy (heads 0-3) = 7.90 nats (uniform over 4096 ~ 8.32)
+| method | O | dQ | dK | dV | note |
+|---|---|---|---|---|---|
+| TE fp8 in training (dump) | 7.34e-02 | 7.76e-02 | 9.73e-02 | 7.90e-02 |  |
+| ours fp8 matched ds2 | 6.79e-02 | 5.07e-02 | 2.24e-01 | 2.03e-01 | rowsum|dS|/|delta|=5.35e-07 |delta-delta0|/|delta0|=4.11e-02 |
+| ours fp8 stale ds2 | 6.79e-02 | 6.40e-02 | 2.24e-01 | 2.03e-01 | rowsum|dS|/|delta|=4.11e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| ours fp8 matched ds0 | 6.79e-02 | 2.24e-02 | 5.62e-02 | 2.03e-01 | rowsum|dS|/|delta|=3.11e-07 |delta-delta0|/|delta0|=4.11e-02 |
+| ours fp8 stale ds0 | 6.79e-02 | 5.32e-02 | 5.81e-02 | 2.03e-01 | rowsum|dS|/|delta|=4.11e-02 |delta-delta0|/|delta0|=0.00e+00 |
+| TE cuDNN bf16 | 1.54e-03 | 2.19e-03 | 3.02e-03 | 2.86e-03 |  |
+| TE cuDNN fp8 (fp8 bwd) | 7.36e-02 | 9.87e-01 | 9.59e-01 | 1.98e-01 |  |
+| TE cuDNN fp8 fwd, bf16 bwd | 7.36e-02 | 6.06e-02 | 2.80e-02 | 1.68e-02 |  |
+| FA3 bf16 | 1.54e-03 | 2.25e-03 | 2.42e-03 | 2.05e-03 |  |
+end=2026-10-05T15:18:07Z
+SMI samples=191 sm_clock median(all)=1980 median(power>150W)=1980.0 min=345 maxtemp=44

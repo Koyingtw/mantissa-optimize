@@ -1,0 +1,49 @@
+job=3726 host=work10 start=2026-10-06T16:30:12Z
+CMD=bash cuda_dm/run_tests.sh
+== randn
+| 實作 | backward | 列和殘差（平均） | 有號偏差 | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| cuda | Delta-Matching | 3.72e-07 | -2.2e-08 | 6.307e-02 | 6.294e-02 | 4.907e-02 |
+| cuda | stale δ | 3.65e-02 | -5.1e-03 | 6.513e-02 | 6.457e-02 | 4.907e-02 |
+| triton DS0 | Delta-Matching | 2.29e-07 | -2.2e-08 | 6.081e-02 | 6.060e-02 | 4.895e-02 |
+| triton DS0 | stale δ | 3.65e-02 | -5.1e-03 | 6.349e-02 | 6.220e-02 | 4.895e-02 |
+| triton DS2 | Delta-Matching | 2.51e-07 | -4.9e-08 | 6.374e-02 | 6.277e-02 | 4.895e-02 |
+| triton DS2 | stale δ | 3.65e-02 | -5.1e-03 | 6.656e-02 | 6.457e-02 | 4.895e-02 |
+PASS CUDA matched 列和殘差 < 1e-5
+PASS CUDA stale 列和殘差 > 1e-3
+PASS CUDA matched dQ ≤ stale dQ
+PASS CUDA matched dQ/dK/dV 不劣於 Triton DS2（容差 2%）
+PASS 沒有 NaN/Inf
+ALL PASS
+== L40_step6
+| 實作 | backward | 列和殘差（平均） | 有號偏差 | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| cuda | Delta-Matching | 2.84e-07 | +1.9e-08 | 5.918e-02 | 5.532e-02 | 2.184e-02 |
+| cuda | stale δ | 2.77e-02 | -1.8e-03 | 7.170e-02 | 6.727e-02 | 2.184e-02 |
+| triton DS0 | Delta-Matching | 1.15e-07 | +1.6e-08 | 5.895e-02 | 5.823e-02 | 2.138e-02 |
+| triton DS0 | stale δ | 2.77e-02 | -1.8e-03 | 7.260e-02 | 6.436e-02 | 2.138e-02 |
+| triton DS2 | Delta-Matching | 1.37e-07 | -3.7e-08 | 5.806e-02 | 6.762e-02 | 2.138e-02 |
+| triton DS2 | stale δ | 2.77e-02 | -1.8e-03 | 7.236e-02 | 6.897e-02 | 2.138e-02 |
+PASS CUDA matched 列和殘差 < 1e-5
+PASS CUDA stale 列和殘差 > 1e-3
+PASS CUDA matched dQ ≤ stale dQ
+FAIL CUDA matched dQ/dK/dV 不劣於 Triton DS2（容差 2%）
+PASS 沒有 NaN/Inf
+SOME FAILED
+== L00_step10
+| 實作 | backward | 列和殘差（平均） | 有號偏差 | dQ | dK | dV |
+|---|---|---|---|---|---|---|
+| cuda | Delta-Matching | 3.49e-07 | -8.0e-08 | 4.003e-02 | 5.139e-02 | 3.841e-02 |
+| cuda | stale δ | 2.09e-02 | -1.7e-04 | 4.521e-02 | 5.506e-02 | 3.841e-02 |
+| triton DS0 | Delta-Matching | 2.10e-07 | -4.4e-08 | 3.976e-02 | 4.660e-02 | 3.820e-02 |
+| triton DS0 | stale δ | 2.09e-02 | -1.7e-04 | 4.432e-02 | 5.018e-02 | 3.820e-02 |
+| triton DS2 | Delta-Matching | 2.88e-07 | -1.4e-07 | 4.163e-02 | 5.123e-02 | 3.820e-02 |
+| triton DS2 | stale δ | 2.09e-02 | -1.7e-04 | 4.569e-02 | 5.415e-02 | 3.820e-02 |
+PASS CUDA matched 列和殘差 < 1e-5
+PASS CUDA stale 列和殘差 > 1e-3
+PASS CUDA matched dQ ≤ stale dQ
+PASS CUDA matched dQ/dK/dV 不劣於 Triton DS2（容差 2%）
+PASS 沒有 NaN/Inf
+ALL PASS
+end=2026-10-06T16:30:20Z
+SMI samples=44 sm_clock median(all)=1980.0 median(power>150W)=n/a min=345 maxtemp=27

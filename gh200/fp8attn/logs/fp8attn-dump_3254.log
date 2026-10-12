@@ -1,0 +1,114 @@
+節點 work3  job 3254  run dir /nfs/home/koying/mlperf-fp8attn-work/runs/dump-3254  dump /nfs/home/koying/fp8attn-dumps  開始 2026-10-05T14:56:58Z
+export MAX_STEPS=33 VAL_CHECK_INTERVAL=3 LIMIT_VAL_BATCHES=0 WARMUP=False
+export NVTE_FP8_DPA_BWD=1
+export FP8ATTN_DUMP=1 FP8ATTN_DUMP_DIR=/dumps
+export FP8ATTN_DUMP_LAYERS=0,20,40,79 FP8ATTN_DUMP_STEPS=3,10,30
+name, power.limit [W], temperature.gpu, memory.used [MiB]
+NVIDIA GH200 480GB, 900.00 W, 28, 3912 MiB
+[NeMo W 2026-10-05 14:57:03 nemo_logging:405] /usr/local/lib/python3.12/dist-packages/requests/__init__.py:113: RequestsDependencyWarning: urllib3 (1.26.20) or chardet (7.6.0)/charset_normalizer (3.4.1) doesn't match a supported version!
+      warnings.warn(
+    
+swiglu_patch: FP8 upcast fused into the SwiGLU backward kernel
+cpu_offload_patch: FusedAttnFunc.forward patched for FP8 offloading
+cpu_offload_patch: Megatron linear keeps the weight Parameter for backward
+cpu_offload_patch: frozen weights skip the forward-time transpose
+cpu_offload_patch: grad_output cast without transpose for frozen weights
+:::MLLOG {"namespace": "", "time_ms": 1791212232865, "event_type": "INTERVAL_START", "key": "init_start", "value": null, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 345}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232865, "event_type": "POINT_IN_TIME", "key": "submission_benchmark", "value": "llama2_70b_lora", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 346}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232865, "event_type": "POINT_IN_TIME", "key": "submission_org", "value": "NTHU", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 346}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232865, "event_type": "POINT_IN_TIME", "key": "submission_division", "value": "closed", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 346}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232865, "event_type": "POINT_IN_TIME", "key": "submission_status", "value": "onprem", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 346}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "submission_platform", "value": "1xGH200", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 346}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "cache_clear", "value": false, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 350}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "lowest_numerical_precision_in_linear", "value": "fp8", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "lowest_numerical_precision_in_attn", "value": "fp8", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "lowest_numerical_precision_in_comm", "value": "bfloat16", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "tensor_parallelism", "value": 1, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "pipeline_parallelism", "value": 1, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "context_parallelism", "value": 1, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "expert_parallelism", "value": 1, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "micro_batch_size", "value": 1, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212232866, "event_type": "POINT_IN_TIME", "key": "config_filename", "value": "config_GH200_8x1x1xtp1pp1cp1_offload.sh", "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 363}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233393, "event_type": "POINT_IN_TIME", "key": "opt_base_learning_rate", "value": 0.00055, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 174}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233393, "event_type": "POINT_IN_TIME", "key": "opt_adamw_weight_decay", "value": 0.0001, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 175}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233393, "event_type": "POINT_IN_TIME", "key": "opt_gradient_clip_norm", "value": 0.3, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 176}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233394, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_warmup_factor", "value": 0.0, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 201}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233395, "event_type": "POINT_IN_TIME", "key": "lora_rank", "value": 16, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 210}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233395, "event_type": "POINT_IN_TIME", "key": "lora_alpha", "value": 32, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 211}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233399, "event_type": "POINT_IN_TIME", "key": "opt_learning_rate_training_steps", "value": 33, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 383}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233761, "event_type": "POINT_IN_TIME", "key": "global_batch_size", "value": 1, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 328}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233808, "event_type": "POINT_IN_TIME", "key": "train_samples", "value": 3901, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 328}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233808, "event_type": "POINT_IN_TIME", "key": "eval_samples", "value": 173, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 328}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233808, "event_type": "POINT_IN_TIME", "key": "gradient_accumulation_steps", "value": 1, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 328}}
+:::MLLOG {"namespace": "", "time_ms": 1791212233812, "event_type": "POINT_IN_TIME", "key": "seed", "value": 1234, "metadata": {"file": "/workspace/ft-llm/train.py", "lineno": 477}}
+:::MLLOG {"namespace": "", "time_ms": 1791212234242, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"before_model_init": 0.8431106810458004}, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 168, "step": 0}}
+cpu_offload_patch: handler for 79 of 80 layers, untagged>=8.0MiB
+:::MLLOG {"namespace": "", "time_ms": 1791212234879, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"after_model_init": 0.6378129249205813}, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 168, "step": 0}}
+fp8_transpose_patch: hooks on 80 decoder layers
+manual_ckpt_load: page cache warmed in 5s
+manual_ckpt_load: module.decoder.final_layernorm.weight (8192,) 5s
+manual_ckpt_load: module.decoder.layers.mlp.linear_fc1.layer_norm_weight (80, 8192) 5s
+manual_ckpt_load: module.decoder.layers.mlp.linear_fc1.weight (80, 57344, 8192) 25s
+manual_ckpt_load: module.decoder.layers.mlp.linear_fc2.weight (80, 8192, 28672) 35s
+manual_ckpt_load: module.decoder.layers.self_attention.linear_proj.weight (80, 8192, 8192) 38s
+manual_ckpt_load: module.decoder.layers.self_attention.linear_qkv.layer_norm_weight (80, 8192) 38s
+manual_ckpt_load: module.decoder.layers.self_attention.linear_qkv.weight (80, 10240, 8192) 41s
+manual_ckpt_load: module.embedding.word_embeddings.weight (32000, 8192) 41s
+manual_ckpt_load: module.output_layer.weight (32000, 8192) 42s
+manual_ckpt_load: 483 parameters, read 41.7s, broadcast to 0 ranks 0.0s
+fp8attn_dump: hooked module.decoder.layers.0.self_attention.core_attention (megatron.core.extensions.transformer_engine.TEDotProductAttention)
+fp8attn_dump: hooked module.decoder.layers.20.self_attention.core_attention (megatron.core.extensions.transformer_engine.TEDotProductAttention)
+fp8attn_dump: hooked module.decoder.layers.40.self_attention.core_attention (megatron.core.extensions.transformer_engine.TEDotProductAttention)
+fp8attn_dump: hooked module.decoder.layers.79.self_attention.core_attention (megatron.core.extensions.transformer_engine.TEDotProductAttention)
+fp8attn_dump: 4 modules hooked, layers=[0, 20, 40, 79] steps=[3, 10, 30] -> /dumps
+:::MLLOG {"namespace": "", "time_ms": 1791212277153, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"warmup_time": 42.27384254906792}, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 168, "step": 0}}
+:::MLLOG {"namespace": "", "time_ms": 1791212277154, "event_type": "POINT_IN_TIME", "key": "tracked_stats", "value": {"init_finished": 0.00027817394584417343}, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 168, "step": 0}}
+:::MLLOG {"namespace": "", "time_ms": 1791212277154, "event_type": "INTERVAL_END", "key": "init_stop", "value": null, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 83}}
+:::MLLOG {"namespace": "", "time_ms": 1791212277154, "event_type": "INTERVAL_START", "key": "run_start", "value": null, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 83}}
+:::MLLOG {"namespace": "", "time_ms": 1791212277154, "event_type": "INTERVAL_START", "key": "block_start", "value": null, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 199, "samples_count": 0}}
+cpu_offload_patch: 320 trainable parameters kept on GPU, 320 frozen FP8 weights, 321 Megatron linears allowed inside the offload context
+fp8attn_dump: saved /dumps/L79_step3.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L40_step3.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L20_step3.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L00_step3.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L79_step10.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L40_step10.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L20_step10.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L00_step10.pt (0.4s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+:::MLLOG {"namespace": "", "time_ms": 1791212314703, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 2.661310911178589, "metadata": {"file": "/workspace/ft-llm/custom_callbacks.py", "lineno": 71, "samples_count": 10, "lr": 0.00043451565013207953}}
+:::MLLOG {"namespace": "", "time_ms": 1791212342068, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 1.6241073608398438, "metadata": {"file": "/workspace/ft-llm/custom_callbacks.py", "lineno": 71, "samples_count": 20, "lr": 0.00018505631008770908}}
+fp8attn_dump: saved /dumps/L79_step30.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L40_step30.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L20_step30.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+fp8attn_dump: saved /dumps/L00_step30.pt (0.3s) q(8192, 64, 128) k(8192, 8, 128) o(8192, 64, 128)
+:::MLLOG {"namespace": "", "time_ms": 1791212370883, "event_type": "POINT_IN_TIME", "key": "train_loss", "value": 1.7144577503204346, "metadata": {"file": "/workspace/ft-llm/custom_callbacks.py", "lineno": 71, "samples_count": 30, "lr": 1.1139432256013255e-05}}
+:::MLLOG {"namespace": "", "time_ms": 1791212379083, "event_type": "INTERVAL_END", "key": "block_stop", "value": null, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 208, "samples_count": 0}}
+:::MLLOG {"namespace": "", "time_ms": 1791212379083, "event_type": "INTERVAL_END", "key": "run_stop", "value": null, "metadata": {"file": "/usr/local/lib/python3.12/dist-packages/mlperf_common/callbacks/logging.py", "lineno": 106, "samples_count": 33, "status": "aborted"}}
+結束 2026-10-05T14:59:44Z
+total 14155976
+drwxrwxr-x+  2 koying koying        10 Oct  5 14:55 .
+drwxr-x---+ 29 koying koying      4096 Oct  5 14:56 ..
+-rw-rw-r--+  1 koying koying 603987345 Oct  5 14:55 L00_step1.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:58 L00_step10.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L00_step2.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:58 L00_step3.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:59 L00_step30.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L00_step6.pt
+-rw-rw-r--+  1 koying koying 603987345 Oct  5 14:55 L20_step1.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:58 L20_step10.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L20_step2.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:58 L20_step3.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:59 L20_step30.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L20_step6.pt
+-rw-rw-r--+  1 koying koying 603987345 Oct  5 14:55 L40_step1.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:58 L40_step10.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L40_step2.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:58 L40_step3.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:59 L40_step30.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L40_step6.pt
+-rw-rw-r--+  1 koying koying 603987345 Oct  5 14:55 L79_step1.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:58 L79_step10.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L79_step2.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:58 L79_step3.pt
+-rw-rw-r--+  1 koying koying 603987690 Oct  5 14:59 L79_step30.pt
+-rw-rw-r--+  1 koying koying 603987665 Oct  5 14:55 L79_step6.pt
