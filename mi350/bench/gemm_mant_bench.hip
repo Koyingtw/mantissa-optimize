@@ -147,7 +147,7 @@ static double now_unix() {
 
 int main(int argc, char** argv) {
   std::string dtype = "fp64", tag = "run";
-  int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0;
+  int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0;
   long m = 32768, n = 32768, k = 2048;
   double warmup_s = 10, measure_s = 30;
   for (int i = 1; i < argc; ++i) {
@@ -164,6 +164,8 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--device")) device = atoi(next());
     else if (!strcmp(argv[i], "--only-a")) only_a = 1;  // B keeps the native mantissa
     else if (!strcmp(argv[i], "--only-b")) only_b = 1;  // A keeps it
+    else if (!strcmp(argv[i], "--ta")) ta = 1;  // FP64 only: A stored k x m, op(A) = A^T
+    else if (!strcmp(argv[i], "--tb")) tb = 1;  // FP64 only: B stored n x k, op(B) = B^T
     else if (!strcmp(argv[i], "--check")) check = 1;    // relative error vs FP64 on the unreduced data
     else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const
       const char* s = next();
@@ -236,7 +238,8 @@ int main(int argc, char** argv) {
     if (is8)
       CB(hipblasLtMatmul(lt, op, &onef, A, la, B, lb, &zerof, C, lc, C, lc, &heur.algo, ws, ws_size, 0));
     else if (is64)
-      CB(hipblasDgemm(h, HIPBLAS_OP_N, HIPBLAS_OP_N, m, n, k, &one, (double*)A, m, (double*)B, k, &zero, (double*)C, m));
+      CB(hipblasDgemm(h, ta ? HIPBLAS_OP_T : HIPBLAS_OP_N, tb ? HIPBLAS_OP_T : HIPBLAS_OP_N, m, n, k, &one,
+                      (double*)A, ta ? k : m, (double*)B, tb ? n : k, &zero, (double*)C, m));
     else if (is32)
       CB(hipblasSgemm(h, HIPBLAS_OP_N, HIPBLAS_OP_N, m, n, k, &onef, (float*)A, m, (float*)B, k, &zerof, (float*)C, m));
     else
@@ -287,7 +290,8 @@ int main(int argc, char** argv) {
     if (is8)  // D = A^T B with A stored k x m
       CB(hipblasDgemmStridedBatched(h, HIPBLAS_OP_T, HIPBLAS_OP_N, m, n, k, &one, Ar, k, 0, Br, k, 0, &zero, Cr, m, 0, 1));
     else
-      CB(hipblasDgemmStridedBatched(h, HIPBLAS_OP_N, HIPBLAS_OP_N, m, n, k, &one, Ar, m, 0, Br, k, 0, &zero, Cr, m, 0, 1));
+      CB(hipblasDgemmStridedBatched(h, ta ? HIPBLAS_OP_T : HIPBLAS_OP_N, tb ? HIPBLAS_OP_T : HIPBLAS_OP_N, m, n, k, &one,
+                                    Ar, ta ? k : m, 0, Br, tb ? n : k, 0, &zero, Cr, m, 0, 1));
     const size_t nn = (size_t)m * n;
     if (is64) err_kernel<double><<<2048, 256>>>((const double*)C, Cr, nn, acc);
     else if (is8) err_kernel<__hip_bfloat16><<<2048, 256>>>((const __hip_bfloat16*)C, Cr, nn, acc);
@@ -299,8 +303,8 @@ int main(int argc, char** argv) {
   }
   double lo = rates[0], hi = rates[0];
   for (double r : rates) { lo = r < lo ? r : lo; hi = r > hi ? r : hi; }
-  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e\n",
-         tag.c_str(), device, bdf, dtype.c_str(), frac, only_a, only_b,
+  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e\n",
+         tag.c_str(), device, bdf, dtype.c_str(), frac, only_a, only_b, ta, tb,
          low_mode == 1 ? "ones" : low_mode == 2 ? "const" : "zero", round ? "nearest" : "trunc", m, n, k, calls,
          calls * flop / (busy_ms * 1e-3) / 1e12, lo, hi, t_begin, t_end, rel_err);
   CB(hipblasDestroy(h));

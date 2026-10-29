@@ -36,10 +36,19 @@ def num(v):
     return v if isinstance(v, (int, float)) else -1
 
 
+def xcc_sum(m, key):
+    """xcp_stats.<key> 是每個分區一列、每個 XCC 一格的累計值；單一分區（SPX）時取第一列的總和。"""
+    row = m.get(f"xcp_stats.{key}", [[]])[0]
+    vals = [v for v in row if isinstance(v, int)]
+    return sum(vals) if vals else -1
+
+
 caps = [0] * len(hs)
 last_cap = 0.0
 with open(out, "w", buffering=1 << 16) as f:
-    f.write("t,gpu,power_w,gfxclk,gfxclk_min,uclk,t_hot,t_mem,energy_acc,ppt_acc,thm_acc,acc,busy,cap_w\n")
+    # bhl_*：gfxclk 低於主機設定上限的駐留累計（8 個 XCC 相加），依原因分為功耗、溫度、總計，及低利用率
+    f.write("t,gpu,power_w,gfxclk,gfxclk_min,uclk,t_hot,t_mem,energy_acc,ppt_acc,thm_acc,acc,busy,cap_w,"
+            "bhl_ppt,bhl_thm,bhl_tot,lowutil\n")
     while not stop:
         t0 = time.time()
         if t0 - last_cap >= 1.0:
@@ -52,7 +61,9 @@ with open(out, "w", buffering=1 << 16) as f:
             f.write(f"{time.time():.3f},{i},{num(m['current_socket_power'])},{sum(clks) / len(clks):.0f},{min(clks)},"
                     f"{num(m['current_uclk'])},{num(m['temperature_hotspot'])},{num(m['temperature_mem'])},"
                     f"{m['energy_accumulator']},{num(m['ppt_residency_acc'])},{thm},{num(m['accumulation_counter'])},"
-                    f"{num(m['average_gfx_activity'])},{caps[i]}\n")
+                    f"{num(m['average_gfx_activity'])},{caps[i]},{xcc_sum(m, 'gfx_below_host_limit_ppt_acc')},"
+                    f"{xcc_sum(m, 'gfx_below_host_limit_thm_acc')},{xcc_sum(m, 'gfx_below_host_limit_total_acc')},"
+                    f"{xcc_sum(m, 'gfx_low_utilization_acc')}\n")
         f.flush()
         time.sleep(max(0.0, interval - (time.time() - t0)))
 A.amdsmi_shut_down()

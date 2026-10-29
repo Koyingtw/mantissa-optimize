@@ -1,0 +1,594 @@
+id=mxpprof_1029_1821 bench=mxp N=1034752 NB=5504 P=4 Q=2 caps=[800 1000] variants=[native 4 3] repeat=1
+=== RUN bench=mxp cap=800 pass=A0 variant=native t=1793298232.741890517 cool=120s hot=64
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 7 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.83/1.69/119.01s  panel-span 127.00s  comm-span 126.96s  wall 127.79s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.82/0.88/119.50s  panel-span 127.01s  comm-span 126.96s  wall 127.79s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.56/0.87/112.21s  panel-span 127.78s  comm-span 126.96s  wall 127.79s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.67/1.75/121.05s  panel-span 127.78s  comm-span 126.97s  wall 127.79s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.66/0.92/122.33s  panel-span 126.98s  comm-span 126.95s  wall 127.79s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.82/3.35/122.45s  panel-span 127.02s  comm-span 126.97s  wall 127.79s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.81/1.68/117.96s  panel-span 126.96s  comm-span 126.95s  wall 127.79s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.68/1.68/115.19s  panel-span 127.78s  comm-span 126.96s  wall 127.79s
+2026-10-29 18:26:10.423
+Solver iteration  0, L-infinite residual = 2.46114680e-06
+Solver Richardson  1, L-infinite residual = 4.75403050e-12
+  IR breakdown: inverses 0.014 s, matvec 0.507 s, precond 0.532 s, other 0.046 s
+2026-10-29 18:26:11.541
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.754031E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.749373E-02 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 5.7307e+06, per GPU =  716341.16[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 5.7800e+06, per GPU =  722496.44[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=800 pass=A0 variant=native t=1793298375.234844274 rc=0
+=== RUN bench=mxp cap=800 pass=A0 variant=4 t=1793298410.417734010 cool=35s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 4  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.78/1.58/110.64s  panel-span 117.43s  comm-span 117.38s  wall 118.21s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.76/1.57/109.24s  panel-span 117.38s  comm-span 117.37s  wall 118.21s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.77/3.32/112.96s  panel-span 117.43s  comm-span 117.38s  wall 118.21s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.66/1.59/107.07s  panel-span 118.20s  comm-span 117.41s  wall 118.21s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.58/0.80/104.44s  panel-span 118.20s  comm-span 117.38s  wall 118.21s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.77/0.81/111.10s  panel-span 117.45s  comm-span 117.41s  wall 118.21s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.61/0.86/112.85s  panel-span 117.40s  comm-span 117.37s  wall 118.21s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.63/1.65/111.61s  panel-span 118.20s  comm-span 117.38s  wall 118.21s
+2026-10-29 18:28:58.242
+Solver iteration  0, L-infinite residual = 6.98318537e-05
+Solver Richardson  1, L-infinite residual = 3.11560885e-09
+Solver iteration  1, L-infinite residual = 3.11529751e-09
+Solver iteration  2, L-infinite residual = 4.17380019e-11
+  IR breakdown: inverses 0.014 s, matvec 1.529 s, precond 1.056 s, other 0.053 s
+2026-10-29 18:29:00.913
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.173800E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.413812E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 6.1113e+06, per GPU =  763917.62[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.2484e+06, per GPU =  781055.72[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=800 pass=A0 variant=4 t=1793298544.651218955 rc=0
+=== RUN bench=mxp cap=800 pass=A0 variant=3 t=1793298579.834714923 cool=35s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 3  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.74/3.31/109.09s  panel-span 113.56s  comm-span 113.51s  wall 114.34s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.74/0.78/108.21s  panel-span 113.55s  comm-span 113.51s  wall 114.34s
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.76/1.54/107.72s  panel-span 113.54s  comm-span 113.50s  wall 114.34s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.52/1.61/107.81s  panel-span 114.33s  comm-span 113.51s  wall 114.34s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.51/0.83/109.12s  panel-span 113.52s  comm-span 113.49s  wall 114.34s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.46/0.77/101.61s  panel-span 114.33s  comm-span 113.50s  wall 114.34s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.56/1.55/104.12s  panel-span 114.33s  comm-span 113.51s  wall 114.34s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.75/1.52/105.96s  panel-span 113.50s  comm-span 113.49s  wall 114.34s
+2026-10-29 18:31:43.973
+Solver iteration  0, L-infinite residual = 1.28994619e-04
+Solver Richardson  1, L-infinite residual = 1.17821698e-08
+Solver iteration  1, L-infinite residual = 1.17808037e-08
+Solver iteration  2, L-infinite residual = 7.88694388e-11
+  IR breakdown: inverses 0.014 s, matvec 1.520 s, precond 1.054 s, other 0.059 s
+2026-10-29 18:31:46.638
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    7.886944E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    4.561214E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 6.3138e+06, per GPU =  789221.22[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.4599e+06, per GPU =  807492.76[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=800 pass=A0 variant=3 t=1793298710.209641714 rc=0
+=== RUN bench=mxp cap=800 pass=B0 variant=3 t=1793298775.508069912 cool=65s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 3  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.75/3.27/110.23s  panel-span 114.64s  comm-span 114.59s  wall 115.41s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.66/1.62/108.82s  panel-span 115.40s  comm-span 114.59s  wall 115.41s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.67/1.55/104.19s  panel-span 115.40s  comm-span 114.60s  wall 115.41s
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.77/1.55/107.79s  panel-span 114.66s  comm-span 114.61s  wall 115.41s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.74/1.54/106.81s  panel-span 114.60s  comm-span 114.59s  wall 115.41s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.67/0.83/110.05s  panel-span 114.62s  comm-span 114.59s  wall 115.41s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.59/0.78/101.66s  panel-span 115.40s  comm-span 114.61s  wall 115.41s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.75/0.79/108.57s  panel-span 114.64s  comm-span 114.60s  wall 115.41s
+2026-10-29 18:35:00.838
+Solver iteration  0, L-infinite residual = 1.28921762e-04
+Solver Richardson  1, L-infinite residual = 1.17829334e-08
+Solver iteration  1, L-infinite residual = 1.17815677e-08
+Solver iteration  2, L-infinite residual = 8.10720657e-11
+  IR breakdown: inverses 0.014 s, matvec 1.525 s, precond 1.053 s, other 0.071 s
+2026-10-29 18:35:03.522
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    8.107207E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    4.688597E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 6.2557e+06, per GPU =  781960.52[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.4000e+06, per GPU =  800003.70[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=800 pass=B0 variant=3 t=1793298907.016723671 rc=0
+=== RUN bench=mxp cap=800 pass=B0 variant=4 t=1793298942.206151057 cool=35s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 4  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.76/1.56/108.94s  panel-span 117.04s  comm-span 117.03s  wall 117.86s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.76/0.81/111.25s  panel-span 117.08s  comm-span 117.03s  wall 117.86s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.60/1.65/111.25s  panel-span 117.85s  comm-span 117.02s  wall 117.86s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.77/3.36/112.55s  panel-span 117.07s  comm-span 117.02s  wall 117.86s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.60/0.86/112.53s  panel-span 117.06s  comm-span 117.03s  wall 117.86s
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.79/1.58/110.58s  panel-span 117.09s  comm-span 117.05s  wall 117.86s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.65/1.58/106.81s  panel-span 117.85s  comm-span 117.03s  wall 117.86s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.53/0.80/104.24s  panel-span 117.85s  comm-span 117.05s  wall 117.86s
+2026-10-29 18:37:49.872
+Solver iteration  0, L-infinite residual = 6.98127201e-05
+Solver Richardson  1, L-infinite residual = 3.11704101e-09
+Solver iteration  1, L-infinite residual = 3.11673085e-09
+Solver iteration  2, L-infinite residual = 4.13556689e-11
+  IR breakdown: inverses 0.014 s, matvec 1.536 s, precond 1.055 s, other 0.053 s
+2026-10-29 18:37:52.549
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.135567E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.391700E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 6.1288e+06, per GPU =  766106.06[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 6.2670e+06, per GPU =  783378.98[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=800 pass=B0 variant=4 t=1793299076.097359352 rc=0
+=== RUN bench=mxp cap=800 pass=B0 variant=native t=1793299116.297587798 cool=40s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 7 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.82/3.38/121.71s  panel-span 126.32s  comm-span 126.27s  wall 127.10s
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.83/1.68/118.71s  panel-span 126.35s  comm-span 126.30s  wall 127.10s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.81/1.66/117.44s  panel-span 126.27s  comm-span 126.26s  wall 127.10s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.81/0.87/119.47s  panel-span 126.32s  comm-span 126.28s  wall 127.10s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.71/1.68/115.10s  panel-span 127.10s  comm-span 126.28s  wall 127.10s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.67/0.86/112.27s  panel-span 127.10s  comm-span 126.30s  wall 127.10s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.68/0.91/121.64s  panel-span 126.30s  comm-span 126.26s  wall 127.10s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.64/1.75/120.42s  panel-span 127.10s  comm-span 126.27s  wall 127.10s
+2026-10-29 18:40:53.020
+Solver iteration  0, L-infinite residual = 2.46115169e-06
+Solver Richardson  1, L-infinite residual = 4.88156737e-12
+  IR breakdown: inverses 0.014 s, matvec 0.508 s, precond 0.533 s, other 0.030 s
+2026-10-29 18:40:54.125
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.881567E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.823131E-02 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 5.7619e+06, per GPU =  720238.41[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 5.8111e+06, per GPU =  726382.74[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=800 pass=B0 variant=native t=1793299257.514218761 rc=0
+=== RUN bench=mxp cap=1000 pass=A0 variant=native t=1793299288.645126030 cool=30s hot=62
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 7 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.78/1.31/91.44s  panel-span 94.56s  comm-span 94.52s  wall 95.34s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.56/0.77/88.40s  panel-span 95.34s  comm-span 94.52s  wall 95.34s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.60/1.32/89.43s  panel-span 95.34s  comm-span 94.53s  wall 95.34s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.82/1.27/90.67s  panel-span 94.52s  comm-span 94.51s  wall 95.34s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.74/3.19/90.23s  panel-span 94.58s  comm-span 94.53s  wall 95.34s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.76/0.75/92.14s  panel-span 94.56s  comm-span 94.52s  wall 95.34s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.56/0.75/90.15s  panel-span 94.54s  comm-span 94.51s  wall 95.34s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.66/1.29/89.06s  panel-span 95.34s  comm-span 94.52s  wall 95.34s
+2026-10-29 18:43:13.473
+Solver iteration  0, L-infinite residual = 2.47798837e-06
+Solver Richardson  1, L-infinite residual = 4.89049079e-12
+  IR breakdown: inverses 0.014 s, matvec 0.507 s, precond 0.533 s, other 0.030 s
+2026-10-29 18:43:14.577
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.890491E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.828291E-02 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 7.6597e+06, per GPU =  957461.11[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 7.7468e+06, per GPU =  968345.21[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 pass=A0 variant=native t=1793299397.951291482 rc=0
+=== RUN bench=mxp cap=1000 pass=A0 variant=4 t=1793299433.141687216 cool=35s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 4  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.70/0.70/87.88s  panel-span 90.03s  comm-span 89.98s  wall 90.81s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.76/1.20/86.63s  panel-span 89.99s  comm-span 89.97s  wall 90.81s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.56/1.23/85.07s  panel-span 90.80s  comm-span 89.98s  wall 90.81s
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.74/1.24/87.32s  panel-span 90.03s  comm-span 89.99s  wall 90.81s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.70/3.26/85.65s  panel-span 90.03s  comm-span 89.98s  wall 90.81s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.56/0.70/84.82s  panel-span 90.80s  comm-span 89.99s  wall 90.81s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.55/0.70/85.67s  panel-span 90.01s  comm-span 89.97s  wall 90.81s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.56/1.25/84.97s  panel-span 90.80s  comm-span 89.98s  wall 90.81s
+2026-10-29 18:45:33.456
+Solver iteration  0, L-infinite residual = 6.97946427e-05
+Solver Richardson  1, L-infinite residual = 3.11765946e-09
+Solver iteration  1, L-infinite residual = 3.11734882e-09
+Solver iteration  2, L-infinite residual = 4.28149530e-11
+  IR breakdown: inverses 0.014 s, matvec 1.528 s, precond 1.055 s, other 0.060 s
+2026-10-29 18:45:36.131
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.281495E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.476094E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 7.9023e+06, per GPU =  987790.68[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 8.1335e+06, per GPU = 1016682.11[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 pass=A0 variant=4 t=1793299539.469768369 rc=0
+=== RUN bench=mxp cap=1000 pass=A0 variant=3 t=1793299594.731832540 cool=55s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 3  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.74/1.22/86.20s  panel-span 89.14s  comm-span 89.09s  wall 89.90s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.52/0.69/83.77s  panel-span 89.89s  comm-span 89.09s  wall 89.90s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.75/1.20/85.92s  panel-span 89.08s  comm-span 89.06s  wall 89.90s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.52/0.70/84.77s  panel-span 89.10s  comm-span 89.06s  wall 89.90s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.71/0.68/86.71s  panel-span 89.12s  comm-span 89.07s  wall 89.90s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.59/1.20/83.84s  panel-span 89.90s  comm-span 89.07s  wall 89.90s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.70/3.25/84.75s  panel-span 89.11s  comm-span 89.07s  wall 89.90s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.47/1.23/84.19s  panel-span 89.89s  comm-span 89.07s  wall 89.90s
+2026-10-29 18:48:13.771
+Solver iteration  0, L-infinite residual = 1.29022497e-04
+Solver Richardson  1, L-infinite residual = 1.17868961e-08
+Solver iteration  1, L-infinite residual = 1.17855259e-08
+Solver iteration  2, L-infinite residual = 7.80421006e-11
+  IR breakdown: inverses 0.014 s, matvec 1.521 s, precond 1.055 s, other 0.071 s
+2026-10-29 18:48:16.452
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    7.804210E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    4.513367E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 7.9795e+06, per GPU =  997434.53[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 8.2157e+06, per GPU = 1026960.58[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 pass=A0 variant=3 t=1793299700.136207567 rc=0
+=== RUN bench=mxp cap=1000 pass=B0 variant=3 t=1793299725.288179467 cool=25s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 3  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.72/1.22/85.89s  panel-span 88.66s  comm-span 88.61s  wall 89.42s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.69/3.23/84.30s  panel-span 88.64s  comm-span 88.59s  wall 89.42s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.55/1.23/83.62s  panel-span 89.41s  comm-span 88.59s  wall 89.42s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.52/1.20/83.64s  panel-span 89.42s  comm-span 88.60s  wall 89.42s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.55/0.69/83.41s  panel-span 89.41s  comm-span 88.61s  wall 89.42s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.75/1.19/85.34s  panel-span 88.61s  comm-span 88.59s  wall 89.42s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.69/0.69/86.46s  panel-span 88.64s  comm-span 88.60s  wall 89.42s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.53/0.69/84.30s  panel-span 88.63s  comm-span 88.59s  wall 89.42s
+2026-10-29 18:50:23.858
+Solver iteration  0, L-infinite residual = 1.29005929e-04
+Solver Richardson  1, L-infinite residual = 1.17842323e-08
+Solver iteration  1, L-infinite residual = 1.17828613e-08
+Solver iteration  2, L-infinite residual = 8.50778059e-11
+  IR breakdown: inverses 0.014 s, matvec 1.531 s, precond 1.055 s, other 0.071 s
+2026-10-29 18:50:26.550
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    8.507781E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    4.920259E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 8.0202e+06, per GPU = 1002530.70[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 8.2598e+06, per GPU = 1032472.06[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 pass=B0 variant=3 t=1793299830.264053235 rc=0
+=== RUN bench=mxp cap=1000 pass=B0 variant=4 t=1793299860.423017939 cool=30s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 4  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.73/1.24/87.27s  panel-span 89.98s  comm-span 89.94s  wall 90.77s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.71/0.70/87.85s  panel-span 89.97s  comm-span 89.93s  wall 90.77s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.54/0.70/84.72s  panel-span 90.76s  comm-span 89.94s  wall 90.77s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.76/1.21/86.61s  panel-span 89.94s  comm-span 89.92s  wall 90.77s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.53/1.25/84.97s  panel-span 90.76s  comm-span 89.92s  wall 90.77s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.54/1.22/85.00s  panel-span 90.76s  comm-span 89.93s  wall 90.77s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.52/0.70/85.64s  panel-span 89.96s  comm-span 89.92s  wall 90.77s
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.70/3.26/85.60s  panel-span 89.97s  comm-span 89.92s  wall 90.77s
+2026-10-29 18:52:40.242
+Solver iteration  0, L-infinite residual = 6.97800003e-05
+Solver Richardson  1, L-infinite residual = 3.11808930e-09
+Solver iteration  1, L-infinite residual = 3.11777930e-09
+Solver iteration  2, L-infinite residual = 4.72272152e-11
+  IR breakdown: inverses 0.014 s, matvec 1.523 s, precond 1.055 s, other 0.069 s
+2026-10-29 18:52:42.922
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.722722E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.731266E-01 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 7.9058e+06, per GPU =  988228.44[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 8.1376e+06, per GPU = 1017200.95[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 pass=B0 variant=4 t=1793299966.320578077 rc=0
+=== RUN bench=mxp cap=1000 pass=B0 variant=native t=1793300086.815333792 cool=120s hot=65
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 1034752 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 7 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 1034752
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+LUPROF rank 1 (p1 q0): GEMM A/C/E 0.74/3.22/90.74s  panel-span 95.13s  comm-span 95.08s  wall 95.90s
+LUPROF rank 4 (p0 q1): GEMM A/C/E 2.59/0.76/90.62s  panel-span 95.10s  comm-span 95.06s  wall 95.90s
+LUPROF rank 6 (p2 q1): GEMM A/C/E 2.63/0.77/88.58s  panel-span 95.89s  comm-span 95.07s  wall 95.90s
+LUPROF rank 2 (p2 q0): GEMM A/C/E 0.79/1.31/91.83s  panel-span 95.12s  comm-span 95.07s  wall 95.90s
+LUPROF rank 0 (p0 q0): GEMM A/C/E 0.81/1.28/91.38s  panel-span 95.08s  comm-span 95.06s  wall 95.90s
+LUPROF rank 3 (p3 q0): GEMM A/C/E 0.77/0.74/92.56s  panel-span 95.12s  comm-span 95.08s  wall 95.90s
+LUPROF rank 5 (p1 q1): GEMM A/C/E 2.59/1.33/89.88s  panel-span 95.90s  comm-span 95.08s  wall 95.90s
+LUPROF rank 7 (p3 q1): GEMM A/C/E 2.58/1.29/89.55s  panel-span 95.90s  comm-span 95.08s  wall 95.90s
+2026-10-29 18:56:32.017
+Solver iteration  0, L-infinite residual = 2.46114357e-06
+Solver Richardson  1, L-infinite residual = 4.93796670e-12
+  IR breakdown: inverses 0.014 s, matvec 0.509 s, precond 0.532 s, other 0.031 s
+2026-10-29 18:56:33.122
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    4.937967E-12
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    5.187774E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    1.937553E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999984E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    2.855748E-02 ...... PASSED
+    N = 1034752, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 7.6154e+06, per GPU =  951924.23[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 7.7016e+06, per GPU =  962701.38[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 pass=B0 variant=native t=1793300196.899307669 rc=0
+mxp done

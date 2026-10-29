@@ -3,7 +3,8 @@
 # 8 張 GPU 同時跑同一個設定（每張一個行程），所以每個量測窗得到 8 個 GPU 的配對值。
 # 每個上限把設定清單先正向再反向各跑一次（ABBA）。
 #   nohup mi350/scripts/e1_gemm_tdp.sh > /dev/null 2>&1 &      （從 repo 根目錄或任何地方）
-# 環境變數：CAPS（W）、CONFIGS（dtype:frac[:low]，low = zero|ones|const）、WARMUP、SECONDS_PER、
+# 環境變數：CAPS（W）、CONFIGS（dtype:frac[:low]，low = zero|ones|const；g8:<moduli> = FP64 GEMM 改走
+#   GEMMul8 INT8 emulation）、SHAPES（"mxnxk" 清單）、WARMUP、SECONDS_PER、
 #   START_TEMP（每次量測前所有 GPU 的 junction 溫度須降到此值以下，°C）、COOL_MAX（最多等幾秒）、
 #   TAG（log 名稱前綴，預設 e1）、EXTRA_ARGS（傳給 bench）
 set -euo pipefail
@@ -32,6 +33,8 @@ hot_max() { local m=0 t; for f in /sys/class/drm/card*/device/hwmon/hwmon*/temp2
 echo "id=$ID host=$(hostname) caps=[$CAPS] configs=[$CONFIGS] warmup=$WARMUP seconds=$SECONDS_PER start_temp=$START_TEMP"
 amd-smi version 2>/dev/null | head -1
 read -ra cfg <<<"$CONFIGS"
+# SHAPES：選用的 "mxnxk" 清單（用 x 分隔，sbatch --export 會在逗號處切開）；每個設定在每個形狀都跑
+read -ra shapes <<<"${SHAPES:-default}"
 rev=()
 for ((i = ${#cfg[@]} - 1; i >= 0; i--)); do rev+=("${cfg[i]}"); done
 
@@ -41,11 +44,25 @@ for cap in $CAPS; do
   for pass in A B; do
     list=("${cfg[@]}")
     [[ $pass == B ]] && list=("${rev[@]}")
+    for shape in "${shapes[@]}"; do
     for c in "${list[@]}"; do
       IFS=: read -r dtype frac low <<<"$c"
       low=${low:-zero}
       extra=()
+      envs=()
       [[ $dtype == bf16 || $dtype == fp8 ]] && extra=(--k 8192)
+      if [[ $shape != default ]]; then IFS=x read -r sm sn sk <<<"$shape"; extra=(--m "$sm" --n "$sn" --k "$sk"); fi
+      # g8:<moduli>：FP64 GEMM 交給 GEMMul8（Ozaki-II，INT8）以 LD_PRELOAD 攔截 hipblasDgemm；運算元保留全部位元
+      emu=none
+      if [[ $dtype == g8 ]]; then
+        envs=(LD_PRELOAD="$SW/gemmul8/lib/libgemmul8.so" GEMMUL8_NUM_MOD_D_GEMM="$frac" GEMMUL8_FASTMODE_D_GEMM=1)
+        emu=g8m$frac; dtype=fp64; frac=52
+      fi
+      bench=bin/gemm_mant_bench
+      # 非 GEMM 的 FP64 核心（向量 FMA 迴圈、n-body、STREAM copy/triad）
+      if [[ $dtype == dfma || $dtype == nbody || $dtype == copy || $dtype == triad ]]; then
+        bench=bin/fp64_kernel_bench; extra=()
+      fi
       waited=0
       while (( $(hot_max) > START_TEMP && waited < COOL_MAX )); do sleep 5; waited=$((waited + 5)); done
       echo "COOL waited=${waited}s hot_max=$(hot_max)C"
@@ -53,11 +70,13 @@ for cap in $CAPS; do
       tools/pcap.sh show | awk -v w="${cap}W" '$2 != w {bad=1} END {exit bad}' || { echo "CAP RESET detected -> re-applying $cap"; tools/pcap.sh "$cap"; }
       pids=()
       for g in 0 1 2 3 4 5 6 7; do
-        bin/gemm_mant_bench --device "$g" --dtype "$dtype" --frac "$frac" --low "$low" --warmup "$WARMUP" \
-          --seconds "$SECONDS_PER" --tag "cap=$cap,pass=$pass" "${extra[@]}" ${EXTRA_ARGS:-} &
+        env "${envs[@]}" "$bench" --device "$g" --dtype "$dtype" --frac "$frac" --low "$low" \
+          --warmup "$WARMUP" --seconds "$SECONDS_PER" --tag "cap=$cap,pass=$pass,emu=$emu" "${extra[@]}" \
+          ${EXTRA_ARGS:-} &
         pids+=($!)
       done
       wait "${pids[@]}"
+    done
     done
   done
 done

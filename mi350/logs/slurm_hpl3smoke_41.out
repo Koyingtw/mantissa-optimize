@@ -1,0 +1,40 @@
+job=41 host=p01-r01-n01 script=smoke_hpl3.sh start=Thu Oct 29 07:00:40 PM UTC 2026
+== logs/hpl3smoke1024_1029_1900.out
+=== RUN bench=hpl cap=1000 pass=A0 variant=53:53 t=1793300466.248382389 cool=25s hot=63
+WC10R2R32      131072  1024     1     8               5.62              2.673e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000390 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=A0 variant=36:36 t=1793300502.184647486 cool=5s hot=63
+WC10R2R32      131072  1024     1     8               5.54              2.708e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.4876577 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=A0 variant=g8m10 t=1793300532.880830644 cool=0s hot=63
+WC10R2R32      131072  1024     1     8               8.12              1.848e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        9.1381245 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=B0 variant=g8m10 t=1793300566.547646833 cool=0s hot=63
+WC10R2R32      131072  1024     1     8               8.12              1.850e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        9.1381245 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=B0 variant=36:36 t=1793300600.321861256 cool=0s hot=63
+WC10R2R32      131072  1024     1     8               5.53              2.717e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.4876577 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=B0 variant=53:53 t=1793300631.191843104 cool=0s hot=63
+WC10R2R32      131072  1024     1     8               5.64              2.661e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000390 ...... PASSED
+== logs/hpl3smoke4096_1029_1904.out
+=== RUN bench=hpl cap=1000 pass=A0 variant=53:53 t=1793300664.166185934 cool=0s hot=63
+WC10R2R32      131072  4096     4     2              13.12              1.144e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0001981 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=A0 variant=36:36 t=1793300703.416259556 cool=0s hot=63
+WC10R2R32      131072  4096     4     2              13.21              1.136e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.2285287 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=A0 variant=g8m10 t=1793300742.893339771 cool=0s hot=63
+WC10R2R32      131072  4096     4     2              11.96              1.255e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=       24.2651166 ...... FAILED
+=== RUN bench=hpl cap=1000 pass=B0 variant=g8m10 t=1793300780.844603503 cool=0s hot=62
+WC10R2R32      131072  4096     4     2              11.98              1.253e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=       24.2651166 ...... FAILED
+=== RUN bench=hpl cap=1000 pass=B0 variant=36:36 t=1793300818.995726246 cool=0s hot=62
+WC10R2R32      131072  4096     4     2              12.90              1.164e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.2285287 ...... PASSED
+=== RUN bench=hpl cap=1000 pass=B0 variant=53:53 t=1793300858.222145574 cool=0s hot=62
+WC10R2R32      131072  4096     4     2              13.34              1.126e+05
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0001981 ...... PASSED
+rc=0 end=Thu Oct 29 07:08:18 PM UTC 2026

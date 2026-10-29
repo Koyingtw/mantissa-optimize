@@ -18,7 +18,7 @@ from scipy import stats
 sys.path.insert(0, os.path.dirname(__file__))
 from smi import load_smi, window_stats  # noqa: E402
 
-NATIVE = {"fp64": 52, "fp32": 23, "bf16": 7, "fp8": 3}
+NATIVE = {"fp64": 52, "fp32": 23, "bf16": 7, "fp8": 3, "dfma": 52, "nbody": 52, "copy": 52, "triad": 52}
 BDF = ["0000:09:00.0", "0000:19:00.0", "0000:69:00.0", "0000:79:00.0",
        "0000:89:00.0", "0000:99:00.0", "0000:e9:00.0", "0000:f9:00.0"]  # 取樣器的 gpu 欄 = 此清單索引
 
@@ -33,11 +33,16 @@ def load(ids, logdir):
             kv = dict(re.findall(r"(\w+)=([^\s,]+)", line.replace("tag=", "")))
             g = BDF.index(kv["bdf"])  # amd-smi／取樣器序；bench 的 --device 序依 HIP_VISIBLE_DEVICES 而定
             w = window_stats(smi, g, float(kv["t_begin"]), float(kv["t_end"]))
-            rows.append(dict(id=i, cap=int(kv["cap"]), pass_=kv["pass"], gpu=g, dtype=kv["dtype"],
-                             frac=int(kv["frac"]), low=kv["low"], m=int(kv["m"]), n=int(kv["n"]), k=int(kv["k"]),
-                             tflops=float(kv["tflops"]), **w))
+            dtype, frac = kv["dtype"], int(kv["frac"])
+            emu = kv.get("emu", "none")
+            if emu.startswith("g8m"):  # GEMMul8 emulation：dtype g8、frac 欄記 moduli 數
+                dtype, frac = "g8", int(emu[3:])
+            rows.append(dict(id=i, cap=int(kv["cap"]), pass_=kv["pass"], gpu=g, dtype=dtype, frac=frac,
+                             low=kv["low"], m=int(kv["m"]), n=int(kv["n"]), k=int(kv["k"]),
+                             tflops=float(kv["tflops"]), rel_err=float(kv.get("rel_err", "nan")), **w))
     d = pd.DataFrame(rows)
     d["gflops_per_j"] = d.tflops * 1e3 / d.power_acc_w
+    d["base"] = d.dtype.replace({"g8": "fp64"})  # 配對用的原生格式
     return d
 
 
@@ -63,16 +68,17 @@ def delta_w(native_curve, perf, cap):
 
 
 def summarize(d):
-    key = ["cap", "pass_", "gpu", "dtype"]
-    nat = d[(d.frac == d.dtype.map(NATIVE)) & (d.low == "zero")].set_index(key)
+    key = ["cap", "pass_", "gpu", "base", "m", "n", "k"]
+    nat = d[(d.dtype == d.base) & (d.frac == d.base.map(NATIVE)) & (d.low == "zero")].set_index(key)
     out = []
-    for (cap, dtype, frac, low), g in d.groupby(["cap", "dtype", "frac", "low"]):
+    for (cap, dtype, frac, low, m, n, k), g in d.groupby(["cap", "dtype", "frac", "low", "m", "n", "k"]):
         b = nat.reindex(g.set_index(key).index)
         r_perf = g.tflops.values / b.tflops.values
         r_pow = g.power_acc_w.values / b.power_acc_w.values
         r_eff = g.gflops_per_j.values / b.gflops_per_j.values
         lo, hi = ci(r_perf - 1)
-        out.append(dict(cap=cap, dtype=dtype, frac=frac, low=low, n=len(g), tflops=g.tflops.mean(),
+        out.append(dict(cap=cap, dtype=dtype, frac=frac, low=low, m=m, n=n, k=k, rel_err=g.rel_err.mean(),
+                        n_meas=len(g), tflops=g.tflops.mean(),
                         power_w=g.power_acc_w.mean(), gfxclk=g.gfxclk.mean(), ppt_frac=g.ppt_frac.mean(),
                         thm_frac=g.thm_frac.mean(), t_hot_max=g.t_hot_max.max(), gflops_per_j=g.gflops_per_j.mean(),
                         speedup_pct=100 * (np.nanmean(r_perf) - 1), speedup_lo=100 * lo, speedup_hi=100 * hi,
@@ -82,12 +88,12 @@ def summarize(d):
     # ΔW：每個 dtype 的原生曲線
     dws = []
     for _, r in s.iterrows():
-        dt = r["dtype"]
-        nc = s[(s.dtype == dt) & (s.frac == NATIVE[dt]) & (s.low == "zero")][["cap", "tflops"]].values
-        dw, lower = delta_w([tuple(x) for x in nc], r["tflops"], r["cap"])
+        bt = "fp64" if r["dtype"] == "g8" else r["dtype"]
+        nc = s[(s.dtype == bt) & (s.frac == NATIVE[bt]) & (s.low == "zero") & (s.k == r["k"]) & (s.m == r["m"])]
+        dw, lower = delta_w([tuple(x) for x in nc[["cap", "tflops"]].values], r["tflops"], r["cap"])
         dws.append((">" if lower else "") + ("" if np.isnan(dw) else f"{dw:.0f}"))
     s["delta_w"] = dws
-    return s.sort_values(["dtype", "cap", "low", "frac"], ascending=[True, False, True, False])
+    return s.sort_values(["dtype", "k", "cap", "low", "frac"], ascending=[True, True, False, True, False])
 
 
 def main():

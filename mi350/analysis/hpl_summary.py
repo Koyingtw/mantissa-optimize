@@ -28,7 +28,8 @@ def parse(path):
         if m:
             kv = dict(re.findall(r"(\w+)=(\S+)", m.group(2)))
             if m.group(1) == "RUN":
-                cur = dict(bench=kv["bench"], cap=int(kv["cap"]), pass_=kv["pass"], variant=kv["variant"],
+                cur = dict(bench=kv["bench"], cap=int(kv["cap"]), blk=int(kv.get("blk", 0)), pass_=kv["pass"],
+                           variant=kv["variant"],
                            t_begin=float(kv["t"]), gflops=np.nan, lu_gflops=np.nan, resid=np.nan, passed=False)
             elif cur is not None:
                 cur.update(t_end=float(kv["t"]), rc=int(kv["rc"]))
@@ -69,7 +70,8 @@ def main():
         frames.append(d)
     d = pd.concat(frames, ignore_index=True)
     d["tflops"] = d.gflops / 1e3
-    d["block"] = d.id + ":" + d.pass_.str[1:]   # A0/B0 → 區塊 0
+    # 配對區塊：同一個 log、同一個 PAIRWISE 區塊（blk）、同一輪 ABBA（A0/B0 → 0）
+    d["block"] = d.id + ":" + d.blk.astype(str) + ":" + d.pass_.str[1:]
     bench = d.bench.iloc[0]
     nat = NATIVE[bench]
     ok = d[d.passed & (d.pass_ != "W")]
