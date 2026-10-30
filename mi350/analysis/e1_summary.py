@@ -41,7 +41,8 @@ def load(ids, logdir):
                              low=kv["low"], m=int(kv["m"]), n=int(kv["n"]), k=int(kv["k"]),
                              tflops=float(kv["tflops"]), rel_err=float(kv.get("rel_err", "nan")),
                              spread=float(kv.get("spread", 0)), smode=kv.get("smode", "elem"),
-                             err_p50=float(kv.get("err_p50", "nan")), err_p99=float(kv.get("err_p99", "nan")), **w))
+                             err_p50=float(kv.get("err_p50", "nan")), err_p99=float(kv.get("err_p99", "nan")),
+                             t_begin=float(kv["t_begin"]), t_end=float(kv["t_end"]), **w))
     d = pd.DataFrame(rows)
     d["gflops_per_j"] = d.tflops * 1e3 / d.power_acc_w
     d["base"] = d.dtype.where(~d.dtype.str.startswith("g8"), "fp64")  # 配對用的原生格式

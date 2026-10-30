@@ -75,18 +75,18 @@ def fig_gemm_two_platforms():
 
 
 def fig_model():
-    """Predicted vs measured speedup: GH200 (one-cap calibration) and MI350X (fixed-clock R and sigma)."""
-    d = pd.read_csv(f"{RES}/model_pred.csv")
+    """Predicted vs measured speedup with P0 = independently measured idle power (no parameter fitted to the sweep):
+    GH200 calibrated at the lowest cap (that point excluded), MI350X from locked-clock power and clock only."""
+    d = pd.read_csv(f"{RES}/model_eval_points.csv")
+    d = d[d.method == "idle"]
     fig, ax = plt.subplots(figsize=(COL, 2.6))
-    sel = [("GH200", "onecap", "GH200: calibrated at the lowest cap", C[0], "o"),
-           ("MI350X", "fixed+stretch", "MI350X: from fixed-clock power and clock", C[1], "s")]
-    for plat, meth, lab, c, mk in sel:
-        g = d[(d.platform == plat) & (d.method == meth)]
-        if meth == "onecap":  # the calibration point itself is not a prediction
-            g = g[g.cap != g.groupby(["dtype", "frac"]).cap.transform("min")]
-        mae = (g.pred_gain - g.meas_gain).abs().mean()
-        ax.scatter(g.meas_gain, g.pred_gain, s=10, color=c, marker=mk, label=f"{lab} (MAE {mae:.1f} pts)",
-                   alpha=0.8, lw=0)
+    sel = [("GH200", "GH200: one capped run, $P_0$ = idle 174 W", C[0], "o"),
+           ("MI350X", "MI350X: locked-clock runs, $P_0$ = idle 262 W", C[1], "s")]
+    for plat, lab, c, mk in sel:
+        g = d[d.platform == plat]
+        e = (g.pred_gain - g.meas_gain).abs()
+        ax.scatter(g.meas_gain, g.pred_gain, s=10, color=c, marker=mk, alpha=0.8, lw=0,
+                   label=f"{lab}\n(mean |err| {e.mean():.1f}, max {e.max():.1f} pts)")
     lim = [0, max(d.meas_gain.max(), d.pred_gain.max()) * 1.05]
     ax.plot(lim, lim, color="#999999", lw=0.6)
     ax.set_xlim(lim)
