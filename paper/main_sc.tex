@@ -307,9 +307,13 @@ quantities. The \emph{gain in the same cooling environment} is the raw paired ra
 control; it is what a user obtains. The \emph{data effect at equal temperature} regresses log performance on the variant
 and the run's mean junction temperature within each cap (coefficient $-0.1$ to $-0.9\pct$ per \textdegree C), which removes
 the confounder but, where truncation itself cools the GPU, also part of the benefit. Equal mean temperature does not imply
-equal fan speed or thermal history, so we also control the history directly: before every run, all variants execute the
-same fixed thermal load (a 3-minute native BF16 GEMM on all 8 GPUs), and key GEMM comparisons run 4 minutes before a
-2-minute window so that each settles at its own steady state. We could not fix the fan speed.
+equal fan speed or thermal history, so we also controlled the history directly in two key settings; both reproduce the
+adjusted values. At steady state (4 minutes of GEMM before a 2-minute window, node n02), FP64 with 36 bits and BF16 with
+0 bits gain 6.1 and 26.4\pct{} at 800\W{} and 5.4 and 15.6\pct{} at 1000\W, within 1.5 points of the short windows
+(7.6, 25.2, 5.0, 14.8\pct). With a common thermal history (every HPL-MxP run at 800\W{} on node n01 preceded by the same
+3-minute native BF16 GEMM on all 8 GPUs, pairwise ABBA, 4 runs per variant), 3 bits gains $10.4\pm2.8$ and 4 bits
+$6.0\pm3.5\pct$ raw, 9.0 and 6.2\pct{} adjusted, the same as the adjusted values of the earlier jobs (9.0--9.1 and
+4.4--6.2\pct). We could not fix the fan speed.
 
 \textbf{Statistics.} Each speedup is a paired ratio on the same node, cap and ABBA round. Measurements that share a
 chassis or a job are not independent, so on MI350X the unit is one measurement window of all 8 GPUs (GEMM), one node run
@@ -423,7 +427,8 @@ it is 4.6--5.1\pct{} faster at the default limit, 4.5--4.9\pct{} at 800\W, 6.2--
 does not converge on MI350X, so 3 bits is the operating point on both platforms. The fan pitfall of
 Section~\ref{sec:setup} biased one cell: on node n01 at 800\W{} all four 4-bit runs were about 12\,\textdegree C cooler,
 and 4 bits appeared faster than 3 (+11.3 versus +9.3\pct); adjusted for temperature, 3 bits is +9.0\pct{} in that job,
-+9.1\pct{} in a pairwise rerun and +9.1\pct{} on n02, and 4 bits +4.4--6.2\pct. Every other HPL and HPL-MxP cell moves by at most
++9.1\pct{} in a pairwise rerun and +9.1\pct{} on n02, and 4 bits +4.4--6.2\pct; under a common thermal load before
+every run the raw order is right again (+10.4 versus +6.0\pct, Section~\ref{sec:setup}). Every other HPL and HPL-MxP cell moves by at most
 0.7 points under the adjustment. For GP and DF-MP2 the adjusted gains are 0--4 points larger than the raw ones
 (Table~\ref{tab:robust}): their variants run back to back in one process (native, 32/36 bits, 20/28 bits, then in reverse),
 so the truncated variants occupy the middle, hottest part of each round, and the raw gains, which we report, are
@@ -696,7 +701,7 @@ matrix only. (iv)~Each scientific code was tested on one or two inputs; on MI350
 PySCF's tensor. (v)~Units of independence are runs, windows or rounds within one or two nodes; GH200 intervals treat pairs
 within a node set as independent, and node sets differed more than pairs within a set. (vi)~Temperature confounds
 power-capped measurements; ABBA cancels linear drift but not fan feedback, so we report temperature-adjusted values beside
-raw ones. (vii)~Default caps are also the highest, not uncapped states, and the limiters' time scales are unknown.
+raw ones and checked them under controlled thermal history in two settings only; fan speed could not be fixed. (vii)~Default caps are also the highest, not uncapped states, and the limiters' time scales are unknown.
 (viii)~Power and energy come from the devices' own sensors and accumulators, not an external meter; GH200 module power
 includes the Grace CPU. (ix)~The MI350X clock reduction attributed to clock stretching is an inference. (x)~About half of
 the Quantum ESPRESSO gain on the gold surface comes from fewer Davidson iterations, for unidentified reasons. (xi)~The
