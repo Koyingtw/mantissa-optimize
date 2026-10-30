@@ -43,14 +43,15 @@ lower that energy: zeroing, in software, the low-order mantissa bits an applicat
 FP64, BF16 or FP8 units. On an NVIDIA GH200 cluster and two 8-GPU AMD MI350X nodes, filling the discarded bits with ones
 instead of zeros, which stops them toggling without making them zero, retains 65--97\pct{} of the saving: switching
 activity is the main contributor. A two-parameter model built on this predicts a truncated kernel's speedup under every
-cap from the native curve, the idle power and one or two measurements, within 1.5 and 2.1 percentage points on average.
+cap from the native curve, the idle power and one or two measurements, within 1.5 and 2.1 percentage points on average
+on GEMMs and 1.6 on two applications not used to develop it.
 MI350X is power-bound at its stock 1000\W{} limit, so truncation pays at default settings: 4.6--5.1\pct{} for FP64 HPL (36
 significand bits), 4.9--5.1\pct{} for HPL-MxP on a diagonally dominant test matrix (3 BF16 bits), 7.4\pct{} for a
 Gaussian-process likelihood and 10\pct{} for DF-MP2, and 7--19\pct{} at 500\W, with every accuracy check passed. It is not
 always the best choice. INT8 emulation of FP64 (GEMMul8) makes HPL 36\pct{} and DF-MP2 67\pct{} faster than native at
 1000\W, but it is slower than native when the inner dimension is 1024 (the Gaussian process: $-11\pct$), loses most of its
 lead under a tight cap (HPL at 500\W: 4\pct{} ahead of truncation), needs workspace that limits problem size, and can fail
-silently. Which method wins is set by shape, cap, memory and precision; truncation is the one that keeps the format and
+silently, through precision loss on wide per-row exponent spans or, in the build we used, a size overflow. Which method wins is set by shape, cap, memory and precision; truncation is the one that keeps the format and
 also applies to BF16 and FP8, for which no emulation exists.
 \end{abstract}
 
@@ -244,9 +245,16 @@ power as dynamic ($P_0=0$) gives 6.1 and 4.0, and omitting $\sigma$ on MI350X 2.
 for FP64 with 36, 27 and 0 kept bits, 0.92 and 0.85 for BF16 with 3 and 0, 0.90 for FP8 with 0, and $\sigma=1.01$--1.05.
 For the FP64 widths applications keep (27--36 bits) the error is at most 2.9 points on both platforms; it is largest for
 BF16 with 0 bits at 400\W{} on MI350X, where the native GEMM barely runs, and for FP64 with 0 bits at 500--800\W, whose
-clock exceeds anything on the native curve. Once a platform's idle power and an application's native curve are known, a
-truncated kernel's curve thus follows from two locked-clock measurements or one capped run, to about two points, and
-$\Delta W\propto P-P_0$ explains why the equivalent saving grows with the cap where the relative speedup does not.
+clock exceeds anything on the native curve. \textbf{External validation.} The GEMM points were used to develop the model. As a test on programs that played no part
+in it, we ran DF-MP2 and the Gaussian-process likelihood at the 1300\,MHz lock on node n02, derived $R$ and $\sigma$ from
+their whole-program power and clock ($R=0.92$ and 0.86, $\sigma=1.01$ and 1.02 for DF-MP2 with 32 and 20 bits; $R=0.96$ and
+0.93 for the likelihood with 36 and 28 bits), and predicted their speedups at 500--1000\W{} from their native curves on the
+same node. Over the 16 points the mean error is 1.6 percentage points and the largest 3.6. DF-MP2 is predicted within
+$-1.6$ to $+2.4$ points; the likelihood is underpredicted at every cap, by 0.6--3.6 points, perhaps because its Cholesky
+alternates GEMM-heavy and non-GEMM phases whose power differs, which one whole-program ratio does not capture. Once a
+platform's idle power and an application's native curve are known, a truncated program's curve thus follows from one
+locked-clock run to within a few points, and $\Delta W\propto P-P_0$ explains why the equivalent saving grows with the cap
+where the relative speedup does not.
 
 %==================================================================================================
 \section{Method and Experimental Setup}\label{sec:setup}
@@ -421,8 +429,10 @@ and 4 bits appeared faster than 3 (+11.3 versus +9.3\pct); adjusted for temperat
 so the truncated variants occupy the middle, hottest part of each round, and the raw gains, which we report, are
 conservative. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
 generator always sets the diagonal to the row's absolute sum, and we have no implementation of a generator allowed for
-official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP.
-\pending{exact diagonal-tile factorization check (job 65)}.
+official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP. They do not, however, depend on the
+approximate factorization of the diagonal tiles: with exact factorization (\texttt{-{}-exact-diag}, node n02, one ABBA
+pair), 3 bits passes the residual check (0.43) and is 4.4\pct{} faster at 1000\W{} and 9.4\pct{} at 650\W{}
+(temperature-adjusted 4.4 and 9.3\pct), against 5.1 and 9.7\pct{} with the approximate factorization.
 
 \subsection{Quantum ESPRESSO: Tolerance-Driven Bit Counts (GH200)}\label{sec:adaptive}
 
@@ -586,11 +596,14 @@ $\ee{3}{-7}$), while 28-bit truncation gains 5.9--11.8\pct.
 configuration the matrix fills 292\,GB per GPU and GEMMul8's workspace no longer fits; on a $1\times8$ grid it requests
 100--114\,GB even at $N=458752$; with 12 moduli even $N=491520$ fails; HPL must give up problem size before emulation can
 start. Each new GEMM shape costs GEMMul8 a large one-time setup: DF-MP2's first pass over its 226 shapes takes 142\,s
-instead of 13\,s (the times above exclude this warm-up). And in the Gaussian-process likelihood at $n=80000$, the hooked
-DGEMM of the first trailing update ($m=n=78976$, $k=1024$) returned success but an invalid result in every one of 256
-runs, without a diagnostic; at $n\le65000$ the same configuration agrees with native to $10^{-9}$. We report this as an
-observation about the GEMMul8 3.2.0 HIP build we used, not about emulation in general, but it illustrates the risk of
-replacing a BLAS call wholesale: a configuration validated at one size can fail silently at another.
+instead of 13\,s (the times above exclude this warm-up). And in the Gaussian-process likelihood at $n=80000$, the hooked DGEMM of the first trailing update ($m=n=78976$, $k=1024$)
+returned success but an invalid result in every one of 256 runs, without a diagnostic. A minimal reproduction on uniform
+operands localizes it exactly: through the library's direct API and through the hook alike, $C=AB^{\mathsf T}$ with $k=1024$
+is correct ($\ee{1.6}{-15}$) for $m=n=65535$ and wrong (relative error 31, all entries finite) from $m=n=65536$, i.e., once
+$mn$ reaches $2^{32}$, consistent with a 32-bit size overflow in the GEMMul8 3.2.0 HIP build we used. It is an
+implementation defect, independent of the data, not a property of emulation; every other emulated result in this paper
+stays below this size. It illustrates the risk of replacing a BLAS call wholesale: a configuration validated at one size
+can fail silently at another.
 
 \subsection{Exponent Span: When Emulation Silently Fails}\label{sec:span}
 
@@ -625,8 +638,8 @@ platforms, spreading element exponents uniformly over up to 64 (MI350X) or 256 (
 (MI350X, 12 moduli: median error $\ee{5.7}{-13}$--$\ee{8.0}{-13}$, p99 at most $\ee{4.4}{-11}$). A wide per-row span, which
 an interposer can measure cheaply beforehand (Fig.~\ref{fig:map}), is therefore a necessary but not sufficient condition for
 this kind of failure, the precision loss of a fixed-width emulation; narrow-span codes such as HPL, Quantum ESPRESSO and
-DF-MP2 do not suffer it. It does not cover implementation defects such as the size-dependent failure of
-Section~\ref{sec:crossover}. \pending{minimal reproduction on uniform operands across $m=n=65536$ (job 66)} Replacing every FP64 GEMM with FP32 or
+DF-MP2 do not suffer it. It does not cover implementation defects such as the size overflow of Section~\ref{sec:crossover}, which occurs on
+narrow-range uniform operands as well. Replacing every FP64 GEMM with FP32 or
 3xTF32 fails for a different reason, accumulation over long inner products (Quantum ESPRESSO, Supplement~S3).
 
 \begin{figure}[t]

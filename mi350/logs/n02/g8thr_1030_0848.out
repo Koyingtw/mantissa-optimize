@@ -1,0 +1,18 @@
+== direct API
+RESULT_G8 m=63976 n=63976 k=1024 mn=4092928576 mn_over_2^32=0.9530 moduli=14 workspace_GB=75.54 status=ok rel_err=1.637e-15 nonfinite=0 max_abs_err=2.700e-13
+RESULT_G8 m=65000 n=65000 k=1024 mn=4225000000 mn_over_2^32=0.9837 moduli=14 workspace_GB=77.94 status=ok rel_err=1.637e-15 nonfinite=0 max_abs_err=2.629e-13
+RESULT_G8 m=65535 n=65535 k=1024 mn=4294836225 mn_over_2^32=1.0000 moduli=14 workspace_GB=79.19 status=ok rel_err=1.637e-15 nonfinite=0 max_abs_err=2.558e-13
+RESULT_G8 m=65536 n=65536 k=1024 mn=4294967296 mn_over_2^32=1.0000 moduli=14 workspace_GB=79.19 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.335e+02
+RESULT_G8 m=65537 n=65537 k=1024 mn=4295098369 mn_over_2^32=1.0000 moduli=14 workspace_GB=79.50 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.377e+02
+RESULT_G8 m=66000 n=66000 k=1024 mn=4356000000 mn_over_2^32=1.0142 moduli=14 workspace_GB=80.36 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.265e+02
+RESULT_G8 m=70000 n=70000 k=1024 mn=4900000000 mn_over_2^32=1.1409 moduli=14 workspace_GB=90.39 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.277e+02
+RESULT_G8 m=78976 n=78976 k=1024 mn=6237208576 mn_over_2^32=1.4522 moduli=14 workspace_GB=114.72 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.291e+02
+== hook (hipblasDgemm N,T)
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=63976 n=63976 k=1024 calls=5 tflops=10.542 chunk_min=10.542 chunk_max=10.542 t_begin=1793350145.835 t_end=1793350149.811 rel_err=1.637e-15 spread=0 smode=elem err_p50=1.540e-15 err_p99=5.998e-14
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=65000 n=65000 k=1024 calls=5 tflops=37.771 chunk_min=37.771 chunk_max=37.771 t_begin=1793350151.210 t_end=1793350152.356 rel_err=1.637e-15 spread=0 smode=elem err_p50=1.538e-15 err_p99=6.131e-14
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=65535 n=65535 k=1024 calls=5 tflops=37.244 chunk_min=37.244 chunk_max=37.244 t_begin=1793350155.302 t_end=1793350156.483 rel_err=1.637e-15 spread=0 smode=elem err_p50=1.540e-15 err_p99=6.017e-14
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=65536 n=65536 k=1024 calls=5 tflops=37.120 chunk_min=37.120 chunk_max=37.120 t_begin=1793350159.551 t_end=1793350160.736 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.655e+01 err_p99=2.135e+03
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=65537 n=65537 k=1024 calls=5 tflops=36.852 chunk_min=36.852 chunk_max=36.852 t_begin=1793350163.823 t_end=1793350165.016 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.647e+01 err_p99=2.142e+03
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=66000 n=66000 k=1024 calls=5 tflops=36.730 chunk_min=36.730 chunk_max=36.730 t_begin=1793350168.149 t_end=1793350169.364 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.658e+01 err_p99=2.131e+03
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=70000 n=70000 k=1024 calls=5 tflops=32.961 chunk_min=32.961 chunk_max=32.961 t_begin=1793350172.477 t_end=1793350173.999 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.648e+01 err_p99=2.133e+03
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=78976 n=78976 k=1024 calls=5 tflops=13.224 chunk_min=13.224 chunk_max=13.224 t_begin=1793350177.574 t_end=1793350182.404 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.648e+01 err_p99=2.151e+03
