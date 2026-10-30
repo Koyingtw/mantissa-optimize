@@ -538,15 +538,16 @@ further 1.9--7.0\pct{} faster, so truncation composes with format changes (Suppl
 \begin{table}[t]
 \caption{MI350X head-to-head: speedup over the best native run at the default limit / at 500\W, each method at the best
 configuration it allows, with its error. Truncation: 36 bits (HPL), 35 (GEMM), 20 (DF-MP2), 28 (GP); GEMMul8: 10 moduli
-(HPL), 12 (others). GEMM: $m=n=32768$.}\label{tab:h2h}
-\centering\footnotesize\setlength{\tabcolsep}{2.2pt}
+(HPL, best configuration), 12 (others). The second HPL row compares both at one configuration and similar residual. GEMM: $m=n=32768$.}\label{tab:h2h}
+\centering\footnotesize\setlength{\tabcolsep}{1.6pt}
 \begin{tabular}{@{}lll@{}}
 \toprule
 Workload & Truncation & GEMMul8 \\
 \midrule
 FP64 GEMM, $k=1024$ & +5.1/+9.2\pct{} ($\ee{8}{-12}$) & $-13$/$-45\pct$ ($\ee{4}{-13}$) \\
 FP64 GEMM, $k=4096$ & +5.5/+9.0\pct{} ($\ee{8}{-12}$) & +84/+18\pct{} ($\ee{8}{-13}$) \\
-HPL (residual) & +4.6/+7.3\pct{} (0.27) & +36/+11\pct{} (1.79) \\
+HPL, best config.\ (residual) & +4.6/+7.3\pct{} (0.27) & +36/+11\pct{} (1.79) \\
+HPL, $N=458752$, $4{\times}2$ & +3.7/+8.0\pct{} (0.086) & +32/$-0.4\pct$ (0.033) \\
 DF-MP2 ($|\Delta E|$, E$_\mathrm{h}$) & +10/+19\pct{} ($\ee{2}{-8}$) & +67/+34\pct{} ($\ee{7}{-12}$) \\
 GP, $n=64000$ ($|\Delta\ell|$) & +5.9/+11.8\pct{} ($\ee{2}{-3}$) & $-11$/$-43\pct$ ($\ee{3}{-7}$) \\
 HPL-MxP (BF16) & +4.9/+19\pct{} (0.5) & no emulation \\
@@ -587,7 +588,10 @@ truncation at every cap, its lead over 20-bit truncation shrinking from 57 to 16
 cuBLAS emulation is 18--35\pct{} slower than native there (Table~\ref{tab:mp2}). In FP64 HPL on MI350X, GEMMul8 with 10
 moduli on its own best configuration ($N=491520$, NB 4096, $4\times2$; residual 1.79 against 0.03 for 36 bits) reaches
 576.8\,TFLOP/s at 1000\W, 36\pct{} above the best native configuration, but its lead over the best truncated run shrinks
-from 30\pct{} at 1000\W{} to 4\pct{} at 500\W. \pending{12 moduli at $N=458752$ (job 64)}. In the Gaussian-process
+from 30\pct{} at 1000\W{} to 4\pct{} at 500\W. At matched accuracy the cap reverses the order: with 12 moduli (residual
+0.033, against 0.086 for 36-bit truncation; $N=458752$, $4\times2$, the largest size that fits), GEMMul8 is 32.0, 26.5 and
+14.9\pct{} faster than native at 1000, 800 and 650\W{} but $-0.4\pct$ at 500\W, where truncation gains 8.0\pct{}
+(temperature-adjusted $-1.5$ and 8.0\pct). In the Gaussian-process
 likelihood, whose trailing updates have $k=1024$, GEMMul8 is slower than native at every cap ($n=64000$, where it is
 correct: $-11$, $-22$, $-37$ and $-43\pct$ at 1000, 800, 650 and 500\W{} with 12 moduli, log-likelihood within
 $\ee{3}{-7}$), while 28-bit truncation gains 5.9--11.8\pct.
