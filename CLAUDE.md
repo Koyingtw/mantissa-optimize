@@ -68,7 +68,9 @@ and write `logs/<job-name>_<jobid>.out` plus nvidia-smi CSVs):
   logs, with job ids, decisions and the user's requests quoted. Append to them when running experiments.
 - `refs/` — citation notes; `refs/pdf/` is gitignored (copyrighted).
 
-Paper builds use tectonic: `cd paper && ~/.local/bin/tectonic -X compile main.tex`;
+Paper builds use tectonic on the GH200 cluster (`cd paper && ~/.local/bin/tectonic -X compile main.tex`) and
+TeX Live 2023 XeLaTeX on MI350X node n01 (`paper/build.sh [main|main_v2]`, installed with apt). `main_v2.tex` is the
+two-platform rewrite in progress (red `\pending{}` marks results still running); it replaces `main.tex` when done;
 Chinese report: `paper/zh_report/build.sh` (fetches Noto CJK fonts, then checks the log for
 overfull lines / undefined refs). Numbers must agree across `results/`, the paper and the report.
 

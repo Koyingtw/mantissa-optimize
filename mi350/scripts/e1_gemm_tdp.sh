@@ -46,17 +46,18 @@ for cap in $CAPS; do
     [[ $pass == B ]] && list=("${rev[@]}")
     for shape in "${shapes[@]}"; do
     for c in "${list[@]}"; do
-      IFS=: read -r dtype frac low <<<"$c"
+      IFS=: read -r dtype frac low ifrac <<<"$c"
       low=${low:-zero}
       extra=()
       envs=()
       [[ $dtype == bf16 || $dtype == fp8 ]] && extra=(--k 8192)
       if [[ $shape != default ]]; then IFS=x read -r sm sn sk <<<"$shape"; extra=(--m "$sm" --n "$sn" --k "$sk"); fi
-      # g8:<moduli>：FP64 GEMM 交給 GEMMul8（Ozaki-II，INT8）以 LD_PRELOAD 攔截 hipblasDgemm；運算元保留全部位元
+      # g8:<moduli>[:<low>:<輸入位元>]：FP64 GEMM 交給 GEMMul8（Ozaki-II，INT8）以 LD_PRELOAD 攔截 hipblasDgemm；
+      # 運算元預設保留全部 52 個小數位元，第四欄可先截斷輸入（截斷 + emulation 疊加）
       emu=none
       if [[ $dtype == g8 ]]; then
         envs=(LD_PRELOAD="$SW/gemmul8/lib/libgemmul8.so" GEMMUL8_NUM_MOD_D_GEMM="$frac" GEMMUL8_FASTMODE_D_GEMM=1)
-        emu=g8m$frac; dtype=fp64; frac=52
+        emu=g8m$frac; dtype=fp64; frac=${ifrac:-52}
       fi
       bench=bin/gemm_mant_bench
       # 非 GEMM 的 FP64 核心（向量 FMA 迴圈、n-body、STREAM copy/triad）

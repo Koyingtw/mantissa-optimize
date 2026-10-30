@@ -75,9 +75,24 @@ __device__ __forceinline__ float reduce32(float v, int frac, int round) {
   return v;
 }
 
-__global__ void fill64(double* x, size_t n, uint64_t seed, int frac, int round) {
+// Exponent spread (range experiment, FP64 only): value = uniform[-1, 1) * 2^e with e ~ U(-S/2, S/2), i.e.
+// log-uniform magnitudes over S binades. Mode 0 draws e per element, so every row and column spans S binades;
+// mode 1 draws one e per row of A and per column of B, so each row/column is narrow (what per-row scaled
+// emulation sees) while the matrix as a whole still spans S binades (what a per-tensor format sees).
+__constant__ double g_spread = 0;
+__constant__ int g_spread_mode = 0;
+
+// col_key: the operand's scaling unit is a column (B, k x n) rather than a row (A, m x k); ld = leading dim.
+__device__ __forceinline__ double spread_scale(uint64_t seed, size_t i, size_t ld, int col_key) {
+  if (g_spread == 0) return 1.0;
+  const size_t key = g_spread_mode == 0 ? i : (col_key ? i / ld : i % ld);
+  const double u = (double)(splitmix64(splitmix64(seed + 0x5eedull) ^ (key * 0xd1b54a32d192ed03ull)) >> 11) * 0x1.0p-53;
+  return exp2((u - 0.5) * g_spread);
+}
+
+__global__ void fill64(double* x, size_t n, uint64_t seed, int frac, int round, size_t ld, int col_key) {
   for (size_t i = blockIdx.x * (size_t)blockDim.x + threadIdx.x; i < n; i += (size_t)gridDim.x * blockDim.x)
-    x[i] = reduce64(uniform_pm1(seed, i), frac, round);
+    x[i] = reduce64(uniform_pm1(seed, i) * spread_scale(seed, i, ld, col_key), frac, round);
 }
 
 __global__ void fill32(float* x, size_t n, uint64_t seed, int frac, int round) {
@@ -117,6 +132,14 @@ __global__ void fill8(__hip_fp8_e4m3* x, size_t n, uint64_t seed, int frac) {
   }
 }
 
+// Elementwise relative error |c - ref| / |ref| at ns evenly spaced entries (-1 where ref == 0).
+__global__ void relerr_sample(const double* c, const double* ref, size_t stride, size_t ns, double* out) {
+  for (size_t j = blockIdx.x * (size_t)blockDim.x + threadIdx.x; j < ns; j += (size_t)gridDim.x * blockDim.x) {
+    const double r = ref[j * stride];
+    out[j] = r == 0 ? -1.0 : fabs(c[j * stride] - r) / fabs(r);
+  }
+}
+
 // Accuracy check: sum (c - ref)^2 and sum ref^2 with one atomic per block.
 template <typename T>
 __device__ __forceinline__ double as_double(T v) { return (double)v; }
@@ -147,7 +170,8 @@ static double now_unix() {
 
 int main(int argc, char** argv) {
   std::string dtype = "fp64", tag = "run";
-  int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0;
+  int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0, spread_mode = 0;
+  double spread = 0;
   long m = 32768, n = 32768, k = 2048;
   double warmup_s = 10, measure_s = 30;
   for (int i = 1; i < argc; ++i) {
@@ -167,6 +191,8 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--ta")) ta = 1;  // FP64 only: A stored k x m, op(A) = A^T
     else if (!strcmp(argv[i], "--tb")) tb = 1;  // FP64 only: B stored n x k, op(B) = B^T
     else if (!strcmp(argv[i], "--check")) check = 1;    // relative error vs FP64 on the unreduced data
+    else if (!strcmp(argv[i], "--spread")) spread = atof(next());  // exponent spread in binades (see g_spread)
+    else if (!strcmp(argv[i], "--spread-mode")) spread_mode = !strcmp(next(), "row");  // elem | row
     else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const
       const char* s = next();
       low_mode = !strcmp(s, "ones") ? 1 : !strcmp(s, "const") ? 2 : 0;
@@ -184,7 +210,10 @@ int main(int argc, char** argv) {
   CK(hipSetDevice(device));
   char bdf[32];
   CK(hipDeviceGetPCIBusId(bdf, sizeof(bdf), device));
+  if (spread != 0 && (!is64 || ta || tb)) { fprintf(stderr, "--spread needs --dtype fp64 without --ta/--tb\n"); return 2; }
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_low_mode), &low_mode, sizeof(int)));
+  CK(hipMemcpyToSymbol(HIP_SYMBOL(g_spread), &spread, sizeof(double)));
+  CK(hipMemcpyToSymbol(HIP_SYMBOL(g_spread_mode), &spread_mode, sizeof(int)));
   hipblasHandle_t h;
   CB(hipblasCreate(&h));
   const size_t esz = is64 ? 8 : is32 ? 4 : is8 ? 1 : 2, csz = is64 ? 8 : is8 ? 2 : 4;
@@ -194,8 +223,8 @@ int main(int argc, char** argv) {
   CK(hipMalloc(&C, (size_t)m * n * csz));
   CK(hipMemset(C, 0, (size_t)m * n * csz));
   if (is64) {
-    fill64<<<4096, 256>>>((double*)A, (size_t)m * k, 1, only_b ? native : frac, round);
-    fill64<<<4096, 256>>>((double*)B, (size_t)k * n, 2, only_a ? native : frac, round);
+    fill64<<<4096, 256>>>((double*)A, (size_t)m * k, 1, only_b ? native : frac, round, m, 0);
+    fill64<<<4096, 256>>>((double*)B, (size_t)k * n, 2, only_a ? native : frac, round, k, 1);
   } else if (is32) {
     fill32<<<4096, 256>>>((float*)A, (size_t)m * k, 1, only_b ? native : frac, round);
     fill32<<<4096, 256>>>((float*)B, (size_t)k * n, 2, only_a ? native : frac, round);
@@ -273,7 +302,7 @@ int main(int argc, char** argv) {
   }
   const double t_end = now_unix();
   // Accuracy of this path: FP64 GEMM on the original, unreduced values in the same layout.
-  double rel_err = -1;
+  double rel_err = -1, err_p50 = -1, err_p99 = -1;
   if (check) {
     double *Ar, *Br, *Cr, *acc;
     CK(hipMalloc(&Ar, (size_t)m * k * 8));
@@ -283,8 +312,8 @@ int main(int argc, char** argv) {
     CK(hipMemset(acc, 0, 2 * sizeof(double)));
     const int zero_mode = 0;  // the reference always holds the random low bits
     CK(hipMemcpyToSymbol(HIP_SYMBOL(g_low_mode), &zero_mode, sizeof(int)));
-    fill64<<<4096, 256>>>(Ar, (size_t)m * k, 1, 52, 0);
-    fill64<<<4096, 256>>>(Br, (size_t)k * n, 2, 52, 0);
+    fill64<<<4096, 256>>>(Ar, (size_t)m * k, 1, 52, 0, m, 0);
+    fill64<<<4096, 256>>>(Br, (size_t)k * n, 2, 52, 0, k, 1);
     // The reference uses the strided-batched entry point (batch 1) so an interposer on hipblasDgemm /
     // rocblas_dgemm does not also reduce the reference.
     if (is8)  // D = A^T B with A stored k x m
@@ -299,14 +328,32 @@ int main(int argc, char** argv) {
     double hacc[2];
     CK(hipMemcpy(hacc, acc, sizeof(hacc), hipMemcpyDeviceToHost));
     rel_err = sqrt(hacc[0] / hacc[1]);
+    // elementwise relative error on up to 2^20 evenly spaced entries (inf/nan count as inf): the Frobenius error
+    // is dominated by the largest entries, while wide spreads hurt the small ones
+    if (is64) {
+      const size_t ns = nn < (1u << 20) ? nn : (1u << 20), stride = nn / ns;
+      double* es;
+      CK(hipMalloc(&es, ns * sizeof(double)));
+      relerr_sample<<<1024, 256>>>((const double*)C, Cr, stride, ns, es);
+      std::vector<double> hs(ns), v;
+      CK(hipMemcpy(hs.data(), es, ns * sizeof(double), hipMemcpyDeviceToHost));
+      CK(hipFree(es));
+      for (double x : hs) if (!(x < 0)) v.push_back(std::isnan(x) ? INFINITY : x);
+      if (!v.empty()) {
+        std::sort(v.begin(), v.end());
+        err_p50 = v[v.size() / 2];
+        err_p99 = v[(size_t)(v.size() * 0.99)];
+      }
+    }
     CK(hipFree(Ar)); CK(hipFree(Br)); CK(hipFree(Cr)); CK(hipFree(acc));
   }
   double lo = rates[0], hi = rates[0];
   for (double r : rates) { lo = r < lo ? r : lo; hi = r > hi ? r : hi; }
-  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e\n",
+  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e spread=%g smode=%s err_p50=%.3e err_p99=%.3e\n",
          tag.c_str(), device, bdf, dtype.c_str(), frac, only_a, only_b, ta, tb,
          low_mode == 1 ? "ones" : low_mode == 2 ? "const" : "zero", round ? "nearest" : "trunc", m, n, k, calls,
-         calls * flop / (busy_ms * 1e-3) / 1e12, lo, hi, t_begin, t_end, rel_err);
+         calls * flop / (busy_ms * 1e-3) / 1e12, lo, hi, t_begin, t_end, rel_err, spread, spread_mode ? "row" : "elem",
+         err_p50, err_p99);
   CB(hipblasDestroy(h));
   return 0;
 }

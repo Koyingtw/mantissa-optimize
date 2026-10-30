@@ -11,9 +11,12 @@
 // usage: gp_chol --device D --variants "native t36n t28n t28n t36n native" [--n 80000] [--nb 1024]
 //                [--ranges "0.02 0.03 0.04 0.05 0.06 0.08"] [--nugget 1e-4] [--seed 1] [--tag s]
 //   variant: native | t<k><n|t> (k fraction bits kept, n = nearest, t = truncate); a variant listed twice
-//   is its B pass. Prints one RESULT_GP line per variant (log-likelihoods, deviation from the first native
+//   is its B pass. --hipblas runs the trailing DGEMM through hipblasDgemm instead of rocblas_dgemm, so that
+//   GEMMul8's LD_PRELOAD hook (which intercepts hipBLAS) can replace it with INT8 emulation.
+//   Prints one RESULT_GP line per variant (log-likelihoods, deviation from the first native
 //   run, wall time, Unix start/end).
 #include <hip/hip_runtime.h>
+#include <hipblas/hipblas.h>
 #include <rocblas/rocblas.h>
 #include <rocsolver/rocsolver.h>
 
@@ -78,6 +81,7 @@ __global__ void log_diag_sum(const double* A, long n, double* out) {
 
 struct Ctx {
   rocblas_handle h;
+  hipblasHandle_t hb = nullptr;  // set when the trailing DGEMM goes through hipBLAS
   long n, nb;
   double* Lt;      // panel scratch, (n - nb) x nb
   rocblas_int* info;
@@ -106,8 +110,13 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
     CR(rocblas_dtrsm(c.h, rocblas_side_right, rocblas_fill_lower, rocblas_operation_transpose,
                      rocblas_diagonal_non_unit, r, b, &one, D, n, A + (j + b) + j * n, n));
     copy_reduce<<<4096, 256>>>(A + (j + b) + j * n, n, c.Lt, r, b, add, mask);
-    CR(rocblas_dgemm(c.h, rocblas_operation_none, rocblas_operation_transpose, r, r, b, &mone, c.Lt, r, c.Lt, r,
-                     &one, A + (j + b) + (j + b) * n, n));
+    if (c.hb) {
+      if (hipblasDgemm(c.hb, HIPBLAS_OP_N, HIPBLAS_OP_T, r, r, b, &mone, c.Lt, r, c.Lt, r, &one,
+                       A + (j + b) + (j + b) * n, n) != HIPBLAS_STATUS_SUCCESS) { fprintf(stderr, "hipblasDgemm failed\n"); exit(1); }
+    } else {
+      CR(rocblas_dgemm(c.h, rocblas_operation_none, rocblas_operation_transpose, r, r, b, &mone, c.Lt, r, c.Lt, r,
+                       &one, A + (j + b) + (j + b) * n, n));
+    }
   }
   CK(hipDeviceSynchronize());
   return true;
@@ -129,7 +138,7 @@ static double loglik(Ctx& c, const double* A, const double* y, double* z, double
 
 int main(int argc, char** argv) {
   long n = 80000, nb = 1024;
-  int device = 0;
+  int device = 0, use_hipblas = 0;
   uint64_t seed = 1;
   double nugget = 1e-4;
   std::string variants = "native", ranges_s = "0.02 0.03 0.04 0.05 0.06 0.08", tag = "run";
@@ -143,6 +152,7 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--variants")) variants = next();
     else if (!strcmp(argv[i], "--ranges")) ranges_s = next();
     else if (!strcmp(argv[i], "--tag")) tag = next();
+    else if (!strcmp(argv[i], "--hipblas")) use_hipblas = 1;
     else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
   }
   std::vector<double> ranges;
@@ -153,6 +163,7 @@ int main(int argc, char** argv) {
   c.nb = nb;
   CR(rocblas_create_handle(&c.h));
   CR(rocblas_set_pointer_mode(c.h, rocblas_pointer_mode_host));
+
   double *A, *xy, *y, *z, *acc;
   CK(hipMalloc(&A, (size_t)n * n * 8));
   CK(hipMalloc(&c.Lt, (size_t)(n - nb) * nb * 8));
@@ -183,6 +194,8 @@ int main(int argc, char** argv) {
          (unsigned long long)seed, device, bdf);
   fflush(stdout);
 
+  // the observations are generated with rocBLAS above, so an emulated run sees exactly the same data
+  if (use_hipblas && hipblasCreate(&c.hb) != HIPBLAS_STATUS_SUCCESS) { fprintf(stderr, "hipblasCreate failed\n"); return 1; }
   std::vector<double> ref;
   std::map<std::string, int> seen;
   std::istringstream vs(variants);
@@ -209,7 +222,7 @@ int main(int argc, char** argv) {
     std::ostringstream ll, dl;
     for (size_t i = 0; i < lls.size(); ++i) {
       char b1[64], b2[64];
-      snprintf(b1, sizeof b1, "%s%.6f", i ? " " : "", lls[i]);
+      snprintf(b1, sizeof b1, "%s%.10f", i ? " " : "", lls[i]);
       snprintf(b2, sizeof b2, "%s%.3e", i ? " " : "", ref.empty() ? NAN : lls[i] - ref[i]);
       ll << b1;
       dl << b2;

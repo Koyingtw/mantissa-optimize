@@ -35,14 +35,16 @@ def load(ids, logdir):
             w = window_stats(smi, g, float(kv["t_begin"]), float(kv["t_end"]))
             dtype, frac = kv["dtype"], int(kv["frac"])
             emu = kv.get("emu", "none")
-            if emu.startswith("g8m"):  # GEMMul8 emulation：dtype g8、frac 欄記 moduli 數
-                dtype, frac = "g8", int(emu[3:])
+            if emu.startswith("g8m"):  # GEMMul8 emulation：dtype g8、frac 欄記 moduli 數；輸入有截斷時記成 g8t<輸入位元>
+                dtype, frac = ("g8" if frac == 52 else f"g8t{frac}"), int(emu[3:])
             rows.append(dict(id=i, cap=int(kv["cap"]), pass_=kv["pass"], gpu=g, dtype=dtype, frac=frac,
                              low=kv["low"], m=int(kv["m"]), n=int(kv["n"]), k=int(kv["k"]),
-                             tflops=float(kv["tflops"]), rel_err=float(kv.get("rel_err", "nan")), **w))
+                             tflops=float(kv["tflops"]), rel_err=float(kv.get("rel_err", "nan")),
+                             spread=float(kv.get("spread", 0)), smode=kv.get("smode", "elem"),
+                             err_p50=float(kv.get("err_p50", "nan")), err_p99=float(kv.get("err_p99", "nan")), **w))
     d = pd.DataFrame(rows)
     d["gflops_per_j"] = d.tflops * 1e3 / d.power_acc_w
-    d["base"] = d.dtype.replace({"g8": "fp64"})  # 配對用的原生格式
+    d["base"] = d.dtype.where(~d.dtype.str.startswith("g8"), "fp64")  # 配對用的原生格式
     return d
 
 
@@ -68,16 +70,18 @@ def delta_w(native_curve, perf, cap):
 
 
 def summarize(d):
-    key = ["cap", "pass_", "gpu", "base", "m", "n", "k"]
+    key = ["cap", "pass_", "gpu", "base", "m", "n", "k", "spread", "smode"]
     nat = d[(d.dtype == d.base) & (d.frac == d.base.map(NATIVE)) & (d.low == "zero")].set_index(key)
     out = []
-    for (cap, dtype, frac, low, m, n, k), g in d.groupby(["cap", "dtype", "frac", "low", "m", "n", "k"]):
+    for (cap, dtype, frac, low, m, n, k, spread, smode), g in d.groupby(["cap", "dtype", "frac", "low", "m", "n", "k",
+                                                                         "spread", "smode"]):
         b = nat.reindex(g.set_index(key).index)
         r_perf = g.tflops.values / b.tflops.values
         r_pow = g.power_acc_w.values / b.power_acc_w.values
         r_eff = g.gflops_per_j.values / b.gflops_per_j.values
         lo, hi = ci(r_perf - 1)
-        out.append(dict(cap=cap, dtype=dtype, frac=frac, low=low, m=m, n=n, k=k, rel_err=g.rel_err.mean(),
+        out.append(dict(cap=cap, dtype=dtype, frac=frac, low=low, m=m, n=n, k=k, spread=spread, smode=smode,
+                        rel_err=g.rel_err.mean(), err_p50=g.err_p50.median(), err_p99=g.err_p99.max(),
                         n_meas=len(g), tflops=g.tflops.mean(),
                         power_w=g.power_acc_w.mean(), gfxclk=g.gfxclk.mean(), ppt_frac=g.ppt_frac.mean(),
                         thm_frac=g.thm_frac.mean(), t_hot_max=g.t_hot_max.max(), gflops_per_j=g.gflops_per_j.mean(),
@@ -88,12 +92,14 @@ def summarize(d):
     # ΔW：每個 dtype 的原生曲線
     dws = []
     for _, r in s.iterrows():
-        bt = "fp64" if r["dtype"] == "g8" else r["dtype"]
-        nc = s[(s.dtype == bt) & (s.frac == NATIVE[bt]) & (s.low == "zero") & (s.k == r["k"]) & (s.m == r["m"])]
+        bt = "fp64" if r["dtype"].startswith("g8") else r["dtype"]
+        nc = s[(s.dtype == bt) & (s.frac == NATIVE[bt]) & (s.low == "zero") & (s.k == r["k"]) & (s.m == r["m"]) &
+               (s.spread == r["spread"]) & (s.smode == r["smode"])]
         dw, lower = delta_w([tuple(x) for x in nc[["cap", "tflops"]].values], r["tflops"], r["cap"])
         dws.append((">" if lower else "") + ("" if np.isnan(dw) else f"{dw:.0f}"))
     s["delta_w"] = dws
-    return s.sort_values(["dtype", "k", "cap", "low", "frac"], ascending=[True, True, False, True, False])
+    return s.sort_values(["dtype", "spread", "smode", "k", "cap", "low", "frac"],
+                         ascending=[True, True, True, True, False, True, False])
 
 
 def main():
