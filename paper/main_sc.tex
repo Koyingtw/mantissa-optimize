@@ -38,21 +38,21 @@
 \maketitle
 
 \begin{abstract}
-When a GPU runs at its power limit, the energy of every operation sets the clock. We study a format-preserving way to
-lower that energy: zeroing, in software, the low-order mantissa bits an application does not need, on the original
-FP64, BF16 or FP8 units. On an NVIDIA GH200 cluster and two 8-GPU AMD MI350X nodes, filling the discarded bits with ones
-instead of zeros, which stops them toggling without making them zero, retains 65--97\pct{} of the saving: switching
-activity is the main contributor. A two-parameter model built on this predicts a truncated kernel's speedup under every
-cap from the native curve, the idle power and one or two measurements, within 1.5 and 2.1 percentage points on average
-on GEMMs and 1.6 on two applications not used to develop it.
+When a GPU runs at its power limit, the energy of each operation sets the clock. We lower that energy without changing
+the format: software zeroes the low-order mantissa bits an application does not need, and the original FP64, BF16 or FP8
+units execute. On an NVIDIA GH200 cluster and two 8-GPU AMD MI350X nodes, filling the discarded bits with ones instead of
+zeros, which stops them toggling without making them zero, retains 65--97\pct{} of the saving: switching activity is the
+main contributor. A two-parameter model built on this predicts a truncated kernel's speedup under every cap from the
+native curve, the idle power and one or two measurements, within 1.5--2.1 percentage points on average for GEMMs and 1.6
+for two applications not used to build it.
 MI350X is power-bound at its stock 1000\W{} limit, so truncation pays at default settings: 4.6--5.1\pct{} for FP64 HPL (36
-significand bits), 4.9--5.1\pct{} for HPL-MxP on a diagonally dominant test matrix (3 BF16 bits), 7.4\pct{} for a
-Gaussian-process likelihood and 10\pct{} for DF-MP2, and 7--19\pct{} at 500\W, with every accuracy check passed. It is not
-always the best choice. INT8 emulation of FP64 (GEMMul8) makes HPL 36\pct{} and DF-MP2 67\pct{} faster than native at
-1000\W, but it is slower than native when the inner dimension is 1024 (the Gaussian process: $-11\pct$), loses most of its
-lead under a tight cap (HPL at 500\W: 4\pct{} ahead of truncation), needs workspace that limits problem size, and can fail
-silently, through precision loss on wide per-row exponent spans or, in the build we used, a size overflow. Which method wins is set by shape, cap, memory and precision; truncation is the one that keeps the format and
-also applies to BF16 and FP8, for which no emulation exists.
+significand bits), 4.9--5.1\pct{} for HPL-MxP on a diagonally dominant matrix (3 BF16 bits), 7.4\pct{} for a
+Gaussian-process likelihood and 10\pct{} for DF-MP2, and 7--19\pct{} at 500\W, with every accuracy check passed.
+INT8 emulation of FP64 (GEMMul8) is faster where inner dimensions are long and the cap generous (HPL +32\pct, DF-MP2
++67\pct{} at 1000\W), but slower than native at inner dimension 1024 ($-11\pct$), behind truncation for HPL at 500\W{} and
+matched accuracy ($-0.4$ versus $+8.0\pct$), limited by workspace memory, and fails silently: it loses precision on
+wide per-row exponent spans and, in the build we used, returns wrong results beyond $2^{32}$ output elements. Truncation keeps the format and is the only option for
+BF16 and FP8.
 \end{abstract}
 
 \begin{IEEEkeywords}
