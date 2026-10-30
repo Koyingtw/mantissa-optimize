@@ -39,34 +39,45 @@ def save(fig, name):
     print("wrote", os.path.join(OUT, name))
 
 
-def mi350_e1():
-    """MI350X E1 on the fine cap grid (node n02) with 95% intervals."""
-    s = pd.read_csv(f"{RES}/e1n02_1029_0502_summary.csv")
-    s = s[s.low == "zero"].copy()
-    s["ci95"] = (s.speedup_hi - s.speedup_lo) / 2
-    return s.rename(columns={"speedup_pct": "gain_pct"})
+def mi350_windows(rid):
+    """Window-level speedups: per (cap, format, pass) the 8 GPUs are averaged first (they run at once in one chassis),
+    then divided by the native window of the same pass."""
+    d = pd.read_csv(f"{RES}/{rid}_raw.csv")
+    d = d[d.low == "zero"]
+    w = d.groupby(["cap", "dtype", "frac", "pass_"]).tflops.mean().reset_index()
+    nat = {"fp64": 52, "bf16": 7, "fp8": 3}
+    base = w[w.frac == w.dtype.map(nat)].set_index(["cap", "dtype", "pass_"]).tflops
+    w["gain"] = 100 * (w.tflops / base.reindex(pd.MultiIndex.from_frame(w[["cap", "dtype", "pass_"]])).values - 1)
+    return w
 
 
 def fig_gemm_two_platforms():
-    """GEMM speedup vs cap, GH200 (left) and MI350X (right), same series where both exist."""
+    """GEMM speedup vs cap. GH200: 95% t intervals over node-pair samples (3 nodes x 2 pairs). MI350X: mean of node n02's
+    two measurement windows (8 GPUs averaged per window), bars spanning the two windows; open markers: node n01."""
     gh = pd.read_csv(f"{GH}/e1_ci.csv")
-    mi = mi350_e1()
+    w2, w1 = mi350_windows("e1n02_1029_0502"), mi350_windows("e1_1028_1709")
     fig, axes = plt.subplots(1, 2, figsize=(WIDE, 2.1), sharey=True)
     series_gh = [("fp64", 35, "FP64, 35 frac. bits", C[0], "o"), ("fp64", 27, "FP64, 27", C[1], "s"),
                  ("bf16", 3, "BF16, 3", C[3], "^"), ("bf16", 0, "BF16, 0", C[2], "D")]
     series_mi = [("fp64", 36, "FP64, 36 frac. bits", C[0], "o"), ("fp64", 27, "FP64, 27", C[1], "s"),
                  ("bf16", 3, "BF16, 3", C[3], "^"), ("bf16", 0, "BF16, 0", C[2], "D"),
                  ("fp8", 0, "FP8 E4M3, 0", C[4], "v")]
-    for ax, d, series, title, xcol in ((axes[0], gh, series_gh, "NVIDIA GH200 (module cap)", "tdp"),
-                                       (axes[1], mi, series_mi, "AMD MI350X (PPT cap)", "cap")):
-        for dt, fr, lab, c, mk in series:
-            g = d[(d.dtype == dt) & (d.frac == fr)].sort_values(xcol)
-            if g.empty:
-                continue
-            ax.errorbar(g[xcol], g.gain_pct, yerr=g.ci95, label=lab, color=c, marker=mk, ms=3, lw=1, capsize=2)
+    ax = axes[0]
+    for dt, fr, lab, c, mk in series_gh:
+        g = gh[(gh.dtype == dt) & (gh.frac == fr)].sort_values("tdp")
+        ax.errorbar(g.tdp, g.gain_pct, yerr=g.ci95, label=lab, color=c, marker=mk, ms=3, lw=1, capsize=2)
+    ax.set_title("NVIDIA GH200 (module cap)")
+    ax = axes[1]
+    for dt, fr, lab, c, mk in series_mi:
+        g = w2[(w2.dtype == dt) & (w2.frac == fr)].groupby("cap").gain.agg(["mean", "min", "max"]).reset_index()
+        ax.errorbar(g["cap"], g["mean"], yerr=[g["mean"] - g["min"], g["max"] - g["mean"]], label=lab, color=c,
+                    marker=mk, ms=3, lw=1, capsize=2)
+        h = w1[(w1.dtype == dt) & (w1.frac == fr)].groupby("cap").gain.mean().reset_index()
+        ax.scatter(h["cap"], h["gain"], marker=mk, s=14, facecolors="none", edgecolors=c, lw=0.8, zorder=3)
+    ax.set_title("AMD MI350X (PPT cap)")
+    for ax in axes:
         ax.axhline(0, color="#999999", lw=0.6)
         ax.axvline(1000, color="#bbbbbb", lw=0.6, ls=":")
-        ax.set_title(title)
         ax.set_xlabel("Power cap (W)")
         ax.legend(frameon=False, ncol=2, loc="upper right")
     axes[0].set_ylabel("GEMM speedup vs. native (%)")

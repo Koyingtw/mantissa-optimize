@@ -11,7 +11,7 @@ cd "$ROOT"
 source env.sh
 CAPS=${CAPS:-"1000 800 650 500"}
 VARIANTS=${VARIANTS:-"native t32n t20n t20n t32n native"}
-EMU=${EMU:-"12 14"}
+EMU=${EMU-"12 14"}   # 設成空字串可略過 emulation
 MOL=${MOL:-113_Taxol}
 MP2_DIR=${MP2_DIR:-/tmp/mp2_$MOL}
 REPEAT=${REPEAT:-2}

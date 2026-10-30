@@ -89,7 +89,7 @@ for ((r = 0; r < REPEAT; r++)); do passes+=("A$r" "B$r"); done
 # PAIRWISE=1：每個非參考變體各自和參考（VARIANTS 的第一個）組成兩變體的 ABBA 區塊（ref v v ref），每個變體在區塊內
 # 的位置平衡。三個以上變體的 ABBA（v1 v2 v3 | v3 v2 v1）會讓中間的變體永遠緊接在另一次執行之後；n01 的 HPL-MxP
 # 800 W 實測到機箱風扇隨前一次執行的溫度而振盪，中間那個變體因此系統性地涼了約 12 °C（見實驗日誌 19:20）。
-# MIN_REST：每次執行前至少休息幾秒，再等溫度降到 START_TEMP。
+# MIN_REST：每次執行前至少休息幾秒，再等溫度降到 START_TEMP。PRECOND=<秒>：改為每次執行前跑同一個固定負載（熱預處理）。
 MIN_REST=${MIN_REST:-0}
 blocks=()
 if [[ ${PAIRWISE:-0} == 1 ]]; then
@@ -108,9 +108,21 @@ for cap in $CAPS; do
     [[ $pass == B* ]] && list=("${brev[@]}")
     [[ $pass == W ]] && list=("${bvar[0]}")
     for v in "${list[@]}"; do
-      sleep "$MIN_REST"
-      waited=$MIN_REST
-      while (( $(hot_max) > START_TEMP && waited < COOL_MAX + MIN_REST )); do sleep 5; waited=$((waited + 5)); done
+      if (( ${PRECOND:-0} > 0 )); then
+        # 熱預處理：每次執行前，所有變體都先跑同一個固定負載（8 張 GPU 原生 BF16 GEMM，PRECOND 秒），讓起始溫度與
+        # 風扇狀態一致，取代「降溫到 START_TEMP」（那會讓起始狀態取決於前一次執行，見實驗日誌 00:55）
+        pre=()
+        for g in 0 1 2 3 4 5 6 7; do
+          bin/gemm_mant_bench --device "$g" --dtype bf16 --k 8192 --warmup 0 --seconds "$PRECOND" --tag precond >/dev/null &
+          pre+=($!)
+        done
+        wait "${pre[@]}"
+        waited=0
+      else
+        sleep "$MIN_REST"
+        waited=$MIN_REST
+        while (( $(hot_max) > START_TEMP && waited < COOL_MAX + MIN_REST )); do sleep 5; waited=$((waited + 5)); done
+      fi
       tools/pcap.sh show | awk -v w="${cap}W" '$2 != w {bad=1} END {exit bad}' || { echo "CAP RESET detected"; tools/pcap.sh "$cap"; }
       echo "=== RUN bench=$BENCH cap=$cap blk=$bi pass=$pass variant=$v t=$(date +%s.%N) cool=${waited}s hot=$(hot_max)"
       rc=0

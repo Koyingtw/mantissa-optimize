@@ -1,0 +1,602 @@
+id=gpemu_1030_0048 n=80000 caps=[1000 800 650 500] variants=[native native] repeat=2
+=== RUN cap=1000 round=0 cool=10s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106501 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.045s t_begin=1793321347.047 t_end=1793321386.092
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106498 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.142s t_begin=1793321347.074 t_end=1793321386.215
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106499 169249.0429368441 165854.5630726354 143794.1886936994] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.314s t_begin=1793321347.071 t_end=1793321386.384
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368443 165854.5630726356 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.423s t_begin=1793321347.036 t_end=1793321386.459
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.703s t_begin=1793321347.190 t_end=1793321386.893
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=40.186s t_begin=1793321347.227 t_end=1793321387.413
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=40.481s t_begin=1793321347.224 t_end=1793321387.705
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=40.523s t_begin=1793321347.270 t_end=1793321387.793
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936995] dll=[1.455e-10 1.164e-10 -5.821e-11 0.000e+00 5.821e-11 -1.746e-10] wall=39.393s t_begin=1793321386.092 t_end=1793321425.485
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106501 169249.0429368441 165854.5630726357 143794.1886936997] dll=[2.910e-11 5.821e-11 2.910e-10 -5.821e-11 5.821e-11 5.821e-11] wall=39.513s t_begin=1793321386.215 t_end=1793321425.728
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936996] dll=[5.821e-11 5.821e-11 5.821e-11 0.000e+00 0.000e+00 1.746e-10] wall=39.662s t_begin=1793321386.384 t_end=1793321426.046
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106501 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-5.821e-11 -1.164e-10 5.821e-11 0.000e+00 -5.821e-11 -1.164e-10] wall=39.961s t_begin=1793321386.893 t_end=1793321426.854
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936997] dll=[8.731e-11 0.000e+00 -5.821e-11 -2.910e-10 -1.164e-10 5.821e-11] wall=40.614s t_begin=1793321386.459 t_end=1793321427.072
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106499 169249.0429368441 165854.5630726355 143794.1886936997] dll=[-5.821e-11 1.164e-10 -2.328e-10 -1.164e-10 -1.164e-10 0.000e+00] wall=41.323s t_begin=1793321387.413 t_end=1793321428.736
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368440 165854.5630726356 143794.1886936998] dll=[-5.821e-11 0.000e+00 5.821e-11 -1.164e-10 5.821e-11 0.000e+00] wall=41.542s t_begin=1793321387.793 t_end=1793321429.335
+RESULT_GP tag=cap=1000,round=0,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[-8.731e-11 -5.821e-11 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=41.984s t_begin=1793321387.705 t_end=1793321429.689
+=== RUN cap=1000 round=0 emu=g8m12 cool=30s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.895s t_begin=1793321467.016 t_end=1793321468.911
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.916s t_begin=1793321467.030 t_end=1793321468.946
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.907s t_begin=1793321467.065 t_end=1793321468.971
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.928s t_begin=1793321467.053 t_end=1793321468.981
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.915s t_begin=1793321467.110 t_end=1793321469.024
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.986s t_begin=1793321467.143 t_end=1793321469.129
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.981s t_begin=1793321467.201 t_end=1793321469.182
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.000s t_begin=1793321467.197 t_end=1793321469.197
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.735s t_begin=1793321468.911 t_end=1793321470.646
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.740s t_begin=1793321468.946 t_end=1793321470.686
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.726s t_begin=1793321468.972 t_end=1793321470.697
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.744s t_begin=1793321468.981 t_end=1793321470.725
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.737s t_begin=1793321469.024 t_end=1793321470.762
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.814s t_begin=1793321469.129 t_end=1793321470.943
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.817s t_begin=1793321469.182 t_end=1793321471.000
+RESULT_GP tag=cap=1000,round=0,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.844s t_begin=1793321469.197 t_end=1793321471.042
+=== RUN cap=1000 round=0 emu=g8m14 cool=5s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.147s t_begin=1793321483.393 t_end=1793321485.541
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.167s t_begin=1793321483.397 t_end=1793321485.564
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.162s t_begin=1793321483.406 t_end=1793321485.567
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.152s t_begin=1793321483.432 t_end=1793321485.583
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.150s t_begin=1793321483.504 t_end=1793321485.654
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.197s t_begin=1793321483.519 t_end=1793321485.716
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.225s t_begin=1793321483.532 t_end=1793321485.757
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.266s t_begin=1793321483.583 t_end=1793321485.849
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.962s t_begin=1793321485.541 t_end=1793321487.503
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.979s t_begin=1793321485.564 t_end=1793321487.542
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.979s t_begin=1793321485.567 t_end=1793321487.546
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.972s t_begin=1793321485.583 t_end=1793321487.556
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.970s t_begin=1793321485.654 t_end=1793321487.625
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.023s t_begin=1793321485.716 t_end=1793321487.738
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.030s t_begin=1793321485.757 t_end=1793321487.788
+RESULT_GP tag=cap=1000,round=0,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.102s t_begin=1793321485.849 t_end=1793321487.951
+=== RUN cap=1000 round=1 cool=5s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726354 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.007s t_begin=1793321500.224 t_end=1793321539.231
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.107s t_begin=1793321500.235 t_end=1793321539.342
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.287s t_begin=1793321500.296 t_end=1793321539.582
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.356s t_begin=1793321500.270 t_end=1793321539.625
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=39.706s t_begin=1793321500.356 t_end=1793321540.062
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106499 169249.0429368441 165854.5630726356 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=40.121s t_begin=1793321500.415 t_end=1793321540.536
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=40.428s t_begin=1793321500.435 t_end=1793321540.863
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=40.484s t_begin=1793321500.446 t_end=1793321540.930
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106499 169249.0429368440 165854.5630726356 143794.1886936997] dll=[0.000e+00 5.821e-11 -5.821e-11 -1.746e-10 1.164e-10 5.821e-11] wall=39.371s t_begin=1793321539.231 t_end=1793321578.603
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936996] dll=[-8.731e-11 1.164e-10 5.821e-11 -5.821e-11 0.000e+00 -1.746e-10] wall=39.510s t_begin=1793321539.342 t_end=1793321578.852
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726355 143794.1886936996] dll=[5.821e-11 5.821e-11 0.000e+00 0.000e+00 -5.821e-11 0.000e+00] wall=39.647s t_begin=1793321539.582 t_end=1793321579.230
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936995] dll=[-8.731e-11 -5.821e-11 0.000e+00 1.164e-10 1.746e-10 -1.746e-10] wall=39.965s t_begin=1793321540.062 t_end=1793321580.027
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368440 165854.5630726356 143794.1886936997] dll=[-5.821e-11 5.821e-11 0.000e+00 -1.164e-10 0.000e+00 -5.821e-11] wall=40.545s t_begin=1793321539.625 t_end=1793321580.170
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726355 143794.1886936997] dll=[2.910e-11 0.000e+00 2.328e-10 0.000e+00 -1.164e-10 1.164e-10] wall=41.306s t_begin=1793321540.536 t_end=1793321581.841
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[-5.821e-11 0.000e+00 0.000e+00 -5.821e-11 5.821e-11 5.821e-11] wall=41.501s t_begin=1793321540.930 t_end=1793321582.431
+RESULT_GP tag=cap=1000,round=1,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726357 143794.1886936995] dll=[-2.910e-11 -1.164e-10 0.000e+00 -1.164e-10 1.164e-10 -1.746e-10] wall=41.952s t_begin=1793321540.863 t_end=1793321582.815
+=== RUN cap=1000 round=1 emu=g8m12 cool=30s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.894s t_begin=1793321620.134 t_end=1793321622.027
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.912s t_begin=1793321620.263 t_end=1793321622.175
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.905s t_begin=1793321620.277 t_end=1793321622.182
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.919s t_begin=1793321620.271 t_end=1793321622.190
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.900s t_begin=1793321620.373 t_end=1793321622.273
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.966s t_begin=1793321620.420 t_end=1793321622.386
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.001s t_begin=1793321620.407 t_end=1793321622.408
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.968s t_begin=1793321620.461 t_end=1793321622.429
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.725s t_begin=1793321622.028 t_end=1793321623.753
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.728s t_begin=1793321622.182 t_end=1793321623.910
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.737s t_begin=1793321622.175 t_end=1793321623.912
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.745s t_begin=1793321622.190 t_end=1793321623.935
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.731s t_begin=1793321622.273 t_end=1793321624.004
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.810s t_begin=1793321622.386 t_end=1793321624.196
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.797s t_begin=1793321622.429 t_end=1793321624.226
+RESULT_GP tag=cap=1000,round=1,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.830s t_begin=1793321622.408 t_end=1793321624.238
+=== RUN cap=1000 round=1 emu=g8m14 cool=5s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.149s t_begin=1793321636.590 t_end=1793321638.740
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.163s t_begin=1793321636.599 t_end=1793321638.763
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.162s t_begin=1793321636.624 t_end=1793321638.786
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.167s t_begin=1793321636.621 t_end=1793321638.788
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.157s t_begin=1793321636.650 t_end=1793321638.807
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.219s t_begin=1793321636.743 t_end=1793321638.961
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.210s t_begin=1793321636.789 t_end=1793321638.999
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.245s t_begin=1793321636.787 t_end=1793321639.032
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.977s t_begin=1793321638.740 t_end=1793321640.717
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.975s t_begin=1793321638.763 t_end=1793321640.738
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.983s t_begin=1793321638.786 t_end=1793321640.770
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.983s t_begin=1793321638.788 t_end=1793321640.771
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=1.976s t_begin=1793321638.807 t_end=1793321640.783
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.022s t_begin=1793321638.962 t_end=1793321640.983
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.031s t_begin=1793321638.999 t_end=1793321641.030
+RESULT_GP tag=cap=1000,round=1,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.089s t_begin=1793321639.032 t_end=1793321641.121
+=== RUN cap=800 round=0 cool=5s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+RESULT_GP tag=cap=800,round=0,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106499 169249.0429368440 165854.5630726355 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.113s t_begin=1793321655.391 t_end=1793321700.504
+RESULT_GP tag=cap=800,round=0,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368440 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.178s t_begin=1793321655.354 t_end=1793321700.532
+RESULT_GP tag=cap=800,round=0,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.214s t_begin=1793321655.386 t_end=1793321700.600
+RESULT_GP tag=cap=800,round=0,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106499 169249.0429368442 165854.5630726355 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.849s t_begin=1793321655.537 t_end=1793321701.387
+RESULT_GP tag=cap=800,round=0,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368440 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=46.657s t_begin=1793321655.623 t_end=1793321702.280
+RESULT_GP tag=cap=800,round=0,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726354 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=47.449s t_begin=1793321655.746 t_end=1793321703.195
+RESULT_GP tag=cap=800,round=0,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936995] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=47.527s t_begin=1793321655.759 t_end=1793321703.286
+RESULT_GP tag=cap=800,round=0,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=47.812s t_begin=1793321655.819 t_end=1793321703.630
+RESULT_GP tag=cap=800,round=0,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113192 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726357 143794.1886936997] dll=[-1.455e-10 5.821e-11 5.821e-11 1.746e-10 1.746e-10 5.821e-11] wall=45.464s t_begin=1793321700.504 t_end=1793321745.968
+RESULT_GP tag=cap=800,round=0,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936997] dll=[2.910e-11 0.000e+00 0.000e+00 1.164e-10 0.000e+00 0.000e+00] wall=45.485s t_begin=1793321700.532 t_end=1793321746.018
+RESULT_GP tag=cap=800,round=0,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557428 165259.4707106500 169249.0429368440 165854.5630726355 143794.1886936996] dll=[-8.731e-11 1.164e-10 0.000e+00 -5.821e-11 0.000e+00 -5.821e-11] wall=45.538s t_begin=1793321700.600 t_end=1793321746.138
+RESULT_GP tag=cap=800,round=0,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726354 143794.1886936997] dll=[2.910e-11 0.000e+00 1.164e-10 5.821e-11 -1.164e-10 1.164e-10] wall=46.184s t_begin=1793321701.387 t_end=1793321747.571
+RESULT_GP tag=cap=800,round=0,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-2.910e-11 0.000e+00 0.000e+00 5.821e-11 5.821e-11 -5.821e-11] wall=47.545s t_begin=1793321702.280 t_end=1793321749.825
+RESULT_GP tag=cap=800,round=0,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-5.821e-11 0.000e+00 0.000e+00 -5.821e-11 0.000e+00 1.164e-10] wall=48.752s t_begin=1793321703.286 t_end=1793321752.038
+RESULT_GP tag=cap=800,round=0,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106499 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 -5.821e-11 -5.821e-11 -1.164e-10 5.821e-11 5.821e-11] wall=49.139s t_begin=1793321703.195 t_end=1793321752.333
+RESULT_GP tag=cap=800,round=0,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[-2.910e-11 -1.164e-10 5.821e-11 -1.164e-10 5.821e-11 5.821e-11] wall=48.883s t_begin=1793321703.631 t_end=1793321752.514
+=== RUN cap=800 round=0 emu=g8m12 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.514s t_begin=1793321820.974 t_end=1793321823.488
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.526s t_begin=1793321820.979 t_end=1793321823.505
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.511s t_begin=1793321820.998 t_end=1793321823.509
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.538s t_begin=1793321821.139 t_end=1793321823.678
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.616s t_begin=1793321821.297 t_end=1793321823.913
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.746s t_begin=1793321821.423 t_end=1793321824.169
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.728s t_begin=1793321821.451 t_end=1793321824.179
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.751s t_begin=1793321821.434 t_end=1793321824.184
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.350s t_begin=1793321823.489 t_end=1793321825.839
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.340s t_begin=1793321823.509 t_end=1793321825.849
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.354s t_begin=1793321823.505 t_end=1793321825.860
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.394s t_begin=1793321823.678 t_end=1793321826.072
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.469s t_begin=1793321823.913 t_end=1793321826.382
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.564s t_begin=1793321824.179 t_end=1793321826.743
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.577s t_begin=1793321824.169 t_end=1793321826.747
+RESULT_GP tag=cap=800,round=0,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.585s t_begin=1793321824.184 t_end=1793321826.770
+=== RUN cap=800 round=0 emu=g8m14 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.762s t_begin=1793321895.371 t_end=1793321898.133
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.780s t_begin=1793321895.384 t_end=1793321898.164
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.774s t_begin=1793321895.448 t_end=1793321898.222
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.864s t_begin=1793321895.488 t_end=1793321898.352
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.802s t_begin=1793321895.606 t_end=1793321898.408
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.043s t_begin=1793321895.680 t_end=1793321898.723
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.990s t_begin=1793321895.742 t_end=1793321898.732
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.091s t_begin=1793321895.740 t_end=1793321898.831
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.617s t_begin=1793321898.133 t_end=1793321900.750
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.629s t_begin=1793321898.164 t_end=1793321900.793
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.625s t_begin=1793321898.222 t_end=1793321900.848
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.685s t_begin=1793321898.352 t_end=1793321901.037
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.666s t_begin=1793321898.408 t_end=1793321901.073
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.814s t_begin=1793321898.733 t_end=1793321901.547
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.842s t_begin=1793321898.723 t_end=1793321901.565
+RESULT_GP tag=cap=800,round=0,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.936s t_begin=1793321898.831 t_end=1793321901.767
+=== RUN cap=800 round=1 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+RESULT_GP tag=cap=800,round=1,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106500 169249.0429368440 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.067s t_begin=1793321970.333 t_end=1793322015.400
+RESULT_GP tag=cap=800,round=1,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.219s t_begin=1793321970.187 t_end=1793322015.405
+RESULT_GP tag=cap=800,round=1,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936995] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.294s t_begin=1793321970.384 t_end=1793322015.679
+RESULT_GP tag=cap=800,round=1,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=45.889s t_begin=1793321970.414 t_end=1793322016.303
+RESULT_GP tag=cap=800,round=1,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106499 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=46.826s t_begin=1793321970.509 t_end=1793322017.335
+RESULT_GP tag=cap=800,round=1,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=47.670s t_begin=1793321970.636 t_end=1793322018.306
+RESULT_GP tag=cap=800,round=1,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=47.723s t_begin=1793321970.612 t_end=1793322018.335
+RESULT_GP tag=cap=800,round=1,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368443 165854.5630726355 143794.1886936995] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=47.921s t_begin=1793321970.701 t_end=1793322018.622
+RESULT_GP tag=cap=800,round=1,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726355 143794.1886936997] dll=[-1.164e-10 5.821e-11 1.164e-10 1.164e-10 0.000e+00 5.821e-11] wall=45.433s t_begin=1793322015.400 t_end=1793322060.833
+RESULT_GP tag=cap=800,round=1,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113192 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936996] dll=[-8.731e-11 -5.821e-11 0.000e+00 -5.821e-11 5.821e-11 0.000e+00] wall=45.530s t_begin=1793322015.405 t_end=1793322060.936
+RESULT_GP tag=cap=800,round=1,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936995] dll=[8.731e-11 -5.821e-11 0.000e+00 -1.164e-10 -5.821e-11 0.000e+00] wall=45.733s t_begin=1793322015.679 t_end=1793322061.412
+RESULT_GP tag=cap=800,round=1,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726356 143794.1886936998] dll=[-2.910e-11 5.821e-11 5.821e-11 0.000e+00 2.328e-10 1.164e-10] wall=46.164s t_begin=1793322016.303 t_end=1793322062.467
+RESULT_GP tag=cap=800,round=1,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936996] dll=[2.910e-11 5.821e-11 1.164e-10 5.821e-11 -5.821e-11 -5.821e-11] wall=47.618s t_begin=1793322017.335 t_end=1793322064.953
+RESULT_GP tag=cap=800,round=1,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726355 143794.1886936997] dll=[-8.731e-11 5.821e-11 5.821e-11 -5.821e-11 -1.164e-10 0.000e+00] wall=48.870s t_begin=1793322018.335 t_end=1793322067.205
+RESULT_GP tag=cap=800,round=1,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726355 143794.1886936995] dll=[8.731e-11 0.000e+00 0.000e+00 -1.164e-10 0.000e+00 0.000e+00] wall=48.946s t_begin=1793322018.622 t_end=1793322067.568
+RESULT_GP tag=cap=800,round=1,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936996] dll=[0.000e+00 5.821e-11 5.821e-11 0.000e+00 5.821e-11 -1.164e-10] wall=49.463s t_begin=1793322018.306 t_end=1793322067.769
+=== RUN cap=800 round=1 emu=g8m12 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.507s t_begin=1793322136.300 t_end=1793322138.807
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.521s t_begin=1793322136.316 t_end=1793322138.836
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.503s t_begin=1793322136.390 t_end=1793322138.893
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.507s t_begin=1793322136.409 t_end=1793322138.916
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.617s t_begin=1793322136.580 t_end=1793322139.197
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.750s t_begin=1793322136.667 t_end=1793322139.417
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.726s t_begin=1793322136.706 t_end=1793322139.432
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.742s t_begin=1793322136.721 t_end=1793322139.463
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.350s t_begin=1793322138.807 t_end=1793322141.157
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.357s t_begin=1793322138.836 t_end=1793322141.194
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.346s t_begin=1793322138.893 t_end=1793322141.239
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.367s t_begin=1793322138.916 t_end=1793322141.283
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.475s t_begin=1793322139.197 t_end=1793322141.673
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.571s t_begin=1793322139.417 t_end=1793322141.988
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.569s t_begin=1793322139.432 t_end=1793322142.001
+RESULT_GP tag=cap=800,round=1,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.593s t_begin=1793322139.463 t_end=1793322142.056
+=== RUN cap=800 round=1 emu=g8m14 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.789s t_begin=1793322210.542 t_end=1793322213.331
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.753s t_begin=1793322210.593 t_end=1793322213.346
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.793s t_begin=1793322210.595 t_end=1793322213.387
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.849s t_begin=1793322210.739 t_end=1793322213.588
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.812s t_begin=1793322210.882 t_end=1793322213.695
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.927s t_begin=1793322211.062 t_end=1793322213.990
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.014s t_begin=1793322211.006 t_end=1793322214.020
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.087s t_begin=1793322210.976 t_end=1793322214.063
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.608s t_begin=1793322213.346 t_end=1793322215.954
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.642s t_begin=1793322213.331 t_end=1793322215.973
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.614s t_begin=1793322213.388 t_end=1793322216.001
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.684s t_begin=1793322213.588 t_end=1793322216.272
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.652s t_begin=1793322213.695 t_end=1793322216.346
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.841s t_begin=1793322214.020 t_end=1793322216.861
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.872s t_begin=1793322213.990 t_end=1793322216.861
+RESULT_GP tag=cap=800,round=1,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=2.918s t_begin=1793322214.064 t_end=1793322216.981
+=== RUN cap=650 round=0 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=650,round=0,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=54.126s t_begin=1793322288.096 t_end=1793322342.222
+RESULT_GP tag=cap=650,round=0,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=54.382s t_begin=1793322288.105 t_end=1793322342.487
+RESULT_GP tag=cap=650,round=0,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=54.915s t_begin=1793322288.217 t_end=1793322343.132
+RESULT_GP tag=cap=650,round=0,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=55.407s t_begin=1793322288.227 t_end=1793322343.634
+RESULT_GP tag=cap=650,round=0,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=55.396s t_begin=1793322288.294 t_end=1793322343.690
+RESULT_GP tag=cap=650,round=0,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=59.007s t_begin=1793322288.647 t_end=1793322347.653
+RESULT_GP tag=cap=650,round=0,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=59.065s t_begin=1793322288.782 t_end=1793322347.847
+RESULT_GP tag=cap=650,round=0,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=60.071s t_begin=1793322288.911 t_end=1793322348.981
+RESULT_GP tag=cap=650,round=0,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726356 143794.1886936998] dll=[-5.821e-11 0.000e+00 5.821e-11 0.000e+00 -5.821e-11 -5.821e-11] wall=54.391s t_begin=1793322342.222 t_end=1793322396.613
+RESULT_GP tag=cap=650,round=0,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936996] dll=[-2.910e-11 0.000e+00 0.000e+00 -5.821e-11 5.821e-11 -1.746e-10] wall=54.715s t_begin=1793322342.487 t_end=1793322397.202
+RESULT_GP tag=cap=650,round=0,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106501 169249.0429368441 165854.5630726356 143794.1886936998] dll=[2.910e-11 -5.821e-11 1.164e-10 5.821e-11 -5.821e-11 0.000e+00] wall=55.284s t_begin=1793322343.132 t_end=1793322398.416
+RESULT_GP tag=cap=650,round=0,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936996] dll=[2.910e-11 -1.164e-10 1.746e-10 5.821e-11 0.000e+00 -5.821e-11] wall=55.864s t_begin=1793322343.690 t_end=1793322399.554
+RESULT_GP tag=cap=650,round=0,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726355 143794.1886936997] dll=[-2.910e-11 0.000e+00 -5.821e-11 0.000e+00 -1.164e-10 0.000e+00] wall=56.701s t_begin=1793322343.634 t_end=1793322400.335
+RESULT_GP tag=cap=650,round=0,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936996] dll=[-5.821e-11 -5.821e-11 5.821e-11 1.746e-10 5.821e-11 -1.164e-10] wall=60.399s t_begin=1793322347.847 t_end=1793322408.246
+RESULT_GP tag=cap=650,round=0,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936994] dll=[5.821e-11 5.821e-11 0.000e+00 -1.164e-10 -1.164e-10 -1.746e-10] wall=60.739s t_begin=1793322347.654 t_end=1793322408.392
+RESULT_GP tag=cap=650,round=0,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-2.910e-11 5.821e-11 -5.821e-11 -5.821e-11 0.000e+00 -5.821e-11] wall=61.721s t_begin=1793322348.981 t_end=1793322410.702
+=== RUN cap=650 round=0 emu=g8m12 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.539s t_begin=1793322480.685 t_end=1793322484.223
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.461s t_begin=1793322480.774 t_end=1793322484.235
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.559s t_begin=1793322480.708 t_end=1793322484.266
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.565s t_begin=1793322480.862 t_end=1793322484.427
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.663s t_begin=1793322480.856 t_end=1793322484.519
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.845s t_begin=1793322481.407 t_end=1793322485.252
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.845s t_begin=1793322481.441 t_end=1793322485.286
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.921s t_begin=1793322481.635 t_end=1793322485.556
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.312s t_begin=1793322484.235 t_end=1793322487.547
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.377s t_begin=1793322484.224 t_end=1793322487.601
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.395s t_begin=1793322484.266 t_end=1793322487.662
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.398s t_begin=1793322484.427 t_end=1793322487.826
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.504s t_begin=1793322484.519 t_end=1793322488.024
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.715s t_begin=1793322485.252 t_end=1793322488.966
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.697s t_begin=1793322485.286 t_end=1793322488.983
+RESULT_GP tag=cap=650,round=0,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.759s t_begin=1793322485.556 t_end=1793322489.315
+=== RUN cap=650 round=0 emu=g8m14 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.966s t_begin=1793322559.331 t_end=1793322563.297
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.010s t_begin=1793322559.340 t_end=1793322563.350
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.000s t_begin=1793322559.406 t_end=1793322563.406
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.115s t_begin=1793322559.434 t_end=1793322563.549
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.076s t_begin=1793322559.530 t_end=1793322563.607
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.370s t_begin=1793322559.915 t_end=1793322564.285
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.416s t_begin=1793322559.968 t_end=1793322564.384
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.406s t_begin=1793322560.134 t_end=1793322564.540
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.831s t_begin=1793322563.297 t_end=1793322567.128
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.852s t_begin=1793322563.350 t_end=1793322567.202
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.824s t_begin=1793322563.406 t_end=1793322567.230
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.901s t_begin=1793322563.607 t_end=1793322567.508
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.965s t_begin=1793322563.549 t_end=1793322567.514
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.206s t_begin=1793322564.285 t_end=1793322568.490
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.264s t_begin=1793322564.384 t_end=1793322568.648
+RESULT_GP tag=cap=650,round=0,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.264s t_begin=1793322564.540 t_end=1793322568.804
+=== RUN cap=650 round=1 cool=45s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=650,round=1,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106499 169249.0429368441 165854.5630726354 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=54.112s t_begin=1793322623.737 t_end=1793322677.849
+RESULT_GP tag=cap=650,round=1,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106499 169249.0429368442 165854.5630726355 143794.1886936996] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=54.335s t_begin=1793322623.758 t_end=1793322678.094
+RESULT_GP tag=cap=650,round=1,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726357 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=54.927s t_begin=1793322623.834 t_end=1793322678.761
+RESULT_GP tag=cap=650,round=1,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=55.401s t_begin=1793322623.869 t_end=1793322679.270
+RESULT_GP tag=cap=650,round=1,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368440 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=55.409s t_begin=1793322623.904 t_end=1793322679.312
+RESULT_GP tag=cap=650,round=1,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=59.009s t_begin=1793322624.365 t_end=1793322683.374
+RESULT_GP tag=cap=650,round=1,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=59.102s t_begin=1793322624.410 t_end=1793322683.512
+RESULT_GP tag=cap=650,round=1,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=60.046s t_begin=1793322624.542 t_end=1793322684.588
+RESULT_GP tag=cap=650,round=1,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106499 169249.0429368441 165854.5630726356 143794.1886936996] dll=[-1.164e-10 -1.164e-10 0.000e+00 5.821e-11 1.746e-10 -2.328e-10] wall=54.439s t_begin=1793322677.849 t_end=1793322732.289
+RESULT_GP tag=cap=650,round=1,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936995] dll=[-2.910e-11 5.821e-11 5.821e-11 -5.821e-11 5.821e-11 -1.164e-10] wall=54.748s t_begin=1793322678.094 t_end=1793322732.842
+RESULT_GP tag=cap=650,round=1,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936996] dll=[-2.910e-11 -5.821e-11 5.821e-11 0.000e+00 -1.164e-10 -1.164e-10] wall=55.261s t_begin=1793322678.761 t_end=1793322734.022
+RESULT_GP tag=cap=650,round=1,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726354 143794.1886936997] dll=[-2.910e-11 0.000e+00 5.821e-11 5.821e-11 -5.821e-11 -5.821e-11] wall=55.892s t_begin=1793322679.313 t_end=1793322735.204
+RESULT_GP tag=cap=650,round=1,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106501 169249.0429368440 165854.5630726356 143794.1886936997] dll=[0.000e+00 1.164e-10 1.746e-10 -1.164e-10 1.746e-10 -5.821e-11] wall=56.672s t_begin=1793322679.270 t_end=1793322735.942
+RESULT_GP tag=cap=650,round=1,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[8.731e-11 5.821e-11 5.821e-11 0.000e+00 1.164e-10 -5.821e-11] wall=60.462s t_begin=1793322683.513 t_end=1793322743.975
+RESULT_GP tag=cap=650,round=1,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368439 165854.5630726356 143794.1886936996] dll=[2.910e-11 5.821e-11 5.821e-11 -1.746e-10 0.000e+00 -5.821e-11] wall=60.715s t_begin=1793322683.374 t_end=1793322744.089
+RESULT_GP tag=cap=650,round=1,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-2.910e-11 1.164e-10 1.746e-10 5.821e-11 0.000e+00 5.821e-11] wall=61.709s t_begin=1793322684.588 t_end=1793322746.297
+=== RUN cap=650 round=1 emu=g8m12 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.535s t_begin=1793322816.333 t_end=1793322819.869
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.543s t_begin=1793322816.356 t_end=1793322819.899
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.471s t_begin=1793322816.433 t_end=1793322819.904
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.570s t_begin=1793322816.495 t_end=1793322820.065
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.664s t_begin=1793322816.443 t_end=1793322820.106
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.841s t_begin=1793322817.060 t_end=1793322820.901
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.848s t_begin=1793322817.088 t_end=1793322820.936
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.939s t_begin=1793322817.241 t_end=1793322821.180
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.312s t_begin=1793322819.904 t_end=1793322823.216
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.390s t_begin=1793322819.869 t_end=1793322823.259
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.379s t_begin=1793322819.899 t_end=1793322823.278
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.396s t_begin=1793322820.065 t_end=1793322823.461
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.510s t_begin=1793322820.106 t_end=1793322823.617
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.704s t_begin=1793322820.901 t_end=1793322824.605
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.726s t_begin=1793322820.936 t_end=1793322824.662
+RESULT_GP tag=cap=650,round=1,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.762s t_begin=1793322821.180 t_end=1793322824.942
+=== RUN cap=650 round=1 emu=g8m14 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.980s t_begin=1793322894.953 t_end=1793322898.933
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.977s t_begin=1793322894.958 t_end=1793322898.935
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.994s t_begin=1793322895.034 t_end=1793322899.027
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.125s t_begin=1793322895.066 t_end=1793322899.191
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.057s t_begin=1793322895.148 t_end=1793322899.204
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.357s t_begin=1793322895.525 t_end=1793322899.882
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.405s t_begin=1793322895.600 t_end=1793322900.005
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.394s t_begin=1793322895.698 t_end=1793322900.092
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.838s t_begin=1793322898.933 t_end=1793322902.770
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.853s t_begin=1793322898.935 t_end=1793322902.788
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.815s t_begin=1793322899.027 t_end=1793322902.843
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.896s t_begin=1793322899.205 t_end=1793322903.101
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=3.966s t_begin=1793322899.191 t_end=1793322903.157
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.241s t_begin=1793322899.882 t_end=1793322904.124
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.264s t_begin=1793322900.005 t_end=1793322904.268
+RESULT_GP tag=cap=650,round=1,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=4.272s t_begin=1793322900.092 t_end=1793322904.364
+=== RUN cap=500 round=0 cool=45s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=500,round=0,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=83.264s t_begin=1793322965.143 t_end=1793323048.407
+RESULT_GP tag=cap=500,round=0,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=83.450s t_begin=1793322965.162 t_end=1793323048.612
+RESULT_GP tag=cap=500,round=0,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=84.485s t_begin=1793322965.371 t_end=1793323049.855
+RESULT_GP tag=cap=500,round=0,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557428 165259.4707106499 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=87.069s t_begin=1793322965.770 t_end=1793323052.839
+RESULT_GP tag=cap=500,round=0,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113192 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726354 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=87.595s t_begin=1793322965.633 t_end=1793323053.228
+RESULT_GP tag=cap=500,round=0,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106499 169249.0429368442 165854.5630726357 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=93.568s t_begin=1793322966.550 t_end=1793323060.117
+RESULT_GP tag=cap=500,round=0,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106499 169249.0429368442 165854.5630726356 143794.1886936995] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=94.042s t_begin=1793322966.718 t_end=1793323060.760
+RESULT_GP tag=cap=500,round=0,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=95.562s t_begin=1793322967.021 t_end=1793323062.583
+RESULT_GP tag=cap=500,round=0,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368441 165854.5630726354 143794.1886936997] dll=[5.821e-11 0.000e+00 5.821e-11 0.000e+00 -1.746e-10 5.821e-11] wall=83.774s t_begin=1793323048.407 t_end=1793323132.182
+RESULT_GP tag=cap=500,round=0,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[2.910e-11 0.000e+00 0.000e+00 0.000e+00 1.164e-10 -1.164e-10] wall=83.827s t_begin=1793323048.612 t_end=1793323132.439
+RESULT_GP tag=cap=500,round=0,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106502 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-5.821e-11 1.164e-10 1.746e-10 0.000e+00 5.821e-11 0.000e+00] wall=84.659s t_begin=1793323049.855 t_end=1793323134.515
+RESULT_GP tag=cap=500,round=0,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368440 165854.5630726356 143794.1886936996] dll=[1.164e-10 -5.821e-11 5.821e-11 -1.164e-10 0.000e+00 -1.164e-10] wall=87.656s t_begin=1793323052.839 t_end=1793323140.495
+RESULT_GP tag=cap=500,round=0,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936997] dll=[1.164e-10 5.821e-11 5.821e-11 5.821e-11 1.746e-10 -5.821e-11] wall=89.153s t_begin=1793323053.228 t_end=1793323142.381
+RESULT_GP tag=cap=500,round=0,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106501 169249.0429368440 165854.5630726356 143794.1886936995] dll=[-2.910e-11 5.821e-11 1.746e-10 -1.746e-10 -5.821e-11 -2.328e-10] wall=96.064s t_begin=1793323060.117 t_end=1793323156.181
+RESULT_GP tag=cap=500,round=0,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936996] dll=[-5.821e-11 1.164e-10 5.821e-11 -5.821e-11 -5.821e-11 5.821e-11] wall=95.619s t_begin=1793323060.760 t_end=1793323156.379
+RESULT_GP tag=cap=500,round=0,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[-5.821e-11 0.000e+00 -5.821e-11 5.821e-11 5.821e-11 5.821e-11] wall=97.810s t_begin=1793323062.583 t_end=1793323160.394
+=== RUN cap=500 round=0 emu=g8m12 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.953s t_begin=1793323235.106 t_end=1793323241.059
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.969s t_begin=1793323235.128 t_end=1793323241.097
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.906s t_begin=1793323235.313 t_end=1793323241.218
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.043s t_begin=1793323235.719 t_end=1793323241.762
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.273s t_begin=1793323235.607 t_end=1793323241.880
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.580s t_begin=1793323236.543 t_end=1793323243.123
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.663s t_begin=1793323236.673 t_end=1793323243.336
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.753s t_begin=1793323237.024 t_end=1793323243.778
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.827s t_begin=1793323241.059 t_end=1793323246.886
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.812s t_begin=1793323241.097 t_end=1793323246.909
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.746s t_begin=1793323241.218 t_end=1793323246.964
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.896s t_begin=1793323241.762 t_end=1793323247.658
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.159s t_begin=1793323241.880 t_end=1793323248.039
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.470s t_begin=1793323243.123 t_end=1793323249.593
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.557s t_begin=1793323243.336 t_end=1793323249.893
+RESULT_GP tag=cap=500,round=0,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.681s t_begin=1793323243.778 t_end=1793323250.459
+=== RUN cap=500 round=0 emu=g8m14 cool=35s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.825s t_begin=1793323300.130 t_end=1793323306.954
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.650s t_begin=1793323300.358 t_end=1793323307.008
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.844s t_begin=1793323300.172 t_end=1793323307.016
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.980s t_begin=1793323300.744 t_end=1793323307.724
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.208s t_begin=1793323300.621 t_end=1793323307.829
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.563s t_begin=1793323301.553 t_end=1793323309.116
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.697s t_begin=1793323301.689 t_end=1793323309.386
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.722s t_begin=1793323302.010 t_end=1793323309.732
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.590s t_begin=1793323307.008 t_end=1793323313.597
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.672s t_begin=1793323306.954 t_end=1793323313.626
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.717s t_begin=1793323307.016 t_end=1793323313.733
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.839s t_begin=1793323307.724 t_end=1793323314.563
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.099s t_begin=1793323307.829 t_end=1793323314.928
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.409s t_begin=1793323309.116 t_end=1793323316.525
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.594s t_begin=1793323309.386 t_end=1793323316.979
+RESULT_GP tag=cap=500,round=0,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.664s t_begin=1793323309.732 t_end=1793323317.397
+=== RUN cap=500 round=1 cool=35s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=500,round=1,emu=none gpu=1 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=83.337s t_begin=1793323367.058 t_end=1793323450.395
+RESULT_GP tag=cap=500,round=1,emu=none gpu=0 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557428 165259.4707106499 169249.0429368442 165854.5630726355 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=83.401s t_begin=1793323367.050 t_end=1793323450.451
+RESULT_GP tag=cap=500,round=1,emu=none gpu=4 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557426 165259.4707106500 169249.0429368443 165854.5630726354 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=84.466s t_begin=1793323367.242 t_end=1793323451.708
+RESULT_GP tag=cap=500,round=1,emu=none gpu=5 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=87.110s t_begin=1793323367.656 t_end=1793323454.767
+RESULT_GP tag=cap=500,round=1,emu=none gpu=7 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368443 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=87.543s t_begin=1793323367.379 t_end=1793323454.922
+RESULT_GP tag=cap=500,round=1,emu=none gpu=6 variant=native pass=A status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106499 169249.0429368439 165854.5630726354 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=93.613s t_begin=1793323368.473 t_end=1793323462.085
+RESULT_GP tag=cap=500,round=1,emu=none gpu=2 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=94.059s t_begin=1793323368.591 t_end=1793323462.650
+RESULT_GP tag=cap=500,round=1,emu=none gpu=3 variant=native pass=A status=ok loglik=[118109.3117113194 150481.2256557426 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936998] dll=[0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00] wall=95.647s t_begin=1793323368.925 t_end=1793323464.572
+RESULT_GP tag=cap=500,round=1,emu=none gpu=1 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936995] dll=[5.821e-11 0.000e+00 0.000e+00 -1.746e-10 -5.821e-11 -1.746e-10] wall=83.660s t_begin=1793323450.395 t_end=1793323534.054
+RESULT_GP tag=cap=500,round=1,emu=none gpu=0 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368442 165854.5630726356 143794.1886936996] dll=[-8.731e-11 -1.164e-10 5.821e-11 0.000e+00 5.821e-11 -1.746e-10] wall=83.807s t_begin=1793323450.451 t_end=1793323534.258
+RESULT_GP tag=cap=500,round=1,emu=none gpu=4 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106501 169249.0429368442 165854.5630726356 143794.1886936997] dll=[5.821e-11 1.164e-10 1.164e-10 -1.164e-10 1.746e-10 5.821e-11] wall=84.769s t_begin=1793323451.708 t_end=1793323536.477
+RESULT_GP tag=cap=500,round=1,emu=none gpu=5 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936998] dll=[-5.821e-11 5.821e-11 -5.821e-11 0.000e+00 5.821e-11 5.821e-11] wall=87.657s t_begin=1793323454.767 t_end=1793323542.424
+RESULT_GP tag=cap=500,round=1,emu=none gpu=7 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936998] dll=[-2.910e-11 0.000e+00 -5.821e-11 -1.746e-10 -1.164e-10 0.000e+00] wall=89.137s t_begin=1793323454.923 t_end=1793323544.060
+RESULT_GP tag=cap=500,round=1,emu=none gpu=6 variant=native pass=B status=ok loglik=[118109.3117113193 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-2.910e-11 5.821e-11 1.164e-10 1.164e-10 1.164e-10 5.821e-11] wall=95.907s t_begin=1793323462.086 t_end=1793323557.992
+RESULT_GP tag=cap=500,round=1,emu=none gpu=2 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726355 143794.1886936997] dll=[2.910e-11 0.000e+00 5.821e-11 0.000e+00 -5.821e-11 5.821e-11] wall=95.642s t_begin=1793323462.650 t_end=1793323558.292
+RESULT_GP tag=cap=500,round=1,emu=none gpu=3 variant=native pass=B status=ok loglik=[118109.3117113194 150481.2256557427 165259.4707106500 169249.0429368441 165854.5630726356 143794.1886936997] dll=[-2.910e-11 1.164e-10 -1.746e-10 -5.821e-11 0.000e+00 -1.164e-10] wall=97.678s t_begin=1793323464.572 t_end=1793323562.250
+=== RUN cap=500 round=1 emu=g8m12 cool=60s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.952s t_begin=1793323636.904 t_end=1793323642.856
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.943s t_begin=1793323636.947 t_end=1793323642.891
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.868s t_begin=1793323637.173 t_end=1793323643.041
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.032s t_begin=1793323637.570 t_end=1793323643.602
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.281s t_begin=1793323637.415 t_end=1793323643.695
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.590s t_begin=1793323638.389 t_end=1793323644.979
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.667s t_begin=1793323638.489 t_end=1793323645.156
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.765s t_begin=1793323638.821 t_end=1793323645.586
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.820s t_begin=1793323642.856 t_end=1793323648.677
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.807s t_begin=1793323642.891 t_end=1793323648.698
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.734s t_begin=1793323643.041 t_end=1793323648.776
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=5.902s t_begin=1793323643.602 t_end=1793323649.504
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.143s t_begin=1793323643.695 t_end=1793323649.839
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.451s t_begin=1793323644.979 t_end=1793323651.430
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.567s t_begin=1793323645.156 t_end=1793323651.723
+RESULT_GP tag=cap=500,round=1,emu=g8m12 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.662s t_begin=1793323645.586 t_end=1793323652.248
+=== RUN cap=500 round=1 emu=g8m14 cool=35s
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=7 bdf=0000:99:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=6 bdf=0000:e9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=3 bdf=0000:19:00.0
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=0 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.829s t_begin=1793323701.929 t_end=1793323708.757
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=4 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.618s t_begin=1793323702.180 t_end=1793323708.798
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=1 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.860s t_begin=1793323701.968 t_end=1793323708.829
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=5 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.968s t_begin=1793323702.562 t_end=1793323709.530
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=7 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.195s t_begin=1793323702.448 t_end=1793323709.643
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=6 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.545s t_begin=1793323703.388 t_end=1793323710.933
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=2 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.689s t_begin=1793323703.537 t_end=1793323711.226
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=3 variant=native pass=A status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.730s t_begin=1793323703.754 t_end=1793323711.484
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=4 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.595s t_begin=1793323708.798 t_end=1793323715.393
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=0 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.690s t_begin=1793323708.758 t_end=1793323715.448
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=1 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.743s t_begin=1793323708.829 t_end=1793323715.572
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=5 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=6.829s t_begin=1793323709.530 t_end=1793323716.359
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=7 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.095s t_begin=1793323709.643 t_end=1793323716.739
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=6 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.443s t_begin=1793323710.933 t_end=1793323718.376
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=2 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.591s t_begin=1793323711.226 t_end=1793323718.817
+RESULT_GP tag=cap=500,round=1,emu=g8m14 gpu=3 variant=native pass=B status=notpd loglik=[nan nan nan nan nan nan] dll=[nan nan nan nan nan nan] wall=7.694s t_begin=1793323711.484 t_end=1793323719.178
+gp done
