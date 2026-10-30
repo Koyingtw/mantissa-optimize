@@ -496,7 +496,11 @@ is hot again. The middle variant of a three-variant sequence always follows a ho
 cooler and its slowest GPU ran 20--30\,MHz faster. No such position effect appears at the other caps (mean temperature
 differences by position $\le1.5$\,\textdegree C), and two-variant ABBA blocks are immune because each variant takes each
 position equally often. We therefore rerun all multi-variant comparisons as pairwise ABBA blocks (reference $v$ $v$
-reference) with a minimum rest, and report the affected cell separately (Section~\ref{sec:hpl}).
+reference) with a minimum rest, and, since even then a run after a hot run can be up to 15\,\textdegree C cooler, check every
+MI350X application result with a temperature-adjusted estimate: within a cap, log performance is regressed on the
+variant and the run's mean junction temperature (Section~\ref{sec:hpl}). On a power-limited GPU, cooler silicon leaks
+less and leaves more of the budget for switching, so temperature is a confounder of the same order as the effect we
+measure (0.1--0.9\pct{} per \textdegree C).
 
 \textbf{Power, energy and statistics.} On GH200, energy integrates the driver's 1-s averaged module power over the
 measurement window, summed over nodes. Power in watts in tables and text is the mean of the instantaneous samples in a
@@ -698,7 +702,13 @@ the LU-only gain. Keeping 0 bits does not converge on MI350X (refinement stalls 
 $N=176128$), so 3 bits is the operating point on both platforms. One measurement was biased by the fan pitfall of
 Section~\ref{sec:setup}: on node n01 at 800\W, 4 kept bits appeared faster than 3 (6.34 versus 6.23\,PFLOP/s), but all four 4-bit
 runs ran about 12\,\textdegree C cooler; on n02, and in the phase profile, 3 bits is faster at every cap
-(6.29 versus 6.12\,PFLOP/s at 800\W). \pending{pairwise rerun of native/4/3 bits at 800\W{} on n01 (job 50)}.
+(6.29 versus 6.12\,PFLOP/s at 800\W). A pairwise rerun on n01 with a minimum rest still showed runs that followed a hot
+run running cooler and faster (by up to 4.5\pct{} for the same variant), so we estimate the effect at equal temperature by
+regressing log performance on the variant and the run's mean junction temperature (coefficient $-0.4$ to $-0.5\pct$ per
+\textdegree C at 800\W). Adjusted for temperature, 3 bits is $+9.0$ and $+9.1\pct$ in the two n01 runs and $+9.1\pct$ on
+n02, and 4 bits $+4.4$ and $+6.2\pct$: 3 bits is faster, and the earlier 4-bit figure was a cooling artifact. Every
+other HPL and HPL-MxP cell changes by at most 0.7 points under this adjustment, because native and truncated runs
+averaged the same temperature within 1\,\textdegree C there.
 
 \subsection{Plane-Wave DFT and Quantum Chemistry (GH200)}\label{sec:sci}
 
@@ -1021,8 +1031,14 @@ Table~\ref{tab:mp2} exclude this warm-up. Second, emulation needs workspace. In 
 native configuration ($N=540672$) occupies about 292\,GB per GPU, and GEMMul8's 15\,GB workspace no longer fits, so every
 emulated run aborts; with 12 moduli even $N=491520$ does not fit. HPL's score grows with $N$, so emulation must give
 up problem size before it can start. On the configuration used for GEMMul8's best MI350X result ($N=491520$, NB 4096,
-$4\times2$), 10 moduli pass the residual check (1.79) \pending{HPL three-way comparison: native vs 36 bits vs
-GEMMul8 10/12 moduli at $N=458752$ and 491520, four caps (jobs 49, 54)}.
+$4\times2$), 10 moduli pass the residual check (1.79, against 0.03 for 36-bit truncation) and run at 576.8\,TFLOP/s at
+1000\W, 48.5\pct{} above native in this configuration and 36\pct{} above the best native configuration (424.9\,TFLOP/s),
+reproducing an earlier record of 579.7\,TFLOP/s on this hardware. The cap again erodes the lead: over native in the same
+configuration GEMMul8 gains 48.5, 41.7, 32.8 and 13.9\pct{} at 1000, 800, 650 and 500\W, truncation 3.8, 3.9, 6.6 and
+6.9\pct; against the best truncated run (444.6 and 188.8\,TFLOP/s at 1000 and 500\W) GEMMul8 leads by 30\pct{} at
+1000\W{} and by only 4\pct{} at 500\W{} (two pairs per cap; temperature-adjusted values within 3 points). With 12 moduli
+it runs out of memory at this $N$ too. \pending{native vs 36 bits vs GEMMul8 10/12 moduli at $N=458752$, NB 1024,
+$1\times8$ (job 54)}.
 
 \subsection{FP32 and 3xTF32: Accumulation, Not Range (GH200)}\label{sec:fp32}
 
