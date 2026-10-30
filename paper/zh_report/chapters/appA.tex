@@ -16,7 +16,9 @@
 基準 & HPL（rocHPL 的 CUDA 移植，分支 \texttt{feat/cuda-port}）、HPL-MxP（分支 \texttt{perf/h200-mantissa}）~\cite{Dongarra2025} \\
 科學軟體 & Quantum ESPRESSO 7.6~\cite{Giannozzi2020}、GPU4PySCF 1.8.1~\cite{Wu2025,Li2025}、MFEM（提交 \texttt{c362dea}）、SW4（提交 \texttt{52b51c9}）、LAMMPS \texttt{stable\_22Jul2025\_update6}、GEMMul8 3.5.1 \\
 AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
-分析 & Python（pandas、numpy、matplotlib），虛擬環境 \path{gh200/.venv} \\
+MI350X 硬體 & 2 個節點（\texttt{p01-r01-n01}、\texttt{n02}），各 8 張 AMD Instinct MI350X OAM（gfx950，288~GB HBM3E），Slurm 分區 \texttt{gpu}；兩節點的家目錄不共用 \\
+MI350X 軟體 & ROCm 7.2.3（rocBLAS、hipBLASLt、rocSOLVER、RCCL）、amdgpu 6.16.13、Open MPI 5.0.7 + UCX；rocHPL 分支 \texttt{feat/adaptive-mixed-storage}（提交 \texttt{37d0475}）、HPL-MxP 與 GH200 同一份原始碼（\path{src_mi350/}）、GEMMul8 3.2.0 HIP 版（提交 \texttt{833e576}）、PySCF 2.14 \\
+分析 & Python（pandas、numpy、scipy、matplotlib），虛擬環境 \path{gh200/.venv} 與 \path{mi350/.venv} \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -48,7 +50,13 @@ AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
 \path{apps/pyscf-inputs/mp2_variants.py} & DF-MP2 各變體：程式內截斷 DF 張量、內建 FP32、cuBLAS 模擬（第 \ref{sec:mp2} 節） \\
 \path{apps/geostat/gp_mle.py} & 高斯過程對數概似與最大概似估計：截斷、cuBLAS 模擬、FP32、Morton 排序與 tile 混合精度（第 \ref{sec:gp} 節） \\
 \path{apps/exageostatcpp/}、\path{apps/patches/} & ExaGeoStatCPP（submodule）與在 GH200、CUDA 13 上建置所需的修正（建置日誌第 9 節） \\
-\path{paper/} & 英文 LaTeX 論文稿（\path{main.tex}、\path{refs.bib}、\path{figs/}） \\
+\path{mi350/bench/} & MI350X 的尾數矩陣乘法微基準（rocBLAS／hipBLASLt，可經 GEMMul8 攔截）與非矩陣乘法 FP64 核心（第 \ref{sec:mi-mech}、\ref{sec:mi-gemm} 節） \\
+\path{mi350/apps/} & MI350X 上的應用：高斯過程 \path{gp_chol.hip}、DF-MP2 張量準備 \path{mp2_prep.py} 與收縮 \path{dfmp2.hip}、GEMMul8 溢位的最小重現程式 \path{g8_repro.hip} \\
+\path{mi350/scripts/}、\path{mi350/slurm/run.sbatch} & MI350X 的實驗腳本（\path{e1_gemm_tdp.sh}、\path{e1b_fixedclk.sh}、\path{hpl_tdp.sh}、\path{gp_tdp.sh}、\path{mp2_tdp.sh}、\path{lockclk_apps.sh}、\path{g8_threshold.sh} 等，參數在各檔開頭的註解） \\
+\path{mi350/tools/} & 功耗上限工具 \path{pcap.sh} 與 amdsmi 取樣器 \path{smi_sampler.py}（含能量累加器） \\
+\path{mi350/analysis/} & \path{e1_summary.py}、\path{hpl_summary.py}、\path{gp_summary.py}、\path{mp2_summary.py}、功耗模型 \path{power_model.py}、\path{model_eval.py}、\path{model_apps.py}、獨立單位的區間 \path{apps_units.py}、溫度校正 \path{temp_adjust.py}、本報告第六章的圖 \path{report_figs_zh_mi350.py} \\
+\path{mi350/results/}、\path{mi350/logs/}、\texttt{mi350/實驗日誌.md} & MI350X 的彙整 CSV、原始紀錄（節點 n02 的在 \path{logs/n02/}）與實驗過程紀錄 \\
+\path{paper/} & 英文論文（\path{main_sc.tex} 與補充資料 \path{supplement.tex}、\path{refs.bib}、\path{figs/}） \\
 \path{paper/zh_report/} & 本報告的 LaTeX 原始檔（\path{report.tex}、\path{chapters/}、\path{figs/}） \\
 \path{gh200/refs/} & 各輪文獻查證紀錄（\path{round4_refs.md}、\path{round5_refs.md}） \\
 \path{gh200/slurm/} & 工作腳本：\path{e1_gemm_tdp.sbatch}（微基準與形狀掃描）、\path{hpl_tdp.sbatch}（HPL/HPL-MxP）、\path{sci_sweep.sbatch}（科學軟體）、\path{app_tdp.sbatch}（第三方軟體）、\path{mp2_tdp.sbatch}（DF-MP2）、\path{gp_tdp.sbatch}（高斯過程）、\path{exageostat_tdp.sbatch}（ExaGeoStat）、\path{hpl_tune.sbatch}（HPL 調參）、\path{hpl_shim.sbatch}（單 GPU HPL 經攔截工具：逐列跨度與模擬） \\
@@ -60,7 +68,7 @@ AI & MLPerf Training Llama 2 70B LoRA，NVIDIA v5.0 實作（8 節點） \\
 
 \section{重現方式}\label{app:repro}
 
-所有工作都以 Slurm 送出；腳本只在自己獨佔的節點上設定功耗上限，結束時恢復為 1000~W，並在每次執行前檢查實際生效的上限。以下為三個例子：
+GH200 的工作都以 Slurm 送出；MI350X 的工作除最早幾個直接在節點上執行外，也以 Slurm 送出。腳本只在自己獨佔的節點上設定功耗上限，結束時恢復為 1000~W，並在每次執行前檢查實際生效的上限。以下為 GH200 的三個例子：
 
 \needspace{16\baselineskip}
 \begin{Verbatim}[breaklines,breakanywhere,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray},baselinestretch=1.05]
@@ -78,10 +86,22 @@ sbatch -w work10 --export=ALL,APP=mfem slurm/app_tdp.sbatch
 .venv/bin/python analysis/app_summary.py logs/apps/<工作名>_<編號>
 \end{Verbatim}
 
+MI350X 的例子（先 \texttt{source mi350/env.sh}，它會取消系統預設的 \texttt{HIP\_VISIBLE\_DEVICES}）：
+
+\begin{Verbatim}[breaklines,breakanywhere,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray},baselinestretch=1.05]
+# HPL-MxP 保留 3 位，成對 ABBA、每次執行前 3 分鐘的熱預處理（第 6.8 節）
+sbatch -w p01-r01-n01 --export=ALL,SCRIPT=hpl_tdp.sh,BENCH=mxp,TAG=mxpprecond,CAPS=800,VARIANTS="native 4 3",REPEAT=2,PAIRWISE=1,PRECOND=180 mi350/slurm/run.sbatch
+mi350/.venv/bin/python mi350/analysis/hpl_summary.py mxpprecond_<日期_時間>
+mi350/.venv/bin/python mi350/analysis/temp_adjust.py mxpprecond_<日期_時間>
+# 功耗模型的外部驗證（第 6.4 節）
+mi350/.venv/bin/python mi350/analysis/model_apps.py
+\end{Verbatim}
+
 圖下方的資料來源、表註與引用各表的段落列出對應的 Slurm 工作編號與結果檔，原始紀錄可以在 \path{gh200/logs/} 與 \path{gh200/results/} 找到。本報告的圖與 PDF 以下列指令重新產生（在專案根目錄執行；字型約 90 MB，不納入版本控制）：
 
 \begin{Verbatim}[breaklines,fontsize=\footnotesize,frame=single,framesep=6pt,rulecolor=\color{gray},baselinestretch=1.05]
 paper/zh_report/fetch_fonts.sh                     # 下載並檢查字型
-gh200/.venv/bin/python gh200/analysis/report_figs_zh.py paper/zh_report/fonts   # 本報告的圖
-paper/zh_report/build.sh                           # tectonic（XeLaTeX + BibTeX）→ report.pdf
+gh200/.venv/bin/python gh200/analysis/report_figs_zh.py paper/zh_report/fonts   # 第五章的圖
+mi350/.venv/bin/python mi350/analysis/report_figs_zh_mi350.py paper/zh_report/fonts   # 第六章的圖
+paper/zh_report/build.sh                           # tectonic 或 xelatex + bibtex → report.pdf
 \end{Verbatim}

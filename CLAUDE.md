@@ -22,7 +22,7 @@ The user wants progress output, logs and docs written in **Traditional Chinese**
 |---|---|
 | `gh200/` | Top-level GH200 study: scripts, shim, analysis, results, logs (most current work) |
 | `apps/` | Third-party applications run under truncation (QE, gpu4pyscf, ExaGeoStat, LAMMPS, MFEM, SW4, CP2K) |
-| `paper/` | English paper (`main.tex`) and Chinese report book (`zh_report/`) |
+| `paper/` | English paper (`main_sc.tex` + `supplement.tex`) and Chinese report book (`zh_report/`) |
 | `rocHPL/`, `rocHPL-MxP/` | Submodules (`NTHU-SC` forks): HPL CUDA port (`feat/cuda-port`), HPL-MxP (`perf/h200-mantissa`) |
 | `SC26-MLPerf/` | Submodule: MLPerf Llama2-70B LoRA submission tree (used by the LoRA / FP8 attention studies) |
 
@@ -69,9 +69,10 @@ and write `logs/<job-name>_<jobid>.out` plus nvidia-smi CSVs):
 - `refs/` — citation notes; `refs/pdf/` is gitignored (copyrighted).
 
 Paper builds use tectonic on the GH200 cluster (`cd paper && ~/.local/bin/tectonic -X compile main.tex`) and
-TeX Live 2023 XeLaTeX on MI350X node n01 (`paper/build.sh [main|main_v2]`, installed with apt). `main_v2.tex` is the
-two-platform rewrite in progress (red `\pending{}` marks results still running); it replaces `main.tex` when done;
-Chinese report: `paper/zh_report/build.sh` (fetches Noto CJK fonts, then checks the log for
+TeX Live 2023 XeLaTeX on MI350X node n01 (`paper/build.sh [main_sc|supplement|main]`, installed with apt). The current
+paper is the two-platform SC-length `main_sc.tex` (≤ 10 pages + refs) with `supplement.tex` (section references to the
+paper are hard-coded numerals, update them if sections move); `main.tex` is the old GH200-only version and `main_v2.tex`
+an abandoned full-length draft (not updated). Chinese report: `paper/zh_report/build.sh` (fetches Noto CJK fonts, then checks the log for
 overfull lines / undefined refs). Numbers must agree across `results/`, the paper and the report.
 
 - Toolchain: `module load nvhpc/26.5` (CUDA 13.2, cuBLAS in `math_libs/13.2`, NCCL, HPC-X MPI).

@@ -10,8 +10,8 @@
 \newcommand{\StudentID}{112062205}
 \newcommand{\Advisor}{周志遠\ 教授}
 \newcommand{\ReportDate}{中華民國 115 年 10 月}
-\newcommand{\TitleZh}{在 GH200 功耗上限下以尾數歸零提升科學計算效能}
-\newcommand{\TitleEn}{Software Mantissa Zeroing under Module Power Caps on the NVIDIA GH200}
+\newcommand{\TitleZh}{在 GPU 功耗上限下以尾數歸零提升科學計算效能：GH200 與 MI350X}
+\newcommand{\TitleEn}{Software Mantissa Zeroing on Power-Capped GPUs: NVIDIA GH200 and AMD MI350X}
 
 % ---------------------------------------------------------------- 版面與字型
 \usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm,headheight=15pt,headsep=0.8cm,footskip=1.2cm]{geometry}
@@ -22,7 +22,9 @@
 \usepackage{unicode-math}
 \setmainfont{texgyretermes}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
 \setsansfont{texgyreheros}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,ItalicFont=*-italic,BoldItalicFont=*-bolditalic]
-\setmonofont{Inconsolatazi4}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold]
+% Inconsolata 在 tectonic 環境有；MI350X 節點的 apt TeX Live 沒裝 texlive-fonts-extra，改用 TeX Gyre Cursor
+\IfFontExistsTF{Inconsolatazi4-Regular.otf}{\setmonofont{Inconsolatazi4}[Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold]}
+  {\setmonofont{texgyrecursor}[Extension=.otf,UprightFont=*-regular,BoldFont=*-bold,Scale=1.05]}
 \setmathfont{texgyretermes-math.otf}
 
 \usepackage{graphicx,booktabs,tabularx,longtable,multirow,array,enumitem,etoolbox,xcolor}
@@ -117,9 +119,11 @@
 \vspace{1.2em}
 {\bfseries\Large 專題研究成果報告\par}
 \vspace{4.2cm}
-{\bfseries\huge\linespread{1.3}\selectfont 在 GH200 功耗上限下以尾數歸零\\提升科學計算效能\par}
+{\bfseries\huge\linespread{1.3}\selectfont 在 GPU 功耗上限下以尾數歸零\\提升科學計算效能\par}
+\vspace{0.6em}
+{\bfseries\Large GH200 與 MI350X\par}
 \vspace{1.6em}
-{\large\linespread{1.2}\selectfont Software Mantissa Zeroing under Module Power Caps\\on the NVIDIA GH200\par}
+{\large\linespread{1.2}\selectfont Software Mantissa Zeroing on Power-Capped GPUs:\\NVIDIA GH200 and AMD MI350X\par}
 \vfill
 {\large
 \begin{tabular}{@{}l@{：\hspace{0.5em}}l@{}}
@@ -150,6 +154,7 @@
 \input{chapters/ch3}
 \input{chapters/ch4}
 \input{chapters/ch5}
+\input{chapters/ch6_mi350}
 \input{chapters/ch6}
 \input{chapters/ch7}
 

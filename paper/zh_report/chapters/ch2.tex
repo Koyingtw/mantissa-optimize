@@ -43,6 +43,8 @@ GH200 的模組功耗上限涵蓋 GPU、Grace CPU 與記憶體。GPU 會持續�
 
 1000~W 是 GH200 的預設值，也是最高上限；但功耗很高的程式（例如 FP64 矩陣乘法與 HPL）在 1000~W 下仍有部分時間撞上限，因此兩種效果會同時出現。
 
+AMD MI350X 的上限則是每張 GPU 的封裝功耗（PPT），不含 CPU，預設與最高值同樣是 1000~W。不同的是，MI350X 的矩陣乘法在預設上限下大部分時間都撞上限，所以截斷在出廠設定下就表現為加速（第 \ref{sec:mi-mech} 節）。MI350X 也允許鎖定最高時脈，使我們能在完全不受功耗限制的情況下比較每次運算的能量。
+
 \section{其他以降低精度換取速度的做法}\label{sec:alternatives}
 
 \begin{description}
@@ -62,6 +64,7 @@ GH200 的模組功耗上限涵蓋 GPU、Grace CPU 與記憶體。GPU 會持續�
   \item[Quantum ESPRESSO：] 平面波密度泛函理論軟體，以自洽場（SCF）迭代求基態，每一圈以 Davidson 方法對角化，收斂門檻逐圈收緊。
   \item[PySCF（GPU4PySCF）：] 高斯基底的量子化學軟體，本報告用於 DFT、HF+MP2 與密度擬合 MP2（DF-MP2）。
   \item[高斯過程地統計：] 自寫的 ExaGeoStat 式最大概似估計核心，以及 ExaGeoStatCPP（StarPU 與 Chameleon 的 tile Cholesky）。
+  \item[MI350X 上的版本：] GPU4PySCF 不能在 MI350X 上執行，DF-MP2 改以 PySCF 在 CPU 上建立三指標張量、再以自寫的 HIP 程式收縮；高斯過程的似然函數移植為 HIP 程式（rocBLAS／rocSOLVER）；HPL 為 rocHPL，HPL-MxP 與 GH200 使用同一份原始碼。
   \item[MFEM、SW4、LAMMPS：] 不以矩陣乘法為主的 FP64 程式，分別為有限元素、地震波傳播與分子動力學。
   \item[MLPerf Llama 2 70B LoRA 與六個語言模型：] AI 訓練與推論。
 \end{description}

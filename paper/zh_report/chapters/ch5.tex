@@ -1,7 +1,7 @@
-% 第五章 實驗結果
-\chapter{實驗結果}\label{ch:results}
+% 第五章 GH200 實驗結果
+\chapter{GH200 實驗結果}\label{ch:results}
 
-本章分三部分。第一部分（第 \ref{sec:mech}、\ref{sec:gemm} 節）說明省電的機制與效益的上界；第二部分（第 \ref{sec:hpl}–\ref{sec:gp} 節）是具正確性檢查的完整程式：HPL、HPL-MxP、Quantum ESPRESSO、DF-MP2 與高斯過程地統計；第三部分（第 \ref{sec:crossover}–\ref{sec:ai} 節）是尾數歸零與改變格式做法（INT8 模擬、單精度、FP8）的分界。除非特別說明，百分比都是與同一功耗上限、同一節點上的原生版本比較。
+本章分三部分。第一部分（第 \ref{sec:mech}、\ref{sec:gemm} 節）說明省電的機制與效益的上界；第二部分（第 \ref{sec:hpl}–\ref{sec:gp} 節）是具正確性檢查的完整程式：HPL、HPL-MxP、Quantum ESPRESSO、DF-MP2 與高斯過程地統計；第三部分（第 \ref{sec:crossover}–\ref{sec:ai} 節）是尾數歸零與改變格式做法（INT8 模擬、單精度、FP8）的分界。除非特別說明，百分比都是與同一功耗上限、同一節點上的原生版本比較。本章的結果都在 GH200 上量得；第二個平台 MI350X 的結果與兩平台的比較在第六章。
 
 % ==================================================================
 \section{省電機制：位元不翻轉或數值為零}\label{sec:mech}
