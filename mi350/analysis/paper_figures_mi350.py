@@ -132,29 +132,24 @@ def fig_crossover():
 
 
 def fig_apps():
-    """MI350X applications: speedup vs native under each cap (truncation operating points)."""
-    rows = []
-    for name, f, var, lab in [("hpl", "hpl_1029_0336", "36:36", "FP64 HPL, 36 bits"),
-                              ("mxp", "mxp1028", "3", "HPL-MxP, 3 bits"),
-                              ("gp", "gp_1029_0731", "t28n", "GP likelihood, 28 bits"),
-                              ("mp2", "mp2_1029_1607", "t20n", "DF-MP2, 20 bits")]:
-        path = f"{RES}/{'mxp_1028_2359' if name == 'mxp' else f}_summary.csv"
-        s = pd.read_csv(path)
-        g = s[s.variant.astype(str) == var]
-        for r in g.itertuples():
-            rows.append(dict(app=lab, cap=r.cap, gain=r.speedup_pct, lo=r.speedup_lo, hi=r.speedup_hi))
-    d = pd.DataFrame(rows)
+    """MI350X applications: speedup vs native under each cap, both nodes pooled; bars are 95% t intervals over the
+    independent units of results/apps_units.csv (HPL/HPL-MxP: node runs; GP/DF-MP2: rounds of 8 GPUs)."""
+    u = pd.read_csv(f"{RES}/apps_units.csv")
+    apps = [("HPL, 36 bits", "FP64 HPL, 36 bits"), ("HPL-MxP, 3 bits", "HPL-MxP, 3 bits"),
+            ("GP, 28 bits", "GP likelihood, 28 bits"), ("DF-MP2, 20 bits", "DF-MP2, 20 bits")]
     caps = [1000, 800, 650, 500]
-    apps = list(dict.fromkeys(d.app))
     fig, ax = plt.subplots(figsize=(COL, 2.1))
     w = 0.8 / len(apps)
-    for i, a in enumerate(apps):
-        g = d[d.app == a].set_index("cap").reindex(caps)
+    for i, (key, lab) in enumerate(apps):
+        g = u[u.app == key].set_index("cap").reindex(caps)
         x = np.arange(len(caps)) + (i - (len(apps) - 1) / 2) * w
-        ax.bar(x, g.gain, w, color=C[i], label=a, yerr=[g.gain - g.lo, g.hi - g.gain], capsize=1.5,
+        lo, hi = int(g.units.min()), int(g.units.max())
+        nlab = f"{lo}" if lo == hi else f"{lo}--{hi}"
+        ax.bar(x, g["mean"], w, color=C[i], label=f"{lab} ($n$={nlab})", yerr=g.ci95, capsize=1.5,
                error_kw={"lw": 0.6})
     ax.set_xticks(np.arange(len(caps)), [f"{c} W" for c in caps])
     ax.set_ylabel("Speedup vs. native (%)")
+    ax.set_ylim(0, 30)
     ax.legend(frameon=False, fontsize=6, ncol=2, loc="upper left")
     save(fig, "mi350_apps.pdf")
 

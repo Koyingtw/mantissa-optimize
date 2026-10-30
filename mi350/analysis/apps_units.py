@@ -28,6 +28,8 @@ APPS = {  # app: (variant, native, [(node, result id, log dir, kind)])
     "GP, 36 bits": ("t36n", "native", [("n01", "gp_1029_0731", LOG, "round"), ("n02", "gpn02_1030_0521", f"{LOG}/n02", "round")]),
     "DF-MP2, 20 bits": ("t20n", "native", [("n01", "mp2_1029_1607", LOG, "round"), ("n02", "MP2N02", f"{LOG}/n02", "round")]),
     "DF-MP2, 32 bits": ("t32n", "native", [("n01", "mp2_1029_1607", LOG, "round"), ("n02", "MP2N02", f"{LOG}/n02", "round")]),
+    # GEMMul8 (warm pass only): n01 from the separate emulation job, n02 from the replication job
+    "DF-MP2, GEMMul8 12": ("g8m12", "native", [("n01", "mp2emu_1029_1741", LOG, "round"), ("n02", "MP2N02", f"{LOG}/n02", "round")]),
 }
 
 

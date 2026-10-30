@@ -323,9 +323,10 @@ coefficients we truncated (MFEM, SW4, LAMMPS) gain 0--2\pct, because the truncat
 
 \begin{figure*}[t]
 \centering\includegraphics[width=\textwidth]{figs/mi350_gemm_caps.pdf}
-\caption{GEMM speedup from mantissa zeroing under power caps on GH200 (module cap; FP64 $32768^2{\times}2048$, BF16
-$k=6144$; 3 nodes $\times$ ABBA) and MI350X (package cap; BF16 and FP8 $k=8192$; node n02, 8 GPUs $\times$ ABBA). Bars:
-95\pct{} paired intervals over GPUs; the dotted line marks each platform's default limit, which is also its highest.}\label{fig:gemm}
+\caption{GEMM speedup from mantissa zeroing under power caps. GH200 (module cap; FP64 $32768^2{\times}2048$, BF16 $k=6144$):
+95\pct{} $t$ intervals over 6 node--pair samples (3 nodes $\times$ 2 ABBA pairs). MI350X (package cap; BF16 and FP8
+$k=8192$): mean of node n02's two measurement windows, each averaging the 8 GPUs that run at once; bars span the two
+windows; open markers: node n01. The dotted line marks each platform's default limit, which is also its highest.}\label{fig:gemm}
 \end{figure*}
 
 Zeroing speeds up GEMM at every cap on both platforms, though not monotonically as the cap tightens (Fig.~\ref{fig:gemm}).
@@ -374,33 +375,35 @@ set, so node sets are the larger source of uncertainty (details in Supplement~S6
 1.7--5.8\pct{} faster at 500--800\W; refinement grows from 1 to 3 iterations, which eats most of the LU's 5--16\pct{}
 speedup above 600\W; at 1000\W{} native HPL-MxP trips the chassis power brake at full fan speed, so we exclude that cap.
 
-\begin{table}[t]
-\caption{MI350X: speedup (\%) per node, raw\,/\,temperature-adjusted, at the default limit and at 500\W. GEMM 95\pct{}
-intervals use the 4 measurement windows of both nodes as units (8 GPUs averaged per window).}\label{tab:robust}
-\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{@{}lllll@{}}
+\begin{table*}[t]
+\caption{MI350X: speedup (\%) over the unmodified program at the default limit and at 500\W. Pooled: mean $\pm$ 95\pct{} $t$
+interval over the independent units of both nodes (window: one measurement window with the 8 GPUs averaged; run: one
+node-wide run; round: one round of 8 GPUs). Per node: raw (same cooling environment) / adjusted to equal junction
+temperature.}\label{tab:robust}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llcccccc@{}}
 \toprule
-& \multicolumn{2}{c}{1000\W} & \multicolumn{2}{c}{500\W} \\
-\cmidrule(lr){2-3}\cmidrule(l){4-5}
-Result & n01 & n02 & n01 & n02 \\
+& & \multicolumn{3}{c}{1000\W} & \multicolumn{3}{c}{500\W} \\
+\cmidrule(lr){3-5}\cmidrule(l){6-8}
+Result & Unit, $n$ & Pooled & n01 raw/adj. & n02 raw/adj. & Pooled & n01 raw/adj. & n02 raw/adj. \\
 \midrule
-GEMM FP64, 36 bits & 5.2/5.4 & 5.0/5.5 & 8.7/8.6 & 8.6/8.7 \\
-\quad both nodes, windows & \multicolumn{2}{c}{$5.1\pm0.6$} & \multicolumn{2}{c}{$8.6\pm0.1$} \\
-GEMM BF16, 0 bits & 16.4/16.6 & 14.8/15.2 & 29.8/29.4 & 31.4/31.6 \\
-\quad both nodes, windows & \multicolumn{2}{c}{$15.6\pm1.4$} & \multicolumn{2}{c}{$30.6\pm1.5$} \\
-GEMM FP8, 0 bits & 9.6/9.5 & 7.9/8.0 & 17.1/17.2 & 17.7/17.7 \\
-HPL, 36 bits & 4.6/4.5 & 5.1/4.8 & 7.3/7.2 & 6.3/6.5 \\
-HPL-MxP, 3 bits & 4.9/4.8 & 5.1/5.1 & 19.5/18.8 & 19.1/21.3 \\
-GP likelihood, 28 bits & 7.6 & \pending{} & 10.8 & \pending{} \\
-DF-MP2, 20 bits & 10.2 & \pending{} & 18.8 & \pending{} \\
+GEMM FP64, 36 bits & window, 4 & $5.1\pm0.6$ & 5.2/5.4 & 5.0/5.5 & $8.6\pm0.1$ & 8.6/8.6 & 8.6/8.7 \\
+GEMM BF16, 0 bits & window, 4 & $15.6\pm1.4$ & 16.4/16.6 & 14.8/15.2 & $30.6\pm1.5$ & 29.8/29.4 & 31.4/31.6 \\
+GEMM FP8, 0 bits & window, 4 & $8.7\pm1.6$ & 9.6/9.5 & 7.9/7.9 & $17.4\pm0.6$ & 17.1/17.2 & 17.7/17.7 \\
+HPL, 36 bits & run, 6 & $4.8\pm0.3$ & 4.6/4.5 & 5.1/4.8 & $7.0\pm0.6$ & 7.3/7.2 & 6.3/6.5 \\
+HPL-MxP, 3 bits & run, 8 & $5.0\pm0.4$ & 4.9/4.8 & 5.1/5.1 & $19.3\pm1.3$ & 19.5/18.8 & 19.1/21.3 \\
+GP likelihood, 28 bits & round, 4 & $7.4\pm0.6$ & 7.6/7.1 & 7.1/7.3 & $11.0\pm1.0$ & 10.8/12.5 & 11.2/12.9 \\
+DF-MP2, 20 bits & round, 4 & $10.3\pm0.6$ & 10.2/13.3 & 10.4/14.2 & $18.6\pm0.3$ & 18.8/19.8 & 18.5/20.0 \\
+DF-MP2, 32 bits & round, 4 & $5.7\pm0.4$ & 5.5/7.5 & 5.9/7.4 & $9.8\pm0.1$ & 9.7/10.5 & 9.8/11.0 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/mi350_apps.pdf}
-\caption{MI350X, node n01: speedup of the in-program truncated variant over the unmodified program under each package
-cap (8 GPUs; mean $\pm$ 95\pct{} interval over runs or GPUs). The second node agrees within 2 points (Table~\ref{tab:robust}).}\label{fig:mi350apps}
+\caption{MI350X: speedup of the in-program truncated variant over the unmodified program under each package cap, both
+nodes pooled. Bars: 95\pct{} $t$ intervals over independent units, node-wide runs (HPL, HPL-MxP) or rounds of 8 GPUs
+(GP, DF-MP2), with $n$ in the legend; per-node and temperature-adjusted values in Table~\ref{tab:robust}.}\label{fig:mi350apps}
 \end{figure}
 
 \textbf{MI350X, one node of 8 GPUs.} Native HPL reaches 424.9 and 429.8\,TFLOP/s on the two nodes at 1000\W. With 36 bits
@@ -412,8 +415,11 @@ it is 4.6--5.1\pct{} faster at the default limit, 4.5--4.9\pct{} at 800\W, 6.2--
 does not converge on MI350X, so 3 bits is the operating point on both platforms. The fan pitfall of
 Section~\ref{sec:setup} biased one cell: on node n01 at 800\W{} all four 4-bit runs were about 12\,\textdegree C cooler,
 and 4 bits appeared faster than 3 (+11.3 versus +9.3\pct); adjusted for temperature, 3 bits is +9.0\pct{} in that job,
-+9.1\pct{} in a pairwise rerun and +9.1\pct{} on n02, and 4 bits +4.4--6.2\pct. Every other cell moves by at most
-0.7 points under the adjustment. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
++9.1\pct{} in a pairwise rerun and +9.1\pct{} on n02, and 4 bits +4.4--6.2\pct. Every other HPL and HPL-MxP cell moves by at most
+0.7 points under the adjustment. For GP and DF-MP2 the adjusted gains are 0--4 points larger than the raw ones
+(Table~\ref{tab:robust}): their variants run back to back in one process (native, 32/36 bits, 20/28 bits, then in reverse),
+so the truncated variants occupy the middle, hottest part of each round, and the raw gains, which we report, are
+conservative. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
 generator always sets the diagonal to the row's absolute sum, and we have no implementation of a generator allowed for
 official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP.
 \pending{exact diagonal-tile factorization check (job 65)}.
@@ -450,9 +456,9 @@ comes from 7--9\pct{} fewer Davidson iterations, for reasons not yet identified;
 \subsection{A Power-Hungry Application: DF-MP2}\label{sec:mp2}
 
 \begin{table}[t]
-\caption{DF-MP2 (taxol def2-TZVP): speed relative to native (mean $\pm$ 95\pct{} $t$ interval; GH200: 6 rounds;
-MI350X: 16 pairs), and the error $|\Delta E|$ of the MP2 correlation energy in E$_\mathrm{h}$ (truncated variants
-round to nearest). MI350X GEMMul8 times exclude a one-time warm-up (Section~\ref{sec:crossover}).}\label{tab:mp2}
+\caption{DF-MP2 (taxol def2-TZVP): speed relative to native (mean $\pm$ 95\pct{} $t$ interval; GH200: 6 rounds from two
+jobs on two nodes; MI350X: 4 rounds of 8 GPUs, two per node on two nodes), and the error $|\Delta E|$ of the MP2 correlation
+energy (truncated variants round to nearest). MI350X GEMMul8 times exclude a one-time warm-up (Section~\ref{sec:crossover}).}\label{tab:mp2}
 \centering\footnotesize\setlength{\tabcolsep}{2.0pt}
 \begin{tabular}{@{}lrlll@{}}
 \toprule
@@ -463,10 +469,10 @@ Cap & Native & 32 bits & 20 bits & Emulation \\
 700\W & 43.9\,s & $+4.9\pm0.4\pct$ & $+7.4\pm0.4\pct$ & $-28\pct$ \\
 500\W & 51.5\,s & $+4.7\pm0.2\pct$ & $+7.7\pm0.5\pct$ & $-18\pct$ \\
 \multicolumn{5}{@{}l}{\emph{MI350X} (emulation: GEMMul8, 12 moduli)} \\
-1000\W & 21.8\,s & $+5.6\pm0.5\pct$ & $+10.2\pm0.8\pct$ & $+67.0\pm0.6\pct$ \\
-800\W & 26.6\,s & $+7.4\pm0.3\pct$ & $+13.7\pm0.5\pct$ & $+61.3\pm1.2\pct$ \\
-650\W & 33.9\,s & $+9.1\pm0.4\pct$ & $+16.1\pm1.0\pct$ & $+44.0\pm1.0\pct$ \\
-500\W & 55.7\,s & $+9.8\pm0.3\pct$ & $+18.8\pm0.4\pct$ & $+34.4\pm0.9\pct$ \\
+1000\W & 21.7\,s & $+5.7\pm0.4\pct$ & $+10.3\pm0.6\pct$ & $+66.6\pm1.1\pct$ \\
+800\W & 26.4\,s & $+6.7\pm1.4\pct$ & $+12.7\pm1.8\pct$ & $+60.7\pm0.9\pct$ \\
+650\W & 34.1\,s & $+9.5\pm0.7\pct$ & $+16.6\pm0.9\pct$ & $+44.8\pm1.4\pct$ \\
+500\W & 55.8\,s & $+9.8\pm0.1\pct$ & $+18.6\pm0.3\pct$ & $+32.6\pm3.1\pct$ \\
 \midrule
 $|\Delta E|$ & --- & $\le\ee{5}{-12}$ & $\le\ee{2.2}{-8}$ & G: $\ee{2.2}{-8}$; M: $\ee{7}{-12}$ \\
 \bottomrule
@@ -477,16 +483,16 @@ The three-index tensor $B$ is zeroed in place once; the contraction $B_iB_j^{\ma
 basis as inner dimension, $k=5477$) dominates the run. Keeping 32 bits changes the MP2 correlation energy by at most
 $\ee{5}{-12}$\Eh{} and 20 bits by at most $\ee{2.2}{-8}$\Eh{} (Table~\ref{tab:mp2}). On GH200 the truncated variants run at
 native speed at 1000\W{} with 8--14\pct{} less energy and gain 5--8\pct{} under caps; on MI350X, held at the limit 95\pct{}
-of the time at 1000\W, they are 5.6 and 10.2\pct{} faster there and 9.8 and 18.8\pct{} at 500\W. Emulation behaves
+of the time at 1000\W, they are 5.7 and 10.3\pct{} faster there and 9.8 and 18.6\pct{} at 500\W{} (4 rounds on two nodes). Emulation behaves
 differently on the two platforms (Section~\ref{sec:crossover}).
 
 \subsection{A Wide-Range Workload: Gaussian-Process Likelihood}\label{sec:gp}
 
 \begin{table}[t]
-\caption{Gaussian-process likelihood ($n=80000$, six range parameters): largest log-likelihood deviation from
-native and speed relative to native (mean $\pm$ 95\pct{} $t$ interval; GH200: 6 rounds; MI350X: 16 pairs; truncation
-rounds to nearest). The log-likelihoods are 1.2--1.7$\times10^5$. MI350X intervals are per GPU; with rounds as units
-see Table~\ref{tab:robust}. $^{a}$At $n=80000$ GEMMul8 returns success but an invalid trailing update; see text.}\label{tab:gp}
+\caption{Gaussian-process likelihood ($n=80000$, six range parameters): largest log-likelihood deviation from native
+and speed relative to native (mean $\pm$ 95\pct{} $t$ interval; GH200: 6 rounds; MI350X: 4 rounds of 8 GPUs on two nodes;
+truncation rounds to nearest). The log-likelihoods are 1.2--1.7$\times10^5$. $^{a}$At $n=80000$ GEMMul8 returns success but an
+invalid trailing update; at $n=64000$ it is 11--43\pct{} slower than native (Section~\ref{sec:crossover}).}\label{tab:gp}
 \centering\footnotesize\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{@{}lllll@{}}
 \toprule
@@ -499,10 +505,10 @@ $\max|\Delta\ell|$ & $\ee{2.4}{-5}$ & $\ee{7.2}{-4}$ & $\ee{2.2}{-3}$ & 87 \\
 500\W & $+4.8\pm0.1\pct$ & $+7.5\pm0.1\pct$ & $-21\pct$ & $+3.9\pct$ \\
 \multicolumn{5}{@{}l}{\emph{MI350X} (emulation: GEMMul8)} \\
 $\max|\Delta\ell|$ & $\ee{1.9}{-5}$ & $\ee{5.3}{-3}$ & wrong$^{a}$ & --- \\
-1000\W & $+4.0\pm0.2\pct$ & $+7.6\pm0.2\pct$ & --- & --- \\
-800\W & $+3.9\pm0.4\pct$ & $+6.1\pm0.7\pct$ & --- & --- \\
-650\W & $+5.4\pm0.7\pct$ & $+7.9\pm1.2\pct$ & --- & --- \\
-500\W & $+6.7\pm0.4\pct$ & $+10.9\pm0.6\pct$ & --- & --- \\
+1000\W & $+3.9\pm0.2\pct$ & $+7.4\pm0.6\pct$ & --- & --- \\
+800\W & $+4.1\pm0.6\pct$ & $+7.1\pm1.8\pct$ & --- & --- \\
+650\W & $+5.3\pm1.7\pct$ & $+7.8\pm2.8\pct$ & --- & --- \\
+500\W & $+6.9\pm0.7\pct$ & $+11.0\pm1.0\pct$ & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -512,8 +518,8 @@ coalesced pass before its trailing update. The panel rows span 162 binades, and 
 $2^{-32}$ below their row maximum. With 28 bits the log-likelihood moves by a relative $\ee{3}{-8}$--$\ee{4.5}{-8}$, far below
 what matters for estimation, and a one-parameter maximum-likelihood fit on GH200 returns the native estimate in every printed
 digit (Supplement~S5). On GH200 the gain at 1000\W{} depends on how often native is capped (3.8\pct{} here, 0.1\pct{} with a
-Morton ordering that is capped less); on MI350X the limit binds and 28 bits is 7.6\pct{} faster at 1000\W{} and 10.9\pct{} at
-500\W. FP32 is unusable for estimation; truncating the FP64 tiles that remain in a tile mixed-precision Cholesky makes it a
+Morton ordering that is capped less); on MI350X the limit binds and 28 bits is $7.4\pm0.6\pct$ faster at 1000\W{} and $11.0\pm1.0\pct$ at 500\W{} (4 rounds on two
+nodes). FP32 is unusable for estimation; truncating the FP64 tiles that remain in a tile mixed-precision Cholesky makes it a
 further 1.9--7.0\pct{} faster, so truncation composes with format changes (Supplement~S5).
 
 %==================================================================================================
