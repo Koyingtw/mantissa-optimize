@@ -61,7 +61,7 @@ energy (SM clock 1348$\to$1446\,MHz), and Au\,112 at 450\W{} is 4.9\pct{} faster
 truncated run each, between baseline runs before and after).
 These are upper bounds for a library that truncated internally; against the unmodified program the shim is
 0.4\pct{} slower (Au\,112, 450\W) because of its $\approx$5\pct{} copy cost. The in-program version of
-Section~\\ref{sec:adaptive} truncates only Davidson blocks without copies and is the deployable number.
+Section~VI-C truncates only Davidson blocks without copies and is the deployable number.
 
 For GPU4PySCF, nsys shows FP64 GEMM kernels at 46\pct{} of GPU kernel time and 32\pct{} of total runtime for
 valinomycin DFT (31\pct{} and 27\pct{} of kernel time for taxol and tamoxifen); the rest is dominated by copies of
@@ -69,8 +69,8 @@ computed intermediates (36--50\pct) and integrals. With 32--36 bits needed and F
 5.1--6.5\pct{} faster at 500--800\W, truncation alone is bounded at about $32\pct\times5$--$6.5\pct\approx1.6$--2.1\pct{}
 end to end (3.9\pct{} at 400\W). This estimate assumes the default grid and GEMM time proportional to flops at
 1000\W{} speed; on a finer grid (level 6), valinomycin measured at 450--550\W{} is 3.3--3.5\pct{} faster
-(Section~\\ref{sec:span}). Neither number implies that truncation beats INT8 emulation here: the two
-dominant GEMM shapes favor different methods (Section~\\ref{sec:crossover}), and choosing by shape bounds the gain at
+(Section~VII-B). Neither number implies that truncation beats INT8 emulation here: the two
+dominant GEMM shapes favor different methods (Section~VII-A), and choosing by shape bounds the gain at
 about 3.5\pct{} with cuBLAS emulation for the long-$k$ shape, or 6.6\pct{} with the less accurate GEMMul8.
 
 \textbf{Wide range, partly power-bound DFT.} These DFT runs draw only 650--690\W{} at 1000\W, but are power-bound
@@ -229,7 +229,7 @@ and 4.8--4.9\pct{} faster with 36 bits, using 6.6--6.8\pct{} and 4.5--4.8\pct{} 
 truncation is both fast and accurate on this wide-range, power-bound workload.
 
 \textbf{Composing with tile mixed precision (GH200).} The mixed-precision Cholesky factorizations of the ExaGeoStat line change
-the format of whole tiles instead (Section~\\ref{sec:related}). To see whether truncation still helps there, we ordered
+the format of whole tiles instead (Section~II). To see whether truncation still helps there, we ordered
 the locations along a Morton curve and added such a variant to our kernel: in the trailing update, tiles below each
 column's FP64 extent, chosen by the tile-norm rule with a required accuracy of $10^{-9}$ as in~\cite{Cao2023}, use FP16
 inputs with FP32 accumulation on the tensor cores (52\pct{} of the tiles at range 0.02, 3\pct{} at 0.08). Over the six
@@ -373,6 +373,7 @@ Path & Content \\
 \path{apps/q-e/KS_Solvers/Davidson/} & in-program truncation and the tolerance-driven rule (\path{QE_MANT_ADAPT}) \\
 \path{apps/pyscf-inputs/mp2_variants.py}, \path{mi350/apps/mp2_prep.py}, \path{mi350/apps/dfmp2.hip} & DF-MP2 variants on GH200; tensor preparation and HIP contraction on MI350X \\
 \path{apps/geostat/gp_mle.py}, \path{mi350/apps/gp_chol.hip} & Gaussian-process likelihood and MLE (CUDA/cupy and HIP) \\
+\path{mi350/apps/g8_repro.hip} & minimal reproducer of the GEMMul8 failure at $mn=2^{32}$ \\
 \path{apps/patches/} & MFEM, SW4, LAMMPS and ExaGeoStatCPP changes \\
 \path{gh200/slurm/}, \path{mi350/scripts/}, \path{mi350/tools/} & job scripts (cap sweeps with ABBA or pairwise ABBA order); MI350X power-cap tool and amdsmi sampler with energy accumulator \\
 \path{gh200/analysis/}, \path{mi350/analysis/} & summaries, $\Delta W$, intervals, crossover fit, power model (\path{power_model.py}), figures \\
@@ -407,12 +408,18 @@ and result files there.
 \textbf{Reproduction.} Each experiment is one job that sets caps only on its own nodes, waits for the GPUs to cool
 before each run, interleaves variants in ABBA (or pairwise ABBA) order and writes power logs next to the program output;
 an analysis script then joins run windows with the power logs. For example, the GH200 crossover sweep of
-Section~\\ref{sec:crossover} is \path{gh200/slurm/e1_gemm_tdp.sbatch} with the shapes, caps and methods passed as
+Section~VII-A is \path{gh200/slurm/e1_gemm_tdp.sbatch} with the shapes, caps and methods passed as
 environment variables, summarized by \path{gh200/analysis/crossover.py}; the MI350X sweeps are
 \path{mi350/scripts/e1_gemm_tdp.sh} (GEMM, crossover, locked clocks via \path{e1b_fixedclk.sh}),
 \path{hpl_tdp.sh} (HPL and HPL-MxP), \path{gp_tdp.sh} and \path{mp2_tdp.sh}, submitted through
 \path{mi350/slurm/run.sbatch} and summarized by \path{mi350/analysis/e1_summary.py}, \path{hpl_summary.py},
-\path{gp_summary.py} and \path{mp2_summary.py}; the model is \path{mi350/analysis/power_model.py}.
+\path{gp_summary.py} and \path{mp2_summary.py}; the model is \path{mi350/analysis/power_model.py}, evaluated with the
+idle $P_0$ by \path{model_eval.py} and on the two applications (locked-clock runs of \path{lockclk_apps.sh}) by
+\path{model_apps.py}. Intervals over independent units are \path{apps_units.py}; temperature adjustment is
+\path{temp_adjust.py}; the controlled thermal checks are \path{e1_gemm_tdp.sh} with a 4-minute warm-up and no cool-down,
+and \path{hpl_tdp.sh} with \path{PAIRWISE=1 PRECOND=180}. The GEMMul8 size failure is reproduced in isolation by
+\path{mi350/apps/g8_repro.hip} (\path{g8_threshold.sh}), which compares GEMMul8's direct API with \path{hipblasDgemm}
+for $m=n$ around 65536.
 
 
 \bibliographystyle{IEEEtran}
