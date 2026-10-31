@@ -415,7 +415,8 @@ environment variables, summarized by \path{gh200/analysis/crossover.py}; the MI3
 \path{mi350/slurm/run.sbatch} and summarized by \path{mi350/analysis/e1_summary.py}, \path{hpl_summary.py},
 \path{gp_summary.py} and \path{mp2_summary.py}; the model is \path{mi350/analysis/power_model.py}, evaluated with the
 idle $P_0$ by \path{model_eval.py} and on the two applications (locked-clock runs of \path{lockclk_apps.sh}) by
-\path{model_apps.py}. Intervals over independent units are \path{apps_units.py}; temperature adjustment is
+\path{model_apps.py}. Intervals over independent units are \path{apps_units.py}; the HPL comparison under common residual thresholds is
+\path{hpl_threshold.py}; temperature adjustment is
 \path{temp_adjust.py}; the controlled thermal checks are \path{e1_gemm_tdp.sh} with a 4-minute warm-up and no cool-down,
 and \path{hpl_tdp.sh} with \path{PAIRWISE=1 PRECOND=180}. The GEMMul8 size failure is reproduced in isolation by
 \path{mi350/apps/g8_repro.hip} (\path{g8_threshold.sh}), which compares GEMMul8's direct API with \path{hipblasDgemm}

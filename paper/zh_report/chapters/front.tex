@@ -9,7 +9,7 @@ GPU 越來越常在功耗上限下運作：NVIDIA GH200 允許使用者設定整
 
 本專題研究「尾數歸零」：以軟體將運算元用不到的低位尾數設為 0，不改變資料格式，仍由原本的 FP64、BF16 或 FP8 運算單元計算，再於功耗上限下把省下的功耗換成更高的時脈。我們在 GH200 叢集與兩個各有 8 張 MI350X 的節點上，以成對交錯的量測評估矩陣乘法、HPL、HPL-MxP、Quantum ESPRESSO、DF-MP2、高斯過程地統計等程式。以全 1 取代 0 填入被捨去的位元（不再翻轉、但不為 0），保留了 65–97\% 的效益，所以省電主要來自位元不再翻轉。據此建立的兩參數模型，只用原生的效能曲線、閒置功耗與一兩次量測，就能預測截斷版本在每個上限下的加速，矩陣乘法的平均誤差為 1.5 與 2.1 個百分點，兩個沒有參與建模的應用為 1.6。
 
-MI350X 的預設上限就受限，所以截斷在出廠設定下就加速：FP64 HPL（保留 36 位有效位數）快 4.6–5.1\%，HPL-MxP（對角優勢的測試矩陣，BF16 保留 3 位）快 4.9–5.1\%，高斯過程快 7.4\%，DF-MP2 快 10\%；在 500~W 快 7–19\%，所有正確性檢查都通過。GH200 的預設上限下主要表現為省電，受限時 HPL 快 3.3–4.7\%。尾數歸零並非處處最佳：INT8 模擬 FP64（GEMMul8）在內積長、上限寬鬆時更快（MI350X 的 HPL 快 32\%、DF-MP2 快 67\%），但內積短時比原生慢，在 500~W、相近精度下的 HPL 落後截斷（$-0.4$ 對 +8.0\%），需要的工作空間限制了問題大小，還可能安靜地出錯：列內指數跨度寬時損失精度（高斯基底 DFT 錯 52.5\mEh），以及我們所用的版本在輸出超過 $2^{32}$ 個元素時算錯。截斷保留原格式，也是 BF16 與 FP8 唯一的選項。
+MI350X 的預設上限就受限，所以截斷在出廠設定下就加速：FP64 HPL（保留 36 位有效位數）快 4.6–5.1\%，HPL-MxP（對角優勢的測試矩陣，BF16 保留 3 位）快 4.9–5.1\%，高斯過程快 7.4\%，DF-MP2 快 10\%；在 500~W 快 7–19\%，所有正確性檢查都通過。GH200 的預設上限下主要表現為省電，受限時 HPL 快 3.3–4.7\%。尾數歸零並非處處最佳：INT8 模擬 FP64（GEMMul8）在內積長、上限寬鬆時更快（DF-MP2 快 67\%；HPL 在它本身的殘差門檻下 1000~W 快 34\%），但內積短時比原生慢，需要的工作空間限制了問題大小，列內指數跨度寬時會損失精度（高斯基底 DFT 錯 52.5\mEh）；若要求 HPL 的殘差低於 1，它在 650 與 500~W 落後截斷（500~W：$-4$ 對 +7\%）。兩種方法中，只有截斷保留原格式，也適用於 BF16 與 FP8。
 
 {\small 註：本報告中所有截斷後的 HPL/HPL-MxP 與 MLPerf 數字皆為研究用途，並非 TOP500 或 MLPerf 的正式成績。\par}
 
@@ -32,11 +32,11 @@ native curve, the idle power and one or two measurements, within 1.5--2.1 percen
 for two applications not used to build it. MI350X is power-bound at its stock 1000\,W limit, so truncation pays at
 default settings: 4.6--5.1\% for FP64 HPL (36 significand bits), 4.9--5.1\% for HPL-MxP on a diagonally dominant matrix
 (3 BF16 bits), 7.4\% for a Gaussian-process likelihood and 10\% for DF-MP2, and 7--19\% at 500\,W, with every accuracy
-check passed. INT8 emulation of FP64 (GEMMul8) is faster where inner dimensions are long and the cap generous (HPL +32\%,
-DF-MP2 +67\% at 1000\,W), but slower than native at inner dimension 1024, behind truncation for HPL at 500\,W and matched
-accuracy ($-0.4$ versus +8.0\%), limited by workspace memory, and fails silently: it loses precision on wide per-row
-exponent spans and, in the build we used, returns wrong results beyond $2^{32}$ output elements. Truncation keeps the
-format and is the only option for BF16 and FP8. Truncated HPL, HPL-MxP and MLPerf numbers in this report are research
+check passed. INT8 emulation of FP64 (GEMMul8) is faster where inner dimensions are long and the cap generous (DF-MP2 +67\%;
+HPL +34\% under its own residual check at 1000\,W), but slower than native at inner dimension 1024, limited by workspace
+memory and prone to precision loss on wide per-row exponent spans; when HPL's residual must stay below 1, it falls behind
+truncation at 650 and 500\,W ($-4$ versus +7\% at 500\,W). Of the two methods, only truncation keeps the format and
+applies to BF16 and FP8. Truncated HPL, HPL-MxP and MLPerf numbers in this report are research
 results, not official TOP500 or MLPerf scores.
 
 \vspace{1em}

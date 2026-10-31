@@ -53,11 +53,11 @@ for two applications not used to build it.
 MI350X is power-bound at its stock 1000\W{} limit, so truncation pays at default settings: 4.6--5.1\pct{} for FP64 HPL (36
 significand bits), 4.9--5.1\pct{} for HPL-MxP on a diagonally dominant matrix (3 BF16 bits), 7.4\pct{} for a
 Gaussian-process likelihood and 10\pct{} for DF-MP2, and 7--19\pct{} at 500\W, with every accuracy check passed.
-INT8 emulation of FP64 (GEMMul8) is faster where inner dimensions are long and the cap generous (HPL +32\pct, DF-MP2
-+67\pct{} at 1000\W), but slower than native at inner dimension 1024 ($-11\pct$), behind truncation for HPL at 500\W{} and
-matched accuracy ($-0.4$ versus $+8.0\pct$), limited by workspace memory, and fails silently: it loses precision on
-wide per-row exponent spans and, in the build we used, returns wrong results beyond $2^{32}$ output elements. Truncation keeps the format and is the only option for
-BF16 and FP8.
+INT8 emulation of FP64 (GEMMul8) is faster where inner dimensions are long and the cap generous (DF-MP2 +67\pct;
+HPL +34\pct{} under its own residual check at 1000\W), but slower than native at inner dimension 1024, limited by workspace
+memory and prone to precision loss on wide per-row exponent spans; when HPL's residual must stay below 1, it falls
+behind truncation at 650 and 500\W{} ($-4$ versus $+7\pct$ at 500\W). Of the two methods, only truncation keeps the
+format and applies to BF16 and FP8.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -82,24 +82,28 @@ vendor, or need new hardware. They leave open what a practitioner needs to know:
 \emph{real} data buys performance on production GPUs of different vendors, and through which mechanism; whether the gain
 can be predicted without measuring every variant under every cap; what it costs in accuracy; and where it still pays off
 against format changes such as INT8 emulation of FP64~\cite{Ozaki2025,Uchino2025}, whose speed also depends on the power
-limit. Our contributions are:
+limit. None of the ingredients is new by itself: data-dependent power, mantissa masking and the conversion of saved power
+into clock under a cap are all known. Our contribution is to turn them into a method that is measured on two vendors,
+predictable from one locked-clock run, and bounded by explicit accuracy conditions, and to identify where it changes a
+practitioner's choice:
 
 \begin{enumerate}
+\item \textbf{Gains at stock settings.} On a GPU that is power-bound at its default limit (MI350X), in-program truncation
+speeds up HPL, HPL-MxP, DF-MP2 and a Gaussian-process likelihood by 4.6--10\pct{} with each code's own accuracy criterion
+met, replicated on a second node; on GH200 the same codes gain under caps and save energy at the default
+(Section~\ref{sec:results}).
+\item \textbf{Prediction, validated externally.} If truncation only changes the switched capacitance, the truncated
+program under cap $P$ behaves like the native program under $P_0+(P-P_0)/R$. With $P_0$ the measured idle power, the model
+predicts 42 cap--format GEMM points per platform with mean errors of 1.5 and 2.1 percentage points, and two applications
+not used to build it within 1.6 (Section~\ref{sec:model}).
+\item \textbf{Method selection against INT8 emulation.} Under HPL's own residual check emulation is faster at every cap
+we tested (576.8 against 449.2\,TFLOP/s at 1000\W); a stricter accuracy requirement, a tighter cap, short inner
+dimensions, limited memory, many distinct shapes and wide per-row exponent spans favor truncation; of the two, only
+truncation applies to BF16 and FP8 (Section~\ref{sec:format}, Tables~\ref{tab:h2h} and~\ref{tab:hplthr}).
 \item \textbf{Evidence on the mechanism across vendors, units and clocks.} Fills that stop the discarded bits toggling
 without making them zero retain 65--97\pct{} (ones) and 41--92\pct{} (fixed pattern) of the saving in matrix engines, FP64
 vector units and memory copies on GH200 and MI350X (Section~\ref{sec:why}); on MI350X truncation also raises the effective
 clock at a fixed target clock, a reduction no throttle counter reports.
-\item \textbf{A predictive model.} If truncation only changes the switched capacitance, the truncated program under cap
-$P$ behaves like the native program under $P_0+(P-P_0)/R$. With $P_0$ the measured idle power, it predicts 42
-cap--format points per platform with mean errors of 1.5 and 2.1 percentage points (Section~\ref{sec:model}).
-\item \textbf{Deployable gains on real applications on two platforms.} In-program truncation, measured against the
-unmodified program with paired designs, replicated on a second node set or node, speeds up HPL, HPL-MxP, Quantum ESPRESSO,
-DF-MP2 and a Gaussian-process likelihood, with each code's own accuracy criterion met (Section~\ref{sec:results}). On
-MI350X the gains appear at the default limit.
-\item \textbf{A head-to-head comparison with INT8 emulation.} At the best configuration each method allows, emulation
-wins for long inner dimensions at generous caps (HPL at 1000\W: 576.8 against 444.6\,TFLOP/s for truncation); a tighter
-cap, small inner dimensions, limited memory, many distinct shapes and wide per-row exponent spans favor truncation, and
-for BF16 and FP8 it is the only option (Section~\ref{sec:format}, Table~\ref{tab:h2h}).
 \item \textbf{Measurement lessons.} Hardware energy accumulators avoid sampling bias; chassis fans that react to the
 previous run change a power-capped GPU's speed by up to 4.5\pct{} through its temperature, which interleaving alone does
 not remove; and safe bit counts must be validated per platform (Sections~\ref{sec:setup}, \ref{sec:hpl}).
@@ -207,10 +211,18 @@ at a common locked target clock, $R$ is the ratio of their dynamic powers and $\
 clocks, both directly measurable. Under cap $P$ the truncated program settles where $c_rs_rg(f_r)=P-P_0$; the native
 program reaches the same target clock $f_r$ under $P'$ with $c_ns_ng(f_r)=P'-P_0$. Dividing,
 \begin{gather}
-P'=P_0+\frac{P-P_0}{R},\qquad p_r(P)=\sigma\,p_n(P'),\\
-\Delta W=P'-P=(P-P_0)\left(\tfrac{1}{R}-1\right),
+P'=P_0+\frac{P-P_0}{R},\qquad p_r(P)=\sigma\,p_n(P'),\label{eq:pred}\\
+\Delta W_f=P'-P=(P-P_0)\left(\tfrac{1}{R}-1\right),\label{eq:dwf}
 \end{gather}
-where $p_r(P)=\sigma\,p_n(P')$ because both run at target clock $f_r$ and performance scales with $s$. The model assumes
+where $p_r(P)=\sigma\,p_n(P')$ because both run at target clock $f_r$ and performance scales with $s$. $\Delta W_f$ is
+the extra cap the native program needs to reach the truncated program's \emph{target clock}. The equivalent saving used
+in our results, the extra cap it needs to reach the truncated program's \emph{throughput}, is
+\begin{equation}
+\Delta W=p_n^{-1}\!\bigl(\sigma\,p_n(P')\bigr)-P,
+\end{equation}
+which equals $\Delta W_f$ only when $\sigma=1$ (GH200, by assumption) and exceeds it when $\sigma>1$ (MI350X,
+$\sigma=1.01$--1.05). Every $\Delta W$ reported in this paper is measured, by interpolation along the measured native
+curve; the model is used only to predict speedups. The model assumes
 that $s$ does not change with $f$ over the range used and that the program stays compute-bound; predictions are capped
 at the program's clock-limited peak. The model needs the native curve $p_n(P)$ and $P_0$; it saves measuring every
 truncated variant under every cap. We set $P_0$ to the measured idle power, independent of the validation data: 174\W{}
@@ -258,8 +270,9 @@ same node. Over the 16 points the mean error is 1.6 percentage points and the la
 $-1.6$ to $+2.4$ points; the likelihood is underpredicted at every cap, by 0.6--3.6 points, perhaps because its Cholesky
 alternates GEMM-heavy and non-GEMM phases whose power differs, which one whole-program ratio does not capture. Once a
 platform's idle power and an application's native curve are known, a truncated program's curve thus follows from one
-locked-clock run to within a few points, and $\Delta W\propto P-P_0$ explains why the equivalent saving grows with the cap
-where the relative speedup does not.
+locked-clock run to within a few points. The equal-clock part of the saving, $\Delta W_f\propto P-P_0$, also explains
+why the measured equivalent saving grows with the cap while the relative speedup does not: for FP64 with 36 bits on
+node n02 it rises from 12 to 72\W{} per GPU between 400 and 900\W, while the speedup falls from 8.9 to 4.9\pct.
 
 %==================================================================================================
 \section{Method and Experimental Setup}\label{sec:setup}
@@ -324,7 +337,9 @@ $6.0\pm3.5\pct$ raw, 9.0 and 6.2\pct{} adjusted, the same as the adjusted values
 chassis or a job are not independent, so on MI350X the unit is one measurement window of all 8 GPUs (GEMM), one node run
 (HPL, HPL-MxP) or one round of all 8 GPUs (GP, DF-MP2), and every MI350X experiment is repeated on the second node. On
 GH200 the units are node--pair samples from two node sets (HPL, HPL-MxP) or three nodes (GEMM), which treats pairs within
-a job as independent; those intervals may be too narrow.
+a job as independent; those intervals may be too narrow. Even on MI350X, rounds and runs within one job on one node
+may remain correlated, so the intervals describe how stable a gain is on these two nodes, not its spread across a fleet
+of GPUs.
 
 %==================================================================================================
 \section{Results: Gains Under Power Caps}\label{sec:results}
@@ -436,8 +451,10 @@ and 4 bits appeared faster than 3 (+11.3 versus +9.3\pct); adjusted for temperat
 every run the raw order is right again (+10.4 versus +6.0\pct, Section~\ref{sec:setup}). Every other HPL and HPL-MxP cell moves by at most
 0.7 points under the adjustment. For GP and DF-MP2 the adjusted gains are 0--4 points larger than the raw ones
 (Table~\ref{tab:robust}): their variants run back to back in one process (native, 32/36 bits, 20/28 bits, then in reverse),
-so the truncated variants occupy the middle, hottest part of each round, and the raw gains, which we report, are
-conservative. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
+so the truncated variants occupy the middle, hottest part of each round. Under the regression adjustment their gains
+increase (DF-MP2 at 1000\W: 10.2 to 13.3 and 10.4 to 14.2\pct{} on the two nodes). Our controlled checks cover GEMM and
+HPL-MxP, not these two codes, so we report the unadjusted values as the main results but do not claim they bound the
+effect from below. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
 generator always sets the diagonal to the row's absolute sum, and we have no implementation of a generator allowed for
 official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP. They do not, however, depend on the
 approximate factorization of the diagonal tiles: with exact factorization (\texttt{-{}-exact-diag}, node n02, one ABBA
@@ -546,9 +563,10 @@ further 1.9--7.0\pct{} faster, so truncation composes with format changes (Suppl
 \section{The Boundary with INT8 Emulation of FP64}\label{sec:format}
 
 \begin{table}[t]
-\caption{MI350X head-to-head: speedup over the best native run at the default limit / at 500\W, each method at the best
-configuration it allows, with its error. Truncation: 36 bits (HPL), 35 (GEMM), 20 (DF-MP2), 28 (GP); GEMMul8: 10 moduli
-(HPL, best configuration), 12 (others). The second HPL row compares both at one configuration and similar residual. GEMM: $m=n=32768$.}\label{tab:h2h}
+\caption{MI350X head-to-head: speedup over native at the default limit / at 500\W, with each method's error. GEMM
+($m=n=32768$), DF-MP2 and GP: truncation to 35, 20 and 28 bits against GEMMul8 with 12 moduli, which is more accurate in
+each case. HPL: each method's fastest configuration whose scaled residual stays below the stated threshold, against the
+fastest native configuration on the same node (Table~\ref{tab:hplthr}).}\label{tab:h2h}
 \centering\footnotesize\setlength{\tabcolsep}{1.6pt}
 \begin{tabular}{@{}lll@{}}
 \toprule
@@ -556,8 +574,8 @@ Workload & Truncation & GEMMul8 \\
 \midrule
 FP64 GEMM, $k=1024$ & +5.1/+9.2\pct{} ($\ee{8}{-12}$) & $-13$/$-45\pct$ ($\ee{4}{-13}$) \\
 FP64 GEMM, $k=4096$ & +5.5/+9.0\pct{} ($\ee{8}{-12}$) & +84/+18\pct{} ($\ee{8}{-13}$) \\
-HPL, best config.\ (residual) & +4.6/+7.3\pct{} (0.27) & +36/+11\pct{} (1.79) \\
-HPL, $N=458752$, $4{\times}2$ & +3.7/+8.0\pct{} (0.086) & +32/$-0.4\pct$ (0.033) \\
+HPL, residual $<16$ & +5.7/+7.3\pct{} (3.5/0.27) & +34/+12\pct{} (1.79) \\
+HPL, residual $<1$ & +5.1/+7.3\pct{} (0.27) & +17/$-4.0\pct$ (0.033) \\
 DF-MP2 ($|\Delta E|$, E$_\mathrm{h}$) & +10/+19\pct{} ($\ee{2}{-8}$) & +67/+34\pct{} ($\ee{7}{-12}$) \\
 GP, $n=64000$ ($|\Delta\ell|$) & +5.9/+11.8\pct{} ($\ee{2}{-3}$) & $-11$/$-43\pct$ ($\ee{3}{-7}$) \\
 HPL-MxP (BF16) & +4.9/+19\pct{} (0.5) & no emulation \\
@@ -567,9 +585,11 @@ HPL-MxP (BF16) & +4.9/+19\pct{} (0.5) & no emulation \\
 
 Table~\ref{tab:h2h} sets the two methods side by side at the best configuration each allows. Emulation wins by a wide
 margin where its fixed costs amortize at a generous cap (long inner dimensions: HPL, DF-MP2, GEMM with $k\ge2048$); a
-tighter cap shrinks its lead or turns it into a loss; and it loses where the inner dimension is short (the
-Gaussian-process likelihood and GEMM with $k=1024$). Truncation is smaller but positive everywhere, grows as the cap
-tightens, needs no extra memory and applies to BF16 and FP8. The rest of this section explains the pattern.
+tighter cap or a stricter accuracy requirement shrinks its lead or turns it into a loss; and it loses where the inner
+dimension is short (the Gaussian-process likelihood and GEMM with $k=1024$). Truncation's gains are smaller but positive in
+every case we measured and larger at 500\W{} than at the default limit in every row; our in-program implementation needs
+no extra memory; and of the two strategies, only truncation applies to BF16 and FP8. The rest of this section explains
+the pattern.
 
 \subsection{Crossover: Shape, Cap and Memory}\label{sec:crossover}
 
@@ -595,13 +615,39 @@ curve and raises every truncation curve.}\label{fig:mi350xover}
 
 \textbf{Applications.} In DF-MP2 on MI350X ($k=5477$) GEMMul8 with 12 moduli is 34--67\pct{} faster than native and beats
 truncation at every cap, its lead over 20-bit truncation shrinking from 57 to 16 points between 1000 and 500\W; on GH200
-cuBLAS emulation is 18--35\pct{} slower than native there (Table~\ref{tab:mp2}). In FP64 HPL on MI350X, GEMMul8 with 10
-moduli on its own best configuration ($N=491520$, NB 4096, $4\times2$; residual 1.79 against 0.03 for 36 bits) reaches
-576.8\,TFLOP/s at 1000\W, 36\pct{} above the best native configuration, but its lead over the best truncated run shrinks
-from 30\pct{} at 1000\W{} to 4\pct{} at 500\W. At matched accuracy the cap reverses the order: with 12 moduli (residual
-0.033, against 0.086 for 36-bit truncation; $N=458752$, $4\times2$, the largest size that fits), GEMMul8 is 32.0, 26.5 and
-14.9\pct{} faster than native at 1000, 800 and 650\W{} but $-0.4\pct$ at 500\W, where truncation gains 8.0\pct{}
-(temperature-adjusted $-1.5$ and 8.0\pct). In the Gaussian-process
+cuBLAS emulation is 18--35\pct{} slower than native there (Table~\ref{tab:mp2}). In FP64 HPL on MI350X the winner depends on the accuracy required, so we fix a common threshold on the scaled
+residual and let each method use its fastest measured configuration that meets it (Table~\ref{tab:hplthr}). Under HPL's
+own check (16), GEMMul8 with 10 moduli (residual 1.79; $N=491520$, NB 4096, $4\times2$) leads at every cap: 576.8\,TFLOP/s
+at 1000\W, 34\pct{} above the fastest native configuration on the same node, against 5.7\pct{} for 32-bit truncation,
+and 11.6 against 7.3\pct{} at 500\W. Requiring a residual below 1 excludes 10 moduli; 12 moduli (0.033) fits only up to
+$N=458752$ and is 16.9\pct{} faster than the fastest native at 1000\W{} but 4.0\pct{} slower at 500\W, where 36-bit
+truncation at the native's best size (0.27) gains 7.3\pct: truncation now leads at 650 and 500\W, emulation at 1000 and
+800\W. Below 0.1 truncation must also leave its best configuration and leads only at 500\W. The cap thus reverses the
+order only under a requirement stricter than HPL's own check.
+
+\begin{table}[t]
+\caption{MI350X HPL under a common accuracy requirement: speedup (\%) of each method's fastest configuration whose scaled
+residual is below the threshold, over the fastest native configuration on the same node and cap.}\label{tab:hplthr}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{Residual $<16$} & \multicolumn{2}{c}{$<1$} & \multicolumn{2}{c}{$<0.1$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}
+Cap & T & E10 & T & E12 & T & E12 \\
+\midrule
+1000\W & +5.7$^{a}$ & \textbf{+34} & +5.1 & \textbf{+17} & $-0.1^{b}$ & \textbf{+17} \\
+800\W & +5.0 & \textbf{+33} & +5.0 & \textbf{+15} & $-2.3$ & \textbf{+15} \\
+650\W & +8.0 & \textbf{+25} & \textbf{+8.0} & +6.2 & +0.9 & \textbf{+6.2} \\
+500\W & +7.3 & \textbf{+12} & \textbf{+7.3} & $-4.0$ & \textbf{+5.6} & $-4.0$ \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}\parbox{\columnwidth}{\scriptsize 16 is HPL's own check. T: truncation, 36 bits ($N=540672$, $1\times8$,
+residual 0.27; for $<0.1$: $N=491520$, $4\times2$, 0.033) unless marked; E: GEMMul8 with 10 moduli ($N=491520$, 1.79)
+or 12 ($N=458752$, 0.033), both $4\times2$; bold: faster. $^{a}$32 bits (3.5). $^{b}$40 bits at $N=393216$ (0.039); 40 bits
+at larger $N$ or under caps was not run, so truncation entries for $<0.1$ are lower bounds.}
+\end{table}
+
+In the Gaussian-process
 likelihood, whose trailing updates have $k=1024$, GEMMul8 is slower than native at every cap ($n=64000$, where it is
 correct: $-11$, $-22$, $-37$ and $-43\pct$ at 1000, 800, 650 and 500\W{} with 12 moduli, log-likelihood within
 $\ee{3}{-7}$), while 28-bit truncation gains 5.9--11.8\pct.
@@ -616,8 +662,8 @@ operands localizes it exactly: through the library's direct API and through the 
 is correct ($\ee{1.6}{-15}$) for $m=n=65535$ and wrong (relative error 31, all entries finite) from $m=n=65536$, i.e., once
 $mn$ reaches $2^{32}$, consistent with a 32-bit size overflow in the GEMMul8 3.2.0 HIP build we used. It is an
 implementation defect, independent of the data, not a property of emulation; every other emulated result in this paper
-stays below this size. It illustrates the risk of replacing a BLAS call wholesale: a configuration validated at one size
-can fail silently at another.
+stays below this size, and a later release may fix it; we report it only as a deployment risk of replacing a BLAS
+call wholesale.
 
 \subsection{Exponent Span: When Emulation Silently Fails}\label{sec:span}
 
@@ -684,7 +730,8 @@ becomes a first-order performance parameter.
 
 \textbf{Truncation and emulation.} Emulation is the stronger lever where it can amortize its fixed costs: long inner
 dimensions, generous caps, narrow exponent spans, ample memory and few distinct shapes. Truncation is the better choice
-elsewhere, and the only one outside matrix multiplication and for BF16 and FP8, for which no emulation exists. A runtime
+elsewhere, including under accuracy requirements stricter than a benchmark's own check at tight caps, and of the two
+strategies compared here the only one that applies outside matrix multiplication and to BF16 and FP8. A runtime
 that knows each call's shape, the cap and a cheap span estimate could choose per call.
 
 \textbf{AI workloads.} Truncation does not carry over to model weights, which no residual corrects. Truncating the frozen
@@ -706,11 +753,11 @@ matrix only. (iv)~Each scientific code was tested on one or two inputs; on MI350
 PySCF's tensor. (v)~Units of independence are runs, windows or rounds within one or two nodes; GH200 intervals treat pairs
 within a node set as independent, and node sets differed more than pairs within a set. (vi)~Temperature confounds
 power-capped measurements; ABBA cancels linear drift but not fan feedback, so we report temperature-adjusted values beside
-raw ones and checked them under controlled thermal history in two settings only; fan speed could not be fixed. (vii)~Default caps are also the highest, not uncapped states, and the limiters' time scales are unknown.
+raw ones and checked them under controlled thermal history for GEMM and HPL-MxP only; fan speed could not be fixed. (vii)~Default caps are also the highest, not uncapped states, and the limiters' time scales are unknown.
 (viii)~Power and energy come from the devices' own sensors and accumulators, not an external meter; GH200 module power
 includes the Grace CPU. (ix)~The MI350X clock reduction attributed to clock stretching is an inference. (x)~About half of
 the Quantum ESPRESSO gain on the gold surface comes from fewer Davidson iterations, for unidentified reasons. (xi)~The
-GEMMul8 failures (memory, silent invalid result) are observations about one library build.
+GEMMul8 memory limits and the size failure are observations about one library build.
 
 \section{Conclusion}\label{sec:conclusion}
 
@@ -721,8 +768,9 @@ idle power and one or two measurements. MI350X is power-bound at its stock limit
 a diagonally dominant test matrix, a Gaussian-process likelihood and DF-MP2 by 4.6--10\pct{} at default settings and
 7--19\pct{} at 500\W. It is one of two ways to spend less energy per useful FP64 operation, and not the faster one
 everywhere: INT8 emulation leads by up to 67\pct{} where long inner dimensions amortize its fixed costs at a generous cap,
-while short inner dimensions, tight caps, full memory, many distinct shapes and wide per-row exponent spans favor
-truncation, which also keeps the format, needs no extra memory and applies to BF16 and FP8. Safe bit counts must be
+and in HPL at every cap under the benchmark's own residual check, while accuracy requirements stricter than that check at
+tight caps, short inner dimensions, full memory, many distinct shapes and wide per-row exponent spans favor truncation, which also keeps the format, needed no extra memory in our in-program implementation and applies to BF16 and
+FP8. Safe bit counts must be
 validated on the target platform, and power-capped measurements must control temperature. All HPL and HPL-MxP numbers are
 research results, not official scores.
 

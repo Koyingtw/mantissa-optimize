@@ -87,12 +87,17 @@ LoRA 訓練則在載入後對凍結的 FP8 基底權重歸零一次；推論實�
 在相同的鎖定目標時脈下，$R$ 就是兩者動態功耗之比，$\sigma$ 是兩者有效時脈之比，都可以直接量測。在上限 $P$ 下，截斷版本停在 $c_r s_r g(f_r) = P - P_0$ 的目標時脈 $f_r$；原生版本要達到同樣的 $f_r$，需要上限 $P'$，滿足 $c_n s_n g(f_r) = P' - P_0$。兩式相除得
 \begin{equation}
   P' = P_0 + \frac{P-P_0}{R}, \qquad p_r(P) = \sigma\, p_n(P'), \qquad
-  \Delta W = P' - P = (P-P_0)\Bigl(\frac{1}{R}-1\Bigr),
+  \Delta W_f = P' - P = (P-P_0)\Bigl(\frac{1}{R}-1\Bigr),
   \label{eq:pmodel-pred}
 \end{equation}
-其中 $p_r(P)=\sigma\,p_n(P')$ 是因為兩者都在目標時脈 $f_r$ 運作，而效能與 $s$ 成正比；這裡的 $\Delta W$ 與式~\eqref{eq:dw} 的定義相同。模型假設 $s$ 在所用的時脈範圍內不隨 $f$ 改變、程式維持計算受限；預測值不超過程式受時脈限制的峰值。
+其中 $p_r(P)=\sigma\,p_n(P')$ 是因為兩者都在目標時脈 $f_r$ 運作，而效能與 $s$ 成正比。$\Delta W_f$ 是原生版本要達到截斷版本的\textbf{目標時脈}需要多給的上限；式~\eqref{eq:dw} 的等效功耗則是原生版本要達到截斷版本的\textbf{效能}需要多給的上限，在模型中為
+\begin{equation}
+  \Delta W = p_n^{-1}\!\bigl(\sigma\,p_n(P')\bigr) - P ,
+  \label{eq:pmodel-dw}
+\end{equation}
+只有在 $\sigma=1$ 時（GH200，依假設）才等於 $\Delta W_f$，$\sigma>1$ 時（MI350X，$\sigma=1.01$–1.05）比它大。本報告列出的 $\Delta W$ 都是沿實測的原生曲線內插得到的實測值，模型只用來預測加速。模型假設 $s$ 在所用的時脈範圍內不隨 $f$ 改變、程式維持計算受限；預測值不超過程式受時脈限制的峰值。
 
-模型需要原生的效能曲線 $p_n(P)$ 與 $P_0$。我們把 $P_0$ 設為實測的閒置功耗，與驗證資料無關：GH200 模組為 174~W（三個節點 169–179~W），MI350X 每張 GPU 為 262~W。截斷版本以 1300~MHz 的鎖頻量測取得 $R$ 與 $\sigma$（MI350X，不使用上限掃描的任何一點），或以最低上限的速度推得 $R$（GH200 無法鎖頻，$\sigma=1$，該點不列入評估）。驗證結果見第 \ref{sec:mi-model} 節。式~\eqref{eq:pmodel-pred} 也說明了等效功耗 $\Delta W\propto P-P_0$ 隨上限增加，而相對加速並不一定如此。
+模型需要原生的效能曲線 $p_n(P)$ 與 $P_0$。我們把 $P_0$ 設為實測的閒置功耗，與驗證資料無關：GH200 模組為 174~W（三個節點 169–179~W），MI350X 每張 GPU 為 262~W。截斷版本以 1300~MHz 的鎖頻量測取得 $R$ 與 $\sigma$（MI350X，不使用上限掃描的任何一點），或以最低上限的速度推得 $R$（GH200 無法鎖頻，$\sigma=1$，該點不列入評估）。驗證結果見第 \ref{sec:mi-model} 節。式~\eqref{eq:pmodel-pred} 中同時脈的部分 $\Delta W_f\propto P-P_0$ 也說明了為什麼實測的等效功耗隨上限增加，而相對加速並不一定如此。
 
 \section{誤差模型}\label{sec:errmodel}
 
