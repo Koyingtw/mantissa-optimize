@@ -248,14 +248,10 @@ Memory copy, 0 & 97/86 & 83/41 & $-9\pct$ power \\
 \end{table}
 
 Most of the benefit survives such fills, in matrix engines, FP64 vector units and memory copies of both vendors
-(Table~\ref{tab:fill2}): switching activity, not the value zero, is the main contributor, quantitative support for the
-toggling hypothesis~\cite{Gregersen2024} beyond one vendor or unit. The shares are not an exact causal decomposition: a
-fill also changes partial products, alignment and accumulation inside the units, and shares measured as power and as
-capped throughput need not add up. On MI350X the shares barely change with the clock (FP64, 27 bits: 83, 81 and 82\pct{}
-at 900, 1300 and 1700\,MHz), while the total saving grows with it (FP64, 0 bits: 20, 24 and 29\pct{} less energy per
-operation), as expected when $CV^2f$ grows relative to static power. Zeros save somewhat more than ones, consistent with
-partial products $a_ib_j$ in which fixed ones still toggle against the other operand's kept bits; we have no gate-level
-measurement. The effect is not limited to matrix engines: an FP64 multiply-add loop with 0 kept bits draws 553 instead
+(Table~\ref{tab:fill2}), supporting the toggling hypothesis~\cite{Gregersen2024} beyond one vendor or unit. On MI350X the
+shares barely change with the clock (FP64, 27 bits: 81--83\pct{} at 900--1700\,MHz), while the total saving grows with it
+(FP64, 0 bits: 20, 24 and 29\pct{} less energy per operation), as expected when $CV^2f$ grows relative to static power.
+The effect is not limited to matrix engines: an FP64 multiply-add loop with 0 kept bits draws 553 instead
 of 862\W{} on GH200 at 1000\W{} and runs 33\pct{} faster on MI350X at 600\W, and a memory copy, power-bound on MI350X at
 600\W, runs 28\pct{} faster.
 
@@ -298,9 +294,9 @@ operand's kept bits.
 \textbf{A second clock effect on MI350X.} With the clock locked and nothing power-limited, the effective clock still
 depends on the data: at a 1300\,MHz lock the native FP64 GEMM runs steadily at 1171--1179\,MHz (5th--95th percentile, 8
 GPUs) and with 0 kept bits at 1235--1240\,MHz; native BF16 at 1088--1100 and with 0 bits at 1132--1142\,MHz, at
-59--63\,\textdegree C. Power and thermal residency read zero, and the per-XCD ``clock below host limit'' counters stay
-zero even while the power limit is active, so no available counter reports this reduction. Circuit-level clock
-stretching under supply droop would explain it; we have no direct measurement. Truncation relieves it too.
+59--63\,\textdegree C, while power and thermal residency and the per-XCD ``clock below host limit'' counters read zero.
+Circuit-level clock stretching or droop protection would explain it; we have no direct measurement. Truncation relieves
+it too.
 
 %==================================================================================================
 \section{A Model of Truncation Gains Under a Power Cap}\label{sec:model}
