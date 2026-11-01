@@ -140,6 +140,32 @@ def fig_crossover():
     save(fig, "fig6_04_crossover.pdf")
 
 
+def fig_pareto():
+    """6.5 Iso-accuracy comparison: speedup vs relative error of C, truncation (20..44 bits) and GEMMul8 3.2.0 (8..14
+    moduli), m = n = 32768, k = 1024 / 4096, 1000 / 500 W (pareto_* summary)."""
+    f = sorted(x for x in os.listdir(RES) if x.startswith("pareto_") and x.endswith("_summary.csv"))[-1]
+    s = pd.read_csv(f"{RES}/{f}")
+    fig = plt.figure(figsize=(z.FULL * z.CM, 6.8 * z.CM))
+    axes = [fig.add_axes([(1.35 + i * 7.1) / z.FULL, 1.1 / 6.8, 6.4 / z.FULL, 5.3 / 6.8]) for i in range(2)]
+    for i, (ax, k) in enumerate(zip(axes, (1024, 4096))):
+        for cap, ls, mk in ((1000, "-", "o"), (500, "--", "s")):
+            for dt, lab, c in (("fp64", "截斷", z.BLUE), ("g8", "GEMMul8", z.ORANGE)):
+                g = s[(s.k == k) & (s.cap == cap) & (s.dtype == dt) & (s.frac < (52 if dt == "fp64" else 99))].sort_values("rel_err")
+                ax.plot(g.rel_err, g.speedup_pct, ls=ls, marker=mk, ms=3.5, lw=1.2, color=c, label=f"{lab}，{cap} W")
+        ax.axhline(0, color=z.GREY, lw=0.7)
+        ax.set_xscale("log")
+        ax.text(0.04, 0.96, f"$k = {k}$", transform=ax.transAxes, ha="left", va="top", fontsize=8.5)
+        ax.set_xlabel("乘積 $C$ 的相對誤差")
+        if i:
+            ax.set_yticklabels([])
+    for ax in axes:
+        ax.set_ylim(-60, 180)
+    axes[0].set_ylabel("相對原生 FP64 的加速（%）")
+    h, l = axes[1].get_legend_handles_labels()
+    axes[0].legend(h, l, loc="upper left", bbox_to_anchor=(0.0, 0.88), fontsize=7.5)
+    save(fig, "fig6_05_pareto.pdf")
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit(__doc__)
@@ -147,7 +173,7 @@ def main():
     os.makedirs(z.OUT, exist_ok=True)
     with tempfile.TemporaryDirectory() as tmp:
         z.setup_style(z.setup_fonts(sys.argv[1], tmp))
-        for f in (fig_gemm_caps, fig_model, fig_apps, fig_crossover):
+        for f in (fig_gemm_caps, fig_model, fig_apps, fig_crossover, fig_pareto):
             f()
 
 

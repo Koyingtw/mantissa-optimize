@@ -83,6 +83,12 @@ HPL 與 GEMMul8（表~\ref{tab:mi-h2h}） & 最佳設定 \texttt{hpl3B}（49）�
 GEMMul8 在 $mn=2^{32}$ 的錯誤 & \texttt{g8thr}（66） \\
 指數範圍、模擬內再截斷 & \texttt{range\_*}（53）；\texttt{synergy}（51） \\
 穩態與熱預處理（第 \ref{sec:mi-temp} 節） & \texttt{steady\_1030\_0901}（68）；\texttt{mxpprecond\_1030\_0944}（69） \\
+位元變化對照（表~\ref{tab:mi-flips}） & \texttt{mech1300}（102）、\texttt{mechb1300}（109）、\texttt{mechb1700}（110） \\
+高斯過程的三參數最大概似估計 & \texttt{gpmle}（111） \\
+DF-MP2 每次呼叫的時間 & \texttt{mp2call}（112） \\
+GEMMul8 3.5.4 的溢位與初始化成本 & \texttt{g8thr354}（122）、\texttt{g8cold}（123） \\
+相同精度的比較（圖~\ref{fig:mi-pareto}） & \texttt{pareto}（104） \\
+逐次呼叫選擇的形狀掃描（表~\ref{tab:mi-selector}） & \texttt{shpA}（159）、\texttt{shpB}（160） \\
 \end{longtable}
 \par}
 
