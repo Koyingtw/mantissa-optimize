@@ -77,15 +77,12 @@ That GPU power depends on input data is known: DGEMM on random operands draws 67
 ones on A100~\cite{Bhalachandra2022}; zeroing the least significant bits of GEMM inputs lowers power~\cite{Gregersen2024};
 an all-zero GEMM runs about 15\pct{} faster than a random one on A100, more so at lower power limits~\cite{He2024}; and
 a zero-input DGEMM on GH200 draws 563 instead of 898\W~\cite{Antepara2025}. Hardware designs narrow multipliers or mask
-mantissas at unit inputs~\cite{Tong2000,Pool2011,Guenther2016,AMD2022}. These works use all-zero or constant data on one
-vendor, or need new hardware. They leave open what a practitioner needs to know: whether software truncation of
-\emph{real} data buys performance on production GPUs of different vendors, and through which mechanism; whether the gain
-can be predicted without measuring every variant under every cap; what it costs in accuracy; and where it still pays off
-against format changes such as INT8 emulation of FP64~\cite{Ozaki2025,Uchino2025}, whose speed also depends on the power
-limit. None of the ingredients is new by itself: data-dependent power, mantissa masking and the conversion of saved power
-into clock under a cap are all known. Our contribution is to turn them into a method that is measured on two vendors,
-predictable from one locked-clock run, and bounded by explicit accuracy conditions, and to identify where it changes a
-practitioner's choice:
+mantissas at unit inputs~\cite{Tong2000,Pool2011,Guenther2016,AMD2022}. These works measure all-zero or constant data on one
+vendor, or need new hardware. None of them establishes whether software truncation of \emph{real} operands buys
+performance in applications on production GPUs of different vendors while each application's accuracy check passes, and through which mechanism;
+whether the gain under a cap follows from a few measurements rather than a sweep of every variant; or how it compares,
+at a stated accuracy and cap, with format changes such as INT8 emulation of FP64~\cite{Ozaki2025,Uchino2025}, whose speed
+also depends on the power limit. We answer these three questions on two vendors' GPUs:
 
 \begin{enumerate}
 \item \textbf{Where the gain comes from and how much of it can be predicted.} Fills that stop the discarded bits toggling
@@ -410,7 +407,7 @@ speedup above 600\W; at 1000\W{} native HPL-MxP trips the chassis power brake at
 
 \begin{table*}[t]
 \caption{MI350X: speedup (\%) over the unmodified program at the default limit and at 500\W. Pooled: mean $\pm$ 95\pct{} $t$
-interval over the independent units of both nodes (window: one measurement window with the 8 GPUs averaged; run: one
+interval over the analysis units of both nodes (window: one measurement window with the 8 GPUs averaged; run: one
 node-wide run; round: one round of 8 GPUs). Per node: raw (same cooling environment) / adjusted to equal junction
 temperature.}\label{tab:robust}
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
@@ -435,7 +432,7 @@ DF-MP2, 32 bits & round, 4 & $5.7\pm0.4$ & 5.5/7.5 & 5.9/7.4 & $9.8\pm0.1$ & 9.7
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/mi350_apps.pdf}
 \caption{MI350X: speedup of the in-program truncated variant over the unmodified program under each package cap, both
-nodes pooled. Bars: 95\pct{} $t$ intervals over independent units, node-wide runs (HPL, HPL-MxP) or rounds of 8 GPUs
+nodes pooled. Bars: 95\pct{} $t$ intervals over analysis units, node-wide runs (HPL, HPL-MxP) or rounds of 8 GPUs
 (GP, DF-MP2), with $n$ in the legend; per-node and temperature-adjusted values in Table~\ref{tab:robust}.}\label{fig:mi350apps}
 \end{figure}
 
@@ -758,7 +755,7 @@ whether physical results stay within the required accuracy.
 power and cool differently. (ii)~Safe bit counts depend on platform and problem size and must be validated (HPL 28 bits:
 passes on GH200 at three of four sizes, fails on MI350X at all). (iii)~HPL-MxP results hold for a diagonally dominant test
 matrix only. (iv)~Each scientific code was tested on one or two inputs; on MI350X DF-MP2 uses our own contraction of
-PySCF's tensor. (v)~Units of independence are runs, windows or rounds within one or two nodes; GH200 intervals treat pairs
+PySCF's tensor. (v)~Analysis units are runs, windows or rounds within one or two nodes and may be correlated within a job; GH200 intervals treat pairs
 within a node set as independent, and node sets differed more than pairs within a set. (vi)~Temperature confounds
 power-capped measurements; ABBA cancels linear drift but not fan feedback, so we report temperature-adjusted values beside
 raw ones and checked them under controlled thermal history for GEMM and HPL-MxP only; fan speed could not be fixed. (vii)~Default caps are also the highest, not uncapped states, and the limiters' time scales are unknown.

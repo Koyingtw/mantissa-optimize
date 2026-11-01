@@ -54,7 +54,7 @@ MI350X 軟體 & ROCm 7.2.3（rocBLAS、hipBLASLt、rocSOLVER、RCCL）、amdgpu 
 \path{mi350/apps/} & MI350X 上的應用：高斯過程 \path{gp_chol.hip}、DF-MP2 張量準備 \path{mp2_prep.py} 與收縮 \path{dfmp2.hip}、GEMMul8 溢位的最小重現程式 \path{g8_repro.hip} \\
 \path{mi350/scripts/}、\path{mi350/slurm/run.sbatch} & MI350X 的實驗腳本（\path{e1_gemm_tdp.sh}、\path{e1b_fixedclk.sh}、\path{hpl_tdp.sh}、\path{gp_tdp.sh}、\path{mp2_tdp.sh}、\path{lockclk_apps.sh}、\path{g8_threshold.sh} 等，參數在各檔開頭的註解） \\
 \path{mi350/tools/} & 功耗上限工具 \path{pcap.sh} 與 amdsmi 取樣器 \path{smi_sampler.py}（含能量累加器） \\
-\path{mi350/analysis/} & \path{e1_summary.py}、\path{hpl_summary.py}、\path{gp_summary.py}、\path{mp2_summary.py}、功耗模型 \path{power_model.py}、\path{model_eval.py}、\path{model_apps.py}、獨立單位的區間 \path{apps_units.py}、HPL 共同殘差門檻的比較 \path{hpl_threshold.py}、溫度校正 \path{temp_adjust.py}、本報告第六章的圖 \path{report_figs_zh_mi350.py} \\
+\path{mi350/analysis/} & \path{e1_summary.py}、\path{hpl_summary.py}、\path{gp_summary.py}、\path{mp2_summary.py}、功耗模型 \path{power_model.py}、\path{model_eval.py}、\path{model_apps.py}、分析單位的區間 \path{apps_units.py}、HPL 共同殘差門檻的比較 \path{hpl_threshold.py}、溫度校正 \path{temp_adjust.py}、本報告第六章的圖 \path{report_figs_zh_mi350.py} \\
 \path{mi350/results/}、\path{mi350/logs/}、\texttt{mi350/實驗日誌.md} & MI350X 的彙整 CSV、原始紀錄（節點 n02 的在 \path{logs/n02/}）與實驗過程紀錄 \\
 \path{paper/} & 英文論文（\path{main_sc.tex} 與補充資料 \path{supplement.tex}、\path{refs.bib}、\path{figs/}） \\
 \path{paper/zh_report/} & 本報告的 LaTeX 原始檔（\path{report.tex}、\path{chapters/}、\path{figs/}） \\

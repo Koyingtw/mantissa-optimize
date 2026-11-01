@@ -10,7 +10,7 @@
 
 與 GH200 不同，MI350X 的 8 張 GPU 同時執行同一個設定，共用機箱的風扇與電源。我們每 100~ms 讀取 8 張 GPU 的功耗、時脈、溫度，以及硬體的能量累加器（每單位 15.26~$\mu$J，能量取視窗兩端的差，不受取樣頻率影響）和功耗、溫度限制的累計時間；每個量測視窗都記錄實際生效的上限。HIP 的裝置編號與 PCI 位址的順序不同，所以分析一律以程式印出的 PCI 位址對應功耗記錄。
 
-同一個機箱、同一個工作中的量測並不獨立，因此本章的信賴區間以真正獨立的單位計算：矩陣乘法以「一個量測視窗」（8 張 GPU 先平均）為單位，HPL 與 HPL-MxP 以「一次整節點執行」為單位，DF-MP2 與高斯過程以「一輪」（8 張 GPU 先平均）為單位，兩個節點的單位合併後取 95\% $t$ 區間。各變體的順序為成對交錯（ABBA，或後述的成對 ABBA）。溫度的影響與控制見第 \ref{sec:mi-temp} 節。
+同一個機箱、同一個工作中的量測並不獨立，因此本章的信賴區間改以較大的分析單位計算（同一工作內的單位仍可能相關）：矩陣乘法以「一個量測視窗」（8 張 GPU 先平均）為單位，HPL 與 HPL-MxP 以「一次整節點執行」為單位，DF-MP2 與高斯過程以「一輪」（8 張 GPU 先平均）為單位，兩個節點的單位合併後取 95\% $t$ 區間。各變體的順序為成對交錯（ABBA，或後述的成對 ABBA）。溫度的影響與控制見第 \ref{sec:mi-temp} 節。
 
 % ==================================================================
 \section{預設上限就受限：省電機制與時脈}\label{sec:mi-mech}
@@ -116,13 +116,13 @@ $N$ & 原生 & 36 位 & 32 位 & 30 位 & 28 位 \\
 \begin{figure}[tbp]
 \centering
 \figfile{fig6_03_apps}
-\caption[MI350X 上四個應用在各上限下的加速]{MI350X 上程式內截斷相對未修改程式的加速，兩節點合併。誤差棒為獨立單位的 95\% $t$ 區間：HPL 與 HPL-MxP 為整節點的一次執行，高斯過程與 DF-MP2 為 8 張 GPU 的一輪；$n$ 列於圖例。各節點與溫度校正後的數值見表~\ref{tab:mi-robust}。}\label{fig:mi-apps}
+\caption[MI350X 上四個應用在各上限下的加速]{MI350X 上程式內截斷相對未修改程式的加速，兩節點合併。誤差棒為分析單位的 95\% $t$ 區間：HPL 與 HPL-MxP 為整節點的一次執行，高斯過程與 DF-MP2 為 8 張 GPU 的一輪；$n$ 列於圖例。各節點與溫度校正後的數值見表~\ref{tab:mi-robust}。}\label{fig:mi-apps}
 \begin{figsource}\path{mi350/results/apps_units.csv}（\path{mi350/analysis/apps_units.py}）\end{figsource}
 \end{figure}
 
 \begin{table}[tbp]
 \centering
-\caption[MI350X 的主要結果（兩節點、獨立單位）]{MI350X 在預設上限與 500~W 的加速（\%）。合併：兩節點所有獨立單位的平均 $\pm$ 95\% $t$ 區間（視窗：8 張 GPU 平均的一個量測視窗；執行：整節點的一次執行；輪：8 張 GPU 的一輪）。n01、n02：各節點的原始值（相同散熱環境）／校正到相同 junction 溫度的值。}\label{tab:mi-robust}
+\caption[MI350X 的主要結果（兩節點、分析單位）]{MI350X 在預設上限與 500~W 的加速（\%）。合併：兩節點所有分析單位的平均 $\pm$ 95\% $t$ 區間（視窗：8 張 GPU 平均的一個量測視窗；執行：整節點的一次執行；輪：8 張 GPU 的一輪）。n01、n02：各節點的原始值（相同散熱環境）／校正到相同 junction 溫度的值。}\label{tab:mi-robust}
 \footnotesize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}llcccccc@{}}
 \toprule
