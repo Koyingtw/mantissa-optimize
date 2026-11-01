@@ -170,25 +170,17 @@ difference across a window) and the residency of power and thermal limiting. Eve
 Variants run in ABBA order on the same nodes or GPUs after a cool-down; on MI350X all 8 GPUs run the same configuration
 at once.
 
-\textbf{A pitfall: fans and temperature.} On MI350X at 800\W{} a three-variant ABBA sequence of HPL-MxP made 4 kept bits
-look faster than 3. After a hot run the chassis fans speed up, the junction temperature falls by 25\,\textdegree C within
-20\,s, the cool-down condition is met at once, and the next run stays about 12\,\textdegree C cooler; the middle variant
-always followed a hot run. Pairwise ABBA blocks with a minimum rest reduced but did not remove the effect: the run after a
-hot run was still up to 15\,\textdegree C cooler and up to 4.5\pct{} faster, because cooler silicon leaks less and leaves
-more of the budget for switching. Temperature thus enters in two ways that must not be confused. Differences caused by
-the previous run and the fans are a confounder; differences caused by the truncated program itself drawing less power
-are part of its benefit, but only where it is not power-bound (under a binding cap both draw the cap). We report two
-quantities. The \emph{gain in the same cooling environment} is the raw paired ratio, measured under the chassis' own fan
-control; it is what a user obtains. The \emph{data effect at equal temperature} regresses log performance on the variant
-and the run's mean junction temperature within each cap (coefficient $-0.1$ to $-0.9\pct$ per \textdegree C), which removes
-the confounder but, where truncation itself cools the GPU, also part of the benefit. Equal mean temperature does not imply
-equal fan speed or thermal history, so we also controlled the history directly in two key settings; both reproduce the
-adjusted values. At steady state (4 minutes of GEMM before a 2-minute window, node n02), FP64 with 36 bits and BF16 with
-0 bits gain 6.1 and 26.4\pct{} at 800\W{} and 5.4 and 15.6\pct{} at 1000\W, within 1.5 points of the short windows
-(7.6, 25.2, 5.0, 14.8\pct). With a common thermal history (every HPL-MxP run at 800\W{} on node n01 preceded by the same
-3-minute native BF16 GEMM on all 8 GPUs, pairwise ABBA, 4 runs per variant), 3 bits gains $10.4\pm2.8$ and 4 bits
-$6.0\pm3.5\pct$ raw, 9.0 and 6.2\pct{} adjusted, the same as the adjusted values of the earlier jobs (9.0--9.1 and
-4.4--6.2\pct). We could not fix the fan speed.
+\textbf{A pitfall: fans and temperature.} On MI350X the chassis fans react to the previous run: after a hot run the
+junction temperature falls by 25\,\textdegree C within 20\,s, and the next run can be up to 15\,\textdegree C cooler and
+4.5\pct{} faster, because cooler silicon leaks less. Interleaving alone does not remove this; it made 4 kept bits of
+HPL-MxP look faster than 3 at 800\W{} in one job. We therefore report two quantities: the raw paired ratio under the
+chassis' own fan control (what a user obtains), and the effect at equal temperature from a regression of log performance
+on variant and mean junction temperature ($-0.1$ to $-0.9\pct$ per \textdegree C), which removes the confounder but, where
+truncation itself cools the GPU, also part of its benefit. Two controlled checks reproduce the adjusted values: at steady
+state (4 minutes of GEMM before each 2-minute window) the GEMM gains stay within 1.5 points of the short windows, and with
+a common 3-minute thermal load before every HPL-MxP run at 800\W{} the raw order is restored (3 bits $+10.4\pm2.8$, 4 bits
+$+6.0\pm3.5\pct$; adjusted 9.0 and 6.2\pct, as in the earlier jobs). Fan speed can be read but not fixed with our
+access.
 
 \textbf{Statistics.} Each speedup is a paired ratio on the same node, cap and ABBA round. Measurements that share a
 chassis or a job are not independent, so on MI350X the unit is one measurement window of all 8 GPUs (GEMM), one node run
@@ -483,49 +475,23 @@ it is 4.6--5.1\pct{} faster at the default limit, 4.5--4.9\pct{} at 800\W, 6.2--
 650--800\W{} (about 0.35--0.4\,kW per node). HPL-MxP, 7.61 and 7.65\,PFLOP/s natively, reaches 7.98 and
 8.04\,PFLOP/s with 3 kept bits at the default limit (+4.9 and +5.1\pct) and gains 9.2--19.5\pct{} at 500--800\W, with
 5.3--14.6\pct{} less energy per solve. Refinement grows from 2 to 4 steps (about 1.5\pct{} of the LU time). Keeping 0 bits
-does not converge on MI350X, so 3 bits is the operating point on both platforms. The fan pitfall of
-Section~\ref{sec:setup} biased one cell: on node n01 at 800\W{} all four 4-bit runs were about 12\,\textdegree C cooler,
-and 4 bits appeared faster than 3 (+11.3 versus +9.3\pct); adjusted for temperature, 3 bits is +9.0\pct{} in that job,
-+9.1\pct{} in a pairwise rerun and +9.1\pct{} on n02, and 4 bits +4.4--6.2\pct; under a common thermal load before
-every run the raw order is right again (+10.4 versus +6.0\pct, Section~\ref{sec:setup}). Every other HPL and HPL-MxP cell moves by at most
-0.7 points under the adjustment. For GP and DF-MP2 the adjusted gains are 0--4 points larger than the raw ones
-(Table~\ref{tab:robust}): their variants run back to back in one process (native, 32/36 bits, 20/28 bits, then in reverse),
-so the truncated variants occupy the middle, hottest part of each round. Under the regression adjustment their gains
-increase (DF-MP2 at 1000\W: 10.2 to 13.3 and 10.4 to 14.2\pct{} on the two nodes). Our controlled checks cover GEMM and
-HPL-MxP, not these two codes, so we report the unadjusted values as the main results but do not claim they bound the
-effect from below. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
+does not converge on MI350X, so 3 bits is the operating point on both platforms. Apart from the 800\W{} cell discussed
+in Section~\ref{sec:setup}, temperature adjustment moves no HPL or HPL-MxP value by more than 0.7 points. For GP and
+DF-MP2, whose truncated variants run in the middle, hottest part of each round, it raises the gains by 0--4 points
+(DF-MP2 at 1000\W: 10.2 to 13.3\pct{} on n01); our controlled checks do not cover these codes, so we report the
+unadjusted values without claiming that they bound the effect. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
 generator always sets the diagonal to the row's absolute sum, and we have no implementation of a generator allowed for
-official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP. They do not, however, depend on the
-approximate factorization of the diagonal tiles: with exact factorization (\texttt{-{}-exact-diag}, node n02, one ABBA
-pair), 3 bits passes the residual check (0.43) and is 4.4\pct{} faster at 1000\W{} and 9.4\pct{} at 650\W{}
-(temperature-adjusted 4.4 and 9.3\pct), against 5.1 and 9.7\pct{} with the approximate factorization.
+official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP; with exact
+factorization of the diagonal tiles 3 bits still passes (0.43) and is 4.4 and 9.4\pct{} faster at 1000 and 650\W.
 
 \subsection{Quantum ESPRESSO: Tolerance-Driven Bit Counts (GH200)}\label{sec:adaptive}
 
-\begin{table}[t]
-\caption{Quantum ESPRESSO with in-program truncation (round to nearest) of Davidson blocks: one uncounted warm-up run,
-then mean $\pm$ 95\pct{} $t$ interval over 6 interleaved pairs; native rows give the mean of the 6 native runs. Energy
-integrates 1-s averaged module power.}\label{tab:qe}
-\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{@{}llrrcc@{}}
-\toprule
-System & Setting & Time & Energy & $\Delta E$ (Ry) & SCF \\
-\midrule
-\multirow{3}{*}{\shortstack[l]{Au\,112\\(450\W)}} & Native & 91.4\,s & 35.2\,kJ & --- & 28 \\
- & Adapt.\ $m{=}0$ & $-3.6\pm0.2\pct$ & $-3.4\pm0.1\pct$ & $<10^{-8}$ & 28 \\
- & Fixed 24 & $-2.0\pm0.2\pct$ & $-2.1\pm0.1\pct$ & $3{\times}10^{-8}$ & 28 \\
-\midrule
-\multirow{3}{*}{\shortstack[l]{Si\,1000\\(550\W)}} & Native & 205.7\,s & 108.4\,kJ & --- & 24 \\
- & Adapt.\ $m{=}0$ & $-2.1\pm0.1\pct$ & $-2.2\pm0.1\pct$ & $<10^{-8}$ & 24 \\
- & Fixed 28 & $-2.0\pm0.1\pct$ & $-2.1\pm0.2\pct$ & $<10^{-8}$ & 24 \\
-\bottomrule
-\end{tabular}
-\end{table}
+
 
 Plane-wave DFT tolerates 20--28 kept bits; Gaussian-basis DFT needs 32--36 (Supplement~S1). Tying the bit count to the
 Davidson threshold, in-program, reproduces the native total energy in every printed digit ($10^{-8}$\Ry) on both systems
 with the same SCF iteration count, while cutting time by 2.1--3.6\pct{} and energy by 2.2--3.4\pct{} against the unmodified
-program (Table~\ref{tab:qe}); $k$ rises from 16 to 39--42 as the SCF converges. On the gold surface about half of the gain
+program (Supplement, Table~S6); $k$ rises from 16 to 39--42 as the SCF converges. On the gold surface about half of the gain
 comes from 7--9\pct{} fewer Davidson iterations, for reasons not yet identified; on Si\,1000 the work is unchanged, so its
 2.1\pct{} is a power effect. The rule needs no safe bit count in advance and matches or beats the best fixed count.
 
@@ -604,17 +570,14 @@ further 1.9--7.0\pct{} faster, so truncation composes with format changes (Suppl
 \section{The Boundary with INT8 Emulation of FP64}\label{sec:format}
 
 \begin{table}[t]
-\caption{MI350X head-to-head: speedup over native at the default limit / at 500\W, with each method's error. GEMM
-($m=n=32768$), DF-MP2 and GP: truncation to 35, 20 and 28 bits against GEMMul8 with 12 moduli, which is more accurate in
-each case. HPL: each method's fastest measured configuration whose scaled residual stays below HPL's own threshold (16) or, as a
+\caption{MI350X head-to-head: speedup over native at the default limit / at 500\W, with each method's error. DF-MP2 and GP:
+truncation to 20 and 28 bits against GEMMul8 with 12 moduli, which is more accurate (GEMM: Fig.~\ref{fig:pareto}). HPL: each method's fastest measured configuration whose scaled residual stays below HPL's own threshold (16) or, as a
 sensitivity check, below 1, against the fastest native configuration on the same node (Table~\ref{tab:hplthr}).}\label{tab:h2h}
 \centering\footnotesize\setlength{\tabcolsep}{1.6pt}
 \begin{tabular}{@{}lll@{}}
 \toprule
 Workload & Truncation & GEMMul8 \\
 \midrule
-FP64 GEMM, $k=1024$ & +5.1/+9.2\pct{} ($\ee{8}{-12}$) & $-13$/$-45\pct$ ($\ee{4}{-13}$) \\
-FP64 GEMM, $k=4096$ & +5.5/+9.0\pct{} ($\ee{8}{-12}$) & +84/+18\pct{} ($\ee{8}{-13}$) \\
 HPL, residual $<16$ & +5.7/+7.3\pct{} (3.5/0.27) & +34/+12\pct{} (1.79) \\
 HPL, residual $<1$ & +5.1/+7.3\pct{} (0.27) & +17/$-4.0\pct$ (0.033) \\
 DF-MP2 ($|\Delta E|$, E$_\mathrm{h}$) & +10/+19\pct{} ($\ee{2}{-8}$) & +67/+34\pct{} ($\ee{7}{-12}$) \\
@@ -747,20 +710,13 @@ GEMMul8 diverges, whereas rounding to 36 bits errs by $\ee{9.6}{-7}$\Eh. With 40
 correct but 1.5--2.1$\times$ slower than truncation or native. Uniform synthetic spreads understate the problem: on both
 platforms, spreading element exponents uniformly over up to 64 (MI350X) or 256 (GH200) binades barely affects GEMMul8
 (MI350X, 12 moduli: median error $\ee{5.7}{-13}$--$\ee{8.0}{-13}$, p99 at most $\ee{4.4}{-11}$). A wide per-row span, which
-an interposer can measure cheaply beforehand (Fig.~\ref{fig:map}), is therefore a necessary but not sufficient condition for
+an interposer can measure cheaply beforehand (Supplement, Fig.~S1), is therefore a necessary but not sufficient condition for
 this kind of failure, the precision loss of a fixed-width emulation; narrow-span codes such as HPL, Quantum ESPRESSO and
 DF-MP2 do not suffer it. It does not cover implementation defects such as the size overflow of Section~\ref{sec:crossover}, which occurs on
 narrow-range uniform operands as well. Replacing every FP64 GEMM with FP32 or
 3xTF32 fails for a different reason, accumulation over long inner products (Quantum ESPRESSO, Supplement~S3).
 
-\begin{figure}[t]
-\centering\includegraphics[width=\columnwidth]{figs/range_map.pdf}
-\caption{GH200: global exponent span (central 99.9\pct) against the flop-weighted fraction of elements more than $2^{-32}$
-below their row maximum, with the measured outcome of fixed 32--36-bit cuBLAS emulation (e.g., HPL: residual 0.197,
-passes; Gaussian-basis DFT: 52.5\,mE$_\mathrm{h}$ error; Gaussian process: global span 162, estimate unchanged). All
-points are measured; coordinates and their sources are listed in
-\texttt{gh200/results/range\_map\_points.csv}.}\label{fig:map}
-\end{figure}
+
 
 \textbf{Truncation inside emulation.} Truncating the operands before GEMMul8 might lower the INT8 engines' toggling. On
 MI350X it adds 1--4 points under a cap (12 moduli: 18.4 to 22.6\pct{} over native at 500\W{} with 19-bit operands) and
@@ -786,12 +742,9 @@ and FP8; in HPL the measured order at 500\W{} reverses only when the residual th
 benchmark's own. A runtime that knows each call's shape, the cap and a cheap span estimate could choose per call; we have
 not built one, and near a crossover the model's errors are as large as the margins.
 
-\textbf{AI workloads.} Truncation does not carry over to model weights, which no residual corrects. Truncating the frozen
-FP8 base weights of Llama\,2 70B LoRA fine-tuning to 2 of 3 mantissa bits made each step 0.9--1.2\pct{} faster but needed
-22--39\pct{} more samples to reach the target loss (two seeds); in inference BF16 with 3 kept bits matches FP8's accuracy on
-six language models while FP8 GEMMs are 1.7--1.9$\times$ as fast, and zeroing on top of FP8 saves only 1.5--5.5\pct{} of
-power at an accuracy cost (GH200; Supplement~S7). Whether reduced precision improves time to target quality under power
-limits needs its own study.
+\textbf{AI workloads.} Truncation does not carry over to model weights, which no residual corrects: truncating the
+frozen FP8 base weights of Llama\,2 70B LoRA fine-tuning to 2 of 3 mantissa bits made steps 1\pct{} faster but needed
+22--39\pct{} more samples to reach the target loss (GH200; Supplement~S7).
 
 \textbf{Benchmark rules.} TOP500 rules require full FP64 arithmetic~\cite{TOP500Linpack}, and HPL-MxP rules require at
 least 16-bit floating point and allow diagonally dominant matrices for testing only~\cite{HPLMxPRules}; all HPL and HPL-MxP

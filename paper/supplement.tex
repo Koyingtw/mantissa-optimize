@@ -93,6 +93,18 @@ The shim's own copy costs 7--9\pct, which leaves it 0.5--3.1\pct{} slower than u
 needs an implementation inside the library. ExaGeoStatCPP's mixed-precision option (\texttt{-{}-computation=mixed}) is
 only an enumeration value without an implementation, so we could not compare with its own mixed precision.
 
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{figs/range_map.pdf}
+\caption{GH200: global exponent span (central 99.9\pct) against the flop-weighted fraction of elements more than $2^{-32}$
+below their row maximum, with the measured outcome of fixed 32--36-bit cuBLAS emulation (e.g., HPL: residual 0.197,
+passes; Gaussian-basis DFT: 52.5\,mE$_\mathrm{h}$ error; Gaussian process: global span 162, estimate unchanged). All
+points are measured; coordinates and their sources are listed in
+\texttt{gh200/results/range\_map\_points.csv}.}\label{fig:map}
+\end{figure}
+
+Fig.~\ref{fig:map} places the measured codes by their global exponent span and the flop-weighted fraction of
+elements far below their row maximum, with the outcome of fixed-width cuBLAS emulation on each (paper, Section~VII-B).
+
 \section{Third-Party Non-GEMM Codes (GH200)}\label{sec:thirdparty}
 \textbf{Third-party codes (GH200).} We zeroed, once at setup, the coefficient arrays that are stored and multiplied in every
 step in three GPU FP64 codes: MFEM's partial-assembly quadrature data (about 43\pct{} of CG memory traffic), SW4's
@@ -382,6 +394,30 @@ Path & Content \\
 \end{tabular}
 \end{table*}
 
+
+\section{Quantum ESPRESSO: Run Details (GH200)}\label{sec:qedetail}
+
+Table~\ref{tab:qe} gives the timings behind the tolerance-driven bit counts of paper Section~VI-C.
+
+\begin{table}[t]
+\caption{Quantum ESPRESSO with in-program truncation (round to nearest) of Davidson blocks: one uncounted warm-up run,
+then mean $\pm$ 95\pct{} $t$ interval over 6 interleaved pairs; native rows give the mean of the 6 native runs. Energy
+integrates 1-s averaged module power.}\label{tab:qe}
+\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}llrrcc@{}}
+\toprule
+System & Setting & Time & Energy & $\Delta E$ (Ry) & SCF \\
+\midrule
+\multirow{3}{*}{\shortstack[l]{Au\,112\\(450\W)}} & Native & 91.4\,s & 35.2\,kJ & --- & 28 \\
+ & Adapt.\ $m{=}0$ & $-3.6\pm0.2\pct$ & $-3.4\pm0.1\pct$ & $<10^{-8}$ & 28 \\
+ & Fixed 24 & $-2.0\pm0.2\pct$ & $-2.1\pm0.1\pct$ & $3{\times}10^{-8}$ & 28 \\
+\midrule
+\multirow{3}{*}{\shortstack[l]{Si\,1000\\(550\W)}} & Native & 205.7\,s & 108.4\,kJ & --- & 24 \\
+ & Adapt.\ $m{=}0$ & $-2.1\pm0.1\pct$ & $-2.2\pm0.1\pct$ & $<10^{-8}$ & 24 \\
+ & Fixed 28 & $-2.0\pm0.1\pct$ & $-2.1\pm0.2\pct$ & $<10^{-8}$ & 24 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Artifact Description}\label{app:artifact}
 
