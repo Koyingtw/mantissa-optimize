@@ -29,7 +29,7 @@
 \begin{document}
 \bstctlcite{IEEEexample:BSTcontrol}
 
-\title{Unused Mantissa Bits on Power-Capped GPUs: Mechanism, Prediction and Limits on NVIDIA GH200 and AMD MI350X}
+\title{Switching-Aware Precision Selection on Power-Capped GPUs: Mantissa Truncation versus INT8 Emulation}
 
 % Double-blind submission: set \blindtrue to hide the author block (SC review is double-blind).
 \newif\ifblind \blindfalse
@@ -50,9 +50,10 @@ operands: the same values in sorted instead of shuffled order cost 8--9\pct{} le
 such bit flips explains 83\pct{} of the variance across layouts, whereas zero values and set bits do not. A first-order power model predicts truncated GEMM speedups across caps from one locked-clock measurement with a
 mean error of 1.5--2.1 percentage points (worst case 10.4). MI350X is power-bound at its stock limit, so in-program
 truncation speeds up FP64 HPL, HPL-MxP, a Gaussian-process likelihood and DF-MP2 by about 5--10\pct{} at default settings, with
-each code's accuracy check passed. Against INT8 emulation of FP64 the choice depends on shape, cap, accuracy requirement
-and memory: emulation wins for long inner dimensions at generous caps, truncation for short inner dimensions, tight caps
-and limited memory, and of the two only truncation applies to BF16 and FP8.
+each code's accuracy check passed. Against INT8 emulation of FP64 the faster choice depends on the inner dimension, the
+cap and the tolerance; a per-call selector fitted on GEMM measurements alone picks it for 99\pct{} of the calls of a
+held-out DF-MP2 run and loses 0.02\pct{} against the per-call optimum. Of the two methods, only truncation applies to
+BF16 and FP8.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -93,10 +94,11 @@ and 2.1 percentage points (at most 4.6 and 10.4), and two applications not used 
 limit (MI350X), in-program truncation speeds up HPL, HPL-MxP, DF-MP2 and a Gaussian-process likelihood by 4.6--10\pct,
 replicated on a second node; on GH200 the same codes gain under caps and save energy at the default. Safe bit counts
 must be validated per platform (Section~\ref{sec:results}).
-\item \textbf{When to choose INT8 emulation instead.} Emulation is faster for long inner dimensions at generous caps,
-and in HPL at every cap under the benchmark's own residual check (576.8 against 449.2\,TFLOP/s at 1000\W); short inner
-dimensions, limited memory, many distinct shapes and wide per-row exponent spans favor truncation, and of the two only
-truncation applies to BF16 and FP8 (Section~\ref{sec:format}).
+\item \textbf{When to choose INT8 emulation instead, per call.} At equal accuracy emulation is faster for long inner
+dimensions at generous caps, truncation for short inner dimensions, tight caps and strict tolerances; limited memory and
+wide per-row exponent spans also favor truncation, and of the two only truncation applies to BF16 and FP8. A per-call
+selector fitted on GEMM measurements alone picks the faster method in 97.7\pct{} of held-out shape--cap--tolerance cases
+and for 99.3\pct{} of the calls of DF-MP2, which played no part in its fit (Section~\ref{sec:format}).
 \end{enumerate}
 Two measurement observations underpin these results rather than add to them: hardware energy accumulators avoid
 sampling bias, and chassis fans that react to the previous run change a power-capped GPU's speed by up to 4.5\pct{}
@@ -723,6 +725,44 @@ MI350X it adds 1--4 points under a cap (12 moduli: 18.4 to 22.6\pct{} over nativ
 nothing at 1000\W, while the error becomes that of the truncation ($\ee{5.1}{-7}$); 8 moduli on full operands are faster and
 more accurate. Within emulation, the number of moduli is the knob to turn.
 
+\subsection{Choosing per Call}\label{sec:selector}
+
+The pattern above can be turned into a per-call rule. For a GEMM call $(m,n,k)$ under cap $P$ with a tolerated relative
+error $\varepsilon$ of the product, each method takes its cheapest setting whose measured error is at most
+$\varepsilon$ (kept bits, or moduli), and the method with the smallest predicted time wins. Truncation's speedup barely
+depends on the shape (35 bits: 4.6--6.8, 5.0--7.4 and 8.0--9.8\pct{} over 22 shapes at 1000, 650 and 500\W), so it is
+one number per cap, or the model of Section~\ref{sec:model}. Emulation's time relative to native is modelled as
+$r_e = a + b/k + c\,(1/m+1/n)$ per cap and number of moduli, fitted on 22 shapes ($m=n$ from 4096 to 32768, $k$ from 512
+to 8192, two rectangular; GEMMul8 3.5.4, $R^2=0.97$--0.99); calls through the hook add its one-time setup per shape. The
+rule uses only GEMM measurements.
+
+\begin{table}[t]
+\caption{Per-call selector on MI350X: share of cases in which it picks the measured fastest method that meets the
+tolerance, and the time lost against that choice. Leave-one-shape-out: each of 22 GEMM shapes predicted from the other
+21 at 3 caps and 2 tolerances ($10^{-10}$, $10^{-12}$). DF-MP2: all 226 calls at 3 caps, measured per call (GEMMul8 with 12
+moduli versus 20-bit truncation), no DF-MP2 data used in the fit.}\label{tab:selector}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Validation & Cases & Correct & Time lost \\
+\midrule
+GEMM, leave one shape out & 132 & 97.7\pct & mean 0.09\pct, max 10.6\pct \\
+DF-MP2 calls & 678 & 99.3\pct & 0.02\pct{} of run time \\
+GP likelihood ($k=1024$) & 3 caps & 3/3 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The rule picks the fastest method in 97.7\pct{} of held-out shape--cap--tolerance cases (Table~\ref{tab:selector}); of
+the three misses, two cost 1.3\pct{} or less and one 10.6\pct{} (a $k=4096$ shape at 500\W{} near the crossover). On
+DF-MP2, which played no part in the fit, the predicted emulation-to-native time ratio of each call is within 0.05 (1000\W)
+to 0.13 (650 and 500\W) of the measured one, and the choice is right for 99.3\pct{} of the 678 calls and 99.9\pct{} of
+their time, so a run that follows it loses 0.02\pct{} against the per-call optimum. With $k=5477$ that choice is
+emulation for every large call; in the Gaussian-process likelihood ($k=1024$) it is truncation at every cap, as measured.
+The decisive inputs are the inner dimension, the cap and the tolerance: with a tolerance of $10^{-10}$ the rule switches
+at $k=2048$ from emulation at 1000\W{} to truncation at 500\W, and at $k=1024$ and 1000\W{} it chooses emulation for
+tolerances above about $10^{-10}$ and truncation below.
+
 %==================================================================================================
 \section{Discussion}\label{sec:discussion}
 
@@ -739,8 +779,8 @@ becomes a first-order performance parameter.
 dimensions, generous caps, narrow exponent spans, ample memory and few distinct shapes. Truncation is the better choice
 elsewhere, and of the two strategies compared here the only one that applies outside matrix multiplication and to BF16
 and FP8; in HPL the measured order at 500\W{} reverses only when the residual threshold is tightened below the
-benchmark's own. A runtime that knows each call's shape, the cap and a cheap span estimate could choose per call; we have
-not built one, and near a crossover the model's errors are as large as the margins.
+benchmark's own. The selector of Section~\ref{sec:selector} makes this choice per call from GEMM measurements alone; building it into
+a BLAS dispatcher, with a cheap span check before emulating, remains to be done.
 
 \textbf{AI workloads.} Truncation does not carry over to model weights, which no residual corrects: truncating the
 frozen FP8 base weights of Llama\,2 70B LoRA fine-tuning to 2 of 3 mantissa bits made steps 1\pct{} faster but needed
@@ -767,17 +807,17 @@ GEMMul8 memory limits and the size failure are observations about one library bu
 \section{Conclusion}\label{sec:conclusion}
 
 On GPUs of two vendors, truncating unused mantissa bits in software buys performance for HPC applications under power
-limits while their results stay within each code's own criterion. Bits that stop toggling account for most of the saved
-energy, and a simple model built on this predicts a truncated kernel's performance--cap curve from the native curve, the
-idle power and one or two measurements. MI350X is power-bound at its stock limit, so truncation speeds up HPL, HPL-MxP on
-a diagonally dominant test matrix, a Gaussian-process likelihood and DF-MP2 by 4.6--10\pct{} at default settings and
-7--19\pct{} at 500\W. It is one of two ways to spend less energy per useful FP64 operation, and not the faster one
-everywhere: INT8 emulation leads by up to 67\pct{} where long inner dimensions amortize its fixed costs at a generous cap,
-and in HPL at every cap under the benchmark's own residual check, while short inner dimensions, full memory, many
-distinct shapes and wide per-row exponent spans favor truncation, which also keeps the format, needed no extra memory in our in-program implementation and applies to BF16 and
-FP8. Safe bit counts must be
-validated on the target platform, and power-capped measurements must control temperature. All HPL and HPL-MxP numbers are
-research results, not official scores.
+limits while their results stay within each code's own criterion. The saving comes from bits that change between
+successive operands, and a first-order model predicts a truncated kernel's performance--cap curve from the native curve,
+the idle power and one locked-clock measurement. MI350X is power-bound at its stock limit, so truncation speeds up HPL,
+HPL-MxP on a diagonally dominant test matrix, a Gaussian-process likelihood and DF-MP2 by 4.6--10\pct{} at default
+settings and 7--19\pct{} at 500\W. It is one of two ways to spend less energy per useful FP64 operation and not the
+faster one everywhere: INT8 emulation leads for long inner dimensions at generous caps, truncation for short inner
+dimensions, tight caps and strict tolerances, and a selector fitted on GEMM measurements chooses between them per call
+almost without loss on a held-out application. Truncation also keeps the format, needed no extra memory in our
+in-program implementation and applies to BF16 and FP8. Safe bit counts must be validated on the target platform, and
+power-capped measurements must control temperature. All HPL and HPL-MxP numbers are research results, not official
+scores.
 
 % Data and code availability: to be added before submission (anonymized for double-blind review).
 

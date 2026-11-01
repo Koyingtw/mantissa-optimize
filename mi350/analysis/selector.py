@@ -15,6 +15,9 @@ usage:
                                          results/selector_cv.csv
   selector.py dfmp2 <cap> <eps> [setup]  per-call decisions for the DF-MP2 shapes (m=2002, n=(i+1)2002, k=5477):
                                          threshold n* above which emulation is predicted faster
+  selector.py validate-mp2 <percall csv> held-out check on DF-MP2 (226 calls x caps, GEMMul8 3.5.4 direct API):
+                                         predicted vs measured time ratios and the per-call decision →
+                                         results/selector_mp2.csv
 """
 import json
 import os
@@ -142,10 +145,53 @@ def cmd_dfmp2(cap, eps, setup=0.0):
     print("n* =", int(emu.n.min()) if len(emu) else "never")
 
 
+def interp_cap(model, key_fn, cap):
+    """Model entries exist per measured cap; for another cap interpolate linearly between the two nearest."""
+    caps = sorted({int(k.split(":")[-1]) for k in model["emu"]})
+    if cap in caps:
+        return [cap], [1.0]
+    lo = max(c for c in caps if c < cap)
+    hi = min(c for c in caps if c > cap)
+    w = (cap - lo) / (hi - lo)
+    return [lo, hi], [1 - w, w]
+
+
+def cmd_validate_mp2(path, emu="g8n", M=12, bits=20):
+    model = json.load(open(FIT))
+    d = pd.read_csv(path)
+    # truncation gain for `bits` from the iso-accuracy sweep (GEMM, m=n=32768, k=1024/4096, 1000/500 W), linear in cap
+    f = sorted(x for x in os.listdir(RES) if x.startswith("pareto_") and x.endswith("_summary.csv"))[-1]
+    pt = pd.read_csv(f"{RES}/{f}")
+    g = pt[(pt.dtype == "fp64") & (pt.frac == bits)].groupby("cap").speedup_pct.mean() / 100
+
+    def trunc_r(cap):
+        return 1 / (1 + float(np.interp(cap, g.index, g.values)))
+    rows = []
+    for r in d.itertuples():
+        caps, ws = interp_cap(model, None, r.cap)
+        re_ = sum(w * r_emu(model, emu, M, c, 2002, r.n, 5477) for c, w in zip(caps, ws))
+        rt_ = trunc_r(r.cap)
+        rows.append(dict(cap=r.cap, i=r.i, n=r.n, native_ms=r.native, meas_re=r.r_e, meas_rt=r.r_t, pred_re=re_,
+                         pred_rt35=rt_, pick="emu" if re_ < rt_ else "trunc",
+                         best="emu" if r.r_e < r.r_t else "trunc"))
+    v = pd.DataFrame(rows)
+    v["correct"] = v.pick == v.best
+    v["regret_pct"] = 100 * ((v.meas_re.where(v.pick == "emu", v.meas_rt)) / v[["meas_re", "meas_rt"]].min(axis=1) - 1)
+    w = v.native_ms  # weight by call time: what matters for the run
+    v.to_csv(f"{RES}/selector_mp2.csv", index=False)
+    print(v.groupby("cap").apply(lambda g: pd.Series(dict(
+        calls=len(g), correct=g.correct.mean(), time_weighted_correct=(g.correct * g.native_ms).sum() / g.native_ms.sum(),
+        mae_re=(g.pred_re - g.meas_re).abs().mean(), mae_re_large=(g.pred_re - g.meas_re)[g.n >= 32032].abs().mean(),
+        regret_time_pct=100 * ((g.meas_re.where(g.pick == "emu", g.meas_rt) * g.native_ms).sum()
+                               / (g[["meas_re", "meas_rt"]].min(axis=1) * g.native_ms).sum() - 1)))).to_string())
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit(__doc__)
     if sys.argv[1] == "fit":
         cmd_fit(sys.argv[2:])
+    elif sys.argv[1] == "validate-mp2":
+        cmd_validate_mp2(sys.argv[2])
     elif sys.argv[1] == "dfmp2":
         cmd_dfmp2(int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]) if len(sys.argv) > 4 else 0.0)
