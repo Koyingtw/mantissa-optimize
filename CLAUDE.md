@@ -91,9 +91,9 @@ overfull lines / undefined refs). Numbers must agree across `results/`, the pape
 ## MI350X nodes (`mi350/`)
 
 Second platform for the paper: Slurm partition `gpu`, nodes `p01-r01-n01` and `p01-r01-n02`, each 8× MI350X
-(gfx950, PPT0 cap 1000 W), ROCm 7.2.3, passwordless sudo. Home directories are **not shared** and ssh to n02
-is refused: copy code with `tar c … | srun -w p01-r01-n02 tar x -C ~/koying` and fetch logs back the same way
-(n02 logs live in `mi350/logs/n02/`). `mi350/實驗日誌.md` is the process log (append to it).
+(gfx950, PPT0 cap 1000 W), ROCm 7.2.3, passwordless sudo. Since 2026-11-01 n02 NFS-mounts n01's `/home/cust_nthu`, so
+code and logs are shared (older n02 logs were copied into `mi350/logs/n02/`; new runs on either node write to
+`mi350/logs/`); `/tmp` (e.g. the DF-MP2 tensors in `/tmp/mp2_*`) is still node-local, and ssh to n02 is refused. `mi350/實驗日誌.md` is the process log (append to it).
 
 - `source mi350/env.sh` first: ROCm 7.2.3, OpenMPI 5.0.7+UCX copied from the admin's build into `~/koying/sw`
   (downloading/building MPI from the internet is blocked by permission rules). It **unsets

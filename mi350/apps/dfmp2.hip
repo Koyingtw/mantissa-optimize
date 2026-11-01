@@ -16,7 +16,10 @@
 // GEMMul8 sets up each new shape on its first call; that one-time cost is part of the first pass of a variant (pass A),
 // so passes A and B of the same variant measure a single run and a repeated run.
 //
-// usage: dfmp2 --dir D --device G --variants "native t32n t20n t20n t32n native" [--tag s]
+// --percall prints one CALL line per DGEMM of each variant (i, n, method, GEMM time from HIP events), to check a
+// per-call time model against measurement.
+//
+// usage: dfmp2 --dir D --device G --variants "native t32n t20n t20n t32n native" [--tag s] [--percall]
 // Prints one RESULT_MP2 line per variant: correlation energy, deviation from the PySCF CPU reference and from
 // this process's first native run, wall time of the contraction, Unix start/end.
 #include <hip/hip_runtime.h>
@@ -74,12 +77,14 @@ __global__ void mp2_energy(const double* C, const double* eps, long nocc, long n
 int main(int argc, char** argv) {
   std::string dir, variants = "native", tag = "run";
   int device = 0;
+  bool percall = false;
   for (int i = 1; i < argc; ++i) {
     auto next = [&]() { if (i + 1 >= argc) { fprintf(stderr, "missing value for %s\n", argv[i]); exit(2); } return argv[++i]; };
     if (!strcmp(argv[i], "--dir")) dir = next();
     else if (!strcmp(argv[i], "--device")) device = atoi(next());
     else if (!strcmp(argv[i], "--variants")) variants = next();
     else if (!strcmp(argv[i], "--tag")) tag = next();
+    else if (!strcmp(argv[i], "--percall")) percall = true;
     else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
   }
   long nocc = 0, nvir = 0, naux = 0;
@@ -176,13 +181,21 @@ int main(int argc, char** argv) {
     }
 #endif
     long n_emu = 0;
+    std::vector<hipEvent_t> ev;
+    if (percall) {
+      ev.resize(2 * nocc);
+      for (auto& e : ev) CK(hipEventCreate(&e));
+    }
+    std::vector<char> used(nocc, 'n');
     CK(hipMemset(acc, 0, 8));
     CK(hipDeviceSynchronize());
     const double t0 = now_unix();
     for (long i = 0; i < nocc; ++i) {
       // C = B_i^T B_{0..i} in the column-major view X = naux x (nocc nvir)
       const long n = (i + 1) * nvir;
+      if (percall) CK(hipEventRecord(ev[2 * i]));
       if (emu_from >= 0 && n >= emu_from) {
+        used[i] = 'e';
 #ifdef WITH_GEMMUL8
         gemmul8::gemm<double, gemmul8::Backend::INT8>(h, HIPBLAS_OP_T, HIPBLAS_OP_N, nvir, n, naux, &one,
                                                       B + (size_t)i * nvir * naux, naux, B, naux, &zero, C, nvir,
@@ -193,6 +206,7 @@ int main(int argc, char** argv) {
         CB(hipblasDgemm(h, HIPBLAS_OP_T, HIPBLAS_OP_N, nvir, n, naux, &one, Bt + (size_t)i * nvir * naux, naux, Bt,
                         naux, &zero, C, nvir));
       }
+      if (percall) CK(hipEventRecord(ev[2 * i + 1]));
       mp2_energy<<<4096, 256>>>(C, eps, nocc, nvir, i, acc);
     }
     CK(hipDeviceSynchronize());
@@ -201,6 +215,16 @@ int main(int argc, char** argv) {
     CK(hipMemcpy(&e, acc, 8, hipMemcpyDeviceToHost));
     // the denominators e_i + e_j - e_a - e_b are negative, so the sum is already the (negative) correlation energy
     if (v == "native" && std::isnan(e_native)) e_native = e;
+    if (percall) {
+      for (long i = 0; i < nocc; ++i) {
+        float ms = 0;
+        CK(hipEventElapsedTime(&ms, ev[2 * i], ev[2 * i + 1]));
+        printf("CALL tag=%s gpu=%d variant=%s pass=%c i=%ld m=%ld n=%ld k=%ld method=%c ms=%.3f\n", tag.c_str(), device,
+               v.c_str(), pas, i, nvir, (i + 1) * nvir, naux, used[i] == 'e' ? 'e' : (bits < 52 ? 't' : 'n'), ms);
+        CK(hipEventDestroy(ev[2 * i]));
+        CK(hipEventDestroy(ev[2 * i + 1]));
+      }
+    }
     printf("RESULT_MP2 tag=%s gpu=%d variant=%s pass=%c e_corr=%.12f de_ref=%.3e de_native=%.3e wall=%.3fs t_begin=%.3f t_end=%.3f n_emu=%ld\n",
            tag.c_str(), device, v.c_str(), pas, e, e - e_ref, e - e_native, t1 - t0, t0, t1, n_emu);
     fflush(stdout);

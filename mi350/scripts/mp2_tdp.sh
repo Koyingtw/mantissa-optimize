@@ -4,7 +4,9 @@
 # VARIANTS（預設 ABBA：native t32n t20n t20n t32n native）；EMU 列出的 moduli 各以一個獨立行程（LD_PRELOAD
 # GEMMul8）跑 native，接在同一輪之後。
 #   sbatch -w p01-r01-n01 --export=ALL,SCRIPT=mp2_tdp.sh mi350/slurm/run.sbatch
-# 環境變數：CAPS、VARIANTS、EMU（"12 14"）、MOL、MP2_DIR、REPEAT、START_TEMP、COOL_MAX、TAG
+# 環境變數：CAPS、VARIANTS、EMU（"12 14"）、MOL、MP2_DIR、REPEAT、START_TEMP、COOL_MAX、TAG、
+#   BIN（預設 bin/dfmp2；bin/dfmp2_354 = 連結 GEMMul8 v3.5.4）、EXTRA（傳給 dfmp2，例如 --percall）
+#   VARIANTS 也可用直接呼叫 GEMMul8 的 e<M> 與逐次選擇的 s<M>t<k>n@<N>（見 apps/dfmp2.hip）
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$ROOT"
@@ -36,7 +38,7 @@ run8() {  # $1 = tag, 其餘 = 傳給 dfmp2 的環境變數
   local tag=$1; shift
   local pids=()
   for g in 0 1 2 3 4 5 6 7; do
-    env "$@" bin/dfmp2 --dir "$MP2_DIR" --device "$g" --variants "${RUN_VARIANTS}" --tag "$tag" &
+    env "$@" "${BIN:-bin/dfmp2}" --dir "$MP2_DIR" --device "$g" --variants "${RUN_VARIANTS}" --tag "$tag" ${EXTRA:-} &
     pids+=($!)
   done
   wait "${pids[@]}"

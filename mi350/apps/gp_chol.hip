@@ -15,11 +15,16 @@
 //   GEMMul8's LD_PRELOAD hook (which intercepts hipBLAS) can replace it with INT8 emulation.
 //   Prints one RESULT_GP line per variant (log-likelihoods, deviation from the first native
 //   run, wall time, Unix start/end).
+//   --mle: instead of evaluating fixed ranges, each variant fits all three Matern-3/2 parameters by maximum likelihood:
+//   the variance is profiled out (sigma^2 = y^T C^-1 y / n for C = Matern(range) + nugget I), and Nelder-Mead on
+//   (log range, log nugget) maximizes the profile log-likelihood -n/2 (log(2 pi sigma^2) + 1) - log|L|. One RESULT_MLE
+//   line per variant (estimates, maximum, evaluations).
 #include <hip/hip_runtime.h>
 #include <hipblas/hipblas.h>
 #include <rocblas/rocblas.h>
 #include <rocsolver/rocsolver.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdint>
@@ -122,6 +127,21 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
   return true;
 }
 
+// Profile log-likelihood (variance profiled out) of the factored C = L L^T; also returns sigma^2.
+static double profile_loglik(Ctx& c, const double* A, const double* y, double* z, double* acc, double* s2) {
+  const long n = c.n;
+  CK(hipMemset(acc, 0, sizeof(double)));
+  log_diag_sum<<<256, 256>>>(A, n, acc);
+  double logdet_half;
+  CK(hipMemcpy(&logdet_half, acc, sizeof(double), hipMemcpyDeviceToHost));
+  CK(hipMemcpy(z, y, n * sizeof(double), hipMemcpyDeviceToDevice));
+  CR(rocblas_dtrsv(c.h, rocblas_fill_lower, rocblas_operation_none, rocblas_diagonal_non_unit, n, A, n, z, 1));
+  double q;
+  CR(rocblas_ddot(c.h, n, z, 1, z, 1, &q));
+  *s2 = q / n;
+  return -0.5 * n * (std::log(2 * M_PI * *s2) + 1) - logdet_half;
+}
+
 static double loglik(Ctx& c, const double* A, const double* y, double* z, double* acc) {
   const long n = c.n;
   CK(hipMemset(acc, 0, sizeof(double)));
@@ -138,7 +158,7 @@ static double loglik(Ctx& c, const double* A, const double* y, double* z, double
 
 int main(int argc, char** argv) {
   long n = 80000, nb = 1024;
-  int device = 0, use_hipblas = 0;
+  int device = 0, use_hipblas = 0, mle = 0;
   uint64_t seed = 1;
   double nugget = 1e-4;
   std::string variants = "native", ranges_s = "0.02 0.03 0.04 0.05 0.06 0.08", tag = "run";
@@ -153,6 +173,7 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--ranges")) ranges_s = next();
     else if (!strcmp(argv[i], "--tag")) tag = next();
     else if (!strcmp(argv[i], "--hipblas")) use_hipblas = 1;
+    else if (!strcmp(argv[i], "--mle")) mle = 1;
     else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
   }
   std::vector<double> ranges;
@@ -198,6 +219,65 @@ int main(int argc, char** argv) {
   if (use_hipblas && hipblasCreate(&c.hb) != HIPBLAS_STATUS_SUCCESS) { fprintf(stderr, "hipblasCreate failed\n"); return 1; }
   std::vector<double> ref;
   std::map<std::string, int> seen;
+  if (mle) {
+    std::istringstream ms(variants);
+    std::string v;
+    while (ms >> v) {
+      const char pas = "ABCDEFGH"[seen[v]++];
+      int bits = 52;
+      bool nearest = true;
+      if (v != "native") { bits = atoi(v.c_str() + 1); nearest = v.back() == 'n'; }
+      int evals = 0;
+      double s2 = NAN;
+      auto f = [&](const double* p) {  // p = (log range, log nugget); returns the negative profile log-likelihood
+        ++evals;
+        covariance<<<8192, 256>>>(A, xy, n, std::sqrt(3.0) / std::exp(p[0]), std::exp(p[1]));
+        if (!cholesky(c, A, bits, nearest)) return 1e300;
+        return -profile_loglik(c, A, y, z, acc, &s2);
+      };
+      // Nelder-Mead in 2-D from (range 0.03, nugget 3e-4), stop when the simplex spans < 1e-7 in log space
+      double P[3][2] = {{std::log(0.03), std::log(3e-4)}, {std::log(0.03) + 0.3, std::log(3e-4)},
+                        {std::log(0.03), std::log(3e-4) + 0.5}};
+      double F[3];
+      const double t0 = now_unix();
+      for (int i = 0; i < 3; ++i) F[i] = f(P[i]);
+      for (int it = 0; it < 300; ++it) {
+        int o[3] = {0, 1, 2};
+        std::sort(o, o + 3, [&](int a, int b) { return F[a] < F[b]; });
+        const int b = o[0], m = o[1], w = o[2];
+        double span = 0;
+        for (int d = 0; d < 2; ++d) span = std::max({span, std::fabs(P[m][d] - P[b][d]), std::fabs(P[w][d] - P[b][d])});
+        if (span < 1e-7) break;
+        double cen[2], xr[2], xe[2], xc[2];
+        for (int d = 0; d < 2; ++d) cen[d] = 0.5 * (P[b][d] + P[m][d]);
+        for (int d = 0; d < 2; ++d) xr[d] = cen[d] + (cen[d] - P[w][d]);
+        const double fr = f(xr);
+        if (fr < F[b]) {
+          for (int d = 0; d < 2; ++d) xe[d] = cen[d] + 2 * (cen[d] - P[w][d]);
+          const double fe = f(xe);
+          if (fe < fr) { std::copy(xe, xe + 2, P[w]); F[w] = fe; } else { std::copy(xr, xr + 2, P[w]); F[w] = fr; }
+        } else if (fr < F[m]) {
+          std::copy(xr, xr + 2, P[w]); F[w] = fr;
+        } else {
+          for (int d = 0; d < 2; ++d) xc[d] = cen[d] + 0.5 * (P[w][d] - cen[d]);
+          const double fc = f(xc);
+          if (fc < F[w]) { std::copy(xc, xc + 2, P[w]); F[w] = fc; }
+          else {
+            for (int i : {m, w}) { for (int d = 0; d < 2; ++d) P[i][d] = P[b][d] + 0.5 * (P[i][d] - P[b][d]); F[i] = f(P[i]); }
+          }
+        }
+      }
+      int bi = 0;
+      for (int i = 1; i < 3; ++i) if (F[i] < F[bi]) bi = i;
+      f(P[bi]);  // leaves sigma^2 of the optimum in s2
+      const double t1 = now_unix();
+      printf("RESULT_MLE tag=%s gpu=%d variant=%s pass=%c range=%.10g nugget=%.10g sigma2=%.10g maxll=%.6f evals=%d wall=%.1fs\n",
+             tag.c_str(), device, v.c_str(), pas, std::exp(P[bi][0]), std::exp(P[bi][1]), s2, -F[bi], evals, t1 - t0);
+      fflush(stdout);
+    }
+    rocblas_destroy_handle(c.h);
+    return 0;
+  }
   std::istringstream vs(variants);
   std::string v;
   while (vs >> v) {

@@ -55,8 +55,16 @@ for cap in $CAPS; do
       # g8:<moduli>[:<low>:<輸入位元>]：FP64 GEMM 交給 GEMMul8（Ozaki-II，INT8）以 LD_PRELOAD 攔截 hipblasDgemm；
       # 運算元預設保留全部 52 個小數位元，第四欄可先截斷輸入（截斷 + emulation 疊加）
       emu=none
+      # g8n:<moduli>：同上，但用 GEMMul8 v3.5.4（G8N_LIB）；emu 標記為 g8nm<moduli>
+      if [[ $dtype == g8n ]]; then
+        envs=(LD_PRELOAD="${G8N_LIB:-$HOME/koying/sw/GEMMul8-v3.5.4/lib}/libgemmul8.so" GEMMUL8_BACKEND_GEMM=INT8
+              GEMMUL8_NUM_MOD_D_GEMM="$frac" GEMMUL8_FASTMODE_D_GEMM=1)
+        emu=g8nm$frac; dtype=fp64; frac=${ifrac:-52}
+      fi
       if [[ $dtype == g8 ]]; then
-        envs=(LD_PRELOAD="$SW/gemmul8/lib/libgemmul8.so" GEMMUL8_NUM_MOD_D_GEMM="$frac" GEMMUL8_FASTMODE_D_GEMM=1)
+        # G8_LIB：GEMMul8 函式庫目錄（預設 3.2.0；v3.5.4 在 ~/koying/sw/GEMMul8-v3.5.4/lib）
+        envs=(LD_PRELOAD="${G8_LIB:-$SW/gemmul8/lib}/libgemmul8.so" GEMMUL8_BACKEND_GEMM=INT8 GEMMUL8_NUM_MOD_D_GEMM="$frac"
+              GEMMUL8_FASTMODE_D_GEMM=1)
         emu=g8m$frac; dtype=fp64; frac=${ifrac:-52}
       fi
       bench=bin/gemm_mant_bench

@@ -35,7 +35,9 @@ def load(ids, logdir):
             w = window_stats(smi, g, float(kv["t_begin"]), float(kv["t_end"]))
             dtype, frac = kv["dtype"], int(kv["frac"])
             emu = kv.get("emu", "none")
-            if emu.startswith("g8m"):  # GEMMul8 emulation：dtype g8、frac 欄記 moduli 數；輸入有截斷時記成 g8t<輸入位元>
+            if emu.startswith("g8nm"):  # GEMMul8 v3.5.4：dtype g8n
+                dtype, frac = ("g8n" if frac == 52 else f"g8nt{frac}"), int(emu[4:])
+            elif emu.startswith("g8m"):  # GEMMul8 emulation：dtype g8、frac 欄記 moduli 數；輸入有截斷時記成 g8t<輸入位元>
                 dtype, frac = ("g8" if frac == 52 else f"g8t{frac}"), int(emu[3:])
             rows.append(dict(id=i, cap=int(kv["cap"]), pass_=kv["pass"], gpu=g, dtype=dtype, frac=frac,
                              low=kv["low"], m=int(kv["m"]), n=int(kv["n"]), k=int(kv["k"]),
@@ -44,6 +46,7 @@ def load(ids, logdir):
                              err_p50=float(kv.get("err_p50", "nan")), err_p99=float(kv.get("err_p99", "nan")),
                              tog=(float(kv.get("tog_a", -1)) + float(kv.get("tog_b", -1))) / 2,
                              hw=(float(kv.get("hw_a", -1)) + float(kv.get("hw_b", -1))) / 2,
+                             tox=(float(kv.get("tox_a", -1)) + float(kv.get("tox_b", -1))) / 2,
                              t_begin=float(kv["t_begin"]), t_end=float(kv["t_end"]), **w))
     d = pd.DataFrame(rows)
     d["gflops_per_j"] = d.tflops * 1e3 / d.power_acc_w
@@ -84,7 +87,7 @@ def summarize(d):
         r_eff = g.gflops_per_j.values / b.gflops_per_j.values
         lo, hi = ci(r_perf - 1)
         out.append(dict(cap=cap, dtype=dtype, frac=frac, low=low, m=m, n=n, k=k, spread=spread, smode=smode,
-                        tog=g.tog.mean(), hw=g.hw.mean(), rel_err=g.rel_err.mean(), err_p50=g.err_p50.median(), err_p99=g.err_p99.max(),
+                        tog=g.tog.mean(), hw=g.hw.mean(), tox=g.tox.mean(), rel_err=g.rel_err.mean(), err_p50=g.err_p50.median(), err_p99=g.err_p99.max(),
                         n_meas=len(g), tflops=g.tflops.mean(),
                         power_w=g.power_acc_w.mean(), gfxclk=g.gfxclk.mean(), ppt_frac=g.ppt_frac.mean(),
                         thm_frac=g.thm_frac.mean(), t_hot_max=g.t_hot_max.max(), gflops_per_j=g.gflops_per_j.mean(),
