@@ -64,7 +64,8 @@ def main():
     for i in a.ids:
         d = parse(f"{a.logdir}/{i}.out")
         smi = load_smi(f"{a.logdir}/{i}_smi.csv")
-        st = [node_window_stats(smi, r.t_begin, r.t_end) for r in d.itertuples()]
+        gpus = sorted(smi.gpu.unique())  # 8, or 16 for two-node runs (scripts/hpl2_tdp.sh)
+        st = [node_window_stats(smi, r.t_begin, r.t_end, gpus) for r in d.itertuples()]
         d = pd.concat([d.reset_index(drop=True), pd.DataFrame(st)], axis=1)
         d["id"] = i
         frames.append(d)

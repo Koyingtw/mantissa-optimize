@@ -164,7 +164,24 @@ DF-MP2 for taxol def2-TZVP (113 atoms): GPU4PySCF~\cite{Wu2025} on GH200; on MI3
 same three-index tensor built by PySCF on the CPU and contracted on the GPU (energy within $\ee{2}{-13}$\Eh{} of PySCF and
 $\ee{7.5}{-8}$\Eh{} of GPU4PySCF). An ExaGeoStat-like Gaussian-process likelihood on both ($n=80000$, Matérn-3/2,
 blocked Cholesky with one FP64 DGEMM per panel). Truncation happens inside each program; GEMMul8~\cite{Uchino2025} and
-cuBLAS emulation replace FP64 GEMMs through a hook or the math mode.
+cuBLAS emulation replace FP64 GEMMs through a hook or the math mode. Table~\ref{tab:where} lists where each code truncates.
+
+\begin{table}[t]
+\caption{Where each code truncates, how often, the kept fraction bits (GH200 / MI350X; all codes round to nearest except
+HPL-MxP), and the extra work. All timings include it.}\label{tab:where}
+\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Code & Operand, frequency & Bits & Extra work \\
+\midrule
+HPL & $L$, $U$ panels, each update & 35 / 35 & pass over panels \\
+HPL-MxP & BF16 storage, each write & 3 / 3 & fused \\
+QE & Davidson blocks, each step & 16--42 / --- & in place \\
+DF-MP2 & tensor $B$, once & 20, 32 / same & one pass, $<0.1\pct$ \\
+GP & panel $L_{21}$, each update & 28, 36 / same & fused \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \textbf{Measurement.} GH200: nvidia-smi samples every 250--500\,ms, and energy integrates 1-s averaged module power.
 MI350X: a sampler reads all eight GPUs every 100\,ms, including a 15.26-$\mu$J hardware energy counter (energy is its
@@ -771,9 +788,12 @@ must flow directly and in volume into multipliers or data paths, and the algorit
 correcting it. The model makes the first quantitative; the second explains why GEMM-dominated solvers gain 4--20\pct{} while
 codes whose intermediates regrow full mantissas (N-body, MFEM, SW4, LAMMPS) gain little; the third separates HPC solvers
 from AI weights. On GH200 the gain at the default cap is mainly energy; on MI350X, whose default limit binds for FP64, BF16
-and FP8 matrix work, truncation turns into 4.6--10\pct{} more speed at stock settings. As throughput grows faster than
-power envelopes, running at the limit becomes the default operating point, and the energy spent toggling unneeded bits
-becomes a first-order performance parameter.
+and FP8 matrix work, truncation turns into 4.6--10\pct{} more speed at stock settings. A part with a higher limit or
+liquid cooling that is not power-bound at stock settings would see energy instead of speed, in an amount the model
+predicts from $P-P_0$. Truncation is not an alternative to clock tuning: at a fixed clock it lowers the energy per
+operation (by 8--38\pct{} in Table~\ref{tab:flips}), so it lowers the cost of whatever operating point a cap or a
+frequency choice selects. As throughput grows faster than power envelopes, running at the limit becomes the default
+operating point, and the energy spent toggling unneeded bits becomes a first-order performance parameter.
 
 \textbf{Truncation and emulation.} Emulation is the stronger lever where it can amortize its fixed costs: long inner
 dimensions, generous caps, narrow exponent spans, ample memory and few distinct shapes. Truncation is the better choice
