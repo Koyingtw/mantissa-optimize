@@ -1,0 +1,10 @@
+job=122 host=p01-r01-n01 script=g8_threshold.sh start=Sun Nov  1 12:53:36 PM UTC 2026
+== direct API
+RESULT_G8 m=65535 n=65535 k=1024 mn=4294836225 mn_over_2^32=1.0000 moduli=14 workspace_GB=74.93 status=ok rel_err=1.636e-15 nonfinite=0 max_abs_err=2.629e-13
+RESULT_G8 m=65536 n=65536 k=1024 mn=4294967296 mn_over_2^32=1.0000 moduli=14 workspace_GB=74.93 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.303e+02
+RESULT_G8 m=78976 n=78976 k=1024 mn=6237208576 mn_over_2^32=1.4522 moduli=14 workspace_GB=108.50 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.290e+02
+== hook (hipblasDgemm N,T)
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=65535 n=65535 k=1024 calls=5 tflops=10.853 chunk_min=10.853 chunk_max=10.853 t_begin=1793537625.161 t_end=1793537629.213 rel_err=1.636e-15 spread=0 smode=elem err_p50=1.539e-15 err_p99=6.017e-14 tog_a=-1.000 tog_b=-1.000 hw_a=-1.000 hw_b=-1.000 tox_a=-1.000 tox_b=-1.000
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=65536 n=65536 k=1024 calls=5 tflops=37.962 chunk_min=37.962 chunk_max=37.962 t_begin=1793537630.515 t_end=1793537631.674 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.655e+01 err_p99=2.116e+03 tog_a=-1.000 tog_b=-1.000 hw_a=-1.000 hw_b=-1.000 tox_a=-1.000 tox_b=-1.000
+RESULT tag=hook gpu=0 bdf=0000:79:00.0 dtype=fp64 frac=52 only_a=0 only_b=0 ta=0 tb=1 low=zero round=trunc m=78976 n=78976 k=1024 calls=5 tflops=30.149 chunk_min=30.149 chunk_max=30.149 t_begin=1793537634.556 t_end=1793537636.675 rel_err=3.100e+01 spread=0 smode=elem err_p50=3.651e+01 err_p99=2.151e+03 tog_a=-1.000 tog_b=-1.000 hw_a=-1.000 hw_b=-1.000 tox_a=-1.000 tox_b=-1.000
+rc=0 end=Sun Nov  1 12:53:59 PM UTC 2026

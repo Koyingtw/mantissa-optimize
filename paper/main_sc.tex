@@ -534,7 +534,7 @@ comes from 7--9\pct{} fewer Davidson iterations, for reasons not yet identified;
 \begin{table}[t]
 \caption{DF-MP2 (taxol def2-TZVP): speed relative to native (mean $\pm$ 95\pct{} $t$ interval; GH200: 6 rounds from two
 jobs on two nodes; MI350X: 4 rounds of 8 GPUs, two per node on two nodes), and the error $|\Delta E|$ of the MP2 correlation
-energy (truncated variants round to nearest). MI350X GEMMul8 times exclude a one-time warm-up (Section~\ref{sec:crossover}).}\label{tab:mp2}
+energy (truncated variants round to nearest). MI350X GEMMul8 times exclude the one-time setup of the hook (Section~\ref{sec:crossover}).}\label{tab:mp2}
 \centering\footnotesize\setlength{\tabcolsep}{2.0pt}
 \begin{tabular}{@{}lrlll@{}}
 \toprule
@@ -702,15 +702,16 @@ $\ee{3}{-7}$), while 28-bit truncation gains 5.9--11.8\pct.
 \textbf{Costs that appear only in applications.} Emulation needs workspace: at the $N=540672$ of our best native HPL
 configuration the matrix fills 292\,GB per GPU and GEMMul8's workspace no longer fits; on a $1\times8$ grid it requests
 100--114\,GB even at $N=458752$; with 12 moduli even $N=491520$ fails; HPL must give up problem size before emulation can
-start. Each new GEMM shape costs GEMMul8 a large one-time setup: DF-MP2's first pass over its 226 shapes takes 142\,s
-instead of 13\,s (the times above exclude this warm-up). And in the Gaussian-process likelihood at $n=80000$, the hooked DGEMM of the first trailing update ($m=n=78976$, $k=1024$)
+start. Through the BLAS hook, each new GEMM shape costs a large one-time setup: DF-MP2's first pass over its 226 shapes
+takes 138--141\,s instead of 13\,s, in GEMMul8 3.2.0 and in the current release 3.5.4 alike (the times above exclude this
+warm-up); calling the library directly with a workspace allocated once removes it (12.8--13.0\,s in both passes), at the
+price of changing the application. And in the Gaussian-process likelihood at $n=80000$, the hooked DGEMM of the first trailing update ($m=n=78976$, $k=1024$)
 returned success but an invalid result in every one of 256 runs, without a diagnostic. A minimal reproduction on uniform
 operands localizes it exactly: through the library's direct API and through the hook alike, $C=AB^{\mathsf T}$ with $k=1024$
 is correct ($\ee{1.6}{-15}$) for $m=n=65535$ and wrong (relative error 31, all entries finite) from $m=n=65536$, i.e., once
-$mn$ reaches $2^{32}$, consistent with a 32-bit size overflow in the GEMMul8 3.2.0 HIP build we used. It is an
+$mn$ reaches $2^{32}$, consistent with a 32-bit size overflow; it persists in the current release (3.5.4). It is an
 implementation defect, independent of the data, not a property of emulation; every other emulated result in this paper
-stays below this size, and a later release may fix it; we report it only as a deployment risk of replacing a BLAS
-call wholesale.
+stays below this size, and we report it only as a deployment risk of replacing a BLAS call wholesale.
 
 \subsection{Exponent Span: When Emulation Silently Fails}\label{sec:span}
 
