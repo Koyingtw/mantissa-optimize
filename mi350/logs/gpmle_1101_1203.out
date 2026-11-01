@@ -1,0 +1,14 @@
+id=gpmle_1101_1203 n=80000 variants=[native t36n t28n] seeds=[1 2] cap=1000
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=0 bdf=0000:79:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=1 bdf=0000:09:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=2 gpu=5 bdf=0000:89:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=2 gpu=4 bdf=0000:f9:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=1 gpu=2 bdf=0000:69:00.0
+n=80000 nb=1024 ranges=[0.02 0.03 0.04 0.05 0.06 0.08] nugget=0.0001 seed=2 gpu=3 bdf=0000:19:00.0
+RESULT_MLE tag=seed=1 gpu=2 variant=t28n pass=A range=0.04980604606 nugget=0.0001001914432 sigma2=0.9975597723 maxll=169249.884886 evals=117 wall=749.8s
+RESULT_MLE tag=seed=1 gpu=1 variant=t36n pass=A range=0.04979755688 nugget=0.0001002078151 sigma2=0.9971756884 maxll=169249.882091 evals=120 wall=751.8s
+RESULT_MLE tag=seed=2 gpu=5 variant=t28n pass=A range=0.04886368015 nugget=0.0001054624404 sigma2=0.943467921 maxll=169179.863800 evals=125 wall=768.4s
+RESULT_MLE tag=seed=1 gpu=0 variant=native pass=A range=0.04979714896 nugget=0.0001002095257 sigma2=0.9971540693 maxll=169249.882082 evals=123 wall=808.7s
+RESULT_MLE tag=seed=2 gpu=4 variant=t36n pass=A range=0.04890608667 nugget=0.0001052108263 sigma2=0.9458249688 maxll=169179.861626 evals=139 wall=884.8s
+RESULT_MLE tag=seed=2 gpu=3 variant=native pass=A range=0.04890659462 nugget=0.0001052067169 sigma2=0.9458566087 maxll=169179.861613 evals=127 wall=885.3s
+gpmle done

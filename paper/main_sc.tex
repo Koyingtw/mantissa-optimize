@@ -592,8 +592,10 @@ $\max|\Delta\ell|$ & $\ee{1.9}{-5}$ & $\ee{5.3}{-3}$ & wrong$^{a}$ & --- \\
 The likelihood factors an $n{\times}n$ Matérn covariance by Cholesky; each panel $L_{21}$ keeps $k$ bits in one fused,
 coalesced pass before its trailing update. The panel rows span 162 binades, and 88\pct{} of their nonzeros lie more than
 $2^{-32}$ below their row maximum. With 28 bits the log-likelihood moves by a relative $\ee{3}{-8}$--$\ee{4.5}{-8}$, far below
-what matters for estimation, and a one-parameter maximum-likelihood fit on GH200 returns the native estimate in every printed
-digit (Supplement~S5). On GH200 the gain at 1000\W{} depends on how often native is capped (3.8\pct{} here, 0.1\pct{} with a
+what matters for estimation, a one-parameter maximum-likelihood fit on GH200 returns the native estimate in every printed
+digit (Supplement~S5), and a full three-parameter fit on MI350X (variance profiled, range and nugget by Nelder--Mead,
+two data sets) moves the estimates by at most 0.25\pct{} with 28 bits and 0.004\pct{} with 36, against a 2\pct{}
+difference in range between the two data sets. On GH200 the gain at 1000\W{} depends on how often native is capped (3.8\pct{} here, 0.1\pct{} with a
 Morton ordering that is capped less); on MI350X the limit binds and 28 bits is $7.4\pm0.6\pct$ faster at 1000\W{} and $11.0\pm1.0\pct$ at 500\W{} (4 rounds on two
 nodes). FP32 is unusable for estimation; truncating the FP64 tiles that remain in a tile mixed-precision Cholesky makes it a
 further 1.9--7.0\pct{} faster, so truncation composes with format changes (Supplement~S5).
