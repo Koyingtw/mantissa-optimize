@@ -194,7 +194,9 @@ chassis or a job are not independent, so on MI350X the unit is one measurement w
 GH200 the units are node--pair samples from two node sets (HPL, HPL-MxP) or three nodes (GEMM), which treats pairs within
 a job as independent; those intervals may be too narrow. Even on MI350X, rounds and runs within one job on one node
 may remain correlated, so the intervals describe how stable a gain is on these two nodes, not its spread across a fleet
-of GPUs.
+of GPUs. A mixed-effects model (random intercept per ABBA block or round; node or GPU as fixed effects) gives the same
+estimates within 0.1 point and intervals of similar width ($\pm$0.2--2.0 against $\pm$0.1--3.1 points); with three or
+four blocks per node its variance components are poorly determined, so we report the $t$ intervals.
 
 %==================================================================================================
 \section{Why Fewer Mantissa Bits Save Power}\label{sec:why}

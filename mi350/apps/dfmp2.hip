@@ -8,11 +8,22 @@
 // Truncation variants keep k of the 52 fraction bits of B, in place, once after the copy (as on GH200, where B
 // is reduced once after it is built). INT8 emulation runs the same binary under GEMMul8's LD_PRELOAD hook.
 //
+// Built with -DWITH_GEMMUL8, two more kinds of variant call GEMMul8's direct API (INT8 backend) instead of the hook:
+//   e<M>            every DGEMM emulated with M moduli on the full-precision B;
+//   s<M>t<k>n@<N>   per-call selection: calls with n = (i+1) nvir >= N use emulation with M moduli on the full B, the
+//                   others a native DGEMM on a copy of B rounded to k fraction bits (the selector's decision rule,
+//                   computed offline by analysis/selector.py; N = 0 means always emulate, N huge never).
+// GEMMul8 sets up each new shape on its first call; that one-time cost is part of the first pass of a variant (pass A),
+// so passes A and B of the same variant measure a single run and a repeated run.
+//
 // usage: dfmp2 --dir D --device G --variants "native t32n t20n t20n t32n native" [--tag s]
 // Prints one RESULT_MP2 line per variant: correlation energy, deviation from the PySCF CPU reference and from
 // this process's first native run, wall time of the contraction, Unix start/end.
 #include <hip/hip_runtime.h>
 #include <hipblas/hipblas.h>
+#ifdef WITH_GEMMUL8
+#include "gemmul8.hpp"
+#endif
 
 #include <chrono>
 #include <cmath>
@@ -100,7 +111,9 @@ int main(int argc, char** argv) {
   CK(hipSetDevice(device));
   char bdf[32];
   CK(hipDeviceGetPCIBusId(bdf, sizeof(bdf), device));
-  double *B, *C, *eps, *acc;
+  double *B, *C, *eps, *acc, *Bcopy = nullptr;
+  void* work = nullptr;
+  int work_moduli = 0;
   CK(hipMalloc(&B, nB * 8));
   CK(hipMalloc(&C, (size_t)nvir * nvir * nocc * 8));
   CK(hipMalloc(&eps, heps.size() * 8));
@@ -120,19 +133,66 @@ int main(int argc, char** argv) {
   while (vs >> v) {
     const char pas = "ABCDEFGH"[seen[v]++];
     CK(hipMemcpy(B, hB.data(), nB * 8, hipMemcpyHostToDevice));
-    if (v != "native") {
-      if (v[0] != 't') { fprintf(stderr, "bad variant %s\n", v.c_str()); return 2; }
-      const int bits = atoi(v.c_str() + 1), drop = 52 - bits;
-      const uint64_t add = v.back() == 'n' ? 1ull << (drop - 1) : 0, mask = ~((1ull << drop) - 1ull);
-      reduce_bits<<<8192, 256>>>((uint64_t*)B, nB, add, mask);
+    // parse: native | t<k><n|t> | e<M> | s<M>t<k>n@<N>
+    int moduli = 0, bits = 52, emu_from = -1;  // emu_from: smallest n emulated (-1: never)
+    bool nearest = true;
+    if (v[0] == 't') {
+      bits = atoi(v.c_str() + 1);
+      nearest = v.back() == 'n';
+    } else if (v[0] == 'e' || v[0] == 's') {
+#ifndef WITH_GEMMUL8
+      fprintf(stderr, "variant %s needs a build with -DWITH_GEMMUL8\n", v.c_str());
+      return 2;
+#endif
+      moduli = atoi(v.c_str() + 1);
+      emu_from = 0;
+      if (v[0] == 's') {
+        const size_t pt = v.find('t'), pa = v.find('@');
+        if (pt == std::string::npos || pa == std::string::npos) { fprintf(stderr, "bad variant %s\n", v.c_str()); return 2; }
+        bits = atoi(v.c_str() + pt + 1);
+        emu_from = atoi(v.c_str() + pa + 1);
+      }
+    } else if (v != "native") {
+      fprintf(stderr, "bad variant %s\n", v.c_str());
+      return 2;
     }
+    double* Bt = B;  // operand of the native-DGEMM calls
+    if (bits < 52) {
+      if (emu_from >= 0) {  // emulated calls need the full-precision B as well
+        if (!Bcopy) CK(hipMalloc(&Bcopy, nB * 8));
+        CK(hipMemcpy(Bcopy, B, nB * 8, hipMemcpyDeviceToDevice));
+        Bt = Bcopy;
+      }
+      const int drop = 52 - bits;
+      const uint64_t add = nearest ? 1ull << (drop - 1) : 0, mask = ~((1ull << drop) - 1ull);
+      reduce_bits<<<8192, 256>>>((uint64_t*)Bt, nB, add, mask);
+    }
+#ifdef WITH_GEMMUL8
+    if (emu_from >= 0 && moduli > work_moduli) {  // workspace for the largest shape, reused by every call
+      if (work) CK(hipFree(work));
+      const size_t ws = gemmul8::workSize<false, gemmul8::Backend::INT8, gemmul8::Func::gemm>(nvir, nocc * nvir, naux, moduli);
+      CK(hipMalloc(&work, ws));
+      work_moduli = moduli;
+    }
+#endif
+    long n_emu = 0;
     CK(hipMemset(acc, 0, 8));
     CK(hipDeviceSynchronize());
     const double t0 = now_unix();
     for (long i = 0; i < nocc; ++i) {
       // C = B_i^T B_{0..i} in the column-major view X = naux x (nocc nvir)
-      CB(hipblasDgemm(h, HIPBLAS_OP_T, HIPBLAS_OP_N, nvir, (i + 1) * nvir, naux, &one, B + (size_t)i * nvir * naux,
-                      naux, B, naux, &zero, C, nvir));
+      const long n = (i + 1) * nvir;
+      if (emu_from >= 0 && n >= emu_from) {
+#ifdef WITH_GEMMUL8
+        gemmul8::gemm<double, gemmul8::Backend::INT8>(h, HIPBLAS_OP_T, HIPBLAS_OP_N, nvir, n, naux, &one,
+                                                      B + (size_t)i * nvir * naux, naux, B, naux, &zero, C, nvir,
+                                                      moduli, true, work);
+#endif
+        ++n_emu;
+      } else {
+        CB(hipblasDgemm(h, HIPBLAS_OP_T, HIPBLAS_OP_N, nvir, n, naux, &one, Bt + (size_t)i * nvir * naux, naux, Bt,
+                        naux, &zero, C, nvir));
+      }
       mp2_energy<<<4096, 256>>>(C, eps, nocc, nvir, i, acc);
     }
     CK(hipDeviceSynchronize());
@@ -141,8 +201,8 @@ int main(int argc, char** argv) {
     CK(hipMemcpy(&e, acc, 8, hipMemcpyDeviceToHost));
     // the denominators e_i + e_j - e_a - e_b are negative, so the sum is already the (negative) correlation energy
     if (v == "native" && std::isnan(e_native)) e_native = e;
-    printf("RESULT_MP2 tag=%s gpu=%d variant=%s pass=%c e_corr=%.12f de_ref=%.3e de_native=%.3e wall=%.3fs t_begin=%.3f t_end=%.3f\n",
-           tag.c_str(), device, v.c_str(), pas, e, e - e_ref, e - e_native, t1 - t0, t0, t1);
+    printf("RESULT_MP2 tag=%s gpu=%d variant=%s pass=%c e_corr=%.12f de_ref=%.3e de_native=%.3e wall=%.3fs t_begin=%.3f t_end=%.3f n_emu=%ld\n",
+           tag.c_str(), device, v.c_str(), pas, e, e - e_ref, e - e_native, t1 - t0, t0, t1, n_emu);
     fflush(stdout);
   }
   CB(hipblasDestroy(h));
