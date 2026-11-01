@@ -32,7 +32,15 @@
 // What the dropped low fraction bits are filled with (mechanism control):
 // 0 = zero (truncation), 1 = all ones, 2 = one fixed nonzero pattern shared by
 // every element. 1 and 2 remove bit toggling without making the bits zero.
+// FP64 only, temporal-toggling controls (review: separate toggling from values and Hamming weight):
+// 3 = krep: the dropped bits are random per row of A / column of B but repeated along k, so they are
+//     neither zero nor constant across the matrix, yet do not change between consecutive k;
+// 4 = sorted, 5 = shuffled: the same multiset of values per row of A / column of B (stratified uniform in
+//     [-1, 1) with random low bits), placed in increasing order along k (4) or in a pseudo-random order (5);
+//     values and Hamming weights are identical, only the bit changes between consecutive k differ.
 __constant__ int g_low_mode = 0;
+static const char* kLowNames[] = {"zero", "ones", "const", "krep", "sorted", "shuffled"};
+__constant__ long g_kdim = 0;
 constexpr uint64_t kConstPattern = 0xA5C3F0965A3C0F69ull;
 
 __device__ __forceinline__ uint64_t splitmix64(uint64_t x) {
@@ -47,7 +55,8 @@ __device__ __forceinline__ double uniform_pm1(uint64_t seed, size_t i) {
 }
 
 // Keep `frac` of the 52 FP64 fraction bits. round=1 adds half a kept ulp first.
-__device__ __forceinline__ double reduce64(double v, int frac, int round) {
+// keybits: the krep pattern of this element's row (A) or column (B).
+__device__ __forceinline__ double reduce64(double v, int frac, int round, uint64_t keybits = 0) {
   if (frac >= 52) return v;
   uint64_t u;
   memcpy(&u, &v, 8);
@@ -57,6 +66,7 @@ __device__ __forceinline__ double reduce64(double v, int frac, int round) {
   u &= ~low;
   if (g_low_mode == 1) u |= low;
   else if (g_low_mode == 2) u |= kConstPattern & low;
+  else if (g_low_mode == 3) u |= keybits & low;
   memcpy(&v, &u, 8);
   return v;
 }
@@ -91,8 +101,39 @@ __device__ __forceinline__ double spread_scale(uint64_t seed, size_t i, size_t l
 }
 
 __global__ void fill64(double* x, size_t n, uint64_t seed, int frac, int round, size_t ld, int col_key) {
-  for (size_t i = blockIdx.x * (size_t)blockDim.x + threadIdx.x; i < n; i += (size_t)gridDim.x * blockDim.x)
-    x[i] = reduce64(uniform_pm1(seed, i) * spread_scale(seed, i, ld, col_key), frac, round);
+  const int mode = g_low_mode;
+  const size_t K = (size_t)g_kdim;
+  for (size_t i = blockIdx.x * (size_t)blockDim.x + threadIdx.x; i < n; i += (size_t)gridDim.x * blockDim.x) {
+    // A (m x k, col-major, ld = m): row = i % ld, k index = i / ld; B (k x n, ld = k): column = i / ld, k index = i % ld
+    const size_t key = col_key ? i / ld : i % ld, kidx = col_key ? i % ld : i / ld;
+    const uint64_t kh = splitmix64(seed * 0x9E3779B97F4A7C15ull ^ (key + 1) * 0xC2B2AE3D27D4EB4Full);
+    if (mode >= 4) {
+      // K is a power of two, so j -> (a j + b) mod K with odd a is a bijection on 0..K-1
+      const size_t jj = mode == 4 ? kidx : ((kh | 1) * kidx + (kh >> 32)) & (K - 1);
+      const double u = (double)(splitmix64(kh ^ (jj * 0xd1b54a32d192ed03ull)) >> 11) * 0x1.0p-53;
+      x[i] = reduce64(-1.0 + 2.0 * ((double)jj + u) / (double)K, frac, round);
+    } else {
+      x[i] = reduce64(uniform_pm1(seed, i) * spread_scale(seed, i, ld, col_key), frac, round, kh);
+    }
+  }
+}
+
+// Bit statistics of an FP64 operand along k: acc[0] += popcount(x ^ previous-in-k), acc[1] += popcount(x),
+// acc[2] = number of consecutive pairs, acc[3] = number of elements.
+__global__ void bitstats64(const double* x, size_t n, size_t ld, int col_key, unsigned long long* acc) {
+  unsigned long long t = 0, h = 0, pairs = 0, cnt = 0;
+  for (size_t i = blockIdx.x * (size_t)blockDim.x + threadIdx.x; i < n; i += (size_t)gridDim.x * blockDim.x) {
+    const uint64_t u = __double_as_longlong(x[i]);
+    h += __popcll(u);
+    ++cnt;
+    const size_t kidx = col_key ? i % ld : i / ld;
+    if (kidx > 0) {
+      const size_t prev = col_key ? i - 1 : i - ld;
+      t += __popcll(u ^ (uint64_t)__double_as_longlong(x[prev]));
+      ++pairs;
+    }
+  }
+  atomicAdd(acc, t); atomicAdd(acc + 1, h); atomicAdd(acc + 2, pairs); atomicAdd(acc + 3, cnt);
 }
 
 __global__ void fill32(float* x, size_t n, uint64_t seed, int frac, int round) {
@@ -173,6 +214,7 @@ int main(int argc, char** argv) {
   int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0, spread_mode = 0;
   double spread = 0;
   long m = 32768, n = 32768, k = 2048;
+  double tog_a = -1, tog_b = -1, hw_a = -1, hw_b = -1;  // FP64: bit flips between consecutive k, set bits per element
   double warmup_s = 10, measure_s = 30;
   for (int i = 1; i < argc; ++i) {
     auto next = [&]() { if (i + 1 >= argc) { fprintf(stderr, "missing value for %s\n", argv[i]); exit(2); } return argv[++i]; };
@@ -193,9 +235,10 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--check")) check = 1;    // relative error vs FP64 on the unreduced data
     else if (!strcmp(argv[i], "--spread")) spread = atof(next());  // exponent spread in binades (see g_spread)
     else if (!strcmp(argv[i], "--spread-mode")) spread_mode = !strcmp(next(), "row");  // elem | row
-    else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const
+    else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const | krep | sorted | shuffled
       const char* s = next();
-      low_mode = !strcmp(s, "ones") ? 1 : !strcmp(s, "const") ? 2 : 0;
+      low_mode = !strcmp(s, "ones") ? 1 : !strcmp(s, "const") ? 2 : !strcmp(s, "krep") ? 3
+               : !strcmp(s, "sorted") ? 4 : !strcmp(s, "shuffled") ? 5 : 0;
     }
     else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
   }
@@ -211,6 +254,11 @@ int main(int argc, char** argv) {
   char bdf[32];
   CK(hipDeviceGetPCIBusId(bdf, sizeof(bdf), device));
   if (spread != 0 && (!is64 || ta || tb)) { fprintf(stderr, "--spread needs --dtype fp64 without --ta/--tb\n"); return 2; }
+  if (low_mode >= 3 && (!is64 || ta || tb || spread != 0 || check || (k & (k - 1)))) {
+    fprintf(stderr, "--low krep|sorted|shuffled needs --dtype fp64, a power-of-two k, no --ta/--tb/--spread/--check\n");
+    return 2;
+  }
+  CK(hipMemcpyToSymbol(HIP_SYMBOL(g_kdim), &k, sizeof(long)));
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_low_mode), &low_mode, sizeof(int)));
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_spread), &spread, sizeof(double)));
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_spread_mode), &spread_mode, sizeof(int)));
@@ -225,6 +273,17 @@ int main(int argc, char** argv) {
   if (is64) {
     fill64<<<4096, 256>>>((double*)A, (size_t)m * k, 1, only_b ? native : frac, round, m, 0);
     fill64<<<4096, 256>>>((double*)B, (size_t)k * n, 2, only_a ? native : frac, round, k, 1);
+    if (!ta && !tb) {
+      unsigned long long* acc;
+      CK(hipMalloc(&acc, 8 * sizeof(unsigned long long)));
+      CK(hipMemset(acc, 0, 8 * sizeof(unsigned long long)));
+      bitstats64<<<4096, 256>>>((double*)A, (size_t)m * k, m, 0, acc);
+      bitstats64<<<4096, 256>>>((double*)B, (size_t)k * n, k, 1, acc + 4);
+      unsigned long long h[8];
+      CK(hipMemcpy(h, acc, sizeof(h), hipMemcpyDeviceToHost));
+      CK(hipFree(acc));
+      tog_a = (double)h[0] / h[2]; hw_a = (double)h[1] / h[3]; tog_b = (double)h[4] / h[6]; hw_b = (double)h[5] / h[7];
+    }
   } else if (is32) {
     fill32<<<4096, 256>>>((float*)A, (size_t)m * k, 1, only_b ? native : frac, round);
     fill32<<<4096, 256>>>((float*)B, (size_t)k * n, 2, only_a ? native : frac, round);
@@ -349,11 +408,11 @@ int main(int argc, char** argv) {
   }
   double lo = rates[0], hi = rates[0];
   for (double r : rates) { lo = r < lo ? r : lo; hi = r > hi ? r : hi; }
-  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e spread=%g smode=%s err_p50=%.3e err_p99=%.3e\n",
+  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e spread=%g smode=%s err_p50=%.3e err_p99=%.3e tog_a=%.3f tog_b=%.3f hw_a=%.3f hw_b=%.3f\n",
          tag.c_str(), device, bdf, dtype.c_str(), frac, only_a, only_b, ta, tb,
-         low_mode == 1 ? "ones" : low_mode == 2 ? "const" : "zero", round ? "nearest" : "trunc", m, n, k, calls,
+         kLowNames[low_mode], round ? "nearest" : "trunc", m, n, k, calls,
          calls * flop / (busy_ms * 1e-3) / 1e12, lo, hi, t_begin, t_end, rel_err, spread, spread_mode ? "row" : "elem",
-         err_p50, err_p99);
+         err_p50, err_p99, tog_a, tog_b, hw_a, hw_b);
   CB(hipblasDestroy(h));
   return 0;
 }

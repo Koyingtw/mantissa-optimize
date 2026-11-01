@@ -42,6 +42,8 @@ def load(ids, logdir):
                              tflops=float(kv["tflops"]), rel_err=float(kv.get("rel_err", "nan")),
                              spread=float(kv.get("spread", 0)), smode=kv.get("smode", "elem"),
                              err_p50=float(kv.get("err_p50", "nan")), err_p99=float(kv.get("err_p99", "nan")),
+                             tog=(float(kv.get("tog_a", -1)) + float(kv.get("tog_b", -1))) / 2,
+                             hw=(float(kv.get("hw_a", -1)) + float(kv.get("hw_b", -1))) / 2,
                              t_begin=float(kv["t_begin"]), t_end=float(kv["t_end"]), **w))
     d = pd.DataFrame(rows)
     d["gflops_per_j"] = d.tflops * 1e3 / d.power_acc_w
@@ -82,7 +84,7 @@ def summarize(d):
         r_eff = g.gflops_per_j.values / b.gflops_per_j.values
         lo, hi = ci(r_perf - 1)
         out.append(dict(cap=cap, dtype=dtype, frac=frac, low=low, m=m, n=n, k=k, spread=spread, smode=smode,
-                        rel_err=g.rel_err.mean(), err_p50=g.err_p50.median(), err_p99=g.err_p99.max(),
+                        tog=g.tog.mean(), hw=g.hw.mean(), rel_err=g.rel_err.mean(), err_p50=g.err_p50.median(), err_p99=g.err_p99.max(),
                         n_meas=len(g), tflops=g.tflops.mean(),
                         power_w=g.power_acc_w.mean(), gfxclk=g.gfxclk.mean(), ppt_frac=g.ppt_frac.mean(),
                         thm_frac=g.thm_frac.mean(), t_hot_max=g.t_hot_max.max(), gflops_per_j=g.gflops_per_j.mean(),

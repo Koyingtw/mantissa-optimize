@@ -3,7 +3,7 @@
 # 8 張 GPU 同時跑同一個設定（每張一個行程），所以每個量測窗得到 8 個 GPU 的配對值。
 # 每個上限把設定清單先正向再反向各跑一次（ABBA）。
 #   nohup mi350/scripts/e1_gemm_tdp.sh > /dev/null 2>&1 &      （從 repo 根目錄或任何地方）
-# 環境變數：CAPS（W）、CONFIGS（dtype:frac[:low]，low = zero|ones|const；g8:<moduli> = FP64 GEMM 改走
+# 環境變數：CAPS（W）、CONFIGS（dtype:frac[:low]，low = zero|ones|const|krep|sorted|shuffled（後三者只限 FP64，見 bench 開頭）；g8:<moduli> = FP64 GEMM 改走
 #   GEMMul8 INT8 emulation）、SHAPES（"mxnxk" 清單）、WARMUP、SECONDS_PER、
 #   START_TEMP（每次量測前所有 GPU 的 junction 溫度須降到此值以下，°C）、COOL_MAX（最多等幾秒）、
 #   TAG（log 名稱前綴，預設 e1）、EXTRA_ARGS（傳給 bench）

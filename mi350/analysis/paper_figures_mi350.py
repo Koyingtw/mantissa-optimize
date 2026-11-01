@@ -135,7 +135,7 @@ def fig_apps():
     """MI350X applications: speedup vs native under each cap, both nodes pooled; bars are 95% t intervals over the
     independent units of results/apps_units.csv (HPL/HPL-MxP: node runs; GP/DF-MP2: rounds of 8 GPUs)."""
     u = pd.read_csv(f"{RES}/apps_units.csv")
-    apps = [("HPL, 36 bits", "FP64 HPL, 36 bits"), ("HPL-MxP, 3 bits", "HPL-MxP, 3 bits"),
+    apps = [("HPL, 36 bits", "FP64 HPL, 35 bits"), ("HPL-MxP, 3 bits", "HPL-MxP, 3 bits"),
             ("GP, 28 bits", "GP likelihood, 28 bits"), ("DF-MP2, 20 bits", "DF-MP2, 20 bits")]
     caps = [1000, 800, 650, 500]
     fig, ax = plt.subplots(figsize=(COL, 2.1))
