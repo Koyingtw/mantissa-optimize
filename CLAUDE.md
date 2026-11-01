@@ -116,6 +116,8 @@ code and logs are shared (older n02 logs were copied into `mi350/logs/n02/`; new
 - Fans (MiTAC G8825Z5, AMI BMC): `sudo ipmitool sdr type fan` reads 30 fan RPMs in-band; the provided BMC account cannot
   change the fan profile (upload returns 403, Redfish `MCTThermal.SetFanSpeed` is 404), so fans stay on automatic control.
   `mi350/tools/fsc_n01_original.xml` is the stock profile.
+- Never rewrite a script in place while a job runs it (bash reads scripts incrementally; an in-place rewrite made
+  `e1_gemm_tdp.sh` fail at its end in job 104): write a new file and `mv` it over the old one.
 - Findings so far: MI350X is power-bound at the stock 1000 W, so truncation gains there already; HPL-MxP
   0 kept bits does not converge (use 3–4); FP64 HPL 30/28 bits fail at every N tested (36 is safe).
 

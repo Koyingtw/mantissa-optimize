@@ -639,20 +639,23 @@ INT8 to FP64 throughput, about 30 on GH200 and about twice that on MI350X. On GH
 35-bit truncation ($\approx10^{-11}$) is 11--28\pct{} slower than truncation on a square GEMM with $k=2048$, and wins only
 for long inner dimensions; across 480 measurements a three-parameter model in $1/m+1/n$ and $1/k$ describes GEMMul8 with
 $R^2=0.98$--0.99 (Supplement~S4). On MI350X the crossover lies further toward emulation, and the cap moves it
-(Fig.~\ref{fig:mi350xover}). Truncation to 35 bits ($\ee{7.8}{-12}$) is 5--6\pct{} faster than native at 1000\W{} and
-8--9\pct{} at 500\W{} for every $k$. GEMMul8 with 12 moduli (more accurate, $\approx\ee{5}{-13}$) is 13\pct{} slower than
-native at $k=1024$ but 36, 84 and 121\pct{} faster at $k=2048$, 4096 and 8192 at 1000\W; at 500\W{} these become $-45$,
-$-18$, +18 and +48\pct. At $k=2048$ emulation wins at 1000 and 700\W{} and truncation at 500\W. Emulation draws the full
-limit, so under a cap its extra integer work is paid for with clock, whereas truncation removes work from the power budget;
-on GH200 the same holds for GEMMul8, while cuBLAS emulation, which draws only about 706\W{} at 1000\W, gains ground at lower
-caps: the direction depends on the emulation's own power.
+(Fig.~\ref{fig:pareto}). Truncation to 35 bits ($\ee{7.8}{-12}$) is 5--6\pct{} faster than native at 1000\W{} and
+8--9\pct{} at 500\W{} for every $k$ from 1024 to 8192, whereas GEMMul8 with 12 moduli ($\approx\ee{5}{-13}$) goes from
+$-13$ to $+121\pct$ at 1000\W{} and from $-45$ to $+48\pct$ at 500\W. Fig.~\ref{fig:pareto} compares the two at equal
+accuracy, sweeping the kept bits (20--44) and the moduli (8--14). With $k=4096$ emulation is faster at every accuracy
+except the tightest at 500\W. With $k=1024$ the order depends on the accuracy and the cap: at 1000\W{} emulation wins
+for errors above about $10^{-10}$ (8 moduli: +27\pct{} at $\ee{1.3}{-8}$, against +10\pct{} for 24-bit truncation) and
+truncation below (+4.8 against $-6.2\pct$ near $\ee{5}{-12}$); at 500\W{} truncation wins at every accuracy. Emulation
+draws the full limit, so under a cap its extra integer work is paid for with clock, whereas truncation removes work from
+the power budget; on GH200 the same holds for GEMMul8, while cuBLAS emulation, which draws only about 706\W{} at
+1000\W, gains ground at lower caps: the direction depends on the emulation's own power.
 
-\begin{figure*}[t]
-\centering\includegraphics[width=\textwidth]{figs/mi350_crossover.pdf}
-\caption{MI350X: speedup over native FP64 of truncation (round to nearest) and GEMMul8 for $m=n=32768$ as a function of
-the inner dimension $k$, at three package caps (node n02, 8 GPUs $\times$ ABBA). A tighter cap lowers every emulation
-curve and raises every truncation curve.}\label{fig:mi350xover}
-\end{figure*}
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{figs/mi350_pareto.pdf}
+\caption{MI350X, iso-accuracy comparison: speedup over native FP64 against the relative error of $C$ for truncation
+(round to nearest, 44 down to 20 kept bits) and GEMMul8 (8 to 14 moduli), $m=n=32768$, at 1000 and 500\W{} (node n02,
+8 GPUs $\times$ ABBA).}\label{fig:pareto}
+\end{figure}
 
 \textbf{Applications.} In DF-MP2 on MI350X ($k=5477$) GEMMul8 with 12 moduli is 34--67\pct{} faster than native and beats
 truncation at every cap, its lead over 20-bit truncation shrinking from 57 to 16 points between 1000 and 500\W; on GH200
