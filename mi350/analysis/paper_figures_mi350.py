@@ -131,6 +131,35 @@ def fig_crossover():
     save(fig, "mi350_crossover.pdf")
 
 
+def fig_pareto(rid=None):
+    """MI350X iso-accuracy comparison: speedup over native FP64 against the relative error of the product, truncation
+    (keeping 20..44 fraction bits, round to nearest) and GEMMul8 (8..14 moduli), m = n = 32768, two inner dimensions,
+    two caps (node n02, 8 GPUs x ABBA)."""
+    if rid is None:
+        f = sorted(x for x in os.listdir(RES) if x.startswith("pareto_") and x.endswith("_summary.csv"))
+        if not f:
+            return
+        rid = f[-1][:-12]
+    s = pd.read_csv(f"{RES}/{rid}_summary.csv")
+    ks = sorted(s.k.unique())
+    caps = sorted(s.cap.unique(), reverse=True)
+    fig, axes = plt.subplots(1, len(ks), figsize=(COL, 2.2), sharey=True)
+    axes = np.atleast_1d(axes)
+    for ax, k in zip(axes, ks):
+        for cap, ls, mk in zip(caps, ["-", "--"], ["o", "s"]):
+            for dt, lab, c in (("fp64", "Truncation", C[0]), ("g8", "GEMMul8", C[1])):
+                g = s[(s.k == k) & (s.cap == cap) & (s.dtype == dt) & (s.frac < (52 if dt == "fp64" else 99))]
+                g = g.sort_values("rel_err")
+                ax.plot(g.rel_err, g.speedup_pct, ls=ls, marker=mk, ms=2.5, lw=0.9, color=c, label=f"{lab}, {cap} W")
+        ax.axhline(0, color="#999999", lw=0.6)
+        ax.set_xscale("log")
+        ax.set_title(f"$k={k}$")
+        ax.set_xlabel("Relative error of $C$")
+    axes[0].set_ylabel("Speedup vs. native FP64 (%)")
+    axes[-1].legend(frameon=False, fontsize=5.5, loc="upper left")
+    save(fig, "mi350_pareto.pdf")
+
+
 def fig_apps():
     """MI350X applications: speedup vs native under each cap, both nodes pooled; bars are 95% t intervals over the
     independent units of results/apps_units.csv (HPL/HPL-MxP: node runs; GP/DF-MP2: rounds of 8 GPUs)."""
@@ -159,3 +188,4 @@ if __name__ == "__main__":
     fig_model()
     fig_crossover()
     fig_apps()
+    fig_pareto()

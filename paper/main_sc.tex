@@ -45,9 +45,9 @@
 \begin{abstract}
 When a GPU runs at its power limit, the energy of each operation sets the clock. Zeroing low-order mantissa bits is
 known to lower GPU power in microbenchmarks; we ask whether doing it in software, on real data, is a usable optimization.
-On an NVIDIA GH200 cluster and two 8-GPU AMD MI350X nodes, filling the discarded bits with ones instead of zeros, which
-stops them toggling without making them zero, retains most of the saving, consistent with switching activity as the main
-cause. A first-order power model predicts truncated GEMM speedups across caps from one locked-clock measurement with a
+On an NVIDIA GH200 cluster and two 8-GPU AMD MI350X nodes, the saving comes from bits that change between successive
+operands: the same values in sorted instead of shuffled order cost 8--9\pct{} less energy per operation, and the number of
+such bit flips explains 83\pct{} of the variance across layouts, whereas zero values and set bits do not. A first-order power model predicts truncated GEMM speedups across caps from one locked-clock measurement with a
 mean error of 1.5--2.1 percentage points (worst case 10.4). MI350X is power-bound at its stock limit, so in-program
 truncation speeds up FP64 HPL, HPL-MxP, a Gaussian-process likelihood and DF-MP2 by about 5--10\pct{} at default settings, with
 each code's accuracy check passed. Against INT8 emulation of FP64 the choice depends on shape, cap, accuracy requirement
@@ -83,7 +83,9 @@ two vendors' GPUs:
 \begin{enumerate}
 \item \textbf{Where the gain comes from and how much of it can be predicted.} Fills that stop the discarded bits toggling
 without making them zero retain 65--97\pct{} (ones) and 41--92\pct{} (fixed pattern) of the saving in matrix engines,
-FP64 vector units and memory copies of both vendors (Section~\ref{sec:why}). If truncation only changes the switched
+FP64 vector units and memory copies of both vendors; with values and set bits held fixed, reordering operands alone
+changes the energy per operation by 8--9 points, and bit flips between neighbouring operands explain 83\pct{} of its
+variance (Section~\ref{sec:why}). If truncation only changes the switched
 capacitance, the truncated program under cap $P$ behaves like the native program under $P_0+(P-P_0)/R$; with $P_0$ the
 measured idle power this first-order model predicts 42 cap--format GEMM points per platform with mean errors of 1.5
 and 2.1 percentage points (at most 4.6 and 10.4), and two applications not used to build it with a mean error of 1.6 (at most 3.6; Section~\ref{sec:model}).
@@ -245,6 +247,42 @@ partial products $a_ib_j$ in which fixed ones still toggle against the other ope
 measurement. The effect is not limited to matrix engines: an FP64 multiply-add loop with 0 kept bits draws 553 instead
 of 862\W{} on GH200 at 1000\W{} and runs 33\pct{} faster on MI350X at 600\W, and a memory copy, power-bound on MI350X at
 600\W, runs 28\pct{} faster.
+
+\begin{table}[t]
+\caption{MI350X, FP64 GEMM at locked clocks: bit flips between neighbouring operands along $k$ and across rows of $A$ /
+columns of $B$, set bits per element, and energy per operation relative to native at 1300 / 1700\,MHz (8 GPUs
+$\times$ ABBA; 95\pct{} intervals within $\pm$0.5 points). Sorted: the same values per row and column as shuffled,
+reordered along $k$. Krep / mrep: random dropped bits that repeat along $k$ / across rows.}\label{tab:flips}
+\centering\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}rlrrrr@{}}
+\toprule
+Bits & Layout & Flips $k$ & Flips row & Set bits & Energy/op (\%) \\
+\midrule
+52 & shuffled & 27.2 & 27.2 & 34.5 & $+0.6$ / $+0.7$ \\
+52 & sorted & 23.2 & 21.2 & 34.5 & $-7.3$ / $-8.6$ \\
+27 & zeros & 15.2 & 15.2 & 22.8 & $-8.4$ / $-9.6$ \\
+27 & ones & 15.2 & 15.2 & 47.8 & $-7.1$ / $-8.2$ \\
+27 & krep & 15.2 & 27.7 & 35.3 & $-0.6$ / $-0.5$ \\
+27 & mrep & 27.6 & 15.2 & 35.3 & $-3.7$ / $-4.2$ \\
+0 & zeros & 1.7 & 1.7 & 9.3 & $-24.5$ / $-28.6$ \\
+0 & sorted & 0.0 & 0.0 & 9.3 & $-32.0$ / $-38.1$ \\
+0 & krep & 1.7 & 27.7 & 35.3 & $-1.5$ / $-1.7$ \\
+0 & mrep & 27.7 & 1.7 & 35.3 & $-11.4$ / $-13.4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Bit changes, not values.} Fills also change values. Three further controls on MI350X keep values or set bits
+fixed and vary only how bits change between the operands that meet in the matrix engine (Table~\ref{tab:flips}).
+Placing the same values per row and column in sorted instead of shuffled order along $k$ lowers the energy per operation
+by 8--9 points with 52 kept bits and by 8--9 points with 0, with identical values and set bits. Random dropped bits that
+differ between rows but repeat along $k$ (krep) save almost nothing, whereas the transpose, random along $k$ but shared by
+all rows (mrep), saves about half as much as zeros: the engine sees operands from neighbouring rows as well as
+neighbouring $k$ in succession. Over the 15 layouts at each clock, the number of bit flips between neighbouring operands
+in both directions explains 83\pct{} of the variance of the energy change (0.45--0.53\pct{} per flip), set bits alone
+44\pct, both together 89\pct. Bits that change between successive operands, not the value zero or the number of ones,
+are thus the main cause; the remainder fits partial products in which fixed ones still toggle against the other
+operand's kept bits.
 
 \textbf{A second clock effect on MI350X.} With the clock locked and nothing power-limited, the effective clock still
 depends on the data: at a 1300\,MHz lock the native FP64 GEMM runs steadily at 1171--1179\,MHz (5th--95th percentile, 8

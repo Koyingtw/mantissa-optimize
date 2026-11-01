@@ -40,7 +40,8 @@ def main():
         b = nat.reindex(g.set_index(key).index)
         r = g.e_op.values / b.e_op.values - 1
         lo, hi = ci(r)
-        out.append(dict(id=i, frac=frac, low=low, n=len(g), tog=g.tog.mean(), hw=g.hw.mean(),
+        out.append(dict(id=i, frac=frac, low=low, n=len(g), tog=g.tog.mean(), tox=g.tox.mean() if "tox" in g else np.nan,
+                        hw=g.hw.mean(),
                         gfxclk=g.gfxclk.mean(), ppt_frac=g.ppt_frac.mean(), e_op=g.e_op.mean(),
                         de_pct=100 * np.nanmean(r), de_lo=100 * lo, de_hi=100 * hi,
                         dperf_pct=100 * np.nanmean(g.tflops.values / b.tflops.values - 1)))
@@ -49,13 +50,22 @@ def main():
     fits = []
     for i, g in s.groupby("id"):
         n0 = g[(g.frac == 52) & (g.low == "zero")].iloc[0]
-        X = np.column_stack([g.tog - n0.tog, g.hw - n0.hw])
-        coef, res, *_ = np.linalg.lstsq(X, g.de_pct, rcond=None)
-        pred = X @ coef
-        r2 = 1 - ((g.de_pct - pred) ** 2).sum() / ((g.de_pct - g.de_pct.mean()) ** 2).sum()
-        c1, *_ = np.linalg.lstsq(X[:, :1], g.de_pct, rcond=None)
-        r2t = 1 - ((g.de_pct - X[:, :1] @ c1) ** 2).sum() / ((g.de_pct - g.de_pct.mean()) ** 2).sum()
-        fits.append(dict(id=i, pct_per_toggle=coef[0], pct_per_setbit=coef[1], r2=r2, r2_toggle_only=r2t))
+        tot = g.de_pct - g.de_pct.mean()
+
+        def r2(cols):
+            X = np.column_stack(cols)
+            c, *_ = np.linalg.lstsq(X, g.de_pct, rcond=None)
+            return 1 - ((g.de_pct - X @ c) ** 2).sum() / (tot ** 2).sum(), c
+        row = dict(id=i)
+        for name, cols in [("k", [g.tog - n0.tog]), ("hw", [g.hw - n0.hw]), ("k+hw", [g.tog - n0.tog, g.hw - n0.hw])]:
+            row[f"r2_{name}"] = r2(cols)[0]
+        if g.tox.notna().all() and (g.tox > 0).all():
+            both = (g.tog + g.tox) - (n0.tog + n0.tox)
+            row["r2_x"] = r2([g.tox - n0.tox])[0]
+            row["r2_k+x"], c = r2([both])
+            row["pct_per_flip"] = c[0]
+            row["r2_k+x+hw"] = r2([both, g.hw - n0.hw])[0]
+        fits.append(row)
     s.to_csv(f"{RES}/mech_toggle.csv", index=False)
     pd.set_option("display.width", 200)
     print(s.to_string(index=False, float_format=lambda x: f"{x:.2f}"))
