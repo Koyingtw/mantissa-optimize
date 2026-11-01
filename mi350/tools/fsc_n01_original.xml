@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fsc>
+  <!-- #### Group#0: CPU0 Temperature #### -->
+  <group id="0" t_high="80" t_low="72" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- CPU0 Temperature -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x00" />
+  </group>
+
+  <!-- #### Group#1: CPU1 Temperature #### -->
+  <group id="1" t_high="80" t_low="72" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- CPU1 Temperature -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x06" />
+  </group>
+
+  <!-- #### Group#2: P0 DIMM (A0~L0) #### -->
+  <group id="2" t_high="60" t_low="55" duty_increase="3" duty_decrease="1" tctrl_offset="no" gpu_name="none">
+    <!-- P0_UMC3_CH_A0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x20" />
+    <!-- P0_UMC4_CH_B0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x22" />
+    <!-- P0_UMC0_CH_C0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x24" />
+    <!-- P0_UMC5_CH_D0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x26" />
+    <!-- P0_UMC1_CH_E0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x28" />
+    <!-- P0_UMC2_CH_F0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x2A" />
+    <!-- P0_UMC3_CH_G0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x2C" />
+    <!-- P0_UMC4_CH_H0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x2E" />
+    <!-- P0_UMC0_CH_I0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x30" />
+    <!-- P0_UMC5_CH_J0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x32" />
+    <!-- P0_UMC1_CH_K0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x34" />
+    <!-- P0_UMC2_CH_L0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x36" />
+  </group>
+
+  <!-- #### Group#3: P1 DIMM (A0~L0) #### -->
+  <group id="3" t_high="60" t_low="55" duty_increase="3" duty_decrease="1" tctrl_offset="no" gpu_name="none">
+    <!-- P1_UMC3_CH_A0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x38" />
+    <!-- P1_UMC4_CH_B0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x3A" />
+    <!-- P1_UMC0_CH_C0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x3C" />
+    <!-- P1_UMC5_CH_D0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x3E" />
+    <!-- P1_UMC1_CH_E0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x40" />
+    <!-- P1_UMC2_CH_F0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x42" />
+    <!-- P1_UMC3_CH_G0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x44" />
+    <!-- P1_UMC4_CH_H0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x46" />
+    <!-- P1_UMC0_CH_I0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x48" />
+    <!-- P1_UMC5_CH_J0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x4A" />
+    <!-- P1_UMC1_CH_K0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x4C" />
+    <!-- P1_UMC2_CH_L0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x4E" />
+  </group>
+
+  <!-- #### Group#4: P0 & P1_VR #### -->
+  <group id="4" t_high="90" t_low="82" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- P0_VDD_CORE_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x01" />
+    <!-- P0_VDD_SOC -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x02" />
+    <!-- P0_VDD_CORE_1 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x03" />
+    <!-- P0_VDD_SUS -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x04" />
+    <!-- P0_VDDIO -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x05" />
+    <!-- P1_VDD_CORE_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x07" />
+    <!-- P1_VDD_SOC -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x08" />
+    <!-- P1_VDD_CORE_1 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x09" />
+    <!-- P1_VDD_SUS -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x0A" />
+    <!-- P1_VDDIO -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x0B" />
+  </group>
+
+  <!-- #### Group#5: Switch_0~5 #### -->
+  <group id="5" t_high="90" t_low="82" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- Switch_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xF2" />
+    <!-- Switch_1 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xF3" />
+    <!-- Switch_2 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xF4" />
+    <!-- Switch_3 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xF5" />
+    <!-- Switch_4 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xF6" />
+    <!-- Switch_5 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xF7" />
+  </group>
+
+  <!-- #### Group#6: U.2_NVME_0~7 #### -->
+  <group id="6" t_high="65" t_low="57" duty_increase="2" duty_decrease="1" tctrl_offset="no" gpu_name="none">
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB0" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB1" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB2" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB3" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB4" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB5" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB6" />
+    <!-- U2.NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB7" />
+  </group>
+
+  <!-- #### Group#2: PCIE_Card_0~11 #### -->
+  <group id="7" t_high="85" t_low="77" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- PCIE_Card_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x88" />
+    <!-- PCIE_Card_1 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x89" />
+    <!-- PCIE_Card_2 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x8A" />
+    <!-- PCIE_Card_3 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x8B" />
+    <!-- PCIE_Card_4 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x8C" />
+    <!-- PCIE_Card_5 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x8D" />
+    <!-- PCIE_Card_6 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x8E" />
+    <!-- PCIE_Card_7 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x8F" />
+    <!-- PCIE_Card_8 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x90" />
+    <!-- PCIE_Card_9 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x91" />
+    <!-- PCIE_Card_10 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x92" />
+    <!-- PCIE_Card_11 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0x93" />
+  </group>
+
+  <!-- #### Group#8: OAM0~7 #### -->
+  <group id="8" t_high="86" t_low="78" duty_increase="5" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- OAM0_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA0" />
+    <!-- OAM0_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA1" />
+    <!-- OAM0_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA2" />
+    <!-- OAM1_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA3" />
+    <!-- OAM1_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA4" />
+    <!-- OAM1_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA5" />
+    <!-- OAM2_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA6" />
+    <!-- OAM2_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA7" />
+    <!-- OAM2_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA8" />
+    <!-- OAM3_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xA9" />
+    <!-- OAM3_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xAA" />
+    <!-- OAM3_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xAB" />
+    <!-- OAM4_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xAC" />
+    <!-- OAM4_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xAD" />
+    <!-- OAM4_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xAE" />
+    <!-- OAM5_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xAF" />
+    <!-- OAM5_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC0" />
+    <!-- OAM5_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC1" />
+    <!-- OAM6_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC2" />
+    <!-- OAM6_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC3" />
+    <!-- OAM6_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC4" />
+    <!-- OAM7_AID_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC5" />
+    <!-- OAM7_XCD_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC6" />
+    <!-- OAM7_HBM_Temp -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC7" />
+  </group>
+
+  <!-- #### Group#9: UBB_Retimer_0~3 #### -->
+  <group id="9" t_high="90" t_low="82" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- UBB_Retimer_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC8" />
+    <!-- UBB_Retimer_1 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xC9" />
+    <!-- UBB_Retimer_2 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xCA" />
+    <!-- UBB_Retimer_3 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xCB" />
+  </group>
+
+  <!-- #### Group#10: M.2_NVME_0 & 1 #### -->
+  <group id="10" t_high="65" t_low="57" duty_increase="4" duty_decrease="2" tctrl_offset="no" gpu_name="none">
+    <!-- M.2_NVME_0 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB8" />
+    <!-- M.2_NVME_1 -->
+    <sensor own_id="0x20" own_lun="0x00" number="0xB9" />
+  </group>
+
+  <!-- ####Impact Group Settings of each smart fan#### -->
+  <pwm id="0" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="1" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="2" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="3" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="4" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="5" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="6" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="7" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="8" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="9" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="10" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="11" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="12" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="13" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+  <pwm id="14" max_duty="100" group_id_list="0,1,2,3,4,5,6,7,8,9,10" />
+
+  <!-- #### Zone Settings w/ SYS_Air_Inlet ####-->
+  <zone id="0x00" pwm_id_list="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14" sensor_own_id="0x20" sensor_own_lun="0x00" sensor_number="0x80">
+    <level temp="00" duty="40" ext_duty_list=""/>
+    <level temp="30" duty="50" ext_duty_list=""/>
+    <level temp="35" duty="60" ext_duty_list=""/>
+  </zone>
+
+</fsc>

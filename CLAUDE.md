@@ -109,6 +109,13 @@ is refused: copy code with `tar c … | srun -w p01-r01-n02 tar x -C ~/koying` a
   `feat/adaptive-mixed-storage` in a worktree at `~/koying/sw/rocHPL-amd/build-mi350`; rochpl writes only
   `HPL.out`), `gp_tdp.sh` (`mi350/apps/gp_chol.hip`, HIP port of `apps/geostat/gp_mle.py`).
 - Analysis (`mi350/.venv`): `analysis/e1_summary.py`, `hpl_summary.py`, `gp_summary.py` → `mi350/results/`.
+- Two-node runs (16 GPUs): `srun -p gpu -N2 --ntasks-per-node=8 --mpi=pmix` after `source mi350/env.sh; source
+  mi350/env_multinode.sh` (mpirun cannot reach n02). MPI goes over the frontend RoCE NIC (rc_verbs only there), RCCL over
+  the 8 backend Broadcom RoCE NICs with `NCCL_IB_GID_INDEX=1`; caps must be set on each node (`srun -w <node> pcap.sh`).
+  Checks: `mi350/tools/mpi_pingpong.c`, `rccl_allreduce.hip` (built into `mi350/bin`, copy to n02).
+- Fans (MiTAC G8825Z5, AMI BMC): `sudo ipmitool sdr type fan` reads 30 fan RPMs in-band; the provided BMC account cannot
+  change the fan profile (upload returns 403, Redfish `MCTThermal.SetFanSpeed` is 404), so fans stay on automatic control.
+  `mi350/tools/fsc_n01_original.xml` is the stock profile.
 - Findings so far: MI350X is power-bound at the stock 1000 W, so truncation gains there already; HPL-MxP
   0 kept bits does not converge (use 3–4); FP64 HPL 30/28 bits fail at every N tested (36 is safe).
 
