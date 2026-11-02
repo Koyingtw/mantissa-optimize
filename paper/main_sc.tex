@@ -693,9 +693,10 @@ price of changing the application. And in the Gaussian-process likelihood at $n=
 returned success but an invalid result in every one of 256 runs, without a diagnostic. A minimal reproduction on uniform
 operands localizes it exactly: through the library's direct API and through the hook alike, $C=AB^{\mathsf T}$ with $k=1024$
 is correct ($\ee{1.6}{-15}$) for $m=n=65535$ and wrong (relative error 31, all entries finite) from $m=n=65536$, i.e., once
-$mn$ reaches $2^{32}$, consistent with a 32-bit size overflow; it persists in the current release (3.5.4). It is an
-implementation defect, independent of the data, not a property of emulation; every other emulated result in this paper
-stays below this size, and we report it only as a deployment risk of replacing a BLAS call wholesale.
+$mn$ reaches $2^{32}$, also in GEMMul8 3.5.4. The cause lies one layer down: GEMMul8 batches the INT8 products of its
+moduli with output stride $mn$, and ROCm 7.2.3's strided-batched INT8 GEMM (rocBLAS and hipBLASLt back ends alike)
+returns success but leaves every batch after the first unwritten once the stride reaches $2^{32}$ elements. It is a
+defect independent of the data, not a property of emulation, and a deployment risk of replacing a BLAS call wholesale.
 
 \subsection{Exponent Span: When Emulation Silently Fails}\label{sec:span}
 
@@ -792,8 +793,7 @@ and FP8 matrix work, truncation turns into 4.6--10\pct{} more speed at stock set
 liquid cooling that is not power-bound at stock settings would see energy instead of speed, in an amount the model
 predicts from $P-P_0$. Truncation is not an alternative to clock tuning: at a fixed clock it lowers the energy per
 operation (by 8--38\pct{} in Table~\ref{tab:flips}), so it lowers the cost of whatever operating point a cap or a
-frequency choice selects. As throughput grows faster than power envelopes, running at the limit becomes the default
-operating point, and the energy spent toggling unneeded bits becomes a first-order performance parameter.
+frequency choice selects.
 
 \textbf{Truncation and emulation.} Emulation is the stronger lever where it can amortize its fixed costs: long inner
 dimensions, generous caps, narrow exponent spans, ample memory and few distinct shapes. Truncation is the better choice
@@ -822,7 +822,7 @@ raw ones and checked them under controlled thermal history for GEMM and HPL-MxP 
 (viii)~Power and energy come from the devices' own sensors and accumulators, not an external meter; GH200 module power
 includes the Grace CPU. (ix)~The MI350X clock reduction attributed to clock stretching is an inference. (x)~About half of
 the Quantum ESPRESSO gain on the gold surface comes from fewer Davidson iterations, for unidentified reasons. (xi)~The
-GEMMul8 memory limits and the size failure are observations about one library build.
+GEMMul8's memory limits and the size failure are observations about one software stack (ROCm 7.2.3).
 
 \section{Conclusion}\label{sec:conclusion}
 
