@@ -4,7 +4,8 @@
 #   nohup mi350/scripts/gp_tdp.sh >/dev/null 2>&1 &
 # 環境變數：CAPS、VARIANTS、GP_N（80000）、REPEAT（每個上限重複幾次整串清單）、START_TEMP、COOL_MAX、TAG、
 #   EMU（例如 "12 14"：每輪之後再以 GEMMul8 k moduli 跑 native 兩次，只計第二次；冷啟動見 DF-MP2）、
-#   GP_HIPBLAS=1（trailing DGEMM 走 hipBLAS；有 EMU 時自動開啟，基準行程也走同一路徑）
+#   GP_HIPBLAS=1（trailing DGEMM 走 hipBLAS；有 EMU 時自動開啟，基準行程也走同一路徑）、
+#   BIN（預設 bin/gp_chol；bin/gp_chol_354 支援直接呼叫 GEMMul8 v3.5.4 的 e<M> 變體）
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$ROOT"
@@ -37,7 +38,7 @@ for cap in $CAPS; do
     echo "=== RUN cap=$cap round=$r cool=${waited}s"
     pids=()
     for g in 0 1 2 3 4 5 6 7; do
-      bin/gp_chol --device "$g" --n "$GP_N" --nb "$GP_NB" --variants "$VARIANTS" --tag "cap=$cap,round=$r,emu=none" \
+      "${BIN:-bin/gp_chol}" --device "$g" --n "$GP_N" --nb "$GP_NB" --variants "$VARIANTS" --tag "cap=$cap,round=$r,emu=none" \
         "${HB[@]}" &
       pids+=($!)
     done

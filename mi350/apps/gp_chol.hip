@@ -10,7 +10,8 @@
 //
 // usage: gp_chol --device D --variants "native t36n t28n t28n t36n native" [--n 80000] [--nb 1024]
 //                [--ranges "0.02 0.03 0.04 0.05 0.06 0.08"] [--nugget 1e-4] [--seed 1] [--tag s]
-//   variant: native | t<k><n|t> (k fraction bits kept, n = nearest, t = truncate); a variant listed twice
+//   variant: native | t<k><n|t> (k fraction bits kept, n = nearest, t = truncate) | e<M> (trailing DGEMM by GEMMul8's
+//   direct API with M moduli and one preallocated workspace; build with -DWITH_GEMMUL8); a variant listed twice
 //   is its B pass. --hipblas runs the trailing DGEMM through hipblasDgemm instead of rocblas_dgemm, so that
 //   GEMMul8's LD_PRELOAD hook (which intercepts hipBLAS) can replace it with INT8 emulation.
 //   Prints one RESULT_GP line per variant (log-likelihoods, deviation from the first native
@@ -23,6 +24,9 @@
 #include <hipblas/hipblas.h>
 #include <rocblas/rocblas.h>
 #include <rocsolver/rocsolver.h>
+#ifdef WITH_GEMMUL8
+#include "gemmul8.hpp"
+#endif
 
 #include <algorithm>
 #include <chrono>
@@ -90,6 +94,8 @@ struct Ctx {
   long n, nb;
   double* Lt;      // panel scratch, (n - nb) x nb
   rocblas_int* info;
+  int emu = 0;            // > 0: trailing DGEMM by GEMMul8 with this many moduli
+  void* work = nullptr;   // GEMMul8 workspace for the largest trailing update
 };
 
 // Returns false if the matrix is not positive definite (POTRF info != 0).
@@ -115,7 +121,12 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
     CR(rocblas_dtrsm(c.h, rocblas_side_right, rocblas_fill_lower, rocblas_operation_transpose,
                      rocblas_diagonal_non_unit, r, b, &one, D, n, A + (j + b) + j * n, n));
     copy_reduce<<<4096, 256>>>(A + (j + b) + j * n, n, c.Lt, r, b, add, mask);
-    if (c.hb) {
+    if (c.emu) {
+#ifdef WITH_GEMMUL8
+      gemmul8::gemm<double, gemmul8::Backend::INT8>(c.hb, HIPBLAS_OP_N, HIPBLAS_OP_T, r, r, b, &mone, c.Lt, r, c.Lt, r,
+                                                    &one, A + (j + b) + (j + b) * n, n, c.emu, true, c.work);
+#endif
+    } else if (c.hb) {
       if (hipblasDgemm(c.hb, HIPBLAS_OP_N, HIPBLAS_OP_T, r, r, b, &mone, c.Lt, r, c.Lt, r, &one,
                        A + (j + b) + (j + b) * n, n) != HIPBLAS_STATUS_SUCCESS) { fprintf(stderr, "hipblasDgemm failed\n"); exit(1); }
     } else {
@@ -284,7 +295,19 @@ int main(int argc, char** argv) {
     const char pas = "ABCDEFGH"[seen[v]++];
     int bits = 52;
     bool nearest = true;
-    if (v != "native") {
+    c.emu = 0;
+    if (v[0] == 'e') {
+#ifdef WITH_GEMMUL8
+      c.emu = atoi(v.c_str() + 1);
+      if (!c.hb && hipblasCreate(&c.hb) != HIPBLAS_STATUS_SUCCESS) { fprintf(stderr, "hipblasCreate failed\n"); return 1; }
+      if (c.work) CK(hipFree(c.work));
+      const size_t ws = gemmul8::workSize<false, gemmul8::Backend::INT8, gemmul8::Func::gemm>(n - nb, n - nb, nb, c.emu);
+      CK(hipMalloc(&c.work, ws));
+#else
+      fprintf(stderr, "variant %s needs a build with -DWITH_GEMMUL8\n", v.c_str());
+      return 2;
+#endif
+    } else if (v != "native") {
       if (v[0] != 't') { fprintf(stderr, "bad variant %s\n", v.c_str()); return 2; }
       bits = atoi(v.c_str() + 1);
       nearest = v.back() == 'n';
