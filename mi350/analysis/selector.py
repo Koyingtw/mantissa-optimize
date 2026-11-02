@@ -66,8 +66,13 @@ def r_emu(model, dt, M, cap, m, n, k):
     return None if c is None else float((design([m], [n], [k]) @ np.array(c["coef"]))[0])
 
 
-def choose(model, m, n, k, cap, eps, t_native=None, setup=0.0, calls=1, emu=None):
-    """Return (method, relative time) for one GEMM shape; t_native (s) is needed only to weigh the setup cost."""
+SPAN_GUARD = 0.01  # largest flop-weighted share of elements more than 2^-32 below their row maximum that allows emulation
+
+
+def choose(model, m, n, k, cap, eps, t_native=None, setup=0.0, calls=1, emu=None, span_frac=0.0):
+    """Return (method, relative time) for one GEMM shape; t_native (s) is needed only to weigh the setup cost.
+    span_frac: measured share of operand elements far below their row maximum (an interposer measures it cheaply); above
+    SPAN_GUARD fixed-width emulation is ruled out, since it can then lose precision silently (Gaussian-basis DFT)."""
     if emu is None:  # the preferred emulation build that the model has data for
         emu = next((e for e in EMU if any(key.startswith(f"{e}:") for key in model["err"])), EMU[0])
     cands = [("native", 1.0)]
@@ -78,7 +83,7 @@ def choose(model, m, n, k, cap, eps, t_native=None, setup=0.0, calls=1, emu=None
             cands.append((f"trunc{b}", 1 / (1 + g["gain"])))
             break
     mods = sorted(int(key.split(":")[1]) for key in model["err"] if key.startswith(f"{emu}:") and model["err"][key] <= eps)
-    if mods:
+    if mods and span_frac <= SPAN_GUARD:
         r = r_emu(model, emu, mods[0], cap, m, n, k)
         if r is not None:
             if setup and t_native:

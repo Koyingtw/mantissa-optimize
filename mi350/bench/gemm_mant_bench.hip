@@ -120,6 +120,30 @@ __global__ void fill64(double* x, size_t n, uint64_t seed, int frac, int round, 
   }
 }
 
+// Per-bit-position flip counts of an FP64 operand: pos[b] (along k) and pos[64 + b] (other dimension), b = 0..63.
+__global__ void bitpos64(const double* x, size_t n, size_t ld, int col_key, unsigned long long* pos) {
+  __shared__ unsigned long long s[128];
+  for (int i = threadIdx.x; i < 128; i += blockDim.x) s[i] = 0;
+  __syncthreads();
+  unsigned long long loc[128];
+  for (int i = 0; i < 128; ++i) loc[i] = 0;
+  for (size_t i = blockIdx.x * (size_t)blockDim.x + threadIdx.x; i < n; i += (size_t)gridDim.x * blockDim.x) {
+    const uint64_t u = __double_as_longlong(x[i]);
+    const size_t kidx = col_key ? i % ld : i / ld, oidx = col_key ? i / ld : i % ld;
+    if (kidx > 0) {
+      uint64_t d = u ^ (uint64_t)__double_as_longlong(x[col_key ? i - 1 : i - ld]);
+      while (d) { const int b = __ffsll((unsigned long long)d) - 1; ++loc[b]; d &= d - 1; }
+    }
+    if (oidx > 0) {
+      uint64_t d = u ^ (uint64_t)__double_as_longlong(x[col_key ? i - ld : i - 1]);
+      while (d) { const int b = __ffsll((unsigned long long)d) - 1; ++loc[64 + b]; d &= d - 1; }
+    }
+  }
+  for (int i = 0; i < 128; ++i) if (loc[i]) atomicAdd(&s[i], loc[i]);
+  __syncthreads();
+  for (int i = threadIdx.x; i < 128; i += blockDim.x) atomicAdd(&pos[i], s[i]);
+}
+
 // Bit statistics of an FP64 operand: acc[0] += popcount(x ^ previous element along k), acc[1] += popcount(x),
 // acc[2] = pairs along k, acc[3] = elements, acc[4] += popcount(x ^ neighbour in the other dimension: previous row of
 // A, previous column of B), acc[5] = pairs in that dimension.
@@ -220,6 +244,7 @@ static double now_unix() {
 
 int main(int argc, char** argv) {
   std::string dtype = "fp64", tag = "run";
+  int stats_only = 0;
   int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0, spread_mode = 0;
   double spread = 0;
   long m = 32768, n = 32768, k = 2048;
@@ -242,7 +267,8 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--only-b")) only_b = 1;  // A keeps it
     else if (!strcmp(argv[i], "--ta")) ta = 1;  // FP64 only: A stored k x m, op(A) = A^T
     else if (!strcmp(argv[i], "--tb")) tb = 1;  // FP64 only: B stored n x k, op(B) = B^T
-    else if (!strcmp(argv[i], "--check")) check = 1;    // relative error vs FP64 on the unreduced data
+    else if (!strcmp(argv[i], "--check")) check = 1;
+    else if (!strcmp(argv[i], "--stats-only")) stats_only = 1;  // FP64: print per-bit-position flips and exit    // relative error vs FP64 on the unreduced data
     else if (!strcmp(argv[i], "--spread")) spread = atof(next());  // exponent spread in binades (see g_spread)
     else if (!strcmp(argv[i], "--spread-mode")) spread_mode = !strcmp(next(), "row");  // elem | row
     else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const | krep | mrep | sorted | shuffled
@@ -294,6 +320,22 @@ int main(int argc, char** argv) {
       CK(hipFree(acc));
       tog_a = (double)h[0] / h[2]; hw_a = (double)h[1] / h[3]; tox_a = (double)h[4] / h[5];
       tog_b = (double)h[6] / h[8]; hw_b = (double)h[7] / h[9]; tox_b = (double)h[10] / h[11];
+      if (stats_only) {
+        unsigned long long* pos;
+        CK(hipMalloc(&pos, 256 * sizeof(unsigned long long)));
+        CK(hipMemset(pos, 0, 256 * sizeof(unsigned long long)));
+        bitpos64<<<1024, 256>>>((double*)A, (size_t)m * k, m, 0, pos);
+        bitpos64<<<1024, 256>>>((double*)B, (size_t)k * n, k, 1, pos + 128);
+        unsigned long long hp[256];
+        CK(hipMemcpy(hp, pos, sizeof(hp), hipMemcpyDeviceToHost));
+        // mean flips per neighbouring pair at each bit position, A and B averaged; pk = along k, px = other dimension
+        printf("BITPOS low=%s frac=%d pk=[", kLowNames[low_mode], frac);
+        for (int b = 0; b < 64; ++b) printf("%s%.5f", b ? " " : "", 0.5 * ((double)hp[b] / h[2] + (double)hp[128 + b] / h[8]));
+        printf("] px=[");
+        for (int b = 0; b < 64; ++b) printf("%s%.5f", b ? " " : "", 0.5 * ((double)hp[64 + b] / h[5] + (double)hp[192 + b] / h[11]));
+        printf("] tog=%.3f tox=%.3f hw=%.3f\n", 0.5 * (tog_a + tog_b), 0.5 * (tox_a + tox_b), 0.5 * (hw_a + hw_b));
+        return 0;
+      }
     }
   } else if (is32) {
     fill32<<<4096, 256>>>((float*)A, (size_t)m * k, 1, only_b ? native : frac, round);
