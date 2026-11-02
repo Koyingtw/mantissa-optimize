@@ -1,0 +1,166 @@
+id=mxpN264192_1102_0758 bench=mxp N=264192 NB=5504 P=4 Q=2 caps=[1000] variants=[3 4] repeat=1
+=== RUN bench=mxp cap=1000 blk=0 pass=A0 variant=3 t=1793606440.819614599 cool=120s hot=65
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 264192 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 3  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 264192
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+2026-11-02 08:00:54.963
+Solver iteration  0, L-infinite residual = 2.53634315e-04
+Solver Richardson  1, L-infinite residual = 3.74499539e-08
+Solver iteration  1, L-infinite residual = 3.74963781e-08
+Solver iteration  2, L-infinite residual = 1.84708693e-10
+2026-11-02 08:00:55.349
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    1.847087E-10
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    1.327323E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    7.606820E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999982E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    4.171342E+00 ...... PASSED
+    N = 264192, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 2.0977e+06, per GPU =  262211.64[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 2.2433e+06, per GPU =  280412.21[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 blk=0 pass=A0 variant=3 t=1793606457.032759711 rc=0
+=== RUN bench=mxp cap=1000 blk=0 pass=A0 variant=4 t=1793606527.351638600 cool=70s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 264192 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 4  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 264192
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+2026-11-02 08:02:21.374
+Solver iteration  0, L-infinite residual = 1.35506200e-04
+Solver Richardson  1, L-infinite residual = 9.20572740e-09
+Solver iteration  1, L-infinite residual = 9.20499810e-09
+Solver iteration  2, L-infinite residual = 7.78408726e-11
+2026-11-02 08:02:21.751
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    7.784087E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    1.327323E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    7.606820E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999982E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    1.757908E+00 ...... PASSED
+    N = 264192, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 2.1623e+06, per GPU =  270290.84[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 2.3133e+06, per GPU =  289158.42[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 blk=0 pass=A0 variant=4 t=1793606543.630144822 rc=0
+=== RUN bench=mxp cap=1000 blk=0 pass=B0 variant=4 t=1793606573.817842610 cool=30s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 264192 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 4  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 264192
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+2026-11-02 08:03:07.687
+Solver iteration  0, L-infinite residual = 1.35100438e-04
+Solver Richardson  1, L-infinite residual = 9.21423621e-09
+Solver iteration  1, L-infinite residual = 9.21354404e-09
+Solver iteration  2, L-infinite residual = 6.76539588e-11
+2026-11-02 08:03:08.064
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    6.765396E-11
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    1.327323E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    7.606820E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999982E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    1.527853E+00 ...... PASSED
+    N = 264192, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 2.1666e+06, per GPU =  270829.28[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 2.3180e+06, per GPU =  289753.23[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 blk=0 pass=B0 variant=4 t=1793606589.961955724 rc=0
+=== RUN bench=mxp cap=1000 blk=0 pass=B0 variant=3 t=1793606615.127974683 cool=25s hot=63
+ ****** HPL MxP Settings ****** 
+   --nprow =  4 
+   --npcol =  2 
+   --order = column 
+   --n     = 264192 
+   --nb    = 5504 
+   --sloppy-type                      = BF16 
+   --storage-mantissa-bits            = 3  *** RESEARCH MODE *** 
+   --fp8-frac                         = 1.00 
+   --sa                               = 32 
+   --sb                               = 32 
+   --itcheck                          = 1 
+   --maxit                            = 50 
+   --seed                             = 1 
+ ****** test 1 of 1 starts ****** 
+   n      = 264192
+   nb     = 5504
+   nprow  = 4
+   npcol  = 2
+LU panel transport: RCCL
+2026-11-02 08:03:48.960
+Solver iteration  0, L-infinite residual = 2.53929467e-04
+Solver Richardson  1, L-infinite residual = 3.74732697e-08
+Solver iteration  1, L-infinite residual = 3.75200457e-08
+Solver iteration  2, L-infinite residual = 1.49996598e-10
+2026-11-02 08:03:49.340
+ ****** HPL MxP Result    ****** 
+    EPS           . . . . . . . . . . . . . . . . .          =    1.110223E-16
+    Threshold     . . . . . . . . . . . . . . . . .          =    1.600000E+01
+  ||Ax-b||_oo     . . . . . . . . . . . . . . . . .          =    1.499966E-10
+  ||A   ||_oo     . . . . . . . . . . . . . . . . .          =    1.327323E+05
+  ||x   ||_oo     . . . . . . . . . . . . . . . . .          =    7.606820E-06
+  ||b   ||_oo     . . . . . . . . . . . . . . . . .          =    4.999982E-01
+  ||Ax-b||_oo / (EPS * (||A||_oo * ||x||_oo + ||b||_oo) * N) =    3.387426E+00 ...... PASSED
+    N = 264192, NB = 5504, NPROW = 4, NPCOL = 2, SLOPPY-TYPE = BF16
+[0;31m       GFLOPS = 2.1844e+06, per GPU =  273051.14[0m[0;34m ------ The HPL-MxP performance to report[0m
+    LU GFLOPS = 2.3393e+06, per GPU =  292409.65[0;34m ------ The performance excluding the iterative solver part[0m
+ ****** HPL MxP Result    ****** 
+ ****** test 1 of 1 done   ****** 
+=== END bench=mxp cap=1000 blk=0 pass=B0 variant=3 t=1793606631.300122957 rc=0
+mxp done

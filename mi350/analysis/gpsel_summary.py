@@ -14,7 +14,7 @@ import pandas as pd
 HERE = os.path.dirname(os.path.abspath(__file__))
 rows = []
 for rid in sys.argv[1:]:
-    nb = int(re.search(r"gpsel(\d+)_", rid).group(1))
+    nb = int(re.search(r"gpsel(\d+)", rid).group(1))
     for line in open(f"{HERE}/../logs/{rid}.out"):
         if line.startswith("RESULT_GP"):
             kv = dict(re.findall(r"(\w+)=([^\s,\[]+)", line.replace("tag=", "")))

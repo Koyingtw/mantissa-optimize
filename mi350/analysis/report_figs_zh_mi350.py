@@ -143,11 +143,11 @@ def fig_crossover():
 def fig_pareto():
     """6.5 Iso-accuracy comparison: speedup vs relative error of C, truncation (20..44 bits) and GEMMul8 3.2.0 (8..14
     moduli), m = n = 32768, k = 1024 / 4096, 1000 / 500 W (pareto_* summary)."""
-    f = sorted(x for x in os.listdir(RES) if x.startswith("pareto_") and x.endswith("_summary.csv"))[-1]
-    s = pd.read_csv(f"{RES}/{f}")
+    s = pd.concat([pd.read_csv(f"{RES}/{x}") for x in sorted(os.listdir(RES))
+                   if x.startswith("pareto") and x.endswith("_summary.csv")])
     fig = plt.figure(figsize=(z.FULL * z.CM, 6.8 * z.CM))
-    axes = [fig.add_axes([(1.35 + i * 7.1) / z.FULL, 1.1 / 6.8, 6.4 / z.FULL, 5.3 / 6.8]) for i in range(2)]
-    for i, (ax, k) in enumerate(zip(axes, (1024, 4096))):
+    axes = [fig.add_axes([(1.35 + i * 4.75) / z.FULL, 1.1 / 6.8, 4.3 / z.FULL, 5.3 / 6.8]) for i in range(3)]
+    for i, (ax, k) in enumerate(zip(axes, (1024, 2048, 4096))):
         for cap, ls, mk in ((1000, "-", "o"), (500, "--", "s")):
             for dt, lab, c in (("fp64", "截斷", z.BLUE), ("g8", "GEMMul8", z.ORANGE)):
                 g = s[(s.k == k) & (s.cap == cap) & (s.dtype == dt) & (s.frac < (52 if dt == "fp64" else 99))].sort_values("rel_err")
@@ -156,12 +156,13 @@ def fig_pareto():
         ax.set_xscale("log")
         ax.text(0.04, 0.96, f"$k = {k}$", transform=ax.transAxes, ha="left", va="top", fontsize=8.5)
         ax.set_xlabel("乘積 $C$ 的相對誤差")
+        ax.set_xticks([1e-14, 1e-11, 1e-8])
         if i:
             ax.set_yticklabels([])
     for ax in axes:
         ax.set_ylim(-60, 180)
     axes[0].set_ylabel("相對原生 FP64 的加速（%）")
-    h, l = axes[1].get_legend_handles_labels()
+    h, l = axes[2].get_legend_handles_labels()
     axes[0].legend(h, l, loc="upper left", bbox_to_anchor=(0.0, 0.88), fontsize=7.5)
     save(fig, "fig6_05_pareto.pdf")
 
