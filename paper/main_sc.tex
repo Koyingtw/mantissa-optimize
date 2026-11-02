@@ -497,9 +497,9 @@ official runs, so neither the 3-bit operating point nor its gain is a general pr
 factorization of the diagonal tiles 3 bits still passes (0.43) and is 4.4 and 9.4\pct{} faster at 1000 and 650\W. On
 two nodes (16 GPUs, $4\times4$, $N=1453056$; 4 runs per variant) communication does not dilute the gain: 3 bits is
 6.0\pct{} (5.9--6.1) faster at 1000\W{} (14.61 to 15.48\,PFLOP/s) and 16.5\pct{} (12.7--20.3) at 500\W, but its residual
-rises to 11.8 of 16. On one node the 3-bit residual falls with $N$ (3.4--4.2 at $N=264192$, 0.6--0.7 at 792576,
-0.43--0.46 at 1034752; 4 bits about half), so the rise comes with the larger grid rather than with size alone: the safe
-bit count must be validated per configuration, not extrapolated.
+rises to 11.8 of 16. On one node the 3-bit residual falls with $N$ (3.4--4.2 at $N=264192$, 0.43--0.46 at 1034752),
+and on 16 GPUs at $N=1034752$ it is 0.20 while 4 bits gives 5.7: the residual of the truncated LU varies irregularly
+with size, grid and bit count, so the safe bit count must be validated per configuration, not extrapolated.
 
 \subsection{Quantum ESPRESSO: Tolerance-Driven Bit Counts (GH200)}\label{sec:adaptive}
 
