@@ -497,7 +497,10 @@ DF-MP2, whose truncated variants run in the middle, hottest part of each round, 
 unadjusted values without claiming that they bound the effect. All HPL-MxP results hold for the diagonally dominant test matrix only: the code's
 generator always sets the diagonal to the row's absolute sum, and we have no implementation of a generator allowed for
 official runs, so neither the 3-bit operating point nor its gain is a general property of HPL-MxP; with exact
-factorization of the diagonal tiles 3 bits still passes (0.43) and is 4.4 and 9.4\pct{} faster at 1000 and 650\W.
+factorization of the diagonal tiles 3 bits still passes (0.43) and is 4.4 and 9.4\pct{} faster at 1000 and 650\W. On
+two nodes (16 GPUs, $N=1453056$) communication does not dilute the gain: 3 bits is $6.0\pct$ faster at 1000\W{} (14.61 to
+15.48\,PFLOP/s) and $16.5\pct$ at 500\W, but its residual rises to 11.8 against a threshold of 16 (0.43--0.5 on one
+node), so at larger $N$ 3 bits nears its limit.
 
 \subsection{Quantum ESPRESSO: Tolerance-Driven Bit Counts (GH200)}\label{sec:adaptive}
 
@@ -808,7 +811,7 @@ least 16-bit floating point and allow diagonally dominant matrices for testing o
 numbers here are research results, not official scores. Scientific software has no such restriction; the criterion is
 whether physical results stay within the required accuracy.
 
-\textbf{Limitations.} (i)~Two platforms, one generation each, and single-node (8-GPU) runs on MI350X; other parts manage
+\textbf{Limitations.} (i)~Two platforms, one generation each, and at most two nodes (16 GPUs) on MI350X; other parts manage
 power and cool differently. (ii)~Safe bit counts depend on platform and problem size and must be validated (HPL 27 bits:
 passes on GH200 at three of four sizes, fails on MI350X at all). (iii)~HPL-MxP results hold for a diagonally dominant test
 matrix only. (iv)~Each scientific code was tested on one or two inputs; on MI350X DF-MP2 uses our own contraction of

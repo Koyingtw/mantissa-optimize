@@ -10,7 +10,7 @@ cd "$ROOT"
 source env.sh
 CAPS=${CAPS:-"1000 500"}
 VARIANTS=${VARIANTS:-"native 3"}
-N=${N:-1458560}; NB=${NB:-5504}; P=${P:-4}; Q=${Q:-4}
+N=${N:-1453056}; NB=${NB:-5504}; P=${P:-4}; Q=${Q:-4}  # N 須為 NB×P 與 NB×Q 的倍數
 REPEAT=${REPEAT:-2}
 START_TEMP=${START_TEMP:-63}
 COOL_MAX=${COOL_MAX:-120}

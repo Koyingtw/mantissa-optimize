@@ -1,0 +1,121 @@
+id=mxp2n_1102_0323 bench=mxp nodes=2 N=1458560 NB=5504 P=4 Q=4 caps=[1000 500] variants=[native 3] repeat=2
+=== RUN bench=mxp cap=1000 blk=0 pass=A0 variant=native t=1793589841.735595507 cool=30s hot=63
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+[2026-11-02T03:24:05.598] error: *** STEP 172.10 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:05 DUE to SIGNAL Killed ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=A0 variant=native t=1793589845.767313773 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=A0 variant=3 t=1793589846.277690467 cool=0s hot=63
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:09.869] error: *** STEP 172.13 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:09 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=A0 variant=3 t=1793589850.048435153 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=B0 variant=3 t=1793589850.558786678 cool=0s hot=63
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:14.493] error: *** STEP 172.16 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:14 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=B0 variant=3 t=1793589854.662508931 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=B0 variant=native t=1793589855.167367106 cool=0s hot=63
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:18.782] error: *** STEP 172.19 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:18 DUE to SIGNAL Killed ***
+[2026-11-02T03:24:18.782] error: *** STEP 172.19 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:18 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=B0 variant=native t=1793589858.948039997 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=A1 variant=native t=1793589859.455292420 cool=0s hot=62
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:23.233] error: *** STEP 172.22 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:23 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=A1 variant=native t=1793589863.402844490 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=A1 variant=3 t=1793589863.919876084 cool=0s hot=62
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:28.276] error: *** STEP 172.25 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:28 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=A1 variant=3 t=1793589868.443658853 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=B1 variant=3 t=1793589868.955263557 cool=0s hot=62
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:32.679] error: *** STEP 172.28 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:32 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=B1 variant=3 t=1793589872.883911085 rc=1
+=== RUN bench=mxp cap=1000 blk=0 pass=B1 variant=native t=1793589873.386618832 cool=0s hot=62
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+[2026-11-02T03:24:37.160] error: *** STEP 172.31 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:37 DUE to SIGNAL Killed ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+=== END bench=mxp cap=1000 blk=0 pass=B1 variant=native t=1793589877.337063588 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=A0 variant=native t=1793589879.277400423 cool=0s hot=61
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:43.260] error: *** STEP 172.35 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:43 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=A0 variant=native t=1793589883.436498684 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=A0 variant=3 t=1793589883.960680752 cool=0s hot=61
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+[2026-11-02T03:24:47.532] error: *** STEP 172.38 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:47 DUE to SIGNAL Killed ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=A0 variant=3 t=1793589887.716456239 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=B0 variant=3 t=1793589888.218391390 cool=0s hot=61
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:52.065] error: *** STEP 172.41 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:52 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=B0 variant=3 t=1793589892.235863197 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=B0 variant=native t=1793589892.754139804 cool=0s hot=61
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:24:56.983] error: *** STEP 172.44 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:24:56 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=B0 variant=native t=1793589897.158238653 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=A1 variant=native t=1793589897.676080384 cool=0s hot=60
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:25:01.399] error: *** STEP 172.47 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:25:01 DUE to SIGNAL Killed ***
+[2026-11-02T03:25:01.399] error: *** STEP 172.47 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:25:01 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=A1 variant=native t=1793589901.568524141 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=A1 variant=3 t=1793589902.085554872 cool=0s hot=60
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:25:06.083] error: *** STEP 172.50 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:25:06 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=A1 variant=3 t=1793589906.288657654 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=B1 variant=3 t=1793589906.795405985 cool=0s hot=60
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:25:10.432] error: *** STEP 172.53 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:25:10 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=B1 variant=3 t=1793589910.603204753 rc=1
+=== RUN bench=mxp cap=500 blk=0 pass=B1 variant=native t=1793589911.120249843 cool=0s hot=60
+require n % (nb*P) == 0 and n % (nb*Q) == 0
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:25:15.011] error: *** STEP 172.56 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:25:15 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n02: tasks 8-15: Exited with exit code 1
+srun: error: p01-r01-n01: tasks 0-7: Exited with exit code 1
+=== END bench=mxp cap=500 blk=0 pass=B1 variant=native t=1793589915.198442743 rc=1
+mxp2n done
+srun: forcing job termination
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+[2026-11-02T03:25:17.206] error: *** STEP 172.0 ON p01-r01-n01 CANCELLED AT 2026-11-02T03:25:17 DUE to SIGNAL Killed ***
+srun: error: p01-r01-n01: task 0: Killed
+srun: error: p01-r01-n02: task 1: Killed
