@@ -126,7 +126,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 20:05 UTC（台灣 11-04 04:05）</p>
+  <p class="meta">最後更新：2026-11-03 20:25 UTC（台灣 11-04 04:25）</p>
 </header>
 
 <section>
@@ -181,7 +181,8 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>最新發現</h2>
   <div class="finding" style="border-left-color:var(--wait)">
-    <h3>幫 cold-gemm 補跑：產生文字時，INT8「全變正數」沒有省到電</h3>
+    <h3>幫 cold-gemm 補跑：INT8「全變正數」只有在權重放對輸入端時才省電</h3>
+    <p><b>更新：</b>cold-gemm 懷疑我們的權重剛好放在矩陣運算單元「不敏感」的那個輸入。對調後（權重放 src0），全非負編碼在 batch 64／256 每 token 少用 3.1%／4.3% 的電（對照組只少 1.0%／0.4%），batch 256 還快 3.5%；batch 1／16 仍然沒差。所以「運算元放哪一個輸入」是關鍵。下表是對調前（權重在 src1）的結果。</p>
     <p>cold-gemm 發現大矩陣乘法裡把 INT8 權重變成全非負（7 位元 + 64）可以變快。它請我在「產生文字」的情境量同一個編碼（Llama 3.1 8B、1000 W），並加一個「一般 7 位元」的對照組。</p>
     <div class="tbl"><table>
       <thead><tr><th>每 token 耗電，相對標準 INT8</th><th class="r">batch 1</th><th class="r">batch 16</th><th class="r">batch 64</th><th class="r">batch 256</th></tr></thead>
@@ -337,6 +338,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 20:25</div><p>對調運算元後，INT8 全非負編碼在 batch 64／256 省 3～4% 的電；證實效果取決於權重放在哪個輸入。已回報 cold-gemm。</p></div>
     <div class="ev"><div class="when">11-03 20:05</div><p>幫 cold-gemm 補跑完：7 個模型在整數編碼下的精度，以及 INT8 在產生文字時的耗電（全非負編碼沒有額外省電）。</p></div>
     <div class="ev"><div class="when">11-03 18:05</div><p>真實 70B 資料的數值陷阱實驗完成（四捨五入把偏差縮到 1/5～1/10）。你決定合進 cold-gemm；交接文件寫好、已通知 cold-gemm。</p></div>
     <div class="ev"><div class="when">11-03 17:40</div><p>數值陷阱在 MI350X 上重現（與 GH200 幾乎相同）；四捨五入把偏差縮到 1/4～1/5。正在用 70B 的真實資料重跑。</p></div>
