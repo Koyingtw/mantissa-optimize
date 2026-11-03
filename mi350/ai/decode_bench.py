@@ -3,8 +3,9 @@
 A decode step of a dense LLM reads every linear weight once per generated token batch. This bench loads the decoder
 linear weights of a Hugging Face checkpoint (q/k/v/o/gate/up/down of every layer) onto one GPU and runs y = x W^T for
 all of them in layer order, with x of B tokens; one pass = one decode step of B sequences, without attention and the
-KV cache (which truncating weights does not change). One pass is captured as a HIP graph and replayed, so small batches
-measure the GPU, not Python launch overhead.
+KV cache (which truncating weights does not change). One pass is captured as HIP graphs (one per layer by default; --mode
+graph = one graph for the whole pass, eager = no graph) and replayed, so small batches measure the GPU, not Python
+launch overhead.
 
 Formats (one per measurement window):
   bf16:<k>   BF16 weights keeping k of 7 mantissa bits (round to nearest), BF16 activations, F.linear
@@ -52,17 +53,14 @@ def load_linears(model, dev):
 
 
 def build(ws, fmt, batch, dev):
-    """Return a zero-argument callable that runs one pass, plus the tensors it needs (kept alive)."""
+    """Return one zero-argument callable per weight (in layer order), plus the tensors they need (kept alive)."""
     kind, k = fmt.split(":")
     k = int(k)
     xs = {w.shape[1]: torch.randn(batch, w.shape[1], device=dev, dtype=torch.bfloat16) for w in ws}
     if kind == "bf16":
         wr = [reduce_bf16(w, k, "nearest") for w in ws]
 
-        def run():
-            for w in wr:
-                F.linear(xs[w.shape[1]], w)
-        return run, (wr, xs)
+        return [lambda w=w: F.linear(xs[w.shape[1]], w) for w in wr], (wr, xs)
     # fp8: per-channel weight scales, per-token activation scales computed on every call
     fmax = E4M3_KMAX[k]
     wq, sc = [], []
@@ -73,13 +71,41 @@ def build(ws, fmt, batch, dev):
     m = batch + (-batch) % 16  # _scaled_mm needs rows in multiples of 16
     xp = {K: F.pad(x, (0, 0, 0, m - batch)) for K, x in xs.items()}
 
-    def run():
-        for w, s in zip(wq, sc):
-            x = xp[w.shape[1]]
-            sa = x.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / E4M3_KMAX[3]
-            xq = (x.float() / sa).clamp(-448, 448).to(torch.float8_e4m3fn)
-            torch._scaled_mm(xq, w.t(), scale_a=sa, scale_b=s, out_dtype=torch.bfloat16)
-    return run, (wq, sc, xp)
+    def op(w, s):
+        x = xp[w.shape[1]]
+        sa = x.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / E4M3_KMAX[3]
+        xq = (x.float() / sa).clamp(-448, 448).to(torch.float8_e4m3fn)
+        torch._scaled_mm(xq, w.t(), scale_a=sa, scale_b=s, out_dtype=torch.bfloat16)
+    return [lambda w=w, s=s: op(w, s) for w, s in zip(wq, sc)], (wq, sc, xp)
+
+
+def executor(ops, mode, chunk=7):
+    """One pass over all ops: eager launches, one HIP graph for the whole pass (graph), or one graph per chunk of
+    ops, i.e. per layer (layergraph; the single large graph segfaulted on replay in job 384)."""
+    if mode == "eager":
+        def step():
+            for o in ops:
+                o()
+        return step, None
+    groups = [ops] if mode == "graph" else [ops[i:i + chunk] for i in range(0, len(ops), chunk)]
+    graphs = []
+    s = torch.cuda.Stream()
+    s.wait_stream(torch.cuda.current_stream())
+    with torch.cuda.stream(s):
+        for o in ops:  # warm the kernels outside the graph
+            o()
+    torch.cuda.current_stream().wait_stream(s)
+    for grp in groups:
+        g = torch.cuda.CUDAGraph()
+        with torch.cuda.graph(g):
+            for o in grp:
+                o()
+        graphs.append(g)
+
+    def step():
+        for g in graphs:
+            g.replay()
+    return step, graphs
 
 
 def main():
@@ -92,6 +118,7 @@ def main():
     ap.add_argument("--warmup", type=float, default=5)
     ap.add_argument("--seconds", type=float, default=15)
     ap.add_argument("--gap", type=float, default=10)
+    ap.add_argument("--mode", default="layergraph", choices=["eager", "graph", "layergraph"])
     ap.add_argument("--tag", default="run")
     a = ap.parse_args()
     torch.cuda.set_device(a.device)
@@ -107,15 +134,8 @@ def main():
                                    bf16_gbytes=gbytes, windows=len(sched), period=period)), flush=True)
     for i, (batch, fmt) in enumerate(sched):
         start = a.t0 + i * period
-        run, keep = build(ws, fmt, batch, dev)  # prepared during the previous window's gap
-        g = torch.cuda.CUDAGraph()
-        s = torch.cuda.Stream()
-        s.wait_stream(torch.cuda.current_stream())
-        with torch.cuda.stream(s):
-            run()  # warm the kernels outside the graph
-        torch.cuda.current_stream().wait_stream(s)
-        with torch.cuda.graph(g):
-            run()
+        ops, keep = build(ws, fmt, batch, dev)  # prepared during the previous window's gap
+        step, graphs = executor(ops, a.mode)
         torch.cuda.synchronize()
         now = time.time()
         if now > start:
@@ -124,20 +144,20 @@ def main():
             time.sleep(start - now)
         t_end_warm = time.time() + a.warmup
         while time.time() < t_end_warm:
-            g.replay()
+            step()
             torch.cuda.synchronize()
         n = 0
         t0 = time.time()
         while time.time() - t0 < a.seconds:
             for _ in range(10):
-                g.replay()
+                step()
             torch.cuda.synchronize()
             n += 10
         t1 = time.time()
-        print("RESULT", json.dumps(dict(tag=a.tag, bdf=bdf, window=i, fmt=fmt, batch=batch, passes=n,
+        print("RESULT", json.dumps(dict(tag=a.tag, bdf=bdf, window=i, fmt=fmt, batch=batch, mode=a.mode, passes=n,
                                         tokens_per_s=batch * n / (t1 - t0), pass_ms=1e3 * (t1 - t0) / n,
                                         t_begin=t0, t_end=t1)), flush=True)
-        del g, run, keep
+        del step, graphs, ops, keep
         torch.cuda.empty_cache()
     print("END", flush=True)
 
