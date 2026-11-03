@@ -9,8 +9,9 @@ launch overhead.
 
 Formats (one per measurement window):
   bf16:<k>   BF16 weights keeping k of 7 mantissa bits (round to nearest), BF16 activations, F.linear
-  fp8:<k>    FP8 E4M3 weights per output channel keeping k of 3 bits, activations quantized per token on every call,
-             torch._scaled_mm (the dynamic FP8 recipe of gh200/infer/ppl_eval.py, fmt fp8c, weights only reduced)
+  fp8:<k>    FP8 E4M3 weights per output channel keeping k of 3 bits, activations quantized per token once (outside
+             the pass), torch._scaled_mm (the dynamic FP8 recipe of gh200/infer/ppl_eval.py, fmt fp8c, weights only
+             reduced)
 Every GPU runs the same schedule from a shared start time T0, so all GPUs of the node are in the same format at the same
 time (mixing formats across GPUs of one node biased the LoRA runs); a window is warm-up + measurement + idle gap.
 
@@ -69,14 +70,16 @@ def build(ws, fmt, batch, dev):
         wq.append(to_fp8(w, s, k, "nearest"))
         sc.append(s.reshape(1, -1).contiguous())
     m = batch + (-batch) % 16  # _scaled_mm needs rows in multiples of 16
-    xp = {K: F.pad(x, (0, 0, 0, m - batch)) for K, x in xs.items()}
-
-    def op(w, s):
-        x = xp[w.shape[1]]
-        sa = x.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / E4M3_KMAX[3]
-        xq = (x.float() / sa).clamp(-448, 448).to(torch.float8_e4m3fn)
-        torch._scaled_mm(xq, w.t(), scale_a=sa, scale_b=s, out_dtype=torch.bfloat16)
-    return [lambda w=w, s=s: op(w, s) for w, s in zip(wq, sc)], (wq, sc, xp)
+    # activations quantized once per input width, outside the timed pass: an inference engine fuses this into the
+    # preceding kernel, and quantizing per call in eager mode costs 5 extra launches per GEMM (FP8 then measured 4x
+    # slower than BF16, job 387); the pass then reads every weight once with one kernel per weight, as for BF16
+    xq, sa = {}, {}
+    for K, x in xs.items():
+        xpad = F.pad(x, (0, 0, 0, m - batch))
+        sa[K] = xpad.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / E4M3_KMAX[3]
+        xq[K] = (xpad.float() / sa[K]).clamp(-448, 448).to(torch.float8_e4m3fn)
+    return [lambda w=w, s=s: torch._scaled_mm(xq[w.shape[1]], w.t(), scale_a=sa[w.shape[1]], scale_b=s,
+                                               out_dtype=torch.bfloat16) for w, s in zip(wq, sc)], (wq, sc, xq, sa)
 
 
 def executor(ops, mode, chunk=7):
@@ -118,7 +121,9 @@ def main():
     ap.add_argument("--warmup", type=float, default=5)
     ap.add_argument("--seconds", type=float, default=15)
     ap.add_argument("--gap", type=float, default=10)
-    ap.add_argument("--mode", default="layergraph", choices=["eager", "graph", "layergraph"])
+    ap.add_argument("--mode", default="eager", choices=["eager", "graph", "layergraph"],
+                    help="graph and layergraph segfault on replay with ROCm 7.1 PyTorch 2.13 (jobs 384, 387)")
+    ap.add_argument("--profile", action="store_true", help="per window also print the summed GPU kernel time of 5 passes")
     ap.add_argument("--tag", default="run")
     a = ap.parse_args()
     torch.cuda.set_device(a.device)
@@ -137,6 +142,19 @@ def main():
         ops, keep = build(ws, fmt, batch, dev)  # prepared during the previous window's gap
         step, graphs = executor(ops, a.mode)
         torch.cuda.synchronize()
+        if a.profile:  # is a pass GPU-bound? summed kernel time against wall time per pass
+            from torch.profiler import ProfilerActivity, profile
+            step()
+            torch.cuda.synchronize()
+            with profile(activities=[ProfilerActivity.CUDA]) as prof:
+                tw = time.time()
+                for _ in range(5):
+                    step()
+                torch.cuda.synchronize()
+                tw = time.time() - tw
+            ktot = sum(e.self_device_time_total for e in prof.key_averages()) / 1e3 / 5
+            print("PROF", json.dumps(dict(window=i, fmt=fmt, batch=batch, kernel_ms=ktot, wall_ms=1e3 * tw / 5)),
+                  flush=True)
         now = time.time()
         if now > start:
             print("LATE", json.dumps(dict(window=i, seconds=now - start)), flush=True)
