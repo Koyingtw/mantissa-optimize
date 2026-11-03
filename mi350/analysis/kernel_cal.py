@@ -48,6 +48,11 @@ def gemm_share():
 
 def main():
     share = gemm_share()
+    # review round 9: the GEMM's share of the native *dynamic energy*, measured at phase boundaries in the program
+    # (analysis/gp_energy.py), replaces the time share where available (GP: 0.97 against 0.90 in time)
+    ge = f"{RES}/gp_energy.csv"
+    if os.path.exists(ge):
+        share["GP"] = float(pd.read_csv(ge, index_col=0).loc["native", "w_E"])
     print("GEMM share of native run time:", {k: f"{v:.3f}" for k, v in share.items()})
     rows = []
     for app, (kp, _, bits) in APPS.items():

@@ -28,6 +28,7 @@
 #include <hipblas/hipblas.h>
 #include <rocblas/rocblas.h>
 #include <rocsolver/rocsolver.h>
+#include <amd_smi/amdsmi.h>
 #ifdef WITH_GEMMUL8
 #include "gemmul8.hpp"
 #endif
@@ -104,6 +105,18 @@ struct Ctx {
 
 static long g_dump_j = -1;
 static bool g_prof = false;      // GP_PROF=1: time every trailing update with HIP events
+// GP_ENERGY=1: synchronize around every trailing update and read the GPU's hardware energy counter (amdsmi) there, so
+// the energy and time of the truncated GEMM phases and of everything else are measured separately (review round 9)
+static bool g_energy = false;
+static amdsmi_processor_handle g_smi = nullptr;
+static double g_gemm_j = 0, g_gemm_s = 0;
+static double energy_j() {
+  uint64_t e = 0, ts = 0;
+  float res = 0;
+  if (amdsmi_get_energy_count(g_smi, &e, &res, &ts) != AMDSMI_STATUS_SUCCESS) { fprintf(stderr, "amdsmi energy failed\n"); exit(1); }
+  return (double)e * res * 1e-6;
+}
+static double wall_s() { return std::chrono::duration<double>(std::chrono::steady_clock::now().time_since_epoch()).count(); }
 static double g_gemm_ms = 0;     // summed trailing-update time since the last reset
 static std::string g_dump_file;  // set per factorization; empty = no dump
 
@@ -130,6 +143,12 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
     CR(rocblas_dtrsm(c.h, rocblas_side_right, rocblas_fill_lower, rocblas_operation_transpose,
                      rocblas_diagonal_non_unit, r, b, &one, D, n, A + (j + b) + j * n, n));
     copy_reduce<<<4096, 256>>>(A + (j + b) + j * n, n, c.Lt, r, b, add, mask);
+    double ej0 = 0, ts0 = 0;
+    if (g_energy) {
+      CK(hipDeviceSynchronize());
+      ej0 = energy_j();
+      ts0 = wall_s();
+    }
     hipEvent_t pe0 = nullptr, pe1 = nullptr;
     if (g_prof) {
       CK(hipEventCreate(&pe0));
@@ -156,6 +175,11 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
     } else {
       CR(rocblas_dgemm(c.h, rocblas_operation_none, rocblas_operation_transpose, r, r, b, &mone, c.Lt, r, c.Lt, r,
                        &one, A + (j + b) + (j + b) * n, n));
+    }
+    if (g_energy) {
+      CK(hipDeviceSynchronize());
+      g_gemm_j += energy_j() - ej0;
+      g_gemm_s += wall_s() - ts0;
     }
     if (g_prof) {
       CK(hipEventRecord(pe1));
@@ -207,6 +231,7 @@ int main(int argc, char** argv) {
   double nugget = 1e-4;
   std::string dump_prefix;
   g_prof = getenv("GP_PROF") && atoi(getenv("GP_PROF"));
+  g_energy = getenv("GP_ENERGY") && atoi(getenv("GP_ENERGY"));
   std::string variants = "native", ranges_s = "0.02 0.03 0.04 0.05 0.06 0.08", tag = "run";
   for (int i = 1; i < argc; ++i) {
     auto next = [&]() { if (i + 1 >= argc) { fprintf(stderr, "missing value for %s\n", argv[i]); exit(2); } return argv[++i]; };
@@ -230,6 +255,16 @@ int main(int argc, char** argv) {
   std::vector<double> ranges;
   { std::istringstream is(ranges_s); double r; while (is >> r) ranges.push_back(r); }
   CK(hipSetDevice(device));
+  if (g_energy) {
+    char busid[32];
+    CK(hipDeviceGetPCIBusId(busid, sizeof(busid), device));
+    unsigned dom, bus, dev, fn;
+    sscanf(busid, "%x:%x:%x.%x", &dom, &bus, &dev, &fn);
+    amdsmi_bdf_t bdf{};
+    bdf.domain_number = dom; bdf.bus_number = bus; bdf.device_number = dev; bdf.function_number = fn;
+    if (amdsmi_init(AMDSMI_INIT_AMD_GPUS) != AMDSMI_STATUS_SUCCESS ||
+        amdsmi_get_processor_handle_from_bdf(bdf, &g_smi) != AMDSMI_STATUS_SUCCESS) { fprintf(stderr, "amdsmi init failed\n"); return 1; }
+  }
   Ctx c;
   c.n = n;
   c.nb = nb;
@@ -355,6 +390,8 @@ int main(int argc, char** argv) {
     std::vector<double> lls;
     bool ok = true;
     g_gemm_ms = 0;
+    g_gemm_j = g_gemm_s = 0;
+    const double e_start = g_energy ? energy_j() : 0;
     const double t0 = now_unix();
     for (double rg : ranges) {
       covariance<<<8192, 256>>>(A, xy, n, std::sqrt(3.0) / rg, nugget);
@@ -376,6 +413,11 @@ int main(int argc, char** argv) {
     }
     printf("RESULT_GP tag=%s gpu=%d variant=%s pass=%c status=%s loglik=[%s] dll=[%s] wall=%.3fs t_begin=%.3f t_end=%.3f\n",
            tag.c_str(), device, v.c_str(), pas, ok ? "ok" : "notpd", ll.str().c_str(), dl.str().c_str(), t1 - t0, t0, t1);
+    if (g_energy) {
+      const double e_tot = energy_j() - e_start;
+      printf("ENERGY_GP gpu=%d variant=%s pass=%c gemm_j=%.3f gemm_s=%.4f total_j=%.3f wall=%.4f\n", device, v.c_str(), pas,
+             g_gemm_j, g_gemm_s, e_tot, t1 - t0);
+    }
     if (g_prof)
       printf("PROF_GP gpu=%d variant=%s gemm_s=%.3f wall=%.3f share=%.4f\n", device, v.c_str(), g_gemm_ms * 1e-3, t1 - t0,
              g_gemm_ms * 1e-3 / (t1 - t0));

@@ -46,6 +46,14 @@ def main():
             r = lock.loc[v]
             R = (r.power_w - P0) / (n.power_w - P0)
             sigma = r.gfxclk / n.gfxclk
+            # review round 9: for GP the whole-program ratios come from the in-program energy counter (gp_energy.py);
+            # the earlier sampler-based locked run (gplock1300) gave 0.96 / 0.93 with a 0.91-0.95 spread across GPUs
+            # that the in-program measurement (0.875-0.891) does not show
+            ge = f"{RES}/gp_energy.csv"
+            if app == "GP" and os.path.exists(ge):
+                e = pd.read_csv(ge, index_col=0)
+                R = float(e.loc[v, "R_whole"])
+                sigma = float(e.loc["native", "wall"] / e.loc[v, "wall"])
             for cap in sorted(sweep.cap.unique()):
                 pn = native_perf(curve, cap)
                 pred = sigma * native_perf(curve, P0 + (cap - P0) / R)

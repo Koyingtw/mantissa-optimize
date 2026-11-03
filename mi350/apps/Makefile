@@ -11,7 +11,7 @@ all: $(BIN)/dfmp2 $(BIN)/gp_chol $(BIN)/g8_repro
 $(BIN)/dfmp2: dfmp2.hip
 	$(HIPCC) -o $@ $< $(G8) -lhipblas
 $(BIN)/gp_chol: gp_chol.hip
-	$(HIPCC) -o $@ $< -lrocblas -lrocsolver -lhipblas
+	$(HIPCC) -o $@ $< -lrocblas -lrocsolver -lhipblas -lamd_smi
 $(BIN)/g8_repro: g8_repro.hip
 	$(HIPCC) -o $@ $< $(G8) -lhipblas
 

@@ -498,7 +498,7 @@ of Section~VII-C.
 \begin{table}[t]
 \caption{Kernel-level calibration. $R$, $\sigma$: GEMM on the applications' operands (DF-MP2: call $i=150$, $2002\times
 302302\times5477$, TN; GP: trailing update $L_{21}L_{21}^T$ at steps 16384 and 40960 for ranges 0.02 and 0.08, range of
-the four given); $R_\mathrm{app}=1-f(1-R)$; error: mean / largest absolute error of the predicted speedup over 4 caps
+the four given); $R_\mathrm{app}=1-f(1-R)$ with $f$ the GEMM's share of the native dynamic energy (GP: 0.97, from the energy counter read at phase boundaries, job 426; DF-MP2: its time share, 0.96); $R_\mathrm{whole}$ for GP from the same in-program measurement (an earlier sampler-based run gave 0.956 and 0.933); error: mean / largest absolute error of the predicted speedup over 4 caps
 (percentage points). Accumulating into the trailing matrix ($\beta=1$, as in the program) gives $R=0.931$ and 0.893 on
 the panel at step 16384, range 0.02 (0.928 and 0.887 with $\beta=0$). At DF-MP2's shape, synthetic uniform operands give
 $R=0.915$ and 0.848; DF-MP2's calls 50 and 225 give 0.908/0.840 and 0.909/0.843.}\label{tab:kcal}
@@ -511,8 +511,8 @@ App & Bits & $R$ & $\sigma$ & $f$ & $R_\mathrm{app}$ & $R_\mathrm{whole}$ & Kern
 \midrule
 DF-MP2 & 32 & 0.910 & 1.015 & 0.96 & 0.914 & 0.921 & 1.1 / 1.6 & 0.8 / 1.6 \\
 DF-MP2 & 20 & 0.844 & 1.026 & 0.96 & 0.850 & 0.862 & 1.7 / 3.6 & 1.2 / 2.4 \\
-GP & 36 & 0.925--0.928 & 1.011 & 0.90 & 0.934 & 0.956 & 0.4 / 1.1 & 1.6 / 2.3 \\
-GP & 28 & 0.884--0.887 & 1.018 & 0.90 & 0.897 & 0.933 & 0.8 / 1.0 & 3.0 / 3.6 \\
+GP & 36 & 0.925--0.928 & 1.011 & 0.97 & 0.929 & 0.931 & 0.8 / 1.5 & 0.7 / 1.4 \\
+GP & 28 & 0.884--0.887 & 1.018 & 0.97 & 0.889 & 0.885 & 1.2 / 2.1 & 1.5 / 2.6 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -524,7 +524,7 @@ $\max|\Delta C|/(|A||B|)$ for 12 moduli and, on the same data, for truncation to
 time relative to the emulated call. Span: share of elements of $\mathrm{op}(A)$ / $\mathrm{op}(B)$ more than $2^{-32}$
 below their row (column) maximum. Synthetic: $16384^2\times2048$, half of $k$ scaled by $2^{-40}$ in $A$ and (hidden) in
 the other half of $B$. Valinomycin: exchange--correlation operands of the DF-B3LYP/def2-TZVP SCF rebuilt with PySCF on
-the CPU. $^{a}$10 moduli only. $^{b}$Largest of the four panels. $^{c}$From 31189 entries whose bound $|A||B|$ lies below
+the CPU. The componentwise column is what the selector's spot check tests (paper Section~VII-C). $^{a}$10 moduli only. $^{b}$Largest of the four panels. $^{c}$From 31189 entries whose bound $|A||B|$ lies below
 $10^{-290}$; truncation leaves no other entry above $10^{-9}$ in any case. Entries with componentwise error above
 $10^{-6}$ for 12 moduli: 19\pct{} (XC, $k=4096$), 62\pct{} (XC, $k=76800$), none (MO), 95\pct{} (GP panel).}\label{tab:spot}
 \centering\footnotesize\setlength{\tabcolsep}{4pt}
@@ -570,14 +570,22 @@ $10^{-6}$ & $\ee{2.4}{-13}$ & 40 bits & $\mathbf{\ee{1.2}{-6}}$ & 2.6 (2.9) & 4.
 
 \section{Tables Moved from the Paper}\label{sec:moved}
 
-Tables~\ref{tab:fill2}, \ref{tab:hplthr} and~\ref{tab:span} support paper Sections~IV, VII-A and VII-B; they were in the
-paper's body in earlier versions.
+Tables~\ref{tab:fill2}, \ref{tab:hplthr} and~\ref{tab:span} support paper Sections~IV, VII-A and VII-B, and
+Fig.~\ref{fig:mi350apps} paper Section~VI; they were in the paper's body in earlier versions.
+
+\begin{figure}[t]
+\centering\includegraphics[width=\columnwidth]{figs/mi350_apps.pdf}
+\caption{MI350X: speedup of the in-program truncated variant over the unmodified program under each package cap, both
+nodes pooled. Bars: 95\pct{} $t$ intervals over analysis units, node-wide runs (HPL, HPL-MxP) or rounds of 8 GPUs
+(GP, DF-MP2), with $n$ in the legend; per-node and temperature-adjusted values in paper Table~III.}\label{fig:mi350apps}
+\end{figure}
 
 \begin{table}[t]
 \caption{Share of the zero-fill benefit (\%) retained by a fill with ones / a fixed pattern. GH200: module power at
 1000\W{} or throughput at 500\W; MI350X: energy per operation at locked clocks (GEMMs, range over three clocks),
 throughput at 600\W{} or power at 1000\W{} (other kernels). Last column: zero-fill benefit on MI350X (E/op: energy per
-operation). G: GH200, M: MI350X. FP8 GEMM was not measured on GH200.}\label{tab:fill2}
+operation). G: GH200, M: MI350X. FP8 GEMM was not measured on GH200. The fixed pattern is the 64-bit word
+\texttt{0xA5C3F0965A3C0F69} masked to the dropped bits (FP32 and BF16: its low bits).}\label{tab:fill2}
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
 \begin{tabular}{@{}lccr@{}}
 \toprule
