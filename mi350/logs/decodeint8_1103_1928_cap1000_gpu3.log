@@ -1,0 +1,226 @@
+START {"tag": "cap=1000,gpu=3", "model": "meta-llama/Llama-3.1-8B", "device": 3, "bdf": "0000:19:00.0", "linears": 224, "bf16_gbytes": 13.958643712, "windows": 48, "period": 30.0}
+USDT:2026-11-03 19:28:47 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:28:47 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 0, "fmt": "bf16:7", "batch": 1, "kernel_ms": 4.338681400000001, "wall_ms": 5.301570892333984}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 0, "fmt": "bf16:7", "batch": 1, "mode": "eager", "passes": 3450, "tokens_per_s": 229.9655679758337, "pass_ms": 4.348477073337721, "t_begin": 1793734209.0017054, "t_end": 1793734224.0039513}
+USDT:2026-11-03 19:30:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:30:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 1, "fmt": "fp8:3", "batch": 1, "kernel_ms": 3.6937446, "wall_ms": 5.562686920166016}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 1, "fmt": "fp8:3", "batch": 1, "mode": "eager", "passes": 4000, "tokens_per_s": 266.5621002096625, "pass_ms": 3.7514710426330566, "t_begin": 1793734239.0014544, "t_end": 1793734254.0073385}
+CHECK {"enc": "w8a8", "batch": 1, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:30:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:30:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 2, "fmt": "int8:w8a8", "batch": 1, "kernel_ms": 3.488278800000002, "wall_ms": 4.893398284912109}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 2, "fmt": "int8:w8a8", "batch": 1, "mode": "eager", "passes": 4280, "tokens_per_s": 285.1663388661886, "pass_ms": 3.506725246661177, "t_begin": 1793734269.0023654, "t_end": 1793734284.0111494}
+CHECK {"enc": "w7", "batch": 1, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:31:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:31:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 3, "fmt": "int8:w7", "batch": 1, "kernel_ms": 3.4994652000000115, "wall_ms": 4.844236373901367}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 3, "fmt": "int8:w7", "batch": 1, "mode": "eager", "passes": 4350, "tokens_per_s": 289.4049573505251, "pass_ms": 3.4553658277138894, "t_begin": 1793734299.0021207, "t_end": 1793734314.032962}
+CHECK {"enc": "w7off", "batch": 1, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:31:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:31:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 4, "fmt": "int8:w7off", "batch": 1, "kernel_ms": 3.508838399999994, "wall_ms": 4.986429214477539}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 4, "fmt": "int8:w7off", "batch": 1, "mode": "eager", "passes": 4290, "tokens_per_s": 285.7156901235551, "pass_ms": 3.4999827960710146, "t_begin": 1793734329.0023177, "t_end": 1793734344.0172439}
+CHECK {"enc": "w7offc", "batch": 1, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:32:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:32:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 5, "fmt": "int8:w7offc", "batch": 1, "kernel_ms": 4.688614599999993, "wall_ms": 8.070850372314453}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 5, "fmt": "int8:w7offc", "batch": 1, "mode": "eager", "passes": 3090, "tokens_per_s": 205.4269848212047, "pass_ms": 4.8679096413275955, "t_begin": 1793734359.0011437, "t_end": 1793734374.0429845}
+CHECK {"enc": "w7offc", "batch": 1, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:32:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:32:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 6, "fmt": "int8:w7offc", "batch": 1, "kernel_ms": 4.643598999999995, "wall_ms": 8.027219772338867}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 6, "fmt": "int8:w7offc", "batch": 1, "mode": "eager", "passes": 3180, "tokens_per_s": 211.97995922092682, "pass_ms": 4.717427079782546, "t_begin": 1793734389.0051095, "t_end": 1793734404.0065277}
+CHECK {"enc": "w7off", "batch": 1, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:33:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:33:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 7, "fmt": "int8:w7off", "batch": 1, "kernel_ms": 3.4977058000000114, "wall_ms": 5.0197601318359375}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 7, "fmt": "int8:w7off", "batch": 1, "mode": "eager", "passes": 4240, "tokens_per_s": 282.0450693261218, "pass_ms": 3.5455326426703975, "t_begin": 1793734419.0029662, "t_end": 1793734434.0360246}
+CHECK {"enc": "w7", "batch": 1, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:33:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:33:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 8, "fmt": "int8:w7", "batch": 1, "kernel_ms": 3.512804199999998, "wall_ms": 4.888105392456055}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 8, "fmt": "int8:w7", "batch": 1, "mode": "eager", "passes": 4260, "tokens_per_s": 283.46749280231285, "pass_ms": 3.527741365029778, "t_begin": 1793734449.0006158, "t_end": 1793734464.028794}
+CHECK {"enc": "w8a8", "batch": 1, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:34:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:34:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 9, "fmt": "int8:w8a8", "batch": 1, "kernel_ms": 3.4715054000000007, "wall_ms": 5.012989044189453}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 9, "fmt": "int8:w8a8", "batch": 1, "mode": "eager", "passes": 4280, "tokens_per_s": 285.14707884462484, "pass_ms": 3.506962105492565, "t_begin": 1793734479.0031543, "t_end": 1793734494.012952}
+USDT:2026-11-03 19:34:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:34:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 10, "fmt": "fp8:3", "batch": 1, "kernel_ms": 3.8469282, "wall_ms": 5.521059036254883}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 10, "fmt": "fp8:3", "batch": 1, "mode": "eager", "passes": 3640, "tokens_per_s": 242.03540053511924, "pass_ms": 4.131627017325098, "t_begin": 1793734509.0020964, "t_end": 1793734524.0412188}
+USDT:2026-11-03 19:35:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:35:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 11, "fmt": "bf16:7", "batch": 1, "kernel_ms": 4.411053200000011, "wall_ms": 5.622100830078125}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 11, "fmt": "bf16:7", "batch": 1, "mode": "eager", "passes": 3410, "tokens_per_s": 227.1140655604012, "pass_ms": 4.40307383663144, "t_begin": 1793734539.0037584, "t_end": 1793734554.0182402}
+USDT:2026-11-03 19:35:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:35:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 12, "fmt": "bf16:7", "batch": 16, "kernel_ms": 4.470812999999999, "wall_ms": 5.763483047485352}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 12, "fmt": "bf16:7", "batch": 16, "mode": "eager", "passes": 3350, "tokens_per_s": 3565.3914907946355, "pass_ms": 4.48758573674444, "t_begin": 1793734569.0035527, "t_end": 1793734584.036965}
+USDT:2026-11-03 19:36:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:36:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 13, "fmt": "fp8:3", "batch": 16, "kernel_ms": 3.751717599999998, "wall_ms": 5.38182258605957}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 13, "fmt": "fp8:3", "batch": 16, "mode": "eager", "passes": 3850, "tokens_per_s": 4104.443473423524, "pass_ms": 3.898214241126915, "t_begin": 1793734599.0038238, "t_end": 1793734614.0119486}
+CHECK {"enc": "w8a8", "batch": 16, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:36:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:36:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 14, "fmt": "int8:w8a8", "batch": 16, "kernel_ms": 3.5340186000000022, "wall_ms": 4.86297607421875}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 14, "fmt": "int8:w8a8", "batch": 16, "mode": "eager", "passes": 4180, "tokens_per_s": 4448.124858714204, "pass_ms": 3.597021331057024, "t_begin": 1793734629.0027425, "t_end": 1793734644.0382917}
+CHECK {"enc": "w7", "batch": 16, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:37:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:37:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 15, "fmt": "int8:w7", "batch": 16, "kernel_ms": 3.5326618000000125, "wall_ms": 4.92396354675293}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 15, "fmt": "int8:w7", "batch": 16, "mode": "eager", "passes": 4260, "tokens_per_s": 4536.095825683691, "pass_ms": 3.5272623451662737, "t_begin": 1793734659.0004926, "t_end": 1793734674.0266302}
+CHECK {"enc": "w7off", "batch": 16, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:37:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:37:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 16, "fmt": "int8:w7off", "batch": 16, "kernel_ms": 3.562262999999997, "wall_ms": 5.012655258178711}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 16, "fmt": "int8:w7off", "batch": 16, "mode": "eager", "passes": 4220, "tokens_per_s": 4492.602207112855, "pass_ms": 3.5614103502571863, "t_begin": 1793734689.0028126, "t_end": 1793734704.0319643}
+CHECK {"enc": "w7offc", "batch": 16, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:38:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:38:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 17, "fmt": "int8:w7offc", "batch": 16, "kernel_ms": 4.691817199999995, "wall_ms": 8.18948745727539}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 17, "fmt": "int8:w7offc", "batch": 16, "mode": "eager", "passes": 3090, "tokens_per_s": 3294.6050131647476, "pass_ms": 4.856424347096662, "t_begin": 1793734719.0032332, "t_end": 1793734734.0095844}
+CHECK {"enc": "w7offc", "batch": 16, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:38:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:38:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 18, "fmt": "int8:w7offc", "batch": 16, "kernel_ms": 4.751454399999998, "wall_ms": 7.9669952392578125}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 18, "fmt": "int8:w7offc", "batch": 16, "mode": "eager", "passes": 3050, "tokens_per_s": 3252.497081871091, "pass_ms": 4.9192972652247695, "t_begin": 1793734749.0012372, "t_end": 1793734764.0050938}
+CHECK {"enc": "w7off", "batch": 16, "rows": 24, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:39:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:39:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 19, "fmt": "int8:w7off", "batch": 16, "kernel_ms": 3.5308121999999984, "wall_ms": 5.07349967956543}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 19, "fmt": "int8:w7off", "batch": 16, "mode": "eager", "passes": 4250, "tokens_per_s": 4527.869121820541, "pass_ms": 3.5336710424984203, "t_begin": 1793734779.0027056, "t_end": 1793734794.0208075}
+CHECK {"enc": "w7", "batch": 16, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:39:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:39:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 20, "fmt": "int8:w7", "batch": 16, "kernel_ms": 3.5431238000000023, "wall_ms": 4.835653305053711}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 20, "fmt": "int8:w7", "batch": 16, "mode": "eager", "passes": 4320, "tokens_per_s": 4600.2850818749475, "pass_ms": 3.478045320069348, "t_begin": 1793734809.0017974, "t_end": 1793734824.0269532}
+CHECK {"enc": "w8a8", "batch": 16, "rows": 24, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:40:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:40:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 21, "fmt": "int8:w8a8", "batch": 16, "kernel_ms": 3.5867389999999966, "wall_ms": 4.902744293212891}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 21, "fmt": "int8:w8a8", "batch": 16, "mode": "eager", "passes": 4260, "tokens_per_s": 4533.263623349927, "pass_ms": 3.5294660380188847, "t_begin": 1793734839.0037298, "t_end": 1793734854.0392551}
+USDT:2026-11-03 19:40:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:40:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 22, "fmt": "fp8:3", "batch": 16, "kernel_ms": 3.8629868000000016, "wall_ms": 5.525493621826172}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 22, "fmt": "fp8:3", "batch": 16, "mode": "eager", "passes": 3700, "tokens_per_s": 3941.609042250906, "pass_ms": 4.059255960825327, "t_begin": 1793734869.0012732, "t_end": 1793734884.0205202}
+USDT:2026-11-03 19:41:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:41:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 23, "fmt": "bf16:7", "batch": 16, "kernel_ms": 4.551832399999993, "wall_ms": 5.2341461181640625}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 23, "fmt": "bf16:7", "batch": 16, "mode": "eager", "passes": 3350, "tokens_per_s": 3564.109411451011, "pass_ms": 4.48920000844927, "t_begin": 1793734899.0030088, "t_end": 1793734914.0418289}
+USDT:2026-11-03 19:41:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:41:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 24, "fmt": "bf16:7", "batch": 64, "kernel_ms": 4.934252800000005, "wall_ms": 5.083465576171875}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 24, "fmt": "bf16:7", "batch": 64, "mode": "eager", "passes": 3040, "tokens_per_s": 12942.992353798269, "pass_ms": 4.944760705295362, "t_begin": 1793734929.0013878, "t_end": 1793734944.0334604}
+USDT:2026-11-03 19:42:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:42:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 25, "fmt": "fp8:3", "batch": 64, "kernel_ms": 3.610359600000008, "wall_ms": 5.453968048095703}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 25, "fmt": "fp8:3", "batch": 64, "mode": "eager", "passes": 3710, "tokens_per_s": 15823.075233760806, "pass_ms": 4.044725759974066, "t_begin": 1793734959.0024254, "t_end": 1793734974.008358}
+CHECK {"enc": "w8a8", "batch": 64, "rows": 64, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:42:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:42:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 26, "fmt": "int8:w8a8", "batch": 64, "kernel_ms": 3.831569799999996, "wall_ms": 5.107545852661133}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 26, "fmt": "int8:w8a8", "batch": 64, "mode": "eager", "passes": 4090, "tokens_per_s": 17448.766328384365, "pass_ms": 3.6678810865779963, "t_begin": 1793734989.0035236, "t_end": 1793735004.0051572}
+CHECK {"enc": "w7", "batch": 64, "rows": 64, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:43:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:43:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 27, "fmt": "int8:w7", "batch": 64, "kernel_ms": 3.8316721999999963, "wall_ms": 4.85844612121582}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 27, "fmt": "int8:w7", "batch": 64, "mode": "eager", "passes": 4100, "tokens_per_s": 17491.043343162255, "pass_ms": 3.659015574106356, "t_begin": 1793735019.0018783, "t_end": 1793735034.003842}
+CHECK {"enc": "w7off", "batch": 64, "rows": 64, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:43:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:43:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 28, "fmt": "int8:w7off", "batch": 64, "kernel_ms": 3.840647600000011, "wall_ms": 5.011940002441406}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 28, "fmt": "int8:w7off", "batch": 64, "mode": "eager", "passes": 4120, "tokens_per_s": 17552.953216866186, "pass_ms": 3.6461100994961932, "t_begin": 1793735049.0009758, "t_end": 1793735064.0229495}
+CHECK {"enc": "w7offc", "batch": 64, "rows": 64, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:44:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:44:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 29, "fmt": "int8:w7offc", "batch": 64, "kernel_ms": 5.048320600000017, "wall_ms": 8.068656921386719}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 29, "fmt": "int8:w7offc", "batch": 64, "mode": "eager", "passes": 3040, "tokens_per_s": 12959.080345957118, "pass_ms": 4.938622054300811, "t_begin": 1793735079.001229, "t_end": 1793735094.01464}
+CHECK {"enc": "w7offc", "batch": 64, "rows": 64, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:44:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:44:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 30, "fmt": "int8:w7offc", "batch": 64, "kernel_ms": 5.06453100000001, "wall_ms": 7.704591751098633}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 30, "fmt": "int8:w7offc", "batch": 64, "mode": "eager", "passes": 3030, "tokens_per_s": 12925.172117325545, "pass_ms": 4.951578162290869, "t_begin": 1793735109.0037682, "t_end": 1793735124.00705}
+CHECK {"enc": "w7off", "batch": 64, "rows": 64, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:45:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:45:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 31, "fmt": "int8:w7off", "batch": 64, "kernel_ms": 3.8411754000000053, "wall_ms": 5.069541931152344}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 31, "fmt": "int8:w7off", "batch": 64, "mode": "eager", "passes": 4090, "tokens_per_s": 17421.262836169448, "pass_ms": 3.6736716851045568, "t_begin": 1793735139.0035467, "t_end": 1793735154.028864}
+CHECK {"enc": "w7", "batch": 64, "rows": 64, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:45:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:45:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 32, "fmt": "int8:w7", "batch": 64, "kernel_ms": 3.8737675999999994, "wall_ms": 4.918670654296875}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 32, "fmt": "int8:w7", "batch": 64, "mode": "eager", "passes": 4090, "tokens_per_s": 17427.54519530214, "pass_ms": 3.672347383569097, "t_begin": 1793735169.0039387, "t_end": 1793735184.0238395}
+CHECK {"enc": "w8a8", "batch": 64, "rows": 64, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:46:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:46:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 33, "fmt": "int8:w8a8", "batch": 64, "kernel_ms": 3.886272599999999, "wall_ms": 4.903745651245117}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 33, "fmt": "int8:w8a8", "batch": 64, "mode": "eager", "passes": 4050, "tokens_per_s": 17277.188232258002, "pass_ms": 3.7043064611929433, "t_begin": 1793735199.000905, "t_end": 1793735214.0033462}
+USDT:2026-11-03 19:46:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:46:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 34, "fmt": "fp8:3", "batch": 64, "kernel_ms": 3.643611600000008, "wall_ms": 5.553960800170898}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 34, "fmt": "fp8:3", "batch": 64, "mode": "eager", "passes": 3800, "tokens_per_s": 16208.305541818076, "pass_ms": 3.948592888681512, "t_begin": 1793735229.0027192, "t_end": 1793735244.0073721}
+USDT:2026-11-03 19:47:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:47:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 35, "fmt": "bf16:7", "batch": 64, "kernel_ms": 5.04767540000001, "wall_ms": 5.34052848815918}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 35, "fmt": "bf16:7", "batch": 64, "mode": "eager", "passes": 2980, "tokens_per_s": 12684.324477748043, "pass_ms": 5.045597825274371, "t_begin": 1793735259.0041494, "t_end": 1793735274.040031}
+USDT:2026-11-03 19:47:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:47:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 36, "fmt": "bf16:7", "batch": 256, "kernel_ms": 9.377055399999998, "wall_ms": 9.400653839111328}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 36, "fmt": "bf16:7", "batch": 256, "mode": "eager", "passes": 1620, "tokens_per_s": 27532.648271794096, "pass_ms": 9.29805216965852, "t_begin": 1793735289.0066054, "t_end": 1793735304.06945}
+USDT:2026-11-03 19:48:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:48:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 37, "fmt": "fp8:3", "batch": 256, "kernel_ms": 5.130451799999995, "wall_ms": 5.556774139404297}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 37, "fmt": "fp8:3", "batch": 256, "mode": "eager", "passes": 2930, "tokens_per_s": 49913.75525216242, "pass_ms": 5.128846721844462, "t_begin": 1793735319.001259, "t_end": 1793735334.02878}
+CHECK {"enc": "w8a8", "batch": 256, "rows": 256, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:48:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:48:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 38, "fmt": "int8:w8a8", "batch": 256, "kernel_ms": 5.162308799999999, "wall_ms": 5.312061309814453}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 38, "fmt": "int8:w8a8", "batch": 256, "mode": "eager", "passes": 2910, "tokens_per_s": 49609.4178252017, "pass_ms": 5.1603105060013705, "t_begin": 1793735349.0025098, "t_end": 1793735364.0190134}
+CHECK {"enc": "w7", "batch": 256, "rows": 256, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:49:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:49:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 39, "fmt": "int8:w7", "batch": 256, "kernel_ms": 5.098547800000003, "wall_ms": 5.261087417602539}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 39, "fmt": "int8:w7", "batch": 256, "mode": "eager", "passes": 2910, "tokens_per_s": 49511.444034071275, "pass_ms": 5.17052178530349, "t_begin": 1793735379.0019822, "t_end": 1793735394.0482006}
+CHECK {"enc": "w7off", "batch": 256, "rows": 256, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:49:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:49:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 40, "fmt": "int8:w7off", "batch": 256, "kernel_ms": 5.225677399999998, "wall_ms": 5.431509017944336}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 40, "fmt": "int8:w7off", "batch": 256, "mode": "eager", "passes": 2890, "tokens_per_s": 49257.67254719999, "pass_ms": 5.19715988924759, "t_begin": 1793735409.0029464, "t_end": 1793735424.0227385}
+CHECK {"enc": "w7offc", "batch": 256, "rows": 256, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:50:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:50:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 41, "fmt": "int8:w7offc", "batch": 256, "kernel_ms": 7.084777000000015, "wall_ms": 7.715654373168945}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 41, "fmt": "int8:w7offc", "batch": 256, "mode": "eager", "passes": 2090, "tokens_per_s": 35625.698272019334, "pass_ms": 7.185824065687553, "t_begin": 1793735439.0064564, "t_end": 1793735454.0248287}
+CHECK {"enc": "w7offc", "batch": 256, "rows": 256, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:50:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:50:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 42, "fmt": "int8:w7offc", "batch": 256, "kernel_ms": 7.099281400000017, "wall_ms": 7.631254196166992}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 42, "fmt": "int8:w7offc", "batch": 256, "mode": "eager", "passes": 2090, "tokens_per_s": 35587.71039862932, "pass_ms": 7.193494527533864, "t_begin": 1793735469.0015664, "t_end": 1793735484.03597}
+CHECK {"enc": "w7off", "batch": 256, "rows": 256, "vs": "w7 int32", "weights": 224, "mismatched": 0, "exact": true}
+USDT:2026-11-03 19:51:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:51:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 43, "fmt": "int8:w7off", "batch": 256, "kernel_ms": 5.272781999999992, "wall_ms": 5.431604385375977}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 43, "fmt": "int8:w7off", "batch": 256, "mode": "eager", "passes": 2860, "tokens_per_s": 48764.83058323272, "pass_ms": 5.249685007375437, "t_begin": 1793735499.0002737, "t_end": 1793735514.0143728}
+CHECK {"enc": "w7", "batch": 256, "rows": 256, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:51:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:51:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 44, "fmt": "int8:w7", "batch": 256, "kernel_ms": 5.263829599999999, "wall_ms": 5.395841598510742}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 44, "fmt": "int8:w7", "batch": 256, "mode": "eager", "passes": 2840, "tokens_per_s": 48335.12339249164, "pass_ms": 5.296355569866342, "t_begin": 1793735529.0050864, "t_end": 1793735544.0467362}
+CHECK {"enc": "w8a8", "batch": 256, "rows": 256, "vs": "float64", "exact": true}
+USDT:2026-11-03 19:52:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:52:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 45, "fmt": "int8:w8a8", "batch": 256, "kernel_ms": 5.223029400000006, "wall_ms": 5.376625061035156}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 45, "fmt": "int8:w8a8", "batch": 256, "mode": "eager", "passes": 2870, "tokens_per_s": 48876.0411047755, "pass_ms": 5.237740091330498, "t_begin": 1793735559.0020838, "t_end": 1793735574.0343978}
+USDT:2026-11-03 19:52:54 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:52:54 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 46, "fmt": "fp8:3", "batch": 256, "kernel_ms": 5.141565, "wall_ms": 5.396556854248047}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 46, "fmt": "fp8:3", "batch": 256, "mode": "eager", "passes": 2920, "tokens_per_s": 49735.50563589018, "pass_ms": 5.147228257296836, "t_begin": 1793735589.0011263, "t_end": 1793735604.0310328}
+USDT:2026-11-03 19:53:24 153601:153601 SyncActivityProfilerHandler.cpp:52] profiler_start
+USDT:2026-11-03 19:53:24 153601:153601 SyncActivityProfilerHandler.cpp:59] profiler_stop
+PROF {"window": 47, "fmt": "bf16:7", "batch": 256, "kernel_ms": 9.156214000000023, "wall_ms": 9.191083908081055}
+RESULT {"tag": "cap=1000,gpu=3", "bdf": "0000:19:00.0", "window": 47, "fmt": "bf16:7", "batch": 256, "mode": "eager", "passes": 1610, "tokens_per_s": 27447.937680038718, "pass_ms": 9.326748077913841, "t_begin": 1793735619.0013392, "t_end": 1793735634.0174036}
+END

@@ -4,7 +4,7 @@ Every window of every GPU is joined with the power log by BDF (hardware energy a
 Within a cap and batch each format runs twice (ABBA); the reduced formats are compared with the native format of the
 same family (bf16:7 for BF16, fp8:3 for FP8) on the same GPU, averaging the two windows of each format, then over GPUs
 (mean and 95% t interval). Energy per token = window energy / tokens of that window.
-usage: decode_summary.py <run id>   (logs in ../logs) → results/ai_decode.csv, prints changes vs native
+usage: decode_summary.py <run id> [out.csv]   (logs in ../logs; default results/ai_decode.csv), prints changes vs native
 """
 import glob
 import json
@@ -57,7 +57,7 @@ def main():
                 row[f"{name}_pct"], row[f"{name}_lo"], row[f"{name}_hi"] = 100 * r.mean(), 100 * lo, 100 * hi
             out.append(row)
     s = pd.DataFrame(out)
-    s.to_csv(os.path.join(HERE, "..", "results", "ai_decode.csv"), index=False)
+    s.to_csv(sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "results", "ai_decode.csv"), index=False)
     pd.set_option("display.width", 220)
     cols = ["cap", "batch", "fmt", "tokens_per_s", "power_w", "gfxclk", "ppt_frac", "speed_pct", "power_pct", "energy_pct",
             "energy_lo", "energy_hi"]
