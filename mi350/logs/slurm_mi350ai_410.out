@@ -1,0 +1,95 @@
+job=410 host=p01-r01-n01 script=ai_attn_dump.sh dir=/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350 start=Tue Nov  3 05:51:09 PM UTC 2026
+DUMP {"model": "meta-llama/Llama-2-70b-hf", "layer": 0, "seq": 2048, "sample": 0, "loss": 1.6314688920974731, "q": [2048, 64, 128], "k": [2048, 8, 128], "do": [2048, 64, 128], "file": "/home/cust_nthu/koying/sw/fp8attn-dumps/Llama-2-70b-hf_L00_s0.pt"}
+DUMP {"model": "meta-llama/Llama-2-70b-hf", "layer": 20, "seq": 2048, "sample": 0, "loss": 1.6314688920974731, "q": [2048, 64, 128], "k": [2048, 8, 128], "do": [2048, 64, 128], "file": "/home/cust_nthu/koying/sw/fp8attn-dumps/Llama-2-70b-hf_L20_s0.pt"}
+DUMP {"model": "meta-llama/Llama-2-70b-hf", "layer": 40, "seq": 2048, "sample": 0, "loss": 1.6314688920974731, "q": [2048, 64, 128], "k": [2048, 8, 128], "do": [2048, 64, 128], "file": "/home/cust_nthu/koying/sw/fp8attn-dumps/Llama-2-70b-hf_L40_s0.pt"}
+DUMP {"model": "meta-llama/Llama-2-70b-hf", "layer": 79, "seq": 2048, "sample": 0, "loss": 1.6314688920974731, "q": [2048, 64, 128], "k": [2048, 8, 128], "do": [2048, 64, 128], "file": "/home/cust_nthu/koying/sw/fp8attn-dumps/Llama-2-70b-hf_L79_s0.pt"}
+dump rc=0
+ROUND=trunc device=AMD Radeon Graphics
+| input | round | bits | backward | resid | bias | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|---|
+| randn | trunc | 3 | stale | 3.71e-02 | -4.46e-03 | 6.438e-02 | 6.337e-02 | 4.790e-02 |
+| randn | trunc | 3 | matched | 2.78e-07 | -1.41e-07 | 6.144e-02 | 6.010e-02 | 4.790e-02 |
+| randn | trunc | 2 | stale | 7.37e-02 | -4.80e-02 | 2.168e-01 | 2.163e-01 | 1.439e-01 |
+| randn | trunc | 2 | matched | 2.74e-07 | -1.40e-07 | 2.122e-01 | 2.120e-01 | 1.439e-01 |
+| randn | trunc | 1 | stale | 1.59e-01 | -1.28e-01 | 4.697e-01 | 4.681e-01 | 3.179e-01 |
+| randn | trunc | 1 | matched | 2.69e-07 | -1.41e-07 | 4.639e-01 | 4.636e-01 | 3.179e-01 |
+| randn | trunc | 0 | stale | 2.96e-01 | -2.56e-01 | 7.256e-01 | 7.242e-01 | 5.286e-01 |
+| randn | trunc | 0 | matched | 2.87e-07 | -1.70e-07 | 7.203e-01 | 7.202e-01 | 5.286e-01 |
+| Llama-2-70b-hf_L00_s0 | trunc | 3 | stale | 2.59e-02 | -1.69e-03 | 4.570e-02 | 5.396e-02 | 3.644e-02 |
+| Llama-2-70b-hf_L00_s0 | trunc | 3 | matched | 2.71e-07 | -1.47e-07 | 4.181e-02 | 5.200e-02 | 3.644e-02 |
+| Llama-2-70b-hf_L00_s0 | trunc | 2 | stale | 5.59e-02 | -4.56e-02 | 2.178e-01 | 2.680e-01 | 1.049e-01 |
+| Llama-2-70b-hf_L00_s0 | trunc | 2 | matched | 2.78e-07 | -1.60e-07 | 2.118e-01 | 2.653e-01 | 1.049e-01 |
+| Llama-2-70b-hf_L00_s0 | trunc | 1 | stale | 1.35e-01 | -1.26e-01 | 5.081e-01 | 6.023e-01 | 2.353e-01 |
+| Llama-2-70b-hf_L00_s0 | trunc | 1 | matched | 2.78e-07 | -1.83e-07 | 4.988e-01 | 5.992e-01 | 2.353e-01 |
+| Llama-2-70b-hf_L00_s0 | trunc | 0 | stale | 2.78e-01 | -2.64e-01 | 7.612e-01 | 8.411e-01 | 4.024e-01 |
+| Llama-2-70b-hf_L00_s0 | trunc | 0 | matched | 2.89e-07 | -2.18e-07 | 7.478e-01 | 8.364e-01 | 4.024e-01 |
+| Llama-2-70b-hf_L20_s0 | trunc | 3 | stale | 2.50e-02 | +5.93e-04 | 7.766e-02 | 5.489e-02 | 3.880e-02 |
+| Llama-2-70b-hf_L20_s0 | trunc | 3 | matched | 1.73e-07 | -2.65e-08 | 7.243e-02 | 5.413e-02 | 3.880e-02 |
+| Llama-2-70b-hf_L20_s0 | trunc | 2 | stale | 6.16e-02 | -4.55e-02 | 2.839e-01 | 2.068e-01 | 1.352e-01 |
+| Llama-2-70b-hf_L20_s0 | trunc | 2 | matched | 1.65e-07 | -2.90e-08 | 2.573e-01 | 2.198e-01 | 1.352e-01 |
+| Llama-2-70b-hf_L20_s0 | trunc | 1 | stale | 1.46e-01 | -1.26e-01 | 6.743e-01 | 5.127e-01 | 3.664e-01 |
+| Llama-2-70b-hf_L20_s0 | trunc | 1 | matched | 1.56e-07 | -3.45e-08 | 6.198e-01 | 5.195e-01 | 3.664e-01 |
+| Llama-2-70b-hf_L20_s0 | trunc | 0 | stale | 2.74e-01 | -2.54e-01 | 9.530e-01 | 7.965e-01 | 7.264e-01 |
+| Llama-2-70b-hf_L20_s0 | trunc | 0 | matched | 1.46e-07 | -6.92e-08 | 8.447e-01 | 8.047e-01 | 7.264e-01 |
+| Llama-2-70b-hf_L40_s0 | trunc | 3 | stale | 2.73e-02 | +2.73e-03 | 1.110e-01 | 1.086e-01 | 4.762e-02 |
+| Llama-2-70b-hf_L40_s0 | trunc | 3 | matched | 1.52e-07 | -3.49e-08 | 9.737e-02 | 1.109e-01 | 4.762e-02 |
+| Llama-2-70b-hf_L40_s0 | trunc | 2 | stale | 6.42e-02 | -4.26e-02 | 3.004e-01 | 2.411e-01 | 1.573e-01 |
+| Llama-2-70b-hf_L40_s0 | trunc | 2 | matched | 1.52e-07 | -4.18e-08 | 2.535e-01 | 2.371e-01 | 1.573e-01 |
+| Llama-2-70b-hf_L40_s0 | trunc | 1 | stale | 1.51e-01 | -1.23e-01 | 6.466e-01 | 4.941e-01 | 3.934e-01 |
+| Llama-2-70b-hf_L40_s0 | trunc | 1 | matched | 1.47e-07 | -5.60e-08 | 5.335e-01 | 5.197e-01 | 3.934e-01 |
+| Llama-2-70b-hf_L40_s0 | trunc | 0 | stale | 2.91e-01 | -2.56e-01 | 1.087e+00 | 8.130e-01 | 8.115e-01 |
+| Llama-2-70b-hf_L40_s0 | trunc | 0 | matched | 1.62e-07 | -1.03e-07 | 8.273e-01 | 7.957e-01 | 8.115e-01 |
+| Llama-2-70b-hf_L79_s0 | trunc | 3 | stale | 3.00e-02 | +2.47e-03 | 7.625e-02 | 7.972e-02 | 5.339e-02 |
+| Llama-2-70b-hf_L79_s0 | trunc | 3 | matched | 1.64e-07 | -2.63e-08 | 5.833e-02 | 7.362e-02 | 5.339e-02 |
+| Llama-2-70b-hf_L79_s0 | trunc | 2 | stale | 6.75e-02 | -4.50e-02 | 2.601e-01 | 2.120e-01 | 1.550e-01 |
+| Llama-2-70b-hf_L79_s0 | trunc | 2 | matched | 1.55e-07 | -3.50e-08 | 2.234e-01 | 2.136e-01 | 1.550e-01 |
+| Llama-2-70b-hf_L79_s0 | trunc | 1 | stale | 1.55e-01 | -1.25e-01 | 6.155e-01 | 4.707e-01 | 4.180e-01 |
+| Llama-2-70b-hf_L79_s0 | trunc | 1 | matched | 1.54e-07 | -5.34e-08 | 5.344e-01 | 4.788e-01 | 4.180e-01 |
+| Llama-2-70b-hf_L79_s0 | trunc | 0 | stale | 2.95e-01 | -2.58e-01 | 1.002e+00 | 7.934e-01 | 7.897e-01 |
+| Llama-2-70b-hf_L79_s0 | trunc | 0 | matched | 1.54e-07 | -8.61e-08 | 8.327e-01 | 7.927e-01 | 7.897e-01 |
+rc=0
+ROUND=nearest device=AMD Radeon Graphics
+| input | round | bits | backward | resid | bias | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|---|
+| randn | nearest | 3 | stale | 3.71e-02 | -4.46e-03 | 6.438e-02 | 6.337e-02 | 4.790e-02 |
+| randn | nearest | 3 | matched | 2.78e-07 | -1.41e-07 | 6.144e-02 | 6.010e-02 | 4.790e-02 |
+| randn | nearest | 2 | stale | 7.42e-02 | -1.35e-02 | 1.551e-01 | 1.538e-01 | 1.133e-01 |
+| randn | nearest | 2 | matched | 2.75e-07 | -1.35e-07 | 1.504e-01 | 1.490e-01 | 1.133e-01 |
+| randn | nearest | 1 | stale | 1.16e-01 | -2.68e-02 | 2.556e-01 | 2.508e-01 | 1.837e-01 |
+| randn | nearest | 1 | matched | 2.76e-07 | -1.37e-07 | 2.471e-01 | 2.442e-01 | 1.837e-01 |
+| randn | nearest | 0 | stale | 2.00e-01 | -5.66e-02 | 4.422e-01 | 4.317e-01 | 3.167e-01 |
+| randn | nearest | 0 | matched | 2.77e-07 | -1.37e-07 | 4.244e-01 | 4.157e-01 | 3.167e-01 |
+| Llama-2-70b-hf_L00_s0 | nearest | 3 | stale | 2.59e-02 | -1.69e-03 | 4.570e-02 | 5.396e-02 | 3.644e-02 |
+| Llama-2-70b-hf_L00_s0 | nearest | 3 | matched | 2.71e-07 | -1.47e-07 | 4.181e-02 | 5.200e-02 | 3.644e-02 |
+| Llama-2-70b-hf_L00_s0 | nearest | 2 | stale | 4.67e-02 | -9.57e-03 | 1.181e-01 | 1.429e-01 | 8.028e-02 |
+| Llama-2-70b-hf_L00_s0 | nearest | 2 | matched | 2.75e-07 | -1.68e-07 | 1.111e-01 | 1.409e-01 | 8.028e-02 |
+| Llama-2-70b-hf_L00_s0 | nearest | 1 | stale | 7.40e-02 | -2.81e-02 | 2.424e-01 | 2.374e-01 | 1.350e-01 |
+| Llama-2-70b-hf_L00_s0 | nearest | 1 | matched | 2.72e-07 | -1.59e-07 | 2.314e-01 | 2.344e-01 | 1.350e-01 |
+| Llama-2-70b-hf_L00_s0 | nearest | 0 | stale | 1.47e-01 | -5.95e-02 | 5.043e-01 | 4.735e-01 | 2.730e-01 |
+| Llama-2-70b-hf_L00_s0 | nearest | 0 | matched | 2.81e-07 | -1.66e-07 | 4.755e-01 | 4.638e-01 | 2.730e-01 |
+| Llama-2-70b-hf_L20_s0 | nearest | 3 | stale | 2.50e-02 | +5.93e-04 | 7.766e-02 | 5.489e-02 | 3.880e-02 |
+| Llama-2-70b-hf_L20_s0 | nearest | 3 | matched | 1.73e-07 | -2.65e-08 | 7.243e-02 | 5.413e-02 | 3.880e-02 |
+| Llama-2-70b-hf_L20_s0 | nearest | 2 | stale | 5.76e-02 | -8.09e-03 | 2.037e-01 | 1.675e-01 | 6.905e-02 |
+| Llama-2-70b-hf_L20_s0 | nearest | 2 | matched | 1.69e-07 | -2.97e-08 | 1.892e-01 | 1.691e-01 | 6.905e-02 |
+| Llama-2-70b-hf_L20_s0 | nearest | 1 | stale | 9.39e-02 | -2.33e-02 | 3.537e-01 | 2.936e-01 | 1.424e-01 |
+| Llama-2-70b-hf_L20_s0 | nearest | 1 | matched | 1.68e-07 | -3.10e-08 | 3.247e-01 | 2.966e-01 | 1.424e-01 |
+| Llama-2-70b-hf_L20_s0 | nearest | 0 | stale | 1.53e-01 | -3.73e-02 | 1.005e+00 | 6.778e-01 | 4.145e-01 |
+| Llama-2-70b-hf_L20_s0 | nearest | 0 | matched | 1.48e-07 | -4.47e-08 | 9.461e-01 | 6.926e-01 | 4.145e-01 |
+| Llama-2-70b-hf_L40_s0 | nearest | 3 | stale | 2.73e-02 | +2.73e-03 | 1.110e-01 | 1.086e-01 | 4.762e-02 |
+| Llama-2-70b-hf_L40_s0 | nearest | 3 | matched | 1.52e-07 | -3.49e-08 | 9.737e-02 | 1.109e-01 | 4.762e-02 |
+| Llama-2-70b-hf_L40_s0 | nearest | 2 | stale | 6.43e-02 | -7.32e-03 | 2.752e-01 | 2.587e-01 | 1.159e-01 |
+| Llama-2-70b-hf_L40_s0 | nearest | 2 | matched | 1.52e-07 | -4.34e-08 | 2.407e-01 | 2.643e-01 | 1.159e-01 |
+| Llama-2-70b-hf_L40_s0 | nearest | 1 | stale | 1.03e-01 | -2.57e-02 | 4.426e-01 | 3.773e-01 | 1.802e-01 |
+| Llama-2-70b-hf_L40_s0 | nearest | 1 | matched | 1.50e-07 | -3.76e-08 | 3.688e-01 | 3.765e-01 | 1.802e-01 |
+| Llama-2-70b-hf_L40_s0 | nearest | 0 | stale | 1.89e-01 | -3.58e-02 | 9.598e-01 | 6.974e-01 | 5.634e-01 |
+| Llama-2-70b-hf_L40_s0 | nearest | 0 | matched | 1.53e-07 | -7.33e-08 | 7.788e-01 | 6.741e-01 | 5.634e-01 |
+| Llama-2-70b-hf_L79_s0 | nearest | 3 | stale | 3.00e-02 | +2.47e-03 | 7.625e-02 | 7.972e-02 | 5.339e-02 |
+| Llama-2-70b-hf_L79_s0 | nearest | 3 | matched | 1.64e-07 | -2.63e-08 | 5.833e-02 | 7.362e-02 | 5.339e-02 |
+| Llama-2-70b-hf_L79_s0 | nearest | 2 | stale | 7.06e-02 | -4.70e-03 | 1.999e-01 | 2.200e-01 | 9.547e-02 |
+| Llama-2-70b-hf_L79_s0 | nearest | 2 | matched | 1.63e-07 | -3.01e-08 | 1.623e-01 | 2.041e-01 | 9.547e-02 |
+| Llama-2-70b-hf_L79_s0 | nearest | 1 | stale | 1.11e-01 | -1.72e-02 | 3.031e-01 | 2.523e-01 | 1.647e-01 |
+| Llama-2-70b-hf_L79_s0 | nearest | 1 | matched | 1.63e-07 | -2.44e-08 | 2.503e-01 | 2.491e-01 | 1.647e-01 |
+| Llama-2-70b-hf_L79_s0 | nearest | 0 | stale | 2.00e-01 | -4.16e-02 | 6.717e-01 | 5.521e-01 | 3.398e-01 |
+| Llama-2-70b-hf_L79_s0 | nearest | 0 | matched | 1.56e-07 | -4.47e-08 | 5.505e-01 | 5.707e-01 | 3.398e-01 |
+rc=0
+rc=0 end=Tue Nov  3 05:51:57 PM UTC 2026
