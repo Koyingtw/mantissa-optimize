@@ -91,6 +91,17 @@ def build(ws, fmt, batch, dev):
                                                out_dtype=torch.bfloat16) for w, s in zip(wq, sc)], (wq, sc, xq, sa)
 
 
+WFIRST = False  # --int8-wfirst: weights as the first torch operand (hipBLASLt src0), Y^T = Wq Xq^T
+
+
+def imm(x, w):
+    """Integer product of the token rows x [m, K] and a weight w [N, K]: Y = x w^T as _int_mm(x, w^T) (default), or
+    Y^T = _int_mm(w, x^T) with --int8-wfirst. torch is row-major, so hipBLASLt sees the transposed problem and its B
+    argument, which lands on the MFMA src0 input, is the first torch operand: X by default, the weights with
+    --int8-wfirst (the cold-gemm session's layout, where w7off gains +5-8% at large M)."""
+    return torch._int_mm(w, x.t()) if WFIRST else torch._int_mm(x, w.t())
+
+
 def build_int8(ws, enc, batch, xs, dev):
     """INT8 GEMMs with int32 accumulation (torch._int_mm -> hipBLASLt I8II), for the cold-gemm session:
       w8a8    weights per output channel symmetric 8-bit, round(W/s) in [-127, 127]
@@ -104,8 +115,11 @@ def build_int8(ws, enc, batch, xs, dev):
     by repeating the real rows; decode reads the same weights, so the padding costs compute, not memory traffic.
     CHECK lines, before any measurement: for w7off / w7offc the corrected int32 result must equal w7 bit for bit for
     every weight; for w8a8 / w7 the first weight against the exact float64 product."""
-    m = max(batch, 17)
-    m += (-m) % 8
+    if WFIRST:  # the weight is the M > 16 side; pad the tokens to a multiple of 8 (24 for batch < 8, as in job 417)
+        m = 24 if batch < 8 else batch + (-batch) % 8
+    else:
+        m = max(batch, 17)
+        m += (-m) % 8
     bits, off = (8, 0) if enc == "w8a8" else (7, 64 if enc.startswith("w7off") else 0)
     qmax = 2 ** (bits - 1) - 1
     wq, w7 = [], []
@@ -120,11 +134,12 @@ def build_int8(ws, enc, batch, xs, dev):
         xp = pad_rows(x, m).float()
         sa = xp.abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / 127
         xq[K] = (xp / sa).round().clamp(-127, 127).to(torch.int8)
-        rs[K] = (off * xq[K].to(torch.int32).sum(dim=1, keepdim=True)).contiguous()  # [m, 1], broadcast over j
+        r = off * xq[K].to(torch.int32).sum(dim=1, keepdim=True)  # [m, 1]: per token, broadcast over the channels j
+        rs[K] = (r.t() if WFIRST else r).contiguous()
     if off:
-        bad = sum(int(not torch.equal(torch._int_mm(xq[a.shape[1]], a.t()) - rs[a.shape[1]],
-                                      torch._int_mm(xq[b.shape[1]], b.t()))) for a, b in zip(wq, w7))
-        print("CHECK", json.dumps(dict(enc=enc, batch=batch, rows=m, vs="w7 int32", weights=len(wq),
+        bad = sum(int(not torch.equal(imm(xq[a.shape[1]], a) - rs[a.shape[1]], imm(xq[b.shape[1]], b)))
+                  for a, b in zip(wq, w7))
+        print("CHECK", json.dumps(dict(enc=enc, batch=batch, rows=m, vs="w7 int32", wfirst=WFIRST, weights=len(wq),
                                        mismatched=bad, exact=bad == 0)), flush=True)
         if bad:
             raise SystemExit(f"{enc}: corrected result differs from w7 for {bad} weights")
@@ -132,15 +147,15 @@ def build_int8(ws, enc, batch, xs, dev):
     else:
         w0 = wq[0]
         ref = xq[w0.shape[1]].double() @ w0.double().t()
-        print("CHECK", json.dumps(dict(enc=enc, batch=batch, rows=m, vs="float64",
-                                       exact=bool((torch._int_mm(xq[w0.shape[1]], w0.t()).double() == ref).all()))),
-              flush=True)
+        y0 = imm(xq[w0.shape[1]], w0).double()
+        print("CHECK", json.dumps(dict(enc=enc, batch=batch, rows=m, vs="float64", wfirst=WFIRST,
+                                       exact=bool(((y0.t() if WFIRST else y0) == ref).all()))), flush=True)
     if enc == "w7offc":
         def op(w):
-            y = torch._int_mm(xq[w.shape[1]], w.t())
+            y = imm(xq[w.shape[1]], w)
             y.sub_(rs[w.shape[1]])
         return [lambda w=w: op(w) for w in wq], (wq, xq, rs)
-    return [lambda w=w: torch._int_mm(xq[w.shape[1]], w.t()) for w in wq], (wq, xq, rs)
+    return [lambda w=w: imm(xq[w.shape[1]], w) for w in wq], (wq, xq, rs)
 
 
 def executor(ops, mode, chunk=7):
@@ -185,8 +200,11 @@ def main():
     ap.add_argument("--mode", default="eager", choices=["eager", "graph", "layergraph"],
                     help="graph and layergraph segfault on replay with ROCm 7.1 PyTorch 2.13 (jobs 384, 387)")
     ap.add_argument("--profile", action="store_true", help="per window also print the summed GPU kernel time of 5 passes")
+    ap.add_argument("--int8-wfirst", action="store_true", help="INT8: weights as the first _int_mm operand (src0)")
     ap.add_argument("--tag", default="run")
     a = ap.parse_args()
+    global WFIRST
+    WFIRST = a.int8_wfirst
     torch.cuda.set_device(a.device)
     dev = torch.device("cuda", a.device)
     pr = torch.cuda.get_device_properties(a.device)
@@ -213,9 +231,10 @@ def main():
                     step()
                 torch.cuda.synchronize()
                 tw = time.time() - tw
-            ktot = sum(e.self_device_time_total for e in prof.key_averages()) / 1e3 / 5
-            print("PROF", json.dumps(dict(window=i, fmt=fmt, batch=batch, kernel_ms=ktot, wall_ms=1e3 * tw / 5)),
-                  flush=True)
+            ka = [e for e in prof.key_averages() if e.self_device_time_total > 0]
+            ktot = sum(e.self_device_time_total for e in ka) / 1e3 / 5
+            print("PROF", json.dumps(dict(window=i, fmt=fmt, batch=batch, kernel_ms=ktot, wall_ms=1e3 * tw / 5,
+                                          kernels=sorted(e.key for e in ka))), flush=True)
         now = time.time()
         if now > start:
             print("LATE", json.dumps(dict(window=i, seconds=now - start)), flush=True)
