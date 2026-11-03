@@ -98,7 +98,7 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在省電受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 07:35（台灣時間 15:35）</p>
+  <p class="meta">最後更新：2026-11-03 08:05（台灣時間 16:05）</p>
 </header>
 
 <section>
@@ -126,12 +126,12 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
     <div class="item"><span class="pill wait">排隊中</span><div>
       <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法微基準）</div>
       <div class="why">用 Llama-3-8B 的實際矩陣大小，在 1000 W 和 700 W 下，比較 BF16／FP8 各種位元數的速度。決定「推論只截權重」值不值得。第一次送出時每次量測前都等滿 2 分鐘降溫，算下來要 7 小時以上，已取消並精簡成約 2.5 小時的版本（job 312）。n02 前面還有第一篇的 5 個 job，預計 3～5 小時後開始。</div></div></div>
-    <div class="item"><span class="pill wait">排隊中</span><div>
+    <div class="item"><span class="pill run">進行中</span><div>
       <div class="what">W3　模型會不會變笨（WikiText-2 perplexity）</div>
-      <div class="why">七個模型（Llama 2 7B、Llama 3.1 8B、Llama 2 70B、Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）在 19 種格式下的困惑度，和 GH200 的表逐列對照。只量精度、跟耗電無關，所以哪個節點先空就跑哪個（job 329）。</div></div></div>
+      <div class="why">七個模型（Llama 2 7B、Llama 3.1 8B、Llama 2 70B、Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）在 19 種格式下的困惑度，和 GH200 的表逐列對照。只量精度、跟耗電無關，所以哪個節點先空就跑哪個（job 329，已在 n01 開跑）。第一個數字：Llama 2 7B 原生 BF16 在 MI350X 是 5.4732，GH200 是 5.4736，兩個平台對得上。</div></div></div>
     <div class="item"><span class="pill wait">排隊中</span><div>
       <div class="what">W5　微調：截權重讓每步變快，能不能抵掉多要的資料？</div>
-      <div class="why">照 MLPerf 的 LoRA 設定縮小成單卡版，用 Llama 2 7B 和 MLPerf 同一份 GovReport 資料；8 張卡同時跑「原生／截斷 × 4 個隨機種子」。Llama 已下載，先排了一個約 10 分鐘的短測試確認程式能跑（job 328），通過後再跑完整訓練。</div></div></div>
+      <div class="why">照 MLPerf 的 LoRA 設定縮小成單卡版，用 Llama 2 7B 和 MLPerf 同一份 GovReport 資料；8 張卡同時跑「原生／截斷 × 4 個隨機種子」。短測試（每張卡 20 步）已跑完：程式正常。<b>意外發現</b>：截成 3 位的訓練每步 6.1 秒、原生 7.1 秒，快了約 16%，比矩陣乘法微基準大很多；但兩組都沒頂到 1000 W、時脈也差不多，原因還不清楚。先排除「剛好分到比較快的 GPU」：對調 GPU 重量中（job 341）。</div></div></div>
     <div class="item"><span class="pill todo">待做</span><div>
       <div class="what">W4　實際推論的速度與耗電</div>
       <div class="why">量生成文字時每秒幾個 token、每個 token 耗多少電，並和「直接換成更小的格式」（FP8、MXFP6、MXFP4，MI350X 硬體支援）比較。要誠實回答：能換格式時，截位元是不是就沒必要？</div></div></div>
@@ -177,6 +177,7 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 08:05</div><p>LoRA 短測試在 n01 的空檔跑完：截斷組每步快約 16%，正在確認是不是 GPU 差異造成。perplexity 開跑，Llama 2 7B 的基準值和 GH200 一致。</p></div>
     <div class="ev"><div class="when">11-03 07:35</div><p>三個 Llama 模型全部下載完成（含 70B）。三個實驗都在等節點空出來。</p></div>
     <div class="ev"><div class="when">11-03 07:20</div><p>你登入 Hugging Face 後，三個 Llama 模型開始下載（7B 已完成）。perplexity 加入 Llama 改成七個模型；排了 LoRA 短測試。</p></div>
     <div class="ev"><div class="when">11-03 06:55</div><p>W1 降溫等待太久，取消後改成精簡版重排；perplexity 第一次因讀不到測試資料失敗，修好重排。兩個都排在第一篇的實驗後面。</p></div>
