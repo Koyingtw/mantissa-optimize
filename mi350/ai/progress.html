@@ -98,7 +98,7 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在省電受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 06:30（台灣時間 14:30）</p>
+  <p class="meta">最後更新：2026-11-03 06:55（台灣時間 14:55）</p>
 </header>
 
 <section>
@@ -123,12 +123,12 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
 <section>
   <h2>實驗進度</h2>
   <div class="list">
-    <div class="item"><span class="pill run">進行中</span><div>
+    <div class="item"><span class="pill wait">排隊中</span><div>
       <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法微基準）</div>
-      <div class="why">用 Llama-3-8B 的實際矩陣大小，在 1000 W 和 700 W 下，比較 BF16／FP8 各種位元數的速度。決定「推論只截權重」值不值得。8 張 GPU 同時量，約 1.5 小時（job 293，n02）。</div></div></div>
+      <div class="why">用 Llama-3-8B 的實際矩陣大小，在 1000 W 和 700 W 下，比較 BF16／FP8 各種位元數的速度。決定「推論只截權重」值不值得。第一次送出時每次量測前都等滿 2 分鐘降溫，算下來要 7 小時以上，已取消並精簡成約 2.5 小時的版本（job 312）。n02 前面還有第一篇的 5 個 job，預計 3～5 小時後開始。</div></div></div>
     <div class="item"><span class="pill wait">排隊中</span><div>
       <div class="what">W3　模型會不會變笨（WikiText-2 perplexity）</div>
-      <div class="why">四個開放模型（Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）在 19 種格式下的困惑度，和 GH200 的表對照。排在 W1 後面（job 294）。</div></div></div>
+      <div class="why">四個開放模型（Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）在 19 種格式下的困惑度，和 GH200 的表對照。第一次跑時程式在離線模式找不到測試資料而失敗，已修好重新排隊（job 313）。</div></div></div>
     <div class="item"><span class="pill wait">等你登入</span><div>
       <div class="what">W5　微調：截權重讓每步變快，能不能抵掉多要的資料？</div>
       <div class="why">照 MLPerf 的 LoRA 設定縮小成單卡版，用 Llama 2 7B 和 MLPerf 同一份 GovReport 資料；8 張卡同時跑「原生／截斷 × 4 個隨機種子」。程式已寫好，等 Llama 的下載權限。</div></div></div>
@@ -181,6 +181,7 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 06:55</div><p>W1 降溫等待太久，取消後改成精簡版重排；perplexity 第一次因讀不到測試資料失敗，修好重排。兩個都排在第一篇的實驗後面。</p></div>
     <div class="ev"><div class="when">11-03 06:30</div><p>建立這份進度報告。下載好四個開放模型、WikiText-2 和 MLPerf 的 GovReport 微調資料；寫好微調程式；perplexity 實驗排進佇列。</p></div>
     <div class="ev"><div class="when">11-03 05:45</div><p>MI350X 上裝好 PyTorch（ROCm）。單卡試跑：BF16 留 3 位，兩邊都截快 6.9%，只截權重快 3.2%。送出 W1。</p></div>
     <div class="ev"><div class="when">11-03 05:30</div><p>開新分支 ai-fp8-paper 專門寫這篇。決定推論與微調兩條線並行。</p></div>

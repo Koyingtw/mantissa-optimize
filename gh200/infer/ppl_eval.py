@@ -239,6 +239,8 @@ def main():
     ap.add_argument("--max-windows", type=int, default=0)
     ap.add_argument("--layer-stats", action="store_true")
     ap.add_argument("--data-cache", default="/nfs/home/koying/models/datasets")
+    ap.add_argument("--wikitext-parquet", default="",
+                    help="local test-*.parquet of wikitext-2-raw-v1 (offline nodes where datasets cannot resolve the Hub)")
     ap.add_argument("--tag", default="")
     a = ap.parse_args()
 
@@ -248,7 +250,10 @@ def main():
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     tok = AutoTokenizer.from_pretrained(a.model)
-    ds = load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="test", cache_dir=a.data_cache)
+    if a.wikitext_parquet:
+        ds = load_dataset("parquet", data_files=a.wikitext_parquet, split="train", cache_dir=a.data_cache)
+    else:
+        ds = load_dataset("Salesforce/wikitext", "wikitext-2-raw-v1", split="test", cache_dir=a.data_cache)
     ids = tok("\n\n".join(ds["text"]), return_tensors="pt").input_ids
     base = AutoModelForCausalLM.from_pretrained(a.model, torch_dtype=torch.bfloat16, device_map="cpu")
     base.eval()

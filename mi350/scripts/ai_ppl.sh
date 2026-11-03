@@ -10,6 +10,8 @@ export HF_HOME=${HF_HOME:-$HOME/koying/sw/hf} HF_HUB_OFFLINE=1 HF_DATASETS_OFFLI
 PY=$HOME/koying/sw/ai-venv/bin/python
 MODELS=${MODELS:-"Qwen/Qwen2.5-7B mistralai/Mistral-7B-v0.1 facebook/opt-6.7b Qwen/Qwen3-8B"}
 SPECS=${SPECS:-"bf16 bf16:5 bf16:4 bf16:3 bf16:2 bf16:1 bf16:0 bf16:3:trunc bf16:0:trunc fp8 fp8c fp8:2 fp8:1 fp8:0 fp8c:2 fp8c:1 fp8c:0 fp8:2;wa=w fp8:0;wa=w"}
+# datasets 在離線模式下找不到 hub 快取裡的 WikiText，直接讀 parquet
+WT=$(ls "$HF_HOME"/hub/datasets--Salesforce--wikitext/snapshots/*/wikitext-2-raw-v1/test-00000-of-00001.parquet | head -1)
 ID=${TAG:-ppl}_$(date +%m%d_%H%M)
 exec >"logs/$ID.out" 2>&1
 read -ra specs <<<"$SPECS"
@@ -18,7 +20,7 @@ echo "id=$ID host=$(hostname) models=[${models[*]}] specs=[${specs[*]}]"
 pids=()
 for g in "${!models[@]}"; do
   HIP_VISIBLE_DEVICES=$g "$PY" ../gh200/infer/ppl_eval.py --model "${models[g]}" --tag "id=$ID,gpu=$g" \
-    --data-cache "$HF_HOME/datasets" --specs "${specs[@]}" ${EXTRA:-} > "logs/${ID}_gpu$g.log" 2>&1 &
+    --data-cache "$HF_HOME/datasets" --wikitext-parquet "$WT" --specs "${specs[@]}" ${EXTRA:-} > "logs/${ID}_gpu$g.log" 2>&1 &
   pids+=($!)
 done
 rc=0
