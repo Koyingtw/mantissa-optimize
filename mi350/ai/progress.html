@@ -1,0 +1,190 @@
+<title>AI 尾數論文進度</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* 版面：單欄研究筆記，左側細時間軸；摘要在前、細節在後 */
+:root {
+  --bg: #f6f7f8;
+  --surface: #ffffff;
+  --ink: #1d232a;
+  --muted: #5b6672;
+  --line: #d9dee3;
+  --accent: #2f5d8a;
+  --accent-soft: #e4ecf5;
+  --ok: #2f7d4f;
+  --ok-soft: #e2f1e7;
+  --run: #9a6a00;
+  --run-soft: #f7edd2;
+  --wait: #6a5a8e;
+  --wait-soft: #ece8f5;
+  --todo: #5b6672;
+  --todo-soft: #eceff2;
+  --f-display: "Noto Serif TC", "Songti TC", serif;
+  --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14181d; --surface: #1c2229; --ink: #e6e9ed; --muted: #9aa6b2; --line: #2e3740;
+    --accent: #8fb5dd; --accent-soft: #1f2d3b;
+    --ok: #7fcf9c; --ok-soft: #1c3226; --run: #e3b85a; --run-soft: #362c14;
+    --wait: #b9a8e3; --wait-soft: #2a2438; --todo: #9aa6b2; --todo-soft: #262d35;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14181d; --surface: #1c2229; --ink: #e6e9ed; --muted: #9aa6b2; --line: #2e3740;
+  --accent: #8fb5dd; --accent-soft: #1f2d3b;
+  --ok: #7fcf9c; --ok-soft: #1c3226; --run: #e3b85a; --run-soft: #362c14;
+  --wait: #b9a8e3; --wait-soft: #2a2438; --todo: #9aa6b2; --todo-soft: #262d35;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.75; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 40px; }
+header { display: grid; gap: 10px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+h1 { font-family: var(--f-display); font-size: clamp(28px, 5vw, 38px); line-height: 1.25; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--f-display); font-size: 22px; margin: 0; text-wrap: balance; }
+h3 { font-size: 16.5px; margin: 0; }
+p { margin: 0; }
+.lede { font-size: 17.5px; color: var(--ink); }
+.meta { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+section { display: grid; gap: 16px; }
+.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.callout { background: var(--accent-soft); border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; }
+.callout strong { color: var(--accent); }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.fig { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.fig .big { font-family: var(--f-mono); font-size: 26px; font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
+.fig .cap { font-size: 14px; color: var(--muted); line-height: 1.55; }
+.list { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.item { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.item > div { min-width: 0; display: grid; gap: 4px; }
+.item .what { font-weight: 700; }
+.item .why { color: var(--muted); font-size: 15px; }
+.pill { justify-self: start; font-size: 12.5px; font-weight: 700; padding: 2px 10px; border-radius: 999px; white-space: nowrap; margin-top: 3px; }
+.pill.ok { color: var(--ok); background: var(--ok-soft); }
+.pill.run { color: var(--run); background: var(--run-soft); }
+.pill.wait { color: var(--wait); background: var(--wait-soft); }
+.pill.todo { color: var(--todo); background: var(--todo-soft); }
+.ask { border: 1.5px solid var(--wait); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; background: var(--surface); }
+.ask h3 { color: var(--wait); }
+code, .code { font-family: var(--f-mono); font-size: 13.5px; background: var(--todo-soft); padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(--todo-soft); padding: 10px 12px; border-radius: 8px; overflow-x: auto; }
+.tl { display: grid; gap: 0; border-left: 2px solid var(--line); margin-left: 6px; }
+.tl .ev { position: relative; padding: 0 0 18px 20px; display: grid; gap: 4px; }
+.tl .ev::before { content: ""; position: absolute; left: -7px; top: 8px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--accent); }
+.tl .when { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.tbl { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 13px; color: var(--muted); font-weight: 500; }
+td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.gloss { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 15px; }
+.gloss dt { font-weight: 700; }
+.gloss dd { margin: 0; color: var(--muted); min-width: 0; }
+@media (max-width: 520px) {
+  .item { grid-template-columns: 1fr; gap: 6px; }
+  .gloss { grid-template-columns: 1fr; }
+  .gloss dd { margin-bottom: 6px; }
+}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
+  <h1>少用幾個位元，AI 能不能在省電受限的 GPU 上跑得更快？</h1>
+  <p class="meta">最後更新：2026-11-03 06:30（台灣時間 14:30）</p>
+</header>
+
+<section>
+  <h2>這篇在做什麼</h2>
+  <p class="lede">GPU 有功耗上限。算矩陣乘法時，數字裡每個位元的 0/1 一直切換，切換越多越耗電；耗電碰到上限，GPU 就只好降時脈、變慢。如果把數字最後幾個「不太重要」的位元固定成 0，切換變少、省下電，GPU 就能維持較高的時脈，算得更快。</p>
+  <p>第一篇（SC 論文）證明這招在科學計算（HPL、量子化學等）有效。這一篇要問：在 AI 模型上行不行？AI 常用的 BF16 只有 7 個尾數位元、FP8 只有 3 個，能拿掉的本來就不多，拿掉之後模型會不會變笨？</p>
+  <div class="callout">
+    <p><strong>為什麼現在用 MI350X 做：</strong>AMD MI350X 在出廠設定（每張 1000 W）下，算 AI 常用的 BF16、FP8 矩陣時幾乎一直頂著功耗上限。也就是說，它不需要另外限電就會因為耗電而變慢，正好是這個方法能發揮的地方。GH200 在出廠設定下 AI 矩陣運算沒有被電壓住，所以那邊的效益小很多。</p>
+  </div>
+</section>
+
+<section>
+  <h2>目前已知的數字</h2>
+  <div class="figs">
+    <div class="fig"><div class="big">+7.9%</div><div class="cap">MI350X、出廠 1000 W，BF16 矩陣乘法只留 3 個尾數位元（兩邊運算元都截，隨機資料；第一篇已量）</div></div>
+    <div class="fig"><div class="big">+3.2%</div><div class="cap">同上但只截「權重」那一邊（單卡試跑，LLM 形狀）。推論時權重可以先截好、不花時間</div></div>
+    <div class="fig"><div class="big">+22～39%</div><div class="cap">GH200 上把 70B 模型的 FP8 權重截到 2 位做微調，達標需要多的樣本數（負面結果）</div></div>
+  </div>
+  <p>白話：在 MI350X 上「截權重」本身確實能加速幾個百分點；但截太多會讓模型變差，訓練時要多看很多資料才能達標，反而更慢。這篇要找出划算的界線。</p>
+</section>
+
+<section>
+  <h2>實驗進度</h2>
+  <div class="list">
+    <div class="item"><span class="pill run">進行中</span><div>
+      <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法微基準）</div>
+      <div class="why">用 Llama-3-8B 的實際矩陣大小，在 1000 W 和 700 W 下，比較 BF16／FP8 各種位元數的速度。決定「推論只截權重」值不值得。8 張 GPU 同時量，約 1.5 小時（job 293，n02）。</div></div></div>
+    <div class="item"><span class="pill wait">排隊中</span><div>
+      <div class="what">W3　模型會不會變笨（WikiText-2 perplexity）</div>
+      <div class="why">四個開放模型（Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）在 19 種格式下的困惑度，和 GH200 的表對照。排在 W1 後面（job 294）。</div></div></div>
+    <div class="item"><span class="pill wait">等你登入</span><div>
+      <div class="what">W5　微調：截權重讓每步變快，能不能抵掉多要的資料？</div>
+      <div class="why">照 MLPerf 的 LoRA 設定縮小成單卡版，用 Llama 2 7B 和 MLPerf 同一份 GovReport 資料；8 張卡同時跑「原生／截斷 × 4 個隨機種子」。程式已寫好，等 Llama 的下載權限。</div></div></div>
+    <div class="item"><span class="pill todo">待做</span><div>
+      <div class="what">W4　實際推論的速度與耗電</div>
+      <div class="why">量生成文字時每秒幾個 token、每個 token 耗多少電，並和「直接換成更小的格式」（FP8、MXFP6、MXFP4，MI350X 硬體支援）比較。要誠實回答：能換格式時，截位元是不是就沒必要？</div></div></div>
+    <div class="item"><span class="pill todo">待做</span><div>
+      <div class="what">W2　用真實模型的權重量矩陣乘法</div>
+      <div class="why">目前的速度數字來自亂數資料；真實權重的位元分佈不同，省電效果可能不一樣。用第一篇剛做好的「讀入真實資料」功能來量。</div></div></div>
+    <div class="item"><span class="pill todo">視時間</span><div>
+      <div class="what">W6　AMD 的 FP8 attention 有沒有 GH200 上找到的數值問題</div>
+      <div class="why">GH200 上發現 NVIDIA 的 FP8 attention 反向傳播有個小誤差，平常無害，但截位元後會變成有方向的偏差。看 AMD 的實作是否也一樣。</div></div></div>
+  </div>
+</section>
+
+<section>
+  <h2>需要你處理</h2>
+  <div class="ask">
+    <h3>登入 Hugging Face（下載 Llama 用）</h3>
+    <p>Llama 系列需要授權才能下載。請在 Claude Code 的提示列輸入下面這行，貼上你的 token：</p>
+    <pre>! HF_HOME=~/koying/sw/hf ~/koying/sw/ai-venv/bin/hf auth login</pre>
+    <p class="why" style="color:var(--muted);font-size:15px">一定要帶 HF_HOME，token 才會存到實驗程式讀得到的地方。登入後我會下載 Llama 2 7B、Llama 3.1 8B、Llama 2 70B（約 160 GB）。</p>
+  </div>
+</section>
+
+<section>
+  <h2>GH200 上已經做完、可以直接用的結果</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>主題</th><th>結論（白話）</th></tr></thead>
+    <tbody>
+      <tr><td>推論精度</td><td>BF16 留 3 位和 FP8 一樣準；六個模型 perplexity 只差 0.1～1%。截到 2 位就明顯變差。</td></tr>
+      <tr><td>推論速度</td><td>FP8 本來就比 BF16 快 1.7～1.9 倍；只截權重在 GH200 1000 W 下 BF16 快 3.3%、FP8 快 1.7%。</td></tr>
+      <tr><td>70B 微調</td><td>FP8 權重截到 2 位：每步快約 1%，但要多 22～39% 的資料才達標，整體變慢。截到 1 位不會收斂。</td></tr>
+      <tr><td>FP8 attention</td><td>NVIDIA 實作有個小誤差，平均是 0 所以無害；但截位元會讓它變成同方向的偏差。我們實作的修正（Delta-Matching）能完全消掉。另外找到 FP8 縮放在訓練一開始讓梯度全變 0 的問題並修好。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>名詞小抄</h2>
+  <dl class="gloss">
+    <dt>尾數位元</dt><dd>浮點數決定精細程度的那幾個位元。BF16 有 7 個、FP8（E4M3）有 3 個。</dd>
+    <dt>截斷／保留 k 位</dt><dd>只留前 k 個尾數位元，其餘歸零（通常四捨五入到最近）。格式不變，硬體照常算。</dd>
+    <dt>功耗上限</dt><dd>GPU 最多能用的電（MI350X 出廠 1000 W）。碰到上限就降時脈。</dd>
+    <dt>Perplexity</dt><dd>語言模型「猜下一個字」的困惑程度，越低越好；我們看的是比原生高了幾個百分點。</dd>
+    <dt>LoRA 微調</dt><dd>不動原本的大模型權重，只訓練一小組附加參數。原本的權重因為不動，可以事先截好。</dd>
+  </dl>
+</section>
+
+<section>
+  <h2>時間軸</h2>
+  <div class="tl">
+    <div class="ev"><div class="when">11-03 06:30</div><p>建立這份進度報告。下載好四個開放模型、WikiText-2 和 MLPerf 的 GovReport 微調資料；寫好微調程式；perplexity 實驗排進佇列。</p></div>
+    <div class="ev"><div class="when">11-03 05:45</div><p>MI350X 上裝好 PyTorch（ROCm）。單卡試跑：BF16 留 3 位，兩邊都截快 6.9%，只截權重快 3.2%。送出 W1。</p></div>
+    <div class="ev"><div class="when">11-03 05:30</div><p>開新分支 ai-fp8-paper 專門寫這篇。決定推論與微調兩條線並行。</p></div>
+  </div>
+</section>
+
+</div>
