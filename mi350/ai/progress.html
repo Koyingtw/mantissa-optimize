@@ -126,13 +126,13 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 16:10 UTC（台灣 11-04 00:10）</p>
+  <p class="meta">最後更新：2026-11-03 16:30 UTC（台灣 11-04 00:30）</p>
 </header>
 
 <section>
   <h2>現在走到哪</h2>
   <div class="now">
-    <p class="headline">MI350X 上的主要實驗都量完了，結論很一致：截位元在 AI 上只能省 2–6% 的時間或電，而直接換成 FP8 就能省約三成。論文方向需要你決定（見「需要你處理」）。以下是先前的摘要：第一個完整結果是七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。速度面的收益很小（推論只截權重 3～4%、微調 2.5%）且被 FP8 支配。你決定先量「推論能不能省電」，再決定論文主軸。</p>
+    <p class="headline">MI350X 上的主要實驗都量完了，結論很一致：截位元在 AI 上只能省 2–6% 的時間或電，而直接換成 FP8 就能省約三成。你決定論文主軸為「界線＋數值陷阱」；現在在補數值陷阱在 MI350X 上的重現。以下是先前的摘要：第一個完整結果是七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。速度面的收益很小（推論只截權重 3～4%、微調 2.5%）且被 FP8 支配。你決定先量「推論能不能省電」，再決定論文主軸。</p>
     <div class="phases" role="list">
       <div class="ph" role="listitem"><div class="bar"><span class="fill-ok" style="width:100%"></span></div>
         <div class="name">1　準備</div><div class="st">完成：環境、7 個模型、資料、實驗程式</div></div>
@@ -145,7 +145,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     </div>
     <div class="next">
       <p><b>今天已完成</b>　七個模型 × 19 種設定的精度表（W3）。</p>
-      <p><b>接下來</b>　等你決定論文主軸：「界線論文」、「數值論文」或兩者合併。微調收斂先不跑。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
+      <p><b>接下來</b>　在 MI350X 上重現「截位元把 FP8 attention 的無害誤差變成偏差」，並檢查「四捨五入」是否就不會有偏差（job 408）。之後開始寫論文。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
       <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
     </div>
   </div>
@@ -279,10 +279,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 
 <section>
   <h2>需要你處理</h2>
-  <div style="border:1.5px solid var(--wait);border-radius:10px;padding:14px 16px;display:grid;gap:8px;background:var(--surface)">
-    <h3 style="color:var(--wait)">論文主軸要怎麼定？</h3>
-    <p>「截位元讓 AI 變快或省電」的數字都很小（2–6%），而且被 FP8 支配。可以寫成：(1) 界線論文（誠實回答「有沒有用」）；(2) 以 GH200 上已完成的 FP8 attention 數值研究為主軸；(3) 兩者合併。等你決定。</p>
-  </div>
+  <p>目前沒有。你已決定主軸「界線＋數值陷阱」。論文暫定題目：<i>What Mantissa Bits Buy in LLM Workloads: Gains, Costs and a Numerical Trap on Power-Capped GPUs</i>。</p>
 </section>
 
 <section>
@@ -313,6 +310,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 16:30</div><p>你選了「界線＋數值陷阱」。寫好論文大綱與缺口清單；發現 GH200 的偏差實驗用的是「朝零截斷」，正在 MI350X 上比較四捨五入。</p></div>
     <div class="ev"><div class="when">11-03 16:10</div><p>推論省電實驗完成：BF16 截成 3～4 位每 token 省 2–6%，FP8 省不到；但 FP8 本身比 BF16 少約三成。論文主軸待定。</p></div>
     <div class="ev"><div class="when">11-03 14:15</div><p>推論省電的量測程式修好、驗證過，完整版送出。順帶量到：batch 256 時 FP8 每秒 43.5k token、BF16 31.3k。</p></div>
     <div class="ev"><div class="when">11-03 12:45</div><p>推論省電實驗的程式會崩，定位到「重播一個很大的 GPU 指令圖」；改成每層一個小圖，並比較不用圖時的速度。</p></div>
