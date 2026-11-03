@@ -36,5 +36,12 @@ for M in (1, 8, 16, 17, 32, 64, 256):
             ms = timeit(fn)
             print(f"M={M:4d} {layout:11s} ok={ok} dtype={y.dtype} int8 {ms:.3f} ms  bf16 "
                   f"{timeit(lambda: torch.nn.functional.linear(xb, wb)):.3f} ms", flush=True)
+            # which GPU kernels the call dispatches to (the cold-gemm session compares with its hipBLASLt runs)
+            from torch.profiler import ProfilerActivity, profile
+            with profile(activities=[ProfilerActivity.CUDA]) as prof:
+                fn()
+                torch.cuda.synchronize()
+            names = sorted({e.key for e in prof.key_averages() if e.self_device_time_total > 0})
+            print(f"M={M:4d} {layout:11s} kernels: {' | '.join(names)}", flush=True)
         except Exception as e:  # report the constraint, keep probing
             print(f"M={M:4d} {layout:11s} FAILED {type(e).__name__}: {str(e).splitlines()[0][:160]}", flush=True)
