@@ -491,14 +491,17 @@ $N$ & Native & 35 bits & 31 bits & 29 bits & 27 bits & 23 bits \\
 Table~\ref{tab:kcal} gives the kernel-level calibration of paper Section~V: the GEMM microbenchmark at a 1300\,MHz lock
 and 1000\W{} on the applications' own operands (8 GPUs $\times$ ABBA on node n02), the GEMM's share $f$ of the native
 run time at the same lock, and the prediction errors over 500--1000\W{} against the whole-program calibration.
-Table~\ref{tab:spot} gives the post-hoc spot check of paper Section~VII-B and Table~\ref{tab:gptol} the tolerance chain
+Table~\ref{tab:spot} gives the post-hoc spot check of paper Section~VII-B, including the valinomycin operands and the
+size failure, and Table~\ref{tab:gptol} the tolerance chain
 of Section~VII-C.
 
 \begin{table}[t]
 \caption{Kernel-level calibration. $R$, $\sigma$: GEMM on the applications' operands (DF-MP2: call $i=150$, $2002\times
 302302\times5477$, TN; GP: trailing update $L_{21}L_{21}^T$ at steps 16384 and 40960 for ranges 0.02 and 0.08, range of
 the four given); $R_\mathrm{app}=1-f(1-R)$; error: mean / largest absolute error of the predicted speedup over 4 caps
-(percentage points).}\label{tab:kcal}
+(percentage points). Accumulating into the trailing matrix ($\beta=1$, as in the program) gives $R=0.931$ and 0.893 on
+the panel at step 16384, range 0.02 (0.928 and 0.887 with $\beta=0$). At DF-MP2's shape, synthetic uniform operands give
+$R=0.915$ and 0.848; DF-MP2's calls 50 and 225 give 0.908/0.840 and 0.909/0.843.}\label{tab:kcal}
 \centering\footnotesize\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{@{}lrrrrrrrr@{}}
 \toprule
@@ -515,39 +518,126 @@ GP & 28 & 0.884--0.887 & 1.018 & 0.90 & 0.897 & 0.933 & 0.8 / 1.0 & 3.0 / 3.6 \\
 \end{table}
 
 \begin{table*}[t]
-\caption{Post-hoc spot check of GEMMul8 3.5.4 (INT8, direct API): normwise error of $C$ for 10 / 12 / 14 moduli, ratio
-of the estimate from 64 random rows (DF-MP2: columns) to it, and the check's time relative to the emulated call. Span:
-share of elements of $\mathrm{op}(A)$ more than $2^{-32}$ below their row maximum (the span check rejects above 1\pct).
-Synthetic: $16384^2\times2048$, half of $k$ scaled by $2^{-40}$ in $A$ and (hidden) in the other half of $B$. $^{a}$Largest of the four panels (smallest: $\ee{8}{-12}$, $\ee{5}{-14}$, $\ee{3}{-16}$).}\label{tab:spot}
-\centering\footnotesize\setlength{\tabcolsep}{5pt}
-\begin{tabular}{@{}lrlrr@{}}
+\caption{Post-hoc spot check of GEMMul8 3.5.4 (INT8, direct API) on MI350X: normwise error $\|\Delta C\|_F/\|C\|_F$ for
+10 / 12 / 14 moduli; ratio of the estimate from 64 random rows (DF-MP2: columns) to it; componentwise error
+$\max|\Delta C|/(|A||B|)$ for 12 moduli and, on the same data, for truncation to 36 bits (DF-MP2: 32); and the check's
+time relative to the emulated call. Span: share of elements of $\mathrm{op}(A)$ / $\mathrm{op}(B)$ more than $2^{-32}$
+below their row (column) maximum. Synthetic: $16384^2\times2048$, half of $k$ scaled by $2^{-40}$ in $A$ and (hidden) in
+the other half of $B$. Valinomycin: exchange--correlation operands of the DF-B3LYP/def2-TZVP SCF rebuilt with PySCF on
+the CPU. $^{a}$10 moduli only. $^{b}$Largest of the four panels. $^{c}$From 31189 entries whose bound $|A||B|$ lies below
+$10^{-290}$; truncation leaves no other entry above $10^{-9}$ in any case. Entries with componentwise error above
+$10^{-6}$ for 12 moduli: 19\pct{} (XC, $k=4096$), 62\pct{} (XC, $k=76800$), none (MO), 95\pct{} (GP panel).}\label{tab:spot}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lllrlr@{}}
 \toprule
-Case & Span & Error (10 / 12 / 14) & Ratio & Cost \\
+Case & Span & Normwise (10 / 12 / 14) & Ratio & Componentwise (12 mod. / trunc.) & Cost \\
 \midrule
-Synthetic, hidden & 0.50 & 1.0 / 0.25 / $\ee{1}{-3}$ & 1.00 & 0.9--1.5\pct \\
-Synthetic, benign & 0.50 & $\ee{1}{-10}$ / $\ee{5}{-13}$ / $\ee{3}{-15}$ & 1.00 & 0.9--1.3\pct \\
-DF-MP2, $i=150$ & 0.00 & $\ee{1}{-10}$ / $\ee{6}{-13}$ / $\ee{4}{-15}$ & 0.99--1.01 & 0.2--0.3\pct \\
-GP panels (4) & 0.87--0.97 & $\ee{2}{-11}$ / $\ee{1}{-13}$ / $\ee{7}{-16}$$^{a}$ & 1.28--1.93 & 0.15--0.64\pct \\
+Synthetic, hidden & 0.50 / 0.50 & 1.0 / 0.25 / $\ee{1}{-3}$ & 1.00 & --- & 0.9--1.5\pct \\
+Synthetic, benign & 0.50 / 0 & $\ee{1}{-10}$ / $\ee{5}{-13}$ / $\ee{3}{-15}$ & 1.00 & --- & 0.9--1.3\pct \\
+Size failure, $65536^2\times256$ & 0 / 0 & 32$^{a}$ & 0.98 & --- & 0.1\pct \\
+DF-MP2, $i=150$ & 0 / 0 & $\ee{1}{-10}$ / $\ee{6}{-13}$ / $\ee{4}{-15}$ & 0.99--1.01 & $\ee{7}{-10}$ / $\ee{2}{-10}$ & 0.2--0.3\pct \\
+GP panels (4) & 0.87--0.97 & $\ee{2}{-11}$ / $\ee{1}{-13}$ / $\ee{7}{-16}$$^{b}$ & 1.28--1.93 & 1.0 / $\ee{1}{-11}$ & 0.15--0.64\pct \\
+Valinomycin XC, $1633^2\times4096$ & 0.33 / 0.78 & $\ee{1}{-10}$ / $\ee{6}{-13}$ / $\ee{3}{-15}$ & 0.94--1.24 & 1.0 / $\ee{1}{-11}$ & 44--60\pct \\
+Valinomycin XC, $2958^2\times76800$ & 0.71 / 0.82 & $\ee{8}{-10}$ / $\ee{4}{-12}$ / $\ee{2}{-14}$ & 0.31--0.42 & 1.0 / $\ee{6}{-2}$$^{c}$ & 56--75\pct \\
+Valinomycin MO, $131072\times300\times2958$ & 0.77 / 0 & $\ee{4}{-11}$ / $\ee{1}{-13}$ / $\ee{1}{-15}$ & 0.84--1.00 & $\ee{3}{-9}$ / $\ee{1}{-11}$ & 1.0--1.5\pct \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
 \begin{table}[t]
 \caption{Tolerance chain for the Gaussian-process likelihood ($n=64000$, block 2048; 2 rounds $\times$ 8 GPUs $\times$ ABBA
-per cap): tolerance $\tau$ on $|\Delta\ell|$, product tolerance $\varepsilon=\tau/\kappa$ with $\kappa=\ee{4.1}{6}$, the
-settings the selector takes, the largest measured $|\Delta\ell|$, and measured speedups over native at 1000 / 500\W{}
-(predicted from the GEMM sweep at $k=2048$ in parentheses). Bold: exceeds $\tau$.}\label{tab:gptol}
+per cap): tolerance $\tau$ on $|\Delta\ell|$, product tolerance $\varepsilon=\tau/\kappa$ with $\kappa=\ee{4.1}{6}$ from
+truncated runs (for emulation's own $\kappa_e=\ee{5.2}{5}$: $\varepsilon_e=\ee{1.9}{-8}$, $\ee{1.9}{-10}$, $\ee{1.9}{-12}$),
+the settings the selector takes, the largest measured $|\Delta\ell|$, and measured speedups (\%) over native at 1000 / 500\W{}
+(predicted from the GEMM sweep at $k=2048$ in parentheses). Rows marked $\kappa_e$ use emulation's own factor. Bold:
+exceeds $\tau$.}\label{tab:gptol}
 \centering\footnotesize\setlength{\tabcolsep}{2pt}
 \begin{tabular}{@{}rrllrr@{}}
 \toprule
-$\tau$ & $\varepsilon$ & Setting & $|\Delta\ell|$ & 1000\W{} (\%) & 500\W{} (\%) \\
+$\tau$ & $\varepsilon$ & Setting & $|\Delta\ell|$ & 1000\W & 500\W \\
 \midrule
 $10^{-2}$ & $\ee{2.4}{-9}$ & 28 bits & $\ee{2.1}{-3}$ & 6.8 (8.6) & 12.1 (15.9) \\
  & & 10 moduli & $\ee{8.8}{-5}$ & 39.5 (60.3) & $-6.2$ ($-2.4$) \\
+ & & 9 moduli, $\kappa_e$ & $\ee{7.4}{-4}$ & 51.1 (76.9) & 3.3 (7.4) \\
 $10^{-4}$ & $\ee{2.4}{-11}$ & 36 bits & $\ee{5.2}{-6}$ & 3.5 (4.9) & 6.7 (9.5) \\
  & & 11 moduli & $\ee{3.6}{-6}$ & 30.0 (46.8) & $-14.4$ ($-10.3$) \\
 $10^{-6}$ & $\ee{2.4}{-13}$ & 40 bits & $\mathbf{\ee{1.2}{-6}}$ & 2.6 (2.9) & 4.2 (6.6) \\
  & & 13 moduli & $\ee{2.2}{-8}$ & 14.1 (24.1) & $-27.1$ ($-24.0$) \\
+ & & 12 moduli, $\kappa_e$ & $\ee{1.7}{-7}$ & 22.3 (34.4) & $-20.7$ ($-18.0$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Tables Moved from the Paper}\label{sec:moved}
+
+Tables~\ref{tab:fill2}, \ref{tab:hplthr} and~\ref{tab:span} support paper Sections~IV, VII-A and VII-B; they were in the
+paper's body in earlier versions.
+
+\begin{table}[t]
+\caption{Share of the zero-fill benefit (\%) retained by a fill with ones / a fixed pattern. GH200: module power at
+1000\W{} or throughput at 500\W; MI350X: energy per operation at locked clocks (GEMMs, range over three clocks),
+throughput at 600\W{} or power at 1000\W{} (other kernels). Last column: zero-fill benefit on MI350X (E/op: energy per
+operation). G: GH200, M: MI350X. FP8 GEMM was not measured on GH200.}\label{tab:fill2}
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lccr@{}}
+\toprule
+Kernel, kept bits & GH200 (G) & MI350X (M) & M zero fill \\
+\midrule
+FP64 GEMM, 0 & 76/68 & 73--75/69 & $-20$ to $-29\pct$ E/op \\
+FP64 GEMM, 20 (G) / 27 (M) & 87/82 & 81--83/73--74 & $-7$ to $-10\pct$ E/op \\
+BF16 GEMM, 0 & 92/92 & 77--78/68--72 & $-13$ to $-15\pct$ E/op \\
+FP8 GEMM, 0 & --- & 65--66/61 & $-9$ to $-10\pct$ E/op \\
+FP64 FMA loop, 0 & 87/62 & 74/63 & +33\pct{} speed \\
+Memory copy, 0 & 97/86 & 83/41 & $-9\pct$ power \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+\caption{MI350X HPL, sensitivity to a common residual threshold: speedup (\%) of each method's fastest \emph{measured}
+configuration whose scaled residual is below the threshold, over the fastest native configuration on the same node and
+cap.}\label{tab:hplthr}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{Residual $<16$} & \multicolumn{2}{c}{$<1$} & \multicolumn{2}{c}{$<0.1$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(l){6-7}
+Cap & T & E10 & T & E12 & T & E12 \\
+\midrule
+1000\W & +6.6 & \textbf{+34} & +5.1 & \textbf{+17} & +4.5 & \textbf{+17} \\
+800\W & +6.7 & \textbf{+33} & +5.0 & \textbf{+15} & +4.4 & \textbf{+15} \\
+650\W & +8.7 & \textbf{+25} & +8.0$^{a}$ & +7.8$^{a}$ & +6.4$^{b}$ & +7.8$^{b}$ \\
+500\W & +9.4 & \textbf{+11} & \textbf{+7.3} & $-4.0$ & \textbf{+5.9} & $-4.0$ \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}\parbox{\textwidth}{\scriptsize 16 is HPL's own check; 1 and 0.1 are a sensitivity analysis. Candidates
+(native and truncated): $1\times8$, $N=540672$, 30, 35, 36 and 38 fraction bits, all caps (31 at 1000\W); $1\times8$, $N=262144$, 393216 and
+458752; $4\times2$, NB 4096, $N=491520$ (35 bits, 10 moduli) and 458752 (35 bits, 12 moduli), all caps. GEMMul8 does not
+fit at $1\times8$ or larger $N$. T: fastest truncation that meets the threshold, all at $N=540672$, $1\times8$: 30 fraction bits for $<16$ (residual
+6.4; job 318), 35 for $<1$ (0.27), 36 for $<0.1$ (0.087; job 318); E: 10 moduli ($N=491520$, 1.79) or 12 ($N=458752$,
+0.033). Bold: higher measured speedup where the order is resolved. $^{a}$Paired in one job on n02 (job 319, 4 ABBA
+blocks), 35 bits and 12 moduli gain 6.7 and 8.0\pct: emulation minus truncation $1.2\pm2.4$ points, order not resolved.
+$^{b}$Different jobs, no paired interval.}
+\end{table*}
+
+\begin{table}[t]
+\caption{GH200, real data (1000\W): flop-weighted fraction of nonzeros more than $2^{-32}$ below their row maximum, and the
+total-energy error of each method. The ``Nearest'' rows keep 36 or 32 bits with round-to-nearest; cuBLAS emulation
+with 36 and 32 bits uses five slices, with 40 bits six; auto: its automatic mode (at most 79 bits). The Au\,112
+fraction comes from a two-iteration benchmark input, its errors from the fully converged input. $^{a}$GPU4PySCF DFT
+(Gaussian basis) on GH200.}\label{tab:span}
+\centering\footnotesize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llll@{}}
+\toprule
+& Valinomycin$^{a}$ & QE Si\,1000 & QE Au\,112 \\
+\midrule
+Below $2^{-32}$ & 24--44\pct & 0.24--0.54\pct & 0.008--0.02\pct \\
+Nearest, 36 bits & $\ee{9.6}{-7}$\Eh & 0\Ry & 0\Ry \\
+Nearest, 32 bits & $\ee{1.2}{-5}$\Eh & 0\Ry & $\ee{4}{-8}$\Ry \\
+cuBLAS emu., 36/32 & $\mathbf{\ee{5.25}{-2}}$\,\textbf{E}$_\mathbf{h}$ & $\ee{6}{-8}$\Ry & $\ee{5}{-8}$\Ry \\
+cuBLAS emu., 40 & $\ee{8.4}{-8}$\Eh & --- & --- \\
+cuBLAS emu., auto & $\ee{4}{-9}$\Eh & --- & --- \\
+GEMMul8, 10 moduli & diverges & out of memory & $\ee{3.7}{-7}$\Ry \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,0 +1,2274 @@
+id=hplgrid_1103_1334 bench=hpl N=540672 NB=1024 P=1 Q=8 caps=[1000 800 650 500] variants=[53:53 31:31 37:37 39:39] repeat=1
+=== RUN bench=hpl cap=1000 blk=0 pass=A0 variant=53:53 t=1793712961.453555842 cool=100s hot=63
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             246.07              4.282e+05
+HPL_pdgesv() start time Tue Nov  3 13:36:29 2026
+
+HPL_pdgesv() end time   Tue Nov  3 13:40:35 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=A0 variant=53:53 t=1793713239.962542997 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=A0 variant=31:31 t=1793713285.195181412 cool=45s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             230.21              4.577e+05
+HPL_pdgesv() start time Tue Nov  3 13:41:52 2026
+
+HPL_pdgesv() end time   Tue Nov  3 13:45:43 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=A0 variant=31:31 t=1793713547.676116715 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=A0 variant=37:37 t=1793713607.965742232 cool=60s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             234.80              4.488e+05
+HPL_pdgesv() start time Tue Nov  3 13:47:15 2026
+
+HPL_pdgesv() end time   Tue Nov  3 13:51:10 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=A0 variant=37:37 t=1793713874.865449705 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=A0 variant=39:39 t=1793713925.112558421 cool=50s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             236.14              4.462e+05
+HPL_pdgesv() start time Tue Nov  3 13:52:32 2026
+
+HPL_pdgesv() end time   Tue Nov  3 13:56:29 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=A0 variant=39:39 t=1793714193.689778131 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=B0 variant=39:39 t=1793714233.908463326 cool=40s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             236.28              4.460e+05
+HPL_pdgesv() start time Tue Nov  3 13:57:41 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:01:37 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=B0 variant=39:39 t=1793714502.390790219 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=B0 variant=37:37 t=1793714537.578019452 cool=35s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             234.55              4.492e+05
+HPL_pdgesv() start time Tue Nov  3 14:02:45 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:06:39 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=B0 variant=37:37 t=1793714804.250407301 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=B0 variant=31:31 t=1793714839.441848391 cool=35s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             229.91              4.583e+05
+HPL_pdgesv() start time Tue Nov  3 14:07:47 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:11:36 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=B0 variant=31:31 t=1793715101.450459119 rc=0
+=== RUN bench=hpl cap=1000 blk=0 pass=B0 variant=53:53 t=1793715181.808454243 cool=80s hot=63
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             246.02              4.283e+05
+HPL_pdgesv() start time Tue Nov  3 14:13:29 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:17:35 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=1000 blk=0 pass=B0 variant=53:53 t=1793715460.117617502 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=A0 variant=53:53 t=1793715506.578972285 cool=45s hot=63
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             297.89              3.537e+05
+HPL_pdgesv() start time Tue Nov  3 14:18:54 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:23:52 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=A0 variant=53:53 t=1793715837.208247188 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=A0 variant=31:31 t=1793715957.728676826 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             278.77              3.780e+05
+HPL_pdgesv() start time Tue Nov  3 14:26:25 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:31:04 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=A0 variant=31:31 t=1793716269.243092834 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=A0 variant=37:37 t=1793716389.775935928 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             284.79              3.700e+05
+HPL_pdgesv() start time Tue Nov  3 14:33:37 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:38:22 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=A0 variant=37:37 t=1793716707.247754027 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=A0 variant=39:39 t=1793716827.765171850 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             287.07              3.670e+05
+HPL_pdgesv() start time Tue Nov  3 14:40:56 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:45:43 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=A0 variant=39:39 t=1793717147.637710149 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=B0 variant=39:39 t=1793717268.163978100 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             287.34              3.667e+05
+HPL_pdgesv() start time Tue Nov  3 14:48:16 2026
+
+HPL_pdgesv() end time   Tue Nov  3 14:53:03 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=B0 variant=39:39 t=1793717588.286465328 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=B0 variant=37:37 t=1793717708.816156400 cool=120s hot=65
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/5[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+3, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             284.05              3.710e+05
+HPL_pdgesv() start time Tue Nov  3 14:55:36 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:00:20 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=B0 variant=37:37 t=1793718025.500527556 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=B0 variant=31:31 t=1793718146.005854521 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             277.98              3.791e+05
+HPL_pdgesv() start time Tue Nov  3 15:02:54 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:07:31 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=B0 variant=31:31 t=1793718456.528411736 rc=0
+=== RUN bench=hpl cap=800 blk=0 pass=B0 variant=53:53 t=1793718577.057258450 cool=120s hot=64
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             297.45              3.542e+05
+HPL_pdgesv() start time Tue Nov  3 15:10:05 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:15:03 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=800 blk=0 pass=B0 variant=53:53 t=1793718907.614704981 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=A0 variant=53:53 t=1793719029.467580358 cool=120s hot=64
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             370.38              2.845e+05
+HPL_pdgesv() start time Tue Nov  3 15:17:38 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:23:48 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=A0 variant=53:53 t=1793719433.577776422 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=A0 variant=31:31 t=1793719433.633531535 cool=0s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             339.94              3.100e+05
+HPL_pdgesv() start time Tue Nov  3 15:24:22 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:30:02 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=A0 variant=31:31 t=1793719807.058881226 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=A0 variant=37:37 t=1793719837.236408308 cool=30s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             343.59              3.067e+05
+HPL_pdgesv() start time Tue Nov  3 15:31:06 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:36:49 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=A0 variant=37:37 t=1793720214.489759926 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=A0 variant=39:39 t=1793720335.005845663 cool=120s hot=66
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             351.11              3.001e+05
+HPL_pdgesv() start time Tue Nov  3 15:39:23 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:45:15 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=A0 variant=39:39 t=1793720719.747050180 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=B0 variant=39:39 t=1793720719.799722503 cool=0s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             348.02              3.028e+05
+HPL_pdgesv() start time Tue Nov  3 15:45:48 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:51:36 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=B0 variant=39:39 t=1793721101.430279341 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=B0 variant=37:37 t=1793721221.969551209 cool=120s hot=66
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             347.54              3.032e+05
+HPL_pdgesv() start time Tue Nov  3 15:54:10 2026
+
+HPL_pdgesv() end time   Tue Nov  3 15:59:58 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=B0 variant=37:37 t=1793721603.049396262 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=B0 variant=31:31 t=1793721603.099469470 cool=0s hot=63
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             336.66              3.130e+05
+HPL_pdgesv() start time Tue Nov  3 16:00:31 2026
+
+HPL_pdgesv() end time   Tue Nov  3 16:06:08 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=B0 variant=31:31 t=1793721973.303633936 rc=0
+=== RUN bench=hpl cap=650 blk=0 pass=B0 variant=53:53 t=1793722093.827192784 cool=120s hot=66
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             372.23              2.831e+05
+HPL_pdgesv() start time Tue Nov  3 16:08:42 2026
+
+HPL_pdgesv() end time   Tue Nov  3 16:14:55 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=650 blk=0 pass=B0 variant=53:53 t=1793722499.893694455 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=A0 variant=53:53 t=1793722501.400311858 cool=0s hot=62
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             596.17              1.767e+05
+HPL_pdgesv() start time Tue Nov  3 16:15:33 2026
+
+HPL_pdgesv() end time   Tue Nov  3 16:25:29 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=A0 variant=53:53 t=1793723134.422779102 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=A0 variant=31:31 t=1793723254.935893897 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             547.12              1.926e+05
+HPL_pdgesv() start time Tue Nov  3 16:28:06 2026
+
+HPL_pdgesv() end time   Tue Nov  3 16:37:13 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=A0 variant=31:31 t=1793723838.483347497 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=A0 variant=37:37 t=1793723959.000121849 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             564.53              1.866e+05
+HPL_pdgesv() start time Tue Nov  3 16:39:50 2026
+
+HPL_pdgesv() end time   Tue Nov  3 16:49:15 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=A0 variant=37:37 t=1793724560.189592187 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=A0 variant=39:39 t=1793724680.713756520 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             570.12              1.848e+05
+HPL_pdgesv() start time Tue Nov  3 16:51:52 2026
+
+HPL_pdgesv() end time   Tue Nov  3 17:01:22 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=A0 variant=39:39 t=1793725287.611886372 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=B0 variant=39:39 t=1793725408.137250557 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=39 B=39/B_alt=39 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             569.89              1.849e+05
+HPL_pdgesv() start time Tue Nov  3 17:03:59 2026
+
+HPL_pdgesv() end time   Tue Nov  3 17:13:29 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0052868 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=B0 variant=39:39 t=1793726014.706537293 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=B0 variant=37:37 t=1793726135.223876674 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=37 B=37/B_alt=37 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             565.86              1.862e+05
+HPL_pdgesv() start time Tue Nov  3 17:16:06 2026
+
+HPL_pdgesv() end time   Tue Nov  3 17:25:32 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0867460 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=B0 variant=37:37 t=1793726737.923893521 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=B0 variant=31:31 t=1793726858.432291862 cool=120s hot=64
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+[HPL quantize] EXPERIMENTAL COMPLIANCE-GREY mode: A=31 B=31/B_alt=31 C=53 significand bits, min_mn=0, max_mn=9223372036854775807, alt_min_mn=0, alt_max_mn=9223372036854775807, rounding=nearest-even, mode=scalar-mantissa, block=64, axis=n, levels=16/24/32/53, rel_error=1.000e-09, correction=none, seed=0, restore_b=0, fuse_copy=0
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             547.35              1.925e+05
+HPL_pdgesv() start time Tue Nov  3 17:28:09 2026
+
+HPL_pdgesv() end time   Tue Nov  3 17:37:17 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        6.3853302 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=B0 variant=31:31 t=1793727442.213920221 rc=0
+=== RUN bench=hpl cap=500 blk=0 pass=B0 variant=53:53 t=1793727562.730314466 cool=120s hot=63
+================================================================================
+HPLinpack 2.2  --  High-Performance Linpack benchmark  --   February 24, 2016
+Written by A. Petitet and R. Clint Whaley,  Innovative Computing Laboratory, UTK
+Modified by Piotr Luszczek, Innovative Computing Laboratory, UTK
+Modified by Julien Langou, University of Colorado Denver
+================================================================================
+
+An explanation of the input/output parameters follows:
+T/V    : Wall time / encoded variant.
+N      : The order of the coefficient matrix A.
+NB     : The partitioning blocking factor.
+P      : The number of process rows.
+Q      : The number of process columns.
+Time   : Time in seconds to solve the linear system.
+Gflops : Rate of execution for solving the linear system.
+
+The following parameter values will be used:
+
+N      :  540672 
+NB     :    1024 
+PMAP   : Column-major process mapping
+P      :       1 
+Q      :       8 
+PFACT  :   Right 
+NBMIN  :      32 
+NDIV   :       2 
+RFACT  :   Right 
+BCAST  :   1ring 
+DEPTH  :       1 
+SWAP   : Spread-roll (long)
+L1     : transposed form
+U      : transposed form
+EQUIL  : no
+ALIGN  : 8 double precision words
+
+--------------------------------------------------------------------------------
+
+- The matrix A is randomly generated for each test.
+- The following scaled residual check will be computed:
+      ||Ax-b||_oo / ( eps * ( || x ||_oo * || A ||_oo + || b ||_oo ) * N )
+- The relative machine precision (eps) is taken to be               1.110223e-16
+- Computational tests pass if scaled residuals are less than                16.0
+
+================================================================================
+T/V                N    NB     P     Q               Time                 Gflops
+--------------------------------------------------------------------------------
+WC10R2R32      540672  1024     1     8             600.87              1.754e+05
+HPL_pdgesv() start time Tue Nov  3 17:39:54 2026
+
+HPL_pdgesv() end time   Tue Nov  3 17:49:55 2026
+
+--------------------------------------------------------------------------------
+||Ax-b||_oo/(eps*(||A||_oo*||x||_oo+||b||_oo)*N)=        0.0000078 ...... PASSED
+================================================================================
+
+Finished      1 tests with the following results:
+              1 tests completed and passed residual checks,
+              0 tests completed and failed residual checks,
+              0 tests skipped because of illegal input values.
+--------------------------------------------------------------------------------
+
+End of Tests.
+================================================================================
+=== END bench=hpl cap=500 blk=0 pass=B0 variant=53:53 t=1793728200.592537834 rc=0
+hpl done

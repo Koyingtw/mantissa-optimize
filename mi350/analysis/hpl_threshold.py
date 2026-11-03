@@ -24,6 +24,10 @@ RUNS = [  # result id, node, configuration
     ("hpl3B2_1030_0634", "n01", "N=458752, 4x2"),
     ("hpln02_1029_1045", "n02", "N=540672, 1x8"),
     ("hpl3B_1029_1914", "n02", "N=491520, 4x2"),
+    # review round 8: 31/37/39 bits at the best native configuration under all caps, and a paired 650 W comparison of
+    # 35 bits (N=540672, 1x8) with 12 moduli (N=458752, 4x2, NB 4096) in one job
+    ("hplgrid_1103_1334", "n02", "N=540672, 1x8"),
+    ("hplpair650_1103_1750", "n02", "N=540672, 1x8 / emulation N=458752, 4x2"),
 ]
 TAUS = [16, 1, 0.1]
 
