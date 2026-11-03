@@ -126,18 +126,18 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 09:00 UTC（台灣 17:00）</p>
+  <p class="meta">最後更新：2026-11-03 09:40 UTC（台灣 17:40）</p>
 </header>
 
 <section>
   <h2>現在走到哪</h2>
   <div class="now">
-    <p class="headline">第一個完整結果出來了：七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。微調每步快 16–22% 已確認不是 GPU 差異，正在查真正原因。</p>
+    <p class="headline">第一個完整結果出來了：七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。微調「每步快 16–22%」大部分是實驗設計造成的假象，單張卡上真正的加速約 4～5%；正在用正確的設計重量。</p>
     <div class="phases" role="list">
       <div class="ph" role="listitem"><div class="bar"><span class="fill-ok" style="width:100%"></span></div>
         <div class="name">1　準備</div><div class="st">完成：環境、7 個模型、資料、實驗程式</div></div>
       <div class="ph" role="listitem"><div class="bar"><span class="fill-run" style="width:30%"></span></div>
-        <div class="name">2　實驗</div><div class="st">6 項中 1 項完成、1 項診斷中、1 項排隊</div></div>
+        <div class="name">2　實驗</div><div class="st">6 項中 1 項完成、2 項進行中</div></div>
       <div class="ph" role="listitem"><div class="bar"><span style="width:0"></span></div>
         <div class="name">3　分析</div><div class="st">尚未開始</div></div>
       <div class="ph" role="listitem"><div class="bar"><span style="width:0"></span></div>
@@ -145,7 +145,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     </div>
     <div class="next">
       <p><b>今天已完成</b>　七個模型 × 19 種設定的精度表（W3）。</p>
-      <p><b>接下來</b>　微調加速的原因診斷（鎖時脈、只開兩張卡，job 352，約 20 分鐘）；只截權重的速度表（W1，等 n02）。原因確定後才跑到收斂的完整微調。</p>
+      <p><b>接下來</b>　整台 8 張卡都原生 vs 都截斷的微調速度（job 356，約 20 分鐘）；只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
       <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
     </div>
   </div>
@@ -195,7 +195,9 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <p><b>為什麼重要：</b>同樣的模型和設定，MI350X 與 GH200 的「變差幅度」通常相差不到 0.1 個百分點。所以精度只要量一次就能跨平台用，只有速度需要各平台量。待查：Llama 3.1 8B 的原生困惑度兩平台不同（6.24 對 5.61），但變差幅度一致，應該是評估軟體版本的差異。</p>
   </div>
   <div class="finding">
-    <h3>截成 3 位的微調，每一步快了 16～22%（原因診斷中）</h3>
+    <h3>微調「快 16～22%」大多是假象；單張卡真正快約 4～5%</h3>
+    <p><b>診斷結論（job 352）：</b>只開 2 張卡時，原生每步 6.3 秒、截斷 6.05 秒，只快 4～5%，兩組都沒有空檔。原生的空檔只在 8 張卡同時跑時出現，而且鎖在低時脈、功耗遠低於上限時也有。所以它和「功耗頂到上限」無關，比較像 8 個訓練同時跑時搬共用資源，而「4 張原生、 4 張截斷混著跑」讓兩組互相影響。這是我實驗設計的問題，不是新機制。</p>
+    <p><b>修正做法：</b>實際部署時整台機器是同一種設定，所以改成「8 張都原生」對「8 張都截斷」，輪流跑（job 356）。以下保留先前的分析過程。</p>
     <p>Llama 2 7B 的 LoRA 微調，8 張卡同時跑：4 張用原生權重、4 張用截成 3 位的權重，各跑 20 步。</p>
     <div class="tbl"><table>
       <thead><tr><th></th><th class="r">每步時間</th><th class="r">功耗</th><th class="r">回報時脈</th></tr></thead>
@@ -217,7 +219,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <div class="fig"><div class="big">+7.9%</div><div class="cap">MI350X 出廠 1000 W，BF16 矩陣乘法只留 3 個尾數位元（兩邊都截，亂數資料；第一篇）</div></div>
     <div class="fig"><div class="big">+3.2%</div><div class="cap">同上但只截「權重」那一邊（單卡試跑，LLM 的矩陣大小）</div></div>
     <div class="fig"><div class="big">+0.09～0.45%</div><div class="cap">BF16 只留 4 位時，7 個模型的困惑度變差幅度（MI350X，和 GH200 一致）</div></div>
-    <div class="fig"><div class="big">+16～22%</div><div class="cap">Llama 2 7B LoRA 微調，權重留 3 位時每步的加速（原因診斷中）</div></div>
+    <div class="fig"><div class="big">+4～5%</div><div class="cap">Llama 2 7B LoRA 微調，權重留 3 位時單張卡每步的加速（只開 2 張卡量的；整台的數字量測中）</div></div>
   </div>
 </section>
 
@@ -229,8 +231,8 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
       <div class="why">七個模型（Llama 2 7B、Llama 3.1 8B、Llama 2 70B、Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）× 19 種位元設定，和 GH200 的表逐列對照。n01，job 329，30 分鐘跑完，結果見上方。<b>論文用途：</b>決定截幾位是安全的。</div></div></div>
     <div class="item"><span class="pill run">診斷中</span><div>
       <div class="what">W5　微調：每步變快，能不能抵掉多要的資料？</div>
-      <div class="why">MLPerf 的 LoRA 設定縮成單卡版，Llama 2 7B、MLPerf 同一份資料，8 張卡跑「原生／截斷 × 4 個種子」。試跑發現每步快 16～22%（見上），對調 GPU 後仍成立；正在診斷原因（job 352）。之後要跑到收斂，每輪 3～4 小時。<b>論文用途：</b>貢獻 3。</div></div></div>
-    <div class="item"><span class="pill wait">排隊中</span><div>
+      <div class="why">MLPerf 的 LoRA 設定縮成單卡版，Llama 2 7B、MLPerf 同一份資料，8 張卡跑「原生／截斷 × 4 個種子」。試跑看到的每步快 16～22% 大多是混著跑造成的假象，單卡約 4～5%；改用整台同一設定重量（job 356）。之後要跑到收斂，每輪 3～4 小時。<b>論文用途：</b>貢獻 3。</div></div></div>
+    <div class="item"><span class="pill run">進行中</span><div>
       <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法速度）</div>
       <div class="why">Llama-3-8B 的矩陣大小，1000 W 與 700 W。第一次送出時每次量測都等滿 2 分鐘降溫、要 7 小時以上，已精簡成約 2.5 小時（job 312，n02）。<b>論文用途：</b>推論只截權重值不值得。</div></div></div>
     <div class="item"><span class="pill todo">待做</span><div>
@@ -278,6 +280,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 09:40</div><p>診斷完成：微調快 16～22% 大多是「原生與截斷混著跑」造成的假象，單卡真正快約 4～5%。改成整台同一設定輪流跑。</p></div>
     <div class="ev"><div class="when">11-03 09:00</div><p>精度表完成（7 模型 × 19 設定），和 GH200 一致。微調對調 GPU 後加速仍在，線索是原生組每小批資料都會停 0.2 秒；送出診斷實驗。</p></div>
     <div class="ev"><div class="when">11-03 08:20</div><p>依你的意見改寫這頁：最上面先講現在走到哪、研究價值，再講發現。</p></div>
     <div class="ev"><div class="when">11-03 08:05</div><p>LoRA 試跑完：截斷組每步快約 16%，正在確認是不是 GPU 差異造成。perplexity 開跑，Llama 2 7B 的基準值和 GH200 一致。</p></div>

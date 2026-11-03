@@ -1,0 +1,6 @@
+id=loradiag_pair_1103_0923 host=p01-r01-n01 model=meta-llama/Llama-2-7b-hf cap=1000 sclk=none steps=12 runs=[7:1 3:1] extra=[--no-eval]
+START {"tag": "gpu=0,bits=7,seed=1", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 1, "device": 0, "bdf": "0000:79:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 12, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=0,bits=7,seed=1", "minutes": 1.3046945611635843}
+START {"tag": "gpu=1,bits=3,seed=1", "model": "meta-llama/Llama-2-7b-hf", "bits": 3, "round": "nearest", "seed": 1, "device": 1, "bdf": "0000:09:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 12, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=1,bits=3,seed=1", "minutes": 1.2548152446746825}
+ai_lora done rc=0
