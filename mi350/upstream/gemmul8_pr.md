@@ -50,7 +50,3 @@ At 65535^2 the results are unchanged: 49.9 vs 49.0 and 106.2 vs 105.5 TFLOP/s, w
 
 A minimal reproducer of the library bug (int8 strided batched with batch stride
 >= 2^32 through hipBLAS, rocBLAS and hipBLASLt) is in the rocBLAS PR (link to be added).
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-https://claude.ai/code/session_016pHscGyK39vkQ1dhLvWhdu

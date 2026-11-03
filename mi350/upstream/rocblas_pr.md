@@ -195,7 +195,3 @@ int main(int argc, char** argv) {
 ```
 
 </details>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-https://claude.ai/code/session_016pHscGyK39vkQ1dhLvWhdu
