@@ -126,13 +126,13 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 09:40 UTC（台灣 17:40）</p>
+  <p class="meta">最後更新：2026-11-03 10:35 UTC（台灣 18:35）</p>
 </header>
 
 <section>
   <h2>現在走到哪</h2>
   <div class="now">
-    <p class="headline">第一個完整結果出來了：七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。微調「每步快 16–22%」大部分是實驗設計造成的假象，單張卡上真正的加速約 4～5%；正在用正確的設計重量。</p>
+    <p class="headline">第一個完整結果出來了：七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。微調用正確的設計重量後，整台每步只快 2.5%，很可能抵不掉收斂的代價；論文的主力應轉向推論。</p>
     <div class="phases" role="list">
       <div class="ph" role="listitem"><div class="bar"><span class="fill-ok" style="width:100%"></span></div>
         <div class="name">1　準備</div><div class="st">完成：環境、7 個模型、資料、實驗程式</div></div>
@@ -145,7 +145,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     </div>
     <div class="next">
       <p><b>今天已完成</b>　七個模型 × 19 種設定的精度表（W3）。</p>
-      <p><b>接下來</b>　整台 8 張卡都原生 vs 都截斷的微調速度（job 356，約 20 分鐘）；只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
+      <p><b>接下來</b>　等你決定要不要花約 4 小時跑微調到收斂（見「需要你處理」）；只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
       <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
     </div>
   </div>
@@ -168,7 +168,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
       <ol class="contrib">
         <li><span>在「出廠就被電卡住」的 GPU 上，量出 AI 推論與微調實際能快多少、精度掉多少，並畫出划算的界線（截幾位還划算、什麼工作值得做）。<span class="st run">精度完成，速度實驗中</span></span></li>
         <li><span>誠實比較「截位元」與「直接換更小格式」（FP8、MXFP6／MXFP4）：能換格式的時候截位元還有沒有意義。這是審稿人一定會問的。<span class="st todo">待做</span></span></li>
-        <li><span>微調的代價：GH200 上截權重讓每步快一點，卻要多看 22～39% 的資料才達標。MI350X 被電卡得更緊，每步可能快得多，答案可能反過來。<span class="st run">試跑完</span></span></li>
+        <li><span>微調的代價：GH200 上截權重讓每步快 1%，卻要多看 22～39% 的資料才達標。MI350X 整台每步也只快 2.5%，很可能同樣是負面結果。<span class="st run">速度已量，收斂待定</span></span></li>
         <li><span>FP8 attention 的數值陷阱與修正（GH200 上已完成）：截位元會把無害的誤差變成有方向的偏差，我們的修正能消除。<span class="st ok">已完成</span></span></li>
       </ol>
     </div></div>
@@ -195,7 +195,9 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <p><b>為什麼重要：</b>同樣的模型和設定，MI350X 與 GH200 的「變差幅度」通常相差不到 0.1 個百分點。所以精度只要量一次就能跨平台用，只有速度需要各平台量。待查：Llama 3.1 8B 的原生困惑度兩平台不同（6.24 對 5.61），但變差幅度一致，應該是評估軟體版本的差異。</p>
   </div>
   <div class="finding">
-    <h3>微調「快 16～22%」大多是假象；單張卡真正快約 4～5%</h3>
+    <h3>微調「快 16～22%」是假象；整台真正快 2.5%</h3>
+    <p><b>最終結果（job 356）：</b>8 張卡都原生每步 6.38 秒，8 張都截成 3 位 6.23 秒，每張卡都快 2.1～3.1%（平均 2.5%），兩組都沒有空檔。微調每 48 步評估一次，只要截斷版多一個評估間隔才達標（約多 5% 資料）就會整體變慢。</p>
+    <p><b>附帶的教訓：</b>同一台機器上混著跑兩種設定會不對稱地互相干擾（原生那邊吃虧）。這可以寫進「量測陷阱」那篇。</p>
     <p><b>診斷結論（job 352）：</b>只開 2 張卡時，原生每步 6.3 秒、截斷 6.05 秒，只快 4～5%，兩組都沒有空檔。原生的空檔只在 8 張卡同時跑時出現，而且鎖在低時脈、功耗遠低於上限時也有。所以它和「功耗頂到上限」無關，比較像 8 個訓練同時跑時搬共用資源，而「4 張原生、 4 張截斷混著跑」讓兩組互相影響。這是我實驗設計的問題，不是新機制。</p>
     <p><b>修正做法：</b>實際部署時整台機器是同一種設定，所以改成「8 張都原生」對「8 張都截斷」，輪流跑（job 356）。以下保留先前的分析過程。</p>
     <p>Llama 2 7B 的 LoRA 微調，8 張卡同時跑：4 張用原生權重、4 張用截成 3 位的權重，各跑 20 步。</p>
@@ -219,7 +221,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <div class="fig"><div class="big">+7.9%</div><div class="cap">MI350X 出廠 1000 W，BF16 矩陣乘法只留 3 個尾數位元（兩邊都截，亂數資料；第一篇）</div></div>
     <div class="fig"><div class="big">+3.2%</div><div class="cap">同上但只截「權重」那一邊（單卡試跑，LLM 的矩陣大小）</div></div>
     <div class="fig"><div class="big">+0.09～0.45%</div><div class="cap">BF16 只留 4 位時，7 個模型的困惑度變差幅度（MI350X，和 GH200 一致）</div></div>
-    <div class="fig"><div class="big">+4～5%</div><div class="cap">Llama 2 7B LoRA 微調，權重留 3 位時單張卡每步的加速（只開 2 張卡量的；整台的數字量測中）</div></div>
+    <div class="fig"><div class="big">+2.5%</div><div class="cap">Llama 2 7B LoRA 微調，權重留 3 位時整台 8 張卡每步的加速（只開 2 張卡時 4～5%）</div></div>
   </div>
 </section>
 
@@ -231,7 +233,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
       <div class="why">七個模型（Llama 2 7B、Llama 3.1 8B、Llama 2 70B、Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）× 19 種位元設定，和 GH200 的表逐列對照。n01，job 329，30 分鐘跑完，結果見上方。<b>論文用途：</b>決定截幾位是安全的。</div></div></div>
     <div class="item"><span class="pill run">診斷中</span><div>
       <div class="what">W5　微調：每步變快，能不能抵掉多要的資料？</div>
-      <div class="why">MLPerf 的 LoRA 設定縮成單卡版，Llama 2 7B、MLPerf 同一份資料，8 張卡跑「原生／截斷 × 4 個種子」。試跑看到的每步快 16～22% 大多是混著跑造成的假象，單卡約 4～5%；改用整台同一設定重量（job 356）。之後要跑到收斂，每輪 3～4 小時。<b>論文用途：</b>貢獻 3。</div></div></div>
+      <div class="why">MLPerf 的 LoRA 設定縮成單卡版，Llama 2 7B、MLPerf 同一份資料，8 張卡跑「原生／截斷 × 4 個種子」。試跑看到的每步快 16～22% 是混著跑造成的假象；整台同一設定重量是快 2.5%（job 356）。收斂實驗需要你決定。之後要跑到收斂，每輪 3～4 小時。<b>論文用途：</b>貢獻 3。</div></div></div>
     <div class="item"><span class="pill run">進行中</span><div>
       <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法速度）</div>
       <div class="why">Llama-3-8B 的矩陣大小，1000 W 與 700 W。第一次送出時每次量測都等滿 2 分鐘降溫、要 7 小時以上，已精簡成約 2.5 小時（job 312，n02）。<b>論文用途：</b>推論只截權重值不值得。</div></div></div>
@@ -249,7 +251,10 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 
 <section>
   <h2>需要你處理</h2>
-  <p>目前沒有。完整微調要占一個節點好幾個小時，排之前會先問你。</p>
+  <div class="ask" style="border:1.5px solid var(--wait);border-radius:10px;padding:14px 16px;display:grid;gap:8px;background:var(--surface)">
+    <h3 style="color:var(--wait)">要不要跑微調到收斂？</h3>
+    <p>每步只快 2.5%，收斂實驗很可能得到「不划算」的負面結果。但負面結果也有論文價值（告訴大家訓練不要這樣做）。需要一個節點連續約 4 小時（原生、截斷各 8 個種子跑到 1024 步）。</p>
+  </div>
 </section>
 
 <section>
@@ -280,6 +285,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 10:35</div><p>整台同一設定重量：微調每步只快 2.5%，而且全原生時不會有空檔。微調很可能是負面結果，論文主力轉向推論。</p></div>
     <div class="ev"><div class="when">11-03 09:40</div><p>診斷完成：微調快 16～22% 大多是「原生與截斷混著跑」造成的假象，單卡真正快約 4～5%。改成整台同一設定輪流跑。</p></div>
     <div class="ev"><div class="when">11-03 09:00</div><p>精度表完成（7 模型 × 19 設定），和 GH200 一致。微調對調 GPU 後加速仍在，線索是原生組每小批資料都會停 0.2 秒；送出診斷實驗。</p></div>
     <div class="ev"><div class="when">11-03 08:20</div><p>依你的意見改寫這頁：最上面先講現在走到哪、研究價值，再講發現。</p></div>

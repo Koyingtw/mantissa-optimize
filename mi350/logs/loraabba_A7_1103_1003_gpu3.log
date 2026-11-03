@@ -1,0 +1,19 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   1%|▏         | 4/291 [00:00<00:11, 25.10it/s]Loading weights:  17%|█▋        | 49/291 [00:00<00:01, 218.53it/s]Loading weights:  32%|███▏      | 92/291 [00:00<00:00, 295.60it/s]Loading weights:  43%|████▎     | 125/291 [00:00<00:00, 294.07it/s]Loading weights:  54%|█████▍    | 157/291 [00:00<00:00, 246.02it/s]Loading weights:  63%|██████▎   | 184/291 [00:00<00:00, 211.57it/s]Loading weights:  71%|███████▏  | 208/291 [00:00<00:00, 214.17it/s]Loading weights:  85%|████████▌ | 248/291 [00:01<00:00, 256.35it/s]Loading weights:  96%|█████████▌| 280/291 [00:01<00:00, 271.07it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 246.85it/s]
+START {"tag": "gpu=3,bits=7,seed=4", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 4, "device": 3, "bdf": "0000:19:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 12, "torch": "2.13.0+rocm7.1"}
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/lora.py:144: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:822.)
+  loss_sum += float(out.loss) / acc
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 1, "samples": 8, "loss": 4.6595253348350525, "seconds": 10.749728918075562, "t_begin": 1793700291.4046123, "t_end": 1793700302.1543412}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 2, "samples": 16, "loss": 4.354951322078705, "seconds": 6.687297821044922, "t_begin": 1793700302.1545033, "t_end": 1793700308.8418012}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 3, "samples": 24, "loss": 4.14981335401535, "seconds": 6.359076738357544, "t_begin": 1793700308.8419685, "t_end": 1793700315.2010453}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 4, "samples": 32, "loss": 3.8226772248744965, "seconds": 6.692525148391724, "t_begin": 1793700315.2012067, "t_end": 1793700321.8937318}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 5, "samples": 40, "loss": 3.749318838119507, "seconds": 6.398432970046997, "t_begin": 1793700321.893904, "t_end": 1793700328.292337}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 6, "samples": 48, "loss": 3.619064211845398, "seconds": 6.387928247451782, "t_begin": 1793700328.2924938, "t_end": 1793700334.680422}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 7, "samples": 56, "loss": 3.472539037466049, "seconds": 6.7256293296813965, "t_begin": 1793700334.6805649, "t_end": 1793700341.4061942}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 8, "samples": 64, "loss": 3.4633160829544067, "seconds": 6.4905383586883545, "t_begin": 1793700341.4063842, "t_end": 1793700347.8969226}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 9, "samples": 72, "loss": 3.401429682970047, "seconds": 6.5071845054626465, "t_begin": 1793700347.897089, "t_end": 1793700354.4042735}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 10, "samples": 80, "loss": 3.4023226499557495, "seconds": 6.607889890670776, "t_begin": 1793700354.4043863, "t_end": 1793700361.0122762}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 11, "samples": 88, "loss": 3.354981243610382, "seconds": 6.562163591384888, "t_begin": 1793700361.0123959, "t_end": 1793700367.5745595}
+STEP {"tag": "gpu=3,bits=7,seed=4", "step": 12, "samples": 96, "loss": 3.3219416439533234, "seconds": 6.584605693817139, "t_begin": 1793700367.5746605, "t_end": 1793700374.1592662}
+END {"tag": "gpu=3,bits=7,seed=4", "minutes": 1.379249087969462}
