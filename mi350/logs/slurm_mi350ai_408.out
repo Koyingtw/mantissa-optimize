@@ -1,0 +1,54 @@
+job=408 host=p01-r01-n01 script=ai_fp8attn.sh dir=/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350 start=Tue Nov  3 05:23:00 PM UTC 2026
+W20261103 17:23:04.558267 124289427350272 agent.cpp:554] Conflicting visibility of agent-3 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:04.558281 124289427350272 agent.cpp:554] Conflicting visibility of agent-3 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:04.722746 124289427350272 agent.cpp:554] Conflicting visibility of agent-4 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:04.722754 124289427350272 agent.cpp:554] Conflicting visibility of agent-4 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:04.886411 124289427350272 agent.cpp:554] Conflicting visibility of agent-5 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:04.886417 124289427350272 agent.cpp:554] Conflicting visibility of agent-5 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:05.050012 124289427350272 agent.cpp:554] Conflicting visibility of agent-6 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:05.050019 124289427350272 agent.cpp:554] Conflicting visibility of agent-6 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:05.213030 124289427350272 agent.cpp:554] Conflicting visibility of agent-7 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:05.213037 124289427350272 agent.cpp:554] Conflicting visibility of agent-7 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:05.375918 124289427350272 agent.cpp:554] Conflicting visibility of agent-8 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:05.375925 124289427350272 agent.cpp:554] Conflicting visibility of agent-8 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:05.538334 124289427350272 agent.cpp:554] Conflicting visibility of agent-9 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:05.538341 124289427350272 agent.cpp:554] Conflicting visibility of agent-9 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+ROUND=trunc device=AMD Radeon Graphics
+| input | round | bits | backward | resid | bias | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|---|
+| randn | trunc | 3 | stale | 3.71e-02 | -4.46e-03 | 6.438e-02 | 6.337e-02 | 4.790e-02 |
+| randn | trunc | 3 | matched | 2.78e-07 | -1.41e-07 | 6.144e-02 | 6.010e-02 | 4.790e-02 |
+| randn | trunc | 2 | stale | 7.37e-02 | -4.80e-02 | 2.168e-01 | 2.163e-01 | 1.439e-01 |
+| randn | trunc | 2 | matched | 2.74e-07 | -1.40e-07 | 2.122e-01 | 2.120e-01 | 1.439e-01 |
+| randn | trunc | 1 | stale | 1.59e-01 | -1.28e-01 | 4.697e-01 | 4.681e-01 | 3.179e-01 |
+| randn | trunc | 1 | matched | 2.69e-07 | -1.41e-07 | 4.639e-01 | 4.636e-01 | 3.179e-01 |
+| randn | trunc | 0 | stale | 2.96e-01 | -2.56e-01 | 7.256e-01 | 7.242e-01 | 5.286e-01 |
+| randn | trunc | 0 | matched | 2.87e-07 | -1.70e-07 | 7.203e-01 | 7.202e-01 | 5.286e-01 |
+rc=0
+W20261103 17:23:22.809667 128249884214016 agent.cpp:554] Conflicting visibility of agent-3 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:22.809681 128249884214016 agent.cpp:554] Conflicting visibility of agent-3 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:22.976636 128249884214016 agent.cpp:554] Conflicting visibility of agent-4 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:22.976644 128249884214016 agent.cpp:554] Conflicting visibility of agent-4 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:23.142677 128249884214016 agent.cpp:554] Conflicting visibility of agent-5 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:23.142684 128249884214016 agent.cpp:554] Conflicting visibility of agent-5 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:23.308892 128249884214016 agent.cpp:554] Conflicting visibility of agent-6 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:23.308899 128249884214016 agent.cpp:554] Conflicting visibility of agent-6 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:23.474818 128249884214016 agent.cpp:554] Conflicting visibility of agent-7 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:23.474825 128249884214016 agent.cpp:554] Conflicting visibility of agent-7 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:23.641049 128249884214016 agent.cpp:554] Conflicting visibility of agent-8 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:23.641055 128249884214016 agent.cpp:554] Conflicting visibility of agent-8 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+W20261103 17:23:23.806704 128249884214016 agent.cpp:554] Conflicting visibility of agent-9 between HIP_VISIBLE_DEVICES and CUDA_VISIBLE_DEVICES. Assuming HIP_VISIBLE_DEVICES supersedes CUDA_VISIBLE_DEVICES
+W20261103 17:23:23.806715 128249884214016 agent.cpp:554] Conflicting visibility of agent-9 between HIP_VISIBLE_DEVICES and GPU_DEVICE_ORDINAL. Assuming HIP_VISIBLE_DEVICES supersedes GPU_DEVICE_ORDINAL
+ROUND=nearest device=AMD Radeon Graphics
+| input | round | bits | backward | resid | bias | dQ | dK | dV |
+|---|---|---|---|---|---|---|---|---|
+| randn | nearest | 3 | stale | 3.71e-02 | -4.46e-03 | 6.438e-02 | 6.337e-02 | 4.790e-02 |
+| randn | nearest | 3 | matched | 2.78e-07 | -1.41e-07 | 6.144e-02 | 6.010e-02 | 4.790e-02 |
+| randn | nearest | 2 | stale | 7.42e-02 | -1.35e-02 | 1.551e-01 | 1.538e-01 | 1.133e-01 |
+| randn | nearest | 2 | matched | 2.75e-07 | -1.35e-07 | 1.504e-01 | 1.490e-01 | 1.133e-01 |
+| randn | nearest | 1 | stale | 1.16e-01 | -2.68e-02 | 2.556e-01 | 2.508e-01 | 1.837e-01 |
+| randn | nearest | 1 | matched | 2.76e-07 | -1.37e-07 | 2.471e-01 | 2.442e-01 | 1.837e-01 |
+| randn | nearest | 0 | stale | 2.00e-01 | -5.66e-02 | 4.422e-01 | 4.317e-01 | 3.167e-01 |
+| randn | nearest | 0 | matched | 2.77e-07 | -1.37e-07 | 4.244e-01 | 4.157e-01 | 3.167e-01 |
+rc=0
+rc=0 end=Tue Nov  3 05:23:27 PM UTC 2026

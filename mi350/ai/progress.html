@@ -126,7 +126,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 16:30 UTC（台灣 11-04 00:30）</p>
+  <p class="meta">最後更新：2026-11-03 17:40 UTC（台灣 11-04 01:40）</p>
 </header>
 
 <section>
@@ -145,7 +145,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     </div>
     <div class="next">
       <p><b>今天已完成</b>　七個模型 × 19 種設定的精度表（W3）。</p>
-      <p><b>接下來</b>　在 MI350X 上重現「截位元把 FP8 attention 的無害誤差變成偏差」，並檢查「四捨五入」是否就不會有偏差（job 408）。之後開始寫論文。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
+      <p><b>接下來</b>　用 Llama 2 70B 的真實 attention 資料（與 GH200 同模型、同資料、同層）重跑數值陷阱實驗（job 410），之後開始寫論文。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
       <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
     </div>
   </div>
@@ -169,7 +169,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
         <li><span>在「出廠就被電卡住」的 GPU 上，量出 AI 推論與微調實際能快多少、精度掉多少，並畫出划算的界線。結果：只有 2–6%，而且只在 BF16 有效。<span class="st ok">完成（結果偏負面）</span></span></li>
         <li><span>誠實比較「截位元」與「直接換更小格式」。已知：FP8 比 BF16 少約三成能量、快 10–44%，截位元被支配；MXFP6／MXFP4 尚未量。<span class="st run">FP8 已比較</span></span></li>
         <li><span>微調的代價：GH200 上截權重讓每步快 1%，卻要多看 22～39% 的資料才達標。MI350X 整台每步也只快 2.5%，很可能同樣是負面結果。<span class="st run">速度已量，收斂暫緩</span></span></li>
-        <li><span>FP8 attention 的數值陷阱與修正（GH200 上已完成）：截位元會把無害的誤差變成有方向的偏差，我們的修正能消除。<span class="st ok">已完成</span></span></li>
+        <li><span>FP8 attention 的數值陷阱與修正：截位元會把無害的誤差變成有方向的偏差。已在 AMD 上重現，並發現四捨五入把偏差縮到 1/4。<span class="st ok">兩平台完成，真實資料中</span></span></li>
       </ol>
     </div></div>
     <div class="vrow"><div class="k">誰會在乎</div><div>
@@ -180,6 +180,19 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 
 <section>
   <h2>最新發現</h2>
+  <div class="finding" style="border-left-color:var(--ok)">
+    <h3>數值陷阱在 AMD 上重現；「四捨五入」可以把偏差縮到 1/4</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>attention 的 FP8 運算元留幾位</th><th class="r">朝零截斷：偏差</th><th class="r">四捨五入：偏差</th><th class="r">四捨五入：梯度誤差</th></tr></thead>
+      <tbody>
+        <tr><td>3（原生）</td><td class="r">−0.004</td><td class="r">−0.004</td><td class="r">6%</td></tr>
+        <tr><td>2</td><td class="r">−0.048</td><td class="r">−0.014</td><td class="r">16%</td></tr>
+        <tr><td>1</td><td class="r">−0.128</td><td class="r">−0.027</td><td class="r">26%</td></tr>
+        <tr><td>0</td><td class="r">−0.256</td><td class="r">−0.057</td><td class="r">44%</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>白話：</b>GH200 上發現的「截位元把無害誤差變成有方向的偏差」，在 AMD MI350X 上用同一個 kernel 重現了，數字幾乎一樣。GH200 當時用的是「朝零截斷」；改用「四捨五入」（一樣把低位清成 0、一樣省電），偏差只剩 1/4～1/5。但不管哪種，attention 的 FP8 留到 2 位以下，梯度誤差就超過 15%，所以結論是：不要截 attention；如果要截，一定四捨五入，並用我們的修正（Delta-Matching，偏差降到 1e-7）。這是用亂數輸入，真實資料正在跑。</p>
+  </div>
   <div class="finding" style="border-left-color:var(--wait)">
     <h3>推論省電：截位元只省 2–6%，FP8 本身省約三成</h3>
     <p>用 Llama 2 7B 的真實權重模擬產生文字（每個 token 讀一次所有權重），整台 8 張卡同一設定（job 391）。</p>
@@ -310,6 +323,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 17:40</div><p>數值陷阱在 MI350X 上重現（與 GH200 幾乎相同）；四捨五入把偏差縮到 1/4～1/5。正在用 70B 的真實資料重跑。</p></div>
     <div class="ev"><div class="when">11-03 16:30</div><p>你選了「界線＋數值陷阱」。寫好論文大綱與缺口清單；發現 GH200 的偏差實驗用的是「朝零截斷」，正在 MI350X 上比較四捨五入。</p></div>
     <div class="ev"><div class="when">11-03 16:10</div><p>推論省電實驗完成：BF16 截成 3～4 位每 token 省 2–6%，FP8 省不到；但 FP8 本身比 BF16 少約三成。論文主軸待定。</p></div>
     <div class="ev"><div class="when">11-03 14:15</div><p>推論省電的量測程式修好、驗證過，完整版送出。順帶量到：batch 256 時 FP8 每秒 43.5k token、BF16 31.3k。</p></div>
