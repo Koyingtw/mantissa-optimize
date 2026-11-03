@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* 版面：單欄研究筆記，左側細時間軸；摘要在前、細節在後 */
+/* 版面：單欄研究進度報告；先講結論（進度與價值），再講發現，最後才是細節清單與時間軸 */
 :root {
   --bg: #f6f7f8;
   --surface: #ffffff;
@@ -40,54 +40,82 @@
   color-scheme: dark;
 }
 body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.75; }
-.wrap { max-width: 760px; margin: 0 auto; padding-block: 40px 64px;
+.wrap { max-width: 780px; margin: 0 auto; padding-block: 40px 64px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
-  display: grid; gap: 40px; }
+  display: grid; gap: 44px; }
 header { display: grid; gap: 10px; }
 .eyebrow { font-family: var(--f-mono); font-size: 12.5px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
-h1 { font-family: var(--f-display); font-size: clamp(28px, 5vw, 38px); line-height: 1.25; margin: 0; text-wrap: balance; }
+h1 { font-family: var(--f-display); font-size: clamp(27px, 5vw, 36px); line-height: 1.3; margin: 0; text-wrap: balance; }
 h2 { font-family: var(--f-display); font-size: 22px; margin: 0; text-wrap: balance; }
 h3 { font-size: 16.5px; margin: 0; }
 p { margin: 0; }
-.lede { font-size: 17.5px; color: var(--ink); }
 .meta { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
 section { display: grid; gap: 16px; }
-.num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
-.callout { background: var(--accent-soft); border-radius: 10px; padding: 16px 18px; display: grid; gap: 8px; }
-.callout strong { color: var(--accent); }
-.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-.fig { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
-.fig .big { font-family: var(--f-mono); font-size: 26px; font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
-.fig .cap { font-size: 14px; color: var(--muted); line-height: 1.55; }
-.list { display: grid; gap: 0; border-top: 1px solid var(--line); }
-.item { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
-.item > div { min-width: 0; display: grid; gap: 4px; }
-.item .what { font-weight: 700; }
-.item .why { color: var(--muted); font-size: 15px; }
-.pill { justify-self: start; font-size: 12.5px; font-weight: 700; padding: 2px 10px; border-radius: 999px; white-space: nowrap; margin-top: 3px; }
-.pill.ok { color: var(--ok); background: var(--ok-soft); }
-.pill.run { color: var(--run); background: var(--run-soft); }
-.pill.wait { color: var(--wait); background: var(--wait-soft); }
-.pill.todo { color: var(--todo); background: var(--todo-soft); }
-.ask { border: 1.5px solid var(--wait); border-radius: 10px; padding: 14px 16px; display: grid; gap: 8px; background: var(--surface); }
-.ask h3 { color: var(--wait); }
-code, .code { font-family: var(--f-mono); font-size: 13.5px; background: var(--todo-soft); padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
-pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(--todo-soft); padding: 10px 12px; border-radius: 8px; overflow-x: auto; }
-.tl { display: grid; gap: 0; border-left: 2px solid var(--line); margin-left: 6px; }
-.tl .ev { position: relative; padding: 0 0 18px 20px; display: grid; gap: 4px; }
-.tl .ev::before { content: ""; position: absolute; left: -7px; top: 8px; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--surface); border: 2px solid var(--accent); }
-.tl .when { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.muted { color: var(--muted); }
+.small { font-size: 15px; }
+
+/* 一段話的現況 */
+.now { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; display: grid; gap: 14px; }
+.now .headline { font-size: 18px; font-weight: 700; line-height: 1.6; }
+.phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.ph { display: grid; gap: 6px; min-width: 0; }
+.ph .bar { height: 8px; border-radius: 4px; background: var(--todo-soft); overflow: hidden; }
+.ph .bar span { display: block; height: 100%; border-radius: 4px; }
+.ph .name { font-size: 14px; font-weight: 700; }
+.ph .st { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.fill-ok { background: var(--ok); }
+.fill-run { background: var(--run); }
+.next { display: grid; gap: 6px; font-size: 15.5px; }
+.next b { color: var(--accent); }
+
+/* 研究價值 */
+.value { display: grid; gap: 12px; }
+.vrow { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+.vrow:last-child { border-bottom: 1px solid var(--line); }
+.vrow .k { font-weight: 700; color: var(--accent); }
+.vrow > div { min-width: 0; display: grid; gap: 6px; }
+.contrib { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; counter-reset: c; }
+.contrib li { display: grid; grid-template-columns: 26px 1fr; gap: 8px; counter-increment: c; }
+.contrib li::before { content: counter(c); font-family: var(--f-mono); font-weight: 500; color: var(--accent); }
+.contrib .st { font-size: 13px; font-weight: 700; padding: 0 8px; border-radius: 999px; margin-left: 6px; white-space: nowrap; }
+
+/* 最新發現 */
+.finding { border-left: 4px solid var(--run); background: var(--surface); border-radius: 0 12px 12px 0; padding: 18px 20px; display: grid; gap: 12px; }
+.finding h3 { font-size: 18px; }
 .tbl { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-size: 15px; }
 th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font-size: 13px; color: var(--muted); font-weight: 500; }
 td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.fig { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.fig .big { font-family: var(--f-mono); font-size: 26px; font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
+.fig .cap { font-size: 14px; color: var(--muted); line-height: 1.55; }
+
+.list { display: grid; border-top: 1px solid var(--line); }
+.item { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.item > div { min-width: 0; display: grid; gap: 4px; }
+.item .what { font-weight: 700; }
+.item .why { color: var(--muted); font-size: 15px; }
+.pill { justify-self: start; font-size: 12.5px; font-weight: 700; padding: 2px 10px; border-radius: 999px; white-space: nowrap; margin-top: 3px; }
+.ok { color: var(--ok); background: var(--ok-soft); }
+.run { color: var(--run); background: var(--run-soft); }
+.wait { color: var(--wait); background: var(--wait-soft); }
+.todo { color: var(--todo); background: var(--todo-soft); }
+
+pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(--todo-soft); padding: 10px 12px; border-radius: 8px; overflow-x: auto; }
+.tl { display: grid; border-left: 2px solid var(--line); margin-left: 6px; }
+.tl .ev { position: relative; padding: 0 0 18px 20px; display: grid; gap: 4px; }
+.tl .ev::before { content: ""; position: absolute; left: -7px; top: 8px; width: 12px; height: 12px; border-radius: 50%;
+  background: var(--surface); border: 2px solid var(--accent); }
+.tl .when { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
 .gloss { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 15px; }
 .gloss dt { font-weight: 700; }
 .gloss dd { margin: 0; color: var(--muted); min-width: 0; }
-@media (max-width: 520px) {
-  .item { grid-template-columns: 1fr; gap: 6px; }
+@media (max-width: 560px) {
+  .phases { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vrow, .item { grid-template-columns: 1fr; gap: 6px; }
   .gloss { grid-template-columns: 1fr; }
   .gloss dd { margin-bottom: 6px; }
 }
@@ -97,57 +125,112 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
 
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
-  <h1>少用幾個位元，AI 能不能在省電受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 08:05（台灣時間 16:05）</p>
+  <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
+  <p class="meta">最後更新：2026-11-03 08:20 UTC（台灣 16:20）</p>
 </header>
 
 <section>
-  <h2>這篇在做什麼</h2>
-  <p class="lede">GPU 有功耗上限。算矩陣乘法時，數字裡每個位元的 0/1 一直切換，切換越多越耗電；耗電碰到上限，GPU 就只好降時脈、變慢。如果把數字最後幾個「不太重要」的位元固定成 0，切換變少、省下電，GPU 就能維持較高的時脈，算得更快。</p>
-  <p>第一篇（SC 論文）證明這招在科學計算（HPL、量子化學等）有效。這一篇要問：在 AI 模型上行不行？AI 常用的 BF16 只有 7 個尾數位元、FP8 只有 3 個，能拿掉的本來就不多，拿掉之後模型會不會變笨？</p>
-  <div class="callout">
-    <p><strong>為什麼現在用 MI350X 做：</strong>AMD MI350X 在出廠設定（每張 1000 W）下，算 AI 常用的 BF16、FP8 矩陣時幾乎一直頂著功耗上限。也就是說，它不需要另外限電就會因為耗電而變慢，正好是這個方法能發揮的地方。GH200 在出廠設定下 AI 矩陣運算沒有被電壓住，所以那邊的效益小很多。</p>
+  <h2>現在走到哪</h2>
+  <div class="now">
+    <p class="headline">準備工作今天全部完成，第一批實驗已經在跑。目前還沒有可以寫進論文的結論；最早的一批結果（模型會不會變笨）預計今晚出來。</p>
+    <div class="phases" role="list">
+      <div class="ph" role="listitem"><div class="bar"><span class="fill-ok" style="width:100%"></span></div>
+        <div class="name">1　準備</div><div class="st">完成：環境、7 個模型、資料、實驗程式</div></div>
+      <div class="ph" role="listitem"><div class="bar"><span class="fill-run" style="width:20%"></span></div>
+        <div class="name">2　實驗</div><div class="st">6 項中 1 項在跑、2 項排隊、1 項試跑完</div></div>
+      <div class="ph" role="listitem"><div class="bar"><span style="width:0"></span></div>
+        <div class="name">3　分析</div><div class="st">尚未開始</div></div>
+      <div class="ph" role="listitem"><div class="bar"><span style="width:0"></span></div>
+        <div class="name">4　寫論文</div><div class="st">尚未開始</div></div>
+    </div>
+    <div class="next">
+      <p><b>今晚</b>　七個模型在 19 種位元設定下的精度表（實驗 W3，進行中）。</p>
+      <p><b>接下來</b>　確認微調每步快 16% 是不是真的（W5 對調測試，排隊中）；只截權重的速度表（W1，等 n02）。</p>
+      <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>這篇的研究價值</h2>
+  <div class="value">
+    <div class="vrow"><div class="k">要解決的問題</div><div>
+      <p>AI 的訓練與推論越來越受「電」限制：資料中心的供電與散熱有上限，新一代 GPU 出廠就把功耗壓在上限附近。AMD MI350X 在出廠設定下算 AI 常用的 BF16、FP8 矩陣時，幾乎全程頂著 1000 W 的上限，等於花錢買的算力有一部分因為電不夠而用不出來。</p>
+    </div></div>
+    <div class="vrow"><div class="k">現在的做法</div><div>
+      <p>大家的標準答案是換更小的數字格式（BF16 → FP8 → FP4）。這有效，但要改程式、要硬體支援、常常會掉精度，而且每換一次都得重新驗證。</p>
+    </div></div>
+    <div class="vrow"><div class="k">我們的做法</div><div>
+      <p>格式不換、程式不改，只在載入權重時把每個數字最後幾個位元設成 0，一次做完、之後不花時間。數字的位元切換變少，晶片耗電下降，在被電卡住的 GPU 上就能跑得更快。第一篇已經證明這在科學計算上可以加速 5～10%。</p>
+    </div></div>
+    <div class="vrow"><div class="k">新在哪裡</div><div>
+      <p>這篇預計提出四件事，前兩件決定論文的分量：</p>
+      <ol class="contrib">
+        <li><span>在「出廠就被電卡住」的 GPU 上，量出 AI 推論與微調實際能快多少、精度掉多少，並畫出划算的界線（截幾位還划算、什麼工作值得做）。<span class="st run">實驗中</span></span></li>
+        <li><span>誠實比較「截位元」與「直接換更小格式」（FP8、MXFP6／MXFP4）：能換格式的時候截位元還有沒有意義。這是審稿人一定會問的。<span class="st todo">待做</span></span></li>
+        <li><span>微調的代價：GH200 上截權重讓每步快一點，卻要多看 22～39% 的資料才達標。MI350X 被電卡得更緊，每步可能快得多，答案可能反過來。<span class="st run">試跑完</span></span></li>
+        <li><span>FP8 attention 的數值陷阱與修正（GH200 上已完成）：截位元會把無害的誤差變成有方向的偏差，我們的修正能消除。<span class="st ok">已完成</span></span></li>
+      </ol>
+    </div></div>
+    <div class="vrow"><div class="k">誰會在乎</div><div>
+      <p>經營 GPU 機房、受電力限制的雲端與超算中心；做大型模型推論服務的人（推論成本以電費為主）；設計下一代 AI 晶片的人（哪些位元的切換最耗電）。</p>
+    </div></div>
+  </div>
+</section>
+
+<section>
+  <h2>最新發現（還在驗證）</h2>
+  <div class="finding">
+    <h3>截成 3 位的微調，每一步快了約 16%</h3>
+    <p>Llama 2 7B 的 LoRA 微調，8 張卡同時跑：4 張用原生權重、4 張用截成 3 位的權重，各跑 20 步。</p>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th class="r">每步時間</th><th class="r">功耗</th><th class="r">回報時脈</th></tr></thead>
+      <tbody>
+        <tr><td>原生</td><td class="r">7.1 s</td><td class="r">847–878 W</td><td class="r">1745–1800 MHz</td></tr>
+        <tr><td>截成 3 位</td><td class="r">6.1 s</td><td class="r">894–919 W</td><td class="r">1750–1790 MHz</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>為什麼重要：</b>這比單獨量矩陣乘法得到的 3～7% 大很多，而且兩組都沒頂到 1000 W、時脈也一樣，所以不是「省電讓時脈變高」這個已知機制。如果是真的，代表截位元在 MI350X 上還有第二種加速來源，即使沒被電卡住也有效，會是這篇最有新意的結果。</p>
+    <p><b>為什麼還不能信：</b>這次截斷組剛好都在同一批 GPU 上，可能只是那幾張卡比較快。正在把卡對調重跑；如果加速還在，再用鎖定時脈與逐個運算計時找出原因。精度方面，第 20 步兩組的評估損失一樣（2.522 對 2.523），但步數太少，還看不出對收斂的影響。</p>
   </div>
 </section>
 
 <section>
   <h2>目前已知的數字</h2>
   <div class="figs">
-    <div class="fig"><div class="big">+7.9%</div><div class="cap">MI350X、出廠 1000 W，BF16 矩陣乘法只留 3 個尾數位元（兩邊運算元都截，隨機資料；第一篇已量）</div></div>
-    <div class="fig"><div class="big">+3.2%</div><div class="cap">同上但只截「權重」那一邊（單卡試跑，LLM 形狀）。推論時權重可以先截好、不花時間</div></div>
-    <div class="fig"><div class="big">+22～39%</div><div class="cap">GH200 上把 70B 模型的 FP8 權重截到 2 位做微調，達標需要多的樣本數（負面結果）</div></div>
+    <div class="fig"><div class="big">+7.9%</div><div class="cap">MI350X 出廠 1000 W，BF16 矩陣乘法只留 3 個尾數位元（兩邊都截，亂數資料；第一篇）</div></div>
+    <div class="fig"><div class="big">+3.2%</div><div class="cap">同上但只截「權重」那一邊（單卡試跑，LLM 的矩陣大小）</div></div>
+    <div class="fig"><div class="big">5.4732</div><div class="cap">Llama 2 7B 原生 perplexity，MI350X；GH200 是 5.4736，兩平台對得上</div></div>
   </div>
-  <p>白話：在 MI350X 上「截權重」本身確實能加速幾個百分點；但截太多會讓模型變差，訓練時要多看很多資料才能達標，反而更慢。這篇要找出划算的界線。</p>
 </section>
 
 <section>
-  <h2>實驗進度</h2>
+  <h2>實驗清單</h2>
   <div class="list">
-    <div class="item"><span class="pill wait">排隊中</span><div>
-      <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法微基準）</div>
-      <div class="why">用 Llama-3-8B 的實際矩陣大小，在 1000 W 和 700 W 下，比較 BF16／FP8 各種位元數的速度。決定「推論只截權重」值不值得。第一次送出時每次量測前都等滿 2 分鐘降溫，算下來要 7 小時以上，已取消並精簡成約 2.5 小時的版本（job 312）。n02 前面還有第一篇的 5 個 job，預計 3～5 小時後開始。</div></div></div>
     <div class="item"><span class="pill run">進行中</span><div>
       <div class="what">W3　模型會不會變笨（WikiText-2 perplexity）</div>
-      <div class="why">七個模型（Llama 2 7B、Llama 3.1 8B、Llama 2 70B、Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）在 19 種格式下的困惑度，和 GH200 的表逐列對照。只量精度、跟耗電無關，所以哪個節點先空就跑哪個（job 329，已在 n01 開跑）。第一個數字：Llama 2 7B 原生 BF16 在 MI350X 是 5.4732，GH200 是 5.4736，兩個平台對得上。</div></div></div>
+      <div class="why">七個模型（Llama 2 7B、Llama 3.1 8B、Llama 2 70B、Qwen2.5-7B、Qwen3-8B、Mistral-7B、OPT-6.7B）× 19 種位元設定，和 GH200 的表逐列對照。n01，job 329。<b>論文用途：</b>決定截幾位是安全的。</div></div></div>
+    <div class="item"><span class="pill run">試跑完</span><div>
+      <div class="what">W5　微調：每步變快，能不能抵掉多要的資料？</div>
+      <div class="why">MLPerf 的 LoRA 設定縮成單卡版，Llama 2 7B、MLPerf 同一份資料，8 張卡跑「原生／截斷 × 4 個種子」。試跑發現每步快 16%（見上），對調 GPU 驗證中（job 341）；之後要跑到收斂，每輪 3～4 小時。<b>論文用途：</b>貢獻 3。</div></div></div>
     <div class="item"><span class="pill wait">排隊中</span><div>
-      <div class="what">W5　微調：截權重讓每步變快，能不能抵掉多要的資料？</div>
-      <div class="why">照 MLPerf 的 LoRA 設定縮小成單卡版，用 Llama 2 7B 和 MLPerf 同一份 GovReport 資料；8 張卡同時跑「原生／截斷 × 4 個隨機種子」。短測試（每張卡 20 步）已跑完：程式正常。<b>意外發現</b>：截成 3 位的訓練每步 6.1 秒、原生 7.1 秒，快了約 16%，比矩陣乘法微基準大很多；但兩組都沒頂到 1000 W、時脈也差不多，原因還不清楚。先排除「剛好分到比較快的 GPU」：對調 GPU 重量中（job 341）。</div></div></div>
+      <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法速度）</div>
+      <div class="why">Llama-3-8B 的矩陣大小，1000 W 與 700 W。第一次送出時每次量測都等滿 2 分鐘降溫、要 7 小時以上，已精簡成約 2.5 小時（job 312，n02）。<b>論文用途：</b>推論只截權重值不值得。</div></div></div>
     <div class="item"><span class="pill todo">待做</span><div>
-      <div class="what">W4　實際推論的速度與耗電</div>
-      <div class="why">量生成文字時每秒幾個 token、每個 token 耗多少電，並和「直接換成更小的格式」（FP8、MXFP6、MXFP4，MI350X 硬體支援）比較。要誠實回答：能換格式時，截位元是不是就沒必要？</div></div></div>
+      <div class="what">W4　實際推論的速度與耗電，對照直接換格式</div>
+      <div class="why">每秒產生幾個 token、每個 token 耗多少電；和 FP8、MXFP6、MXFP4 比較。<b>論文用途：</b>貢獻 1、2 的核心數據。</div></div></div>
     <div class="item"><span class="pill todo">待做</span><div>
       <div class="what">W2　用真實模型的權重量矩陣乘法</div>
-      <div class="why">目前的速度數字來自亂數資料；真實權重的位元分佈不同，省電效果可能不一樣。用第一篇剛做好的「讀入真實資料」功能來量。</div></div></div>
+      <div class="why">目前的速度來自亂數資料；真實權重的位元分佈不同，省電效果可能不一樣。<b>論文用途：</b>讓微基準數字可信。</div></div></div>
     <div class="item"><span class="pill todo">視時間</span><div>
-      <div class="what">W6　AMD 的 FP8 attention 有沒有 GH200 上找到的數值問題</div>
-      <div class="why">GH200 上發現 NVIDIA 的 FP8 attention 反向傳播有個小誤差，平常無害，但截位元後會變成有方向的偏差。看 AMD 的實作是否也一樣。</div></div></div>
+      <div class="what">W6　AMD 的 FP8 attention 有沒有同樣的數值問題</div>
+      <div class="why">把 GH200 的發現推到第二家廠商。<b>論文用途：</b>貢獻 4 的普遍性。</div></div></div>
   </div>
 </section>
 
 <section>
   <h2>需要你處理</h2>
-  <p>目前沒有。Hugging Face 已登入，三個 Llama 模型的授權都通過了。</p>
-  <p style="color:var(--muted);font-size:15px">節點排程：n02 前面還有第一篇的一長串實驗；n01 在跑你的 coldgemm。精度類的實驗我會塞進空檔，完整的 LoRA 訓練要好幾個小時，到時會先問你放哪個節點。</p>
+  <p>目前沒有。完整微調要占一個節點好幾個小時，排之前會先問你。</p>
 </section>
 
 <section>
@@ -158,7 +241,7 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
       <tr><td>推論精度</td><td>BF16 留 3 位和 FP8 一樣準；六個模型 perplexity 只差 0.1～1%。截到 2 位就明顯變差。</td></tr>
       <tr><td>推論速度</td><td>FP8 本來就比 BF16 快 1.7～1.9 倍；只截權重在 GH200 1000 W 下 BF16 快 3.3%、FP8 快 1.7%。</td></tr>
       <tr><td>70B 微調</td><td>FP8 權重截到 2 位：每步快約 1%，但要多 22～39% 的資料才達標，整體變慢。截到 1 位不會收斂。</td></tr>
-      <tr><td>FP8 attention</td><td>NVIDIA 實作有個小誤差，平均是 0 所以無害；但截位元會讓它變成同方向的偏差。我們實作的修正（Delta-Matching）能完全消掉。另外找到 FP8 縮放在訓練一開始讓梯度全變 0 的問題並修好。</td></tr>
+      <tr><td>FP8 attention</td><td>NVIDIA 實作有個小誤差，平均是 0 所以無害；截位元會讓它變成同方向的偏差，我們的修正（Delta-Matching）能完全消掉。另外找到 FP8 縮放在訓練一開始讓梯度全變 0 的問題並修好。</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -171,19 +254,21 @@ td.r, th.r { text-align: right; font-family: var(--f-mono); font-variant-numeric
     <dt>功耗上限</dt><dd>GPU 最多能用的電（MI350X 出廠 1000 W）。碰到上限就降時脈。</dd>
     <dt>Perplexity</dt><dd>語言模型「猜下一個字」的困惑程度，越低越好；我們看的是比原生高了幾個百分點。</dd>
     <dt>LoRA 微調</dt><dd>不動原本的大模型權重，只訓練一小組附加參數。原本的權重因為不動，可以事先截好。</dd>
+    <dt>MXFP6／MXFP4</dt><dd>MI350X 硬體支援的 6 位元、4 位元格式，算得比 FP8 快一倍，但精度更低、要改程式。</dd>
   </dl>
 </section>
 
 <section>
   <h2>時間軸</h2>
   <div class="tl">
-    <div class="ev"><div class="when">11-03 08:05</div><p>LoRA 短測試在 n01 的空檔跑完：截斷組每步快約 16%，正在確認是不是 GPU 差異造成。perplexity 開跑，Llama 2 7B 的基準值和 GH200 一致。</p></div>
-    <div class="ev"><div class="when">11-03 07:35</div><p>三個 Llama 模型全部下載完成（含 70B）。三個實驗都在等節點空出來。</p></div>
-    <div class="ev"><div class="when">11-03 07:20</div><p>你登入 Hugging Face 後，三個 Llama 模型開始下載（7B 已完成）。perplexity 加入 Llama 改成七個模型；排了 LoRA 短測試。</p></div>
-    <div class="ev"><div class="when">11-03 06:55</div><p>W1 降溫等待太久，取消後改成精簡版重排；perplexity 第一次因讀不到測試資料失敗，修好重排。兩個都排在第一篇的實驗後面。</p></div>
-    <div class="ev"><div class="when">11-03 06:30</div><p>建立這份進度報告。下載好四個開放模型、WikiText-2 和 MLPerf 的 GovReport 微調資料；寫好微調程式；perplexity 實驗排進佇列。</p></div>
-    <div class="ev"><div class="when">11-03 05:45</div><p>MI350X 上裝好 PyTorch（ROCm）。單卡試跑：BF16 留 3 位，兩邊都截快 6.9%，只截權重快 3.2%。送出 W1。</p></div>
-    <div class="ev"><div class="when">11-03 05:30</div><p>開新分支 ai-fp8-paper 專門寫這篇。決定推論與微調兩條線並行。</p></div>
+    <div class="ev"><div class="when">11-03 08:20</div><p>依你的意見改寫這頁：最上面先講現在走到哪、研究價值，再講發現。</p></div>
+    <div class="ev"><div class="when">11-03 08:05</div><p>LoRA 試跑完：截斷組每步快約 16%，正在確認是不是 GPU 差異造成。perplexity 開跑，Llama 2 7B 的基準值和 GH200 一致。</p></div>
+    <div class="ev"><div class="when">11-03 07:35</div><p>三個 Llama 模型全部下載完成（含 70B）。</p></div>
+    <div class="ev"><div class="when">11-03 07:20</div><p>你登入 Hugging Face 後開始下載 Llama；perplexity 改成七個模型；排了 LoRA 試跑。</p></div>
+    <div class="ev"><div class="when">11-03 06:55</div><p>W1 降溫等待太久，取消後改成精簡版重排；perplexity 第一次讀不到測試資料而失敗，修好重排。</p></div>
+    <div class="ev"><div class="when">11-03 06:30</div><p>建立這份進度報告。下載四個開放模型、WikiText-2 和 MLPerf 的微調資料；寫好微調程式。</p></div>
+    <div class="ev"><div class="when">11-03 05:45</div><p>MI350X 上裝好 PyTorch。單卡試跑：BF16 留 3 位，兩邊都截快 6.9%，只截權重快 3.2%。</p></div>
+    <div class="ev"><div class="when">11-03 05:30</div><p>開新分支 ai-fp8-paper 專門寫這篇；決定推論與微調兩條線並行。</p></div>
   </div>
 </section>
 
