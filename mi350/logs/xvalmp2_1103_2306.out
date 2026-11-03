@@ -1,0 +1,108 @@
+id=xvalmp2_1103_2306 mol=113_Taxol dir=/tmp/mp2_113_Taxol caps=[1000] variants=[native t32n t20n t20n t32n native] emu=[] repeat=1
+nocc=226 nvir=2002 naux=5477 e_hf=-2912.945287493603 e_corr_ref=-12.155378757265 basis=def2-tzvp xyz=../apps/gpu4pyscf/benchmarks/molecules/organic/113_Taxol.xyz
+=== RUN cap=1000 round=0 cool=60s
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=2 bdf=0000:69:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=7 bdf=0000:99:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=3 bdf=0000:19:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=0 bdf=0000:79:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=5 bdf=0000:89:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=1 bdf=0000:09:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=6 bdf=0000:e9:00.0 tflop=1126.2
+nocc=226 nvir=2002 naux=5477 e_ref=-12.155378757265 gpu=4 bdf=0000:f9:00.0 tflop=1126.2
+ENERGY_MP2 gpu=7 variant=native pass=A gemm_j=21215.854 gemm_s=30.9438 total_j=22282.047 wall=32.3481
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=7 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.596e-13 de_native=0.000e+00 wall=32.348s t_begin=1793747276.800 t_end=1793747309.148 n_emu=0
+ENERGY_MP2 gpu=5 variant=native pass=A gemm_j=20307.064 gemm_s=31.0939 total_j=21309.978 wall=32.4861
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=5 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.667e-13 de_native=0.000e+00 wall=32.486s t_begin=1793747276.853 t_end=1793747309.339 n_emu=0
+ENERGY_MP2 gpu=0 variant=native pass=A gemm_j=20639.840 gemm_s=31.1487 total_j=21654.973 wall=32.5450
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=0 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.702e-13 de_native=0.000e+00 wall=32.545s t_begin=1793747276.847 t_end=1793747309.392 n_emu=0
+ENERGY_MP2 gpu=1 variant=native pass=A gemm_j=20780.534 gemm_s=31.2953 total_j=21797.794 wall=32.6878
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=1 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.613e-13 de_native=0.000e+00 wall=32.688s t_begin=1793747276.798 t_end=1793747309.485 n_emu=0
+ENERGY_MP2 gpu=3 variant=native pass=A gemm_j=21551.132 gemm_s=31.2351 total_j=22609.163 wall=32.6258
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=3 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.649e-13 de_native=0.000e+00 wall=32.626s t_begin=1793747276.869 t_end=1793747309.495 n_emu=0
+ENERGY_MP2 gpu=2 variant=native pass=A gemm_j=20895.273 gemm_s=31.5817 total_j=21920.124 wall=32.9822
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=2 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.649e-13 de_native=0.000e+00 wall=32.982s t_begin=1793747276.604 t_end=1793747309.587 n_emu=0
+ENERGY_MP2 gpu=4 variant=native pass=A gemm_j=20572.588 gemm_s=31.3471 total_j=21584.209 wall=32.7454
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=4 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.596e-13 de_native=0.000e+00 wall=32.745s t_begin=1793747276.920 t_end=1793747309.665 n_emu=0
+ENERGY_MP2 gpu=6 variant=native pass=A gemm_j=21566.640 gemm_s=31.3416 total_j=22644.597 wall=32.7325
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=6 variant=native pass=A e_corr=-12.155378757266 de_ref=-5.702e-13 de_native=0.000e+00 wall=32.733s t_begin=1793747276.944 t_end=1793747309.677 n_emu=0
+ENERGY_MP2 gpu=7 variant=t32n pass=A gemm_j=19875.959 gemm_s=30.4290 total_j=20954.389 wall=31.8314
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=7 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.898e-12 de_native=-5.338e-12 wall=31.831s t_begin=1793747309.514 t_end=1793747341.345 n_emu=0
+ENERGY_MP2 gpu=5 variant=t32n pass=A gemm_j=18969.292 gemm_s=30.6070 total_j=19980.648 wall=32.0004
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=5 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.899e-12 de_native=-5.333e-12 wall=32.000s t_begin=1793747309.704 t_end=1793747341.704 n_emu=0
+ENERGY_MP2 gpu=0 variant=t32n pass=A gemm_j=19307.875 gemm_s=30.6458 total_j=20332.758 wall=32.0426
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=0 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.905e-12 de_native=-5.334e-12 wall=32.043s t_begin=1793747309.765 t_end=1793747341.808 n_emu=0
+ENERGY_MP2 gpu=3 variant=t32n pass=A gemm_j=20299.882 gemm_s=30.7607 total_j=21356.429 wall=32.1486
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=3 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.903e-12 de_native=-5.338e-12 wall=32.149s t_begin=1793747309.871 t_end=1793747342.019 n_emu=0
+ENERGY_MP2 gpu=1 variant=t32n pass=A gemm_j=19441.058 gemm_s=30.8345 total_j=20459.327 wall=32.2289
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=1 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.896e-12 de_native=-5.334e-12 wall=32.229s t_begin=1793747309.850 t_end=1793747342.079 n_emu=0
+ENERGY_MP2 gpu=4 variant=t32n pass=A gemm_j=19231.562 gemm_s=30.7232 total_j=20246.237 wall=32.1204
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=4 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.905e-12 de_native=-5.345e-12 wall=32.120s t_begin=1793747310.030 t_end=1793747342.151 n_emu=0
+ENERGY_MP2 gpu=6 variant=t32n pass=A gemm_j=20385.411 gemm_s=30.8464 total_j=21463.024 wall=32.2387
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=6 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.899e-12 de_native=-5.329e-12 wall=32.239s t_begin=1793747310.042 t_end=1793747342.280 n_emu=0
+ENERGY_MP2 gpu=2 variant=t32n pass=A gemm_j=19725.991 gemm_s=31.0920 total_j=20769.315 wall=32.4983
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=2 variant=t32n pass=A e_corr=-12.155378757271 de_ref=-5.906e-12 de_native=-5.342e-12 wall=32.498s t_begin=1793747309.951 t_end=1793747342.449 n_emu=0
+ENERGY_MP2 gpu=7 variant=t20n pass=A gemm_j=18920.920 gemm_s=30.1176 total_j=20014.246 wall=31.5250
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=7 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.525s t_begin=1793747341.710 t_end=1793747373.235 n_emu=0
+ENERGY_MP2 gpu=5 variant=t20n pass=A gemm_j=18049.415 gemm_s=30.2538 total_j=19065.366 wall=31.6485
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=5 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.648s t_begin=1793747342.069 t_end=1793747373.718 n_emu=0
+ENERGY_MP2 gpu=0 variant=t20n pass=A gemm_j=18336.448 gemm_s=30.2997 total_j=19358.043 wall=31.6960
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=0 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.696s t_begin=1793747342.173 t_end=1793747373.869 n_emu=0
+ENERGY_MP2 gpu=3 variant=t20n pass=A gemm_j=19236.341 gemm_s=30.3250 total_j=20309.658 wall=31.7093
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=3 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.709s t_begin=1793747342.389 t_end=1793747374.098 n_emu=0
+ENERGY_MP2 gpu=1 variant=t20n pass=A gemm_j=18465.705 gemm_s=30.4652 total_j=19483.207 wall=31.8544
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=1 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.854s t_begin=1793747342.443 t_end=1793747374.297 n_emu=0
+ENERGY_MP2 gpu=4 variant=t20n pass=A gemm_j=18247.041 gemm_s=30.3915 total_j=19261.459 wall=31.7903
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=4 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.790s t_begin=1793747342.515 t_end=1793747374.306 n_emu=0
+ENERGY_MP2 gpu=6 variant=t20n pass=A gemm_j=19417.778 gemm_s=30.4448 total_j=20506.877 wall=31.8414
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=6 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.841s t_begin=1793747342.645 t_end=1793747374.486 n_emu=0
+ENERGY_MP2 gpu=2 variant=t20n pass=A gemm_j=18892.552 gemm_s=30.7272 total_j=19941.952 wall=32.1318
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=2 variant=t20n pass=A e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=32.132s t_begin=1793747342.814 t_end=1793747374.946 n_emu=0
+ENERGY_MP2 gpu=7 variant=t20n pass=B gemm_j=18995.368 gemm_s=30.1369 total_j=20095.455 wall=31.5466
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=7 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.547s t_begin=1793747373.600 t_end=1793747405.147 n_emu=0
+ENERGY_MP2 gpu=5 variant=t20n pass=B gemm_j=18077.874 gemm_s=30.2714 total_j=19100.168 wall=31.6692
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=5 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.669s t_begin=1793747374.082 t_end=1793747405.751 n_emu=0
+ENERGY_MP2 gpu=0 variant=t20n pass=B gemm_j=18342.649 gemm_s=30.3031 total_j=19367.622 wall=31.7007
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=0 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.701s t_begin=1793747374.234 t_end=1793747405.935 n_emu=0
+ENERGY_MP2 gpu=3 variant=t20n pass=B gemm_j=19318.547 gemm_s=30.3526 total_j=20397.827 wall=31.7376
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=3 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.738s t_begin=1793747374.466 t_end=1793747406.203 n_emu=0
+ENERGY_MP2 gpu=4 variant=t20n pass=B gemm_j=18253.732 gemm_s=30.4210 total_j=19269.934 wall=31.8121
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=4 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.812s t_begin=1793747374.671 t_end=1793747406.483 n_emu=0
+ENERGY_MP2 gpu=1 variant=t20n pass=B gemm_j=18484.502 gemm_s=30.4608 total_j=19509.240 wall=31.8558
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=1 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.856s t_begin=1793747374.662 t_end=1793747406.518 n_emu=0
+ENERGY_MP2 gpu=6 variant=t20n pass=B gemm_j=19489.551 gemm_s=30.4599 total_j=20588.359 wall=31.8528
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=6 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=31.853s t_begin=1793747374.850 t_end=1793747406.703 n_emu=0
+ENERGY_MP2 gpu=2 variant=t20n pass=B gemm_j=18989.380 gemm_s=30.7512 total_j=20042.126 wall=32.1565
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=2 variant=t20n pass=B e_corr=-12.155378778781 de_ref=-2.152e-08 de_native=-2.152e-08 wall=32.157s t_begin=1793747375.311 t_end=1793747407.467 n_emu=0
+ENERGY_MP2 gpu=7 variant=t32n pass=B gemm_j=20170.746 gemm_s=30.5257 total_j=21258.909 wall=31.9271
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=7 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.896e-12 de_native=-5.336e-12 wall=31.927s t_begin=1793747405.512 t_end=1793747437.440 n_emu=0
+ENERGY_MP2 gpu=5 variant=t32n pass=B gemm_j=19018.058 gemm_s=30.6240 total_j=20041.318 wall=32.0205
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=5 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.906e-12 de_native=-5.340e-12 wall=32.021s t_begin=1793747406.116 t_end=1793747438.137 n_emu=0
+ENERGY_MP2 gpu=0 variant=t32n pass=B gemm_j=19382.674 gemm_s=30.7158 total_j=20401.654 wall=32.1085
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=0 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.901e-12 de_native=-5.331e-12 wall=32.109s t_begin=1793747406.300 t_end=1793747438.408 n_emu=0
+ENERGY_MP2 gpu=3 variant=t32n pass=B gemm_j=20532.058 gemm_s=30.7539 total_j=21607.932 wall=32.1358
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=3 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.905e-12 de_native=-5.340e-12 wall=32.136s t_begin=1793747406.569 t_end=1793747438.705 n_emu=0
+ENERGY_MP2 gpu=4 variant=t32n pass=B gemm_j=19287.391 gemm_s=30.8117 total_j=20306.624 wall=32.2047
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=4 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.903e-12 de_native=-5.343e-12 wall=32.205s t_begin=1793747406.848 t_end=1793747439.052 n_emu=0
+ENERGY_MP2 gpu=1 variant=t32n pass=B gemm_j=19557.877 gemm_s=30.8354 total_j=20587.759 wall=32.2252
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=1 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.899e-12 de_native=-5.338e-12 wall=32.225s t_begin=1793747406.882 t_end=1793747439.108 n_emu=0
+ENERGY_MP2 gpu=6 variant=t32n pass=B gemm_j=20677.185 gemm_s=30.8651 total_j=21773.269 wall=32.2561
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=6 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.908e-12 de_native=-5.338e-12 wall=32.256s t_begin=1793747407.067 t_end=1793747439.323 n_emu=0
+ENERGY_MP2 gpu=2 variant=t32n pass=B gemm_j=20080.335 gemm_s=31.1617 total_j=21131.506 wall=32.5610
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=2 variant=t32n pass=B e_corr=-12.155378757271 de_ref=-5.899e-12 de_native=-5.334e-12 wall=32.561s t_begin=1793747407.832 t_end=1793747440.393 n_emu=0
+ENERGY_MP2 gpu=7 variant=native pass=B gemm_j=21812.092 gemm_s=31.0322 total_j=22907.235 wall=32.4340
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=7 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.684e-13 de_native=-8.882e-15 wall=32.434s t_begin=1793747437.796 t_end=1793747470.230 n_emu=0
+ENERGY_MP2 gpu=5 variant=native pass=B gemm_j=20419.409 gemm_s=31.0608 total_j=21434.543 wall=32.4527
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=5 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.631e-13 de_native=3.553e-15 wall=32.453s t_begin=1793747438.493 t_end=1793747470.946 n_emu=0
+ENERGY_MP2 gpu=0 variant=native pass=B gemm_j=20853.881 gemm_s=31.2387 total_j=21876.644 wall=32.6304
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=0 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.702e-13 de_native=0.000e+00 wall=32.630s t_begin=1793747438.765 t_end=1793747471.395 n_emu=0
+ENERGY_MP2 gpu=3 variant=native pass=B gemm_j=22187.316 gemm_s=31.3374 total_j=23272.308 wall=32.7206
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=3 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.702e-13 de_native=-5.329e-15 wall=32.721s t_begin=1793747439.062 t_end=1793747471.783 n_emu=0
+ENERGY_MP2 gpu=4 variant=native pass=B gemm_j=20793.220 gemm_s=31.3473 total_j=21816.494 wall=32.7394
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=4 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.649e-13 de_native=-5.329e-15 wall=32.739s t_begin=1793747439.409 t_end=1793747472.148 n_emu=0
+ENERGY_MP2 gpu=1 variant=native pass=B gemm_j=21085.530 gemm_s=31.3870 total_j=22108.257 wall=32.7782
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=1 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.649e-13 de_native=-3.553e-15 wall=32.778s t_begin=1793747439.464 t_end=1793747472.242 n_emu=0
+ENERGY_MP2 gpu=6 variant=native pass=B gemm_j=22265.809 gemm_s=31.3872 total_j=23378.171 wall=32.7858
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=6 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.684e-13 de_native=1.776e-15 wall=32.786s t_begin=1793747439.680 t_end=1793747472.465 n_emu=0
+ENERGY_MP2 gpu=2 variant=native pass=B gemm_j=21657.746 gemm_s=31.7820 total_j=22721.157 wall=33.1814
+RESULT_MP2 tag=cap=1000,round=0,emu=none gpu=2 variant=native pass=B e_corr=-12.155378757266 de_ref=-5.649e-13 de_native=0.000e+00 wall=33.181s t_begin=1793747440.749 t_end=1793747473.930 n_emu=0
+mp2 done

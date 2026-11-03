@@ -16,6 +16,8 @@
 // GEMMul8 sets up each new shape on its first call; that one-time cost is part of the first pass of a variant (pass A),
 // so passes A and B of the same variant measure a single run and a repeated run.
 //
+// DFMP2_ENERGY=1 (environment): synchronize around every DGEMM and read the GPU's hardware energy counter (amdsmi) there;
+// one ENERGY_MP2 line per variant gives the energy and time of the GEMMs and of the whole contraction (review round 10).
 // --percall prints one CALL line per DGEMM of each variant (i, n, method, GEMM time from HIP events), to check a
 // per-call time model against measurement.
 //
@@ -24,6 +26,7 @@
 // this process's first native run, wall time of the contraction, Unix start/end.
 #include <hip/hip_runtime.h>
 #include <hipblas/hipblas.h>
+#include <amd_smi/amdsmi.h>
 #ifdef WITH_GEMMUL8
 #include "gemmul8.hpp"
 #endif
@@ -44,6 +47,14 @@
   fprintf(stderr, "HIP %s:%d %s\n", __FILE__, __LINE__, hipGetErrorString(e_)); exit(1); } } while (0)
 #define CB(x) do { hipblasStatus_t s_ = (x); if (s_ != HIPBLAS_STATUS_SUCCESS) { \
   fprintf(stderr, "hipBLAS %s:%d %d\n", __FILE__, __LINE__, (int)s_); exit(1); } } while (0)
+
+static amdsmi_processor_handle g_smi = nullptr;
+static double energy_j() {
+  uint64_t e = 0, ts = 0;
+  float res = 0;
+  if (amdsmi_get_energy_count(g_smi, &e, &res, &ts) != AMDSMI_STATUS_SUCCESS) { fprintf(stderr, "amdsmi energy failed\n"); exit(1); }
+  return (double)e * res * 1e-6;
+}
 
 static double now_unix() {
   return std::chrono::duration<double>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -116,6 +127,15 @@ int main(int argc, char** argv) {
   CK(hipSetDevice(device));
   char bdf[32];
   CK(hipDeviceGetPCIBusId(bdf, sizeof(bdf), device));
+  const bool energy = getenv("DFMP2_ENERGY") && atoi(getenv("DFMP2_ENERGY"));
+  if (energy) {
+    unsigned dom, bus, dv, fn;
+    sscanf(bdf, "%x:%x:%x.%x", &dom, &bus, &dv, &fn);
+    amdsmi_bdf_t b{};
+    b.domain_number = dom; b.bus_number = bus; b.device_number = dv; b.function_number = fn;
+    if (amdsmi_init(AMDSMI_INIT_AMD_GPUS) != AMDSMI_STATUS_SUCCESS ||
+        amdsmi_get_processor_handle_from_bdf(b, &g_smi) != AMDSMI_STATUS_SUCCESS) { fprintf(stderr, "amdsmi init failed\n"); return 1; }
+  }
   double *B, *C, *eps, *acc, *Bcopy = nullptr;
   void* work = nullptr;
   int work_moduli = 0;
@@ -189,8 +209,16 @@ int main(int argc, char** argv) {
     std::vector<char> used(nocc, 'n');
     CK(hipMemset(acc, 0, 8));
     CK(hipDeviceSynchronize());
+    double gemm_j = 0, gemm_s = 0;
+    const double e_start = energy ? energy_j() : 0;
     const double t0 = now_unix();
     for (long i = 0; i < nocc; ++i) {
+      double eg0 = 0, tg0 = 0;
+      if (energy) {
+        CK(hipDeviceSynchronize());
+        eg0 = energy_j();
+        tg0 = now_unix();
+      }
       // C = B_i^T B_{0..i} in the column-major view X = naux x (nocc nvir)
       const long n = (i + 1) * nvir;
       if (percall) CK(hipEventRecord(ev[2 * i]));
@@ -207,10 +235,18 @@ int main(int argc, char** argv) {
                         naux, &zero, C, nvir));
       }
       if (percall) CK(hipEventRecord(ev[2 * i + 1]));
+      if (energy) {
+        CK(hipDeviceSynchronize());
+        gemm_j += energy_j() - eg0;
+        gemm_s += now_unix() - tg0;
+      }
       mp2_energy<<<4096, 256>>>(C, eps, nocc, nvir, i, acc);
     }
     CK(hipDeviceSynchronize());
     const double t1 = now_unix();
+    if (energy)
+      printf("ENERGY_MP2 gpu=%d variant=%s pass=%c gemm_j=%.3f gemm_s=%.4f total_j=%.3f wall=%.4f\n", device, v.c_str(),
+             pas, gemm_j, gemm_s, energy_j() - e_start, t1 - t0);
     double e;
     CK(hipMemcpy(&e, acc, 8, hipMemcpyDeviceToHost));
     // the denominators e_i + e_j - e_a - e_b are negative, so the sum is already the (negative) correlation energy

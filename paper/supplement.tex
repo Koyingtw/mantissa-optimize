@@ -490,7 +490,7 @@ $N$ & Native & 35 bits & 31 bits & 29 bits & 27 bits & 23 bits \\
 
 Table~\ref{tab:kcal} gives the kernel-level calibration of paper Section~V: the GEMM microbenchmark at a 1300\,MHz lock
 and 1000\W{} on the applications' own operands (8 GPUs $\times$ ABBA on node n02), the GEMM's share $f$ of the native
-run time at the same lock, and the prediction errors over 500--1000\W{} against the whole-program calibration.
+dynamic energy at the same lock, and the prediction errors over 500--1000\W{} against the whole-program calibration.
 Table~\ref{tab:spot} gives the post-hoc spot check of paper Section~VII-B, including the valinomycin operands and the
 size failure, and Table~\ref{tab:gptol} the tolerance chain
 of Section~VII-C.
@@ -498,7 +498,7 @@ of Section~VII-C.
 \begin{table}[t]
 \caption{Kernel-level calibration. $R$, $\sigma$: GEMM on the applications' operands (DF-MP2: call $i=150$, $2002\times
 302302\times5477$, TN; GP: trailing update $L_{21}L_{21}^T$ at steps 16384 and 40960 for ranges 0.02 and 0.08, range of
-the four given); $R_\mathrm{app}=1-f(1-R)$ with $f$ the GEMM's share of the native dynamic energy (GP: 0.97, from the energy counter read at phase boundaries, job 426; DF-MP2: its time share, 0.96); $R_\mathrm{whole}$ for GP from the same in-program measurement (an earlier sampler-based run gave 0.956 and 0.933); error: mean / largest absolute error of the predicted speedup over 4 caps
+the four given); $R_\mathrm{app}=1-f(1-R)$ with $f$ the GEMM's share of the native dynamic energy read at phase boundaries by the in-program energy counter (job 427, in which the 100\,ms sampler gives the same whole-program $R$ within 0.001; GP: 0.97, DF-MP2: 0.95, against time shares of 0.90 and 0.96); $R_\mathrm{whole}$ from the same runs (for GP, two earlier runs gave 0.931/0.885, job 426, and 0.956/0.933, sampler, with truncated variants 7\,$^\circ$C hotter; whole-program errors 1.1 and 2.3); error: mean / largest absolute error of the predicted speedup over 4 caps
 (percentage points). Accumulating into the trailing matrix ($\beta=1$, as in the program) gives $R=0.931$ and 0.893 on
 the panel at step 16384, range 0.02 (0.928 and 0.887 with $\beta=0$). At DF-MP2's shape, synthetic uniform operands give
 $R=0.915$ and 0.848; DF-MP2's calls 50 and 225 give 0.908/0.840 and 0.909/0.843.}\label{tab:kcal}
@@ -509,10 +509,10 @@ $R=0.915$ and 0.848; DF-MP2's calls 50 and 225 give 0.908/0.840 and 0.909/0.843.
 \cmidrule(l){8-9}
 App & Bits & $R$ & $\sigma$ & $f$ & $R_\mathrm{app}$ & $R_\mathrm{whole}$ & Kernel & Whole \\
 \midrule
-DF-MP2 & 32 & 0.910 & 1.015 & 0.96 & 0.914 & 0.921 & 1.1 / 1.6 & 0.8 / 1.6 \\
-DF-MP2 & 20 & 0.844 & 1.026 & 0.96 & 0.850 & 0.862 & 1.7 / 3.6 & 1.2 / 2.4 \\
-GP & 36 & 0.925--0.928 & 1.011 & 0.97 & 0.929 & 0.931 & 0.8 / 1.5 & 0.7 / 1.4 \\
-GP & 28 & 0.884--0.887 & 1.018 & 0.97 & 0.889 & 0.885 & 1.2 / 2.1 & 1.5 / 2.6 \\
+DF-MP2 & 32 & 0.910 & 1.015 & 0.95 & 0.915 & 0.921 & 1.1 / 1.5 & 0.9 / 1.3 \\
+DF-MP2 & 20 & 0.844 & 1.026 & 0.95 & 0.851 & 0.862 & 1.6 / 3.4 & 1.3 / 2.9 \\
+GP & 36 & 0.925--0.928 & 1.011 & 0.97 & 0.929 & 0.942 & 0.8 / 1.5 & 0.5 / 0.7 \\
+GP & 28 & 0.884--0.887 & 1.018 & 0.97 & 0.889 & 0.909 & 1.2 / 2.1 & 0.6 / 1.6 \\
 \bottomrule
 \end{tabular}
 \end{table}

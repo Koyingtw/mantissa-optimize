@@ -1,7 +1,7 @@
 ROCM  ?= /opt/rocm-7.2.3
 HIPCC := $(ROCM)/bin/hipcc
 FLAGS := -O3 -std=c++17 --offload-arch=gfx950 -D__HIP_PLATFORM_AMD__
-LIBS  := -L$(ROCM)/lib -Wl,-rpath=$(ROCM)/lib -lhipblas -lhipblaslt
+LIBS  := -L$(ROCM)/lib -Wl,-rpath=$(ROCM)/lib -lhipblas -lhipblaslt -lamd_smi
 
 all: ../bin/gemm_mant_bench ../bin/fp64_kernel_bench
 

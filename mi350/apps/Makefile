@@ -9,7 +9,7 @@ BIN = ../bin
 all: $(BIN)/dfmp2 $(BIN)/gp_chol $(BIN)/g8_repro
 
 $(BIN)/dfmp2: dfmp2.hip
-	$(HIPCC) -o $@ $< $(G8) -lhipblas
+	$(HIPCC) -o $@ $< $(G8) -lhipblas -lamd_smi
 $(BIN)/gp_chol: gp_chol.hip
 	$(HIPCC) -o $@ $< -lrocblas -lrocsolver -lhipblas -lamd_smi
 $(BIN)/g8_repro: g8_repro.hip

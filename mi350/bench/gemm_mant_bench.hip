@@ -11,6 +11,8 @@
 // FP64 only: --load-a / --load-b FILE[@offset] read an operand from a raw little-endian FP64 file (column-major in the
 // stored layout: A m x k, or k x m with --ta; B k x n, or n x k with --tb; offset in elements) instead of generating it,
 // and keep --frac bits of it on the GPU (kernel-level calibration of the power model with an application's operands).
+// --energy: also read the GPU's hardware energy counter (amdsmi) at the start and end of the measured window and print
+// the window's mean power from it (power_prog_w), to cross-check the 100 ms sampler (review round 10).
 // FP64 only: --beta 1 accumulates into C (C = A B + C, as a trailing update that reads and writes the full-precision
 // matrix it updates); the default 0 only writes C.
 #include <hip/hip_bf16.h>
@@ -18,6 +20,7 @@
 #include <hip/hip_runtime.h>
 #include <hipblas/hipblas.h>
 #include <hipblaslt/hipblaslt.h>
+#include <amd_smi/amdsmi.h>
 
 #include <algorithm>
 #include <chrono>
@@ -270,6 +273,7 @@ int main(int argc, char** argv) {
   int stats_only = 0;
   std::string load_a, load_b;
   double beta = 0;
+  int energy = 0;
   int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0, spread_mode = 0;
   double spread = 0;
   long m = 32768, n = 32768, k = 2048;
@@ -297,6 +301,7 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--load-a")) load_a = next();
     else if (!strcmp(argv[i], "--load-b")) load_b = next();
     else if (!strcmp(argv[i], "--beta")) beta = atof(next());
+    else if (!strcmp(argv[i], "--energy")) energy = 1;
     else if (!strcmp(argv[i], "--spread")) spread = atof(next());  // exponent spread in binades (see g_spread)
     else if (!strcmp(argv[i], "--spread-mode")) spread_mode = !strcmp(next(), "row");  // elem | row
     else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const | krep | mrep | sorted | shuffled
@@ -441,6 +446,23 @@ int main(int argc, char** argv) {
   std::vector<double> rates;
   double busy_ms = 0;
   long calls = 0;
+  amdsmi_processor_handle smi = nullptr;
+  auto energy_j = [&]() {
+    uint64_t e = 0, ts = 0;
+    float res = 0;
+    if (amdsmi_get_energy_count(smi, &e, &res, &ts) != AMDSMI_STATUS_SUCCESS) { fprintf(stderr, "amdsmi energy failed\n"); exit(1); }
+    return (double)e * res * 1e-6;
+  };
+  if (energy) {
+    unsigned dom, bus, dev, fn;
+    sscanf(bdf, "%x:%x:%x.%x", &dom, &bus, &dev, &fn);
+    amdsmi_bdf_t b{};
+    b.domain_number = dom; b.bus_number = bus; b.device_number = dev; b.function_number = fn;
+    if (amdsmi_init(AMDSMI_INIT_AMD_GPUS) != AMDSMI_STATUS_SUCCESS ||
+        amdsmi_get_processor_handle_from_bdf(b, &smi) != AMDSMI_STATUS_SUCCESS) { fprintf(stderr, "amdsmi init failed\n"); return 1; }
+  }
+  CK(hipDeviceSynchronize());
+  const double e_begin = energy ? energy_j() : 0;
   const double t_begin = now_unix();
   while (now_unix() - t_begin < measure_s) {
     CK(hipEventRecord(e0));
@@ -454,6 +476,7 @@ int main(int argc, char** argv) {
     rates.push_back(5 * flop / (ms * 1e-3) / 1e12);
   }
   const double t_end = now_unix();
+  const double power_prog_w = energy ? (energy_j() - e_begin) / (t_end - t_begin) : -1;
   // Accuracy of this path: FP64 GEMM on the original, unreduced values in the same layout.
   double rel_err = -1, err_p50 = -1, err_p99 = -1;
   if (check) {
@@ -502,11 +525,11 @@ int main(int argc, char** argv) {
   }
   double lo = rates[0], hi = rates[0];
   for (double r : rates) { lo = r < lo ? r : lo; hi = r > hi ? r : hi; }
-  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e spread=%g smode=%s err_p50=%.3e err_p99=%.3e tog_a=%.3f tog_b=%.3f hw_a=%.3f hw_b=%.3f tox_a=%.3f tox_b=%.3f\n",
+  printf("RESULT tag=%s gpu=%d bdf=%s dtype=%s frac=%d only_a=%d only_b=%d ta=%d tb=%d low=%s round=%s m=%ld n=%ld k=%ld calls=%ld tflops=%.3f chunk_min=%.3f chunk_max=%.3f t_begin=%.3f t_end=%.3f rel_err=%.3e spread=%g smode=%s err_p50=%.3e err_p99=%.3e tog_a=%.3f tog_b=%.3f hw_a=%.3f hw_b=%.3f tox_a=%.3f tox_b=%.3f power_prog_w=%.2f\n",
          tag.c_str(), device, bdf, dtype.c_str(), frac, only_a, only_b, ta, tb,
          kLowNames[low_mode], round ? "nearest" : "trunc", m, n, k, calls,
          calls * flop / (busy_ms * 1e-3) / 1e12, lo, hi, t_begin, t_end, rel_err, spread, spread_mode ? "row" : "elem",
-         err_p50, err_p99, tog_a, tog_b, hw_a, hw_b, tox_a, tox_b);
+         err_p50, err_p99, tog_a, tog_b, hw_a, hw_b, tox_a, tox_b, power_prog_w);
   CB(hipblasDestroy(h));
   return 0;
 }
