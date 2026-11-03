@@ -9,7 +9,9 @@ MODELS=${MODELS:-"Qwen/Qwen2.5-7B mistralai/Mistral-7B-v0.1 facebook/opt-6.7b Qw
 for m in $MODELS; do
   # 只取 safetensors；OPT 只有 PyTorch .bin（另有 Flax、TF 權重，不取）
   if [[ $m == facebook/opt* ]]; then skip=("*.msgpack" "*.h5"); else skip=("*.bin" "*.pth" "*.gguf" "original/*"); fi
-  "$HF" download "$m" --exclude "${skip[@]}" >/dev/null && echo "ok $m"
+  args=()
+  for s in "${skip[@]}"; do args+=(--exclude "$s"); done  # 每個樣式各一個 --exclude（多值會被當成檔名）
+  "$HF" download "$m" "${args[@]}" >/dev/null && echo "ok $m"
 done
 "$HF" download --repo-type dataset Salesforce/wikitext --include "wikitext-2-raw-v1/*" >/dev/null && echo "ok wikitext-2"
 du -sh "$HF_HOME"
