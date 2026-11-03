@@ -33,12 +33,14 @@ def tci(x):
 
 
 def e1_temperature(d, smi):
-    """per-GPU 窗口平均 junction 溫度（e1_summary 只有最大值）。"""
-    T = []
+    """per-GPU 窗口平均 junction 溫度（e1_summary 只有最大值）T，與窗口開始溫度 T0（開始前 1 s 到開始後 0.5 s；
+    平均溫度含截斷本身的降溫，是中介變數，第八輪審查）。"""
+    T, T0 = [], []
     for r in d.itertuples():
         w = smi[(smi.gpu == r.gpu) & (smi.t >= r.t_begin) & (smi.t <= r.t_end)]
         T.append(w.t_hot.mean())
-    return d.assign(T=T)
+        T0.append(smi[(smi.gpu == r.gpu) & (smi.t >= r.t_begin - 1) & (smi.t <= r.t_begin + 0.5)].t_hot.mean())
+    return d.assign(T=T, T0=T0)
 
 
 def robust_e1():
@@ -66,10 +68,10 @@ def robust_e1():
                     continue
                 X = [np.ones(len(gg)), (gg.frac == fr).astype(float)]
                 X += [(gg.gpu == k).astype(float) for k in sorted(gg.gpu.unique())[1:]]
-                X += [gg["T"].values]
-                X = np.column_stack(X)
-                b, *_ = np.linalg.lstsq(X, np.log(gg.tflops.values), rcond=None)
-                adj[node] = 100 * (np.exp(b[1]) - 1)
+                for col, key in (("T", node), ("T0", node + "0")):
+                    Xc = np.column_stack(X + [gg[col].values])
+                    b, *_ = np.linalg.lstsq(Xc, np.log(gg.tflops.values), rcond=None)
+                    adj[key] = 100 * (np.exp(b[1]) - 1)
             if len(win) < 2:
                 continue
             w = 100 * np.array(win)
@@ -78,7 +80,8 @@ def robust_e1():
                                 .tflops.mean() - 1) for node in ("n01", "n02")}
             rows.append(dict(dtype=dt, frac=fr, cap=cap, windows=len(w), mean=w.mean(), ci95_windows=tci(w),
                              n01=raw["n01"], n02=raw["n02"], n01_tadj=adj.get("n01", np.nan),
-                             n02_tadj=adj.get("n02", np.nan)))
+                             n02_tadj=adj.get("n02", np.nan), n01_tadj0=adj.get("n010", np.nan),
+                             n02_tadj0=adj.get("n020", np.nan)))
     r = pd.DataFrame(rows)
     r.to_csv(f"{RES}/robust_e1.csv", index=False)
     return r

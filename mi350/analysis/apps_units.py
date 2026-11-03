@@ -4,6 +4,8 @@
 比值為同輪原生的平均 wall ÷ 變體的平均 wall）。95% t 區間的自由度 = 單位數 − 1。
 溫度校正：HPL／HPL-MxP 用 temp_adjust.py 的逐節點結果（每次執行的 8 卡平均溫度）；GP／DF-MP2 用每張 GPU 的每次執行，
 log(1/wall) ~ 變體 + GPU 固定效果 + 該次的平均 junction 溫度，逐節點估計。
+第八輪審查：平均溫度包含截斷本身造成的降溫（中介變數），所以另以「開始溫度」（窗口開始前 1 s 到開始後 0.5 s 的平均，
+即上一次執行與風扇留下的熱狀態）重做一次，欄位 *_tadj0；HPL／HPL-MxP 的對應值來自 temp_adjust.py 的 adj0_pct。
 usage: apps_units.py → results/apps_units.csv
 """
 import os
@@ -63,8 +65,9 @@ def round_units(rid, var, nat):
     return out
 
 
-def round_tadj(rid, logdir, var, nat):
-    """per GPU-run regression with GPU fixed effects and mean junction temperature, per cap."""
+def round_tadj(rid, logdir, var, nat, start=False):
+    """per GPU-run regression with GPU fixed effects and the mean junction temperature of the run (start=False) or the
+    temperature at its start (start=True), per cap."""
     d = pd.read_csv(f"{RES}/{rid}_raw.csv")
     if "cold" in d:
         d = d[~d.cold]
@@ -90,7 +93,10 @@ def round_tadj(rid, logdir, var, nat):
                 for t0, t1 in lst:
                     w = smi[(smi.gpu == r.gpu) & (smi.t >= t0) & (smi.t <= t1)]
                     if len(w) > 3 and abs((t1 - t0) - r.wall) < 0.5:
-                        T = w.t_hot.mean()
+                        if start:
+                            T = smi[(smi.gpu == r.gpu) & (smi.t >= t0 - 1) & (smi.t <= t0 + 0.5)].t_hot.mean()
+                        else:
+                            T = w.t_hot.mean()
             rows.append((r.gpu, r.variant, r.wall, T))
         x = pd.DataFrame(rows, columns=["gpu", "variant", "wall", "T"]).dropna()
         if x.variant.nunique() < 2:
@@ -116,18 +122,21 @@ def main():
             if kind == "run":
                 t = pd.read_csv(f"{RES}/{rid}_tempadj.csv")
                 ta = {r.cap: r.adj_pct for r in t[t.variant.astype(str) == var].itertuples()}
+                ta0 = {r.cap: r.adj0_pct for r in t[t.variant.astype(str) == var].itertuples()}
             else:
                 ta = round_tadj(rid, logdir, var, nat)
-            per_node[node] = (u, ta, kind)
+                ta0 = round_tadj(rid, logdir, var, nat, start=True)
+            per_node[node] = (u, ta, kind, ta0)
         caps = sorted(set().union(*[set(v[0]) for v in per_node.values()]), reverse=True)
         for cap in caps:
             allu = sum((v[0].get(cap, []) for v in per_node.values()), [])
             row = dict(app=app, cap=cap, unit=list(per_node.values())[0][2], units=len(allu), mean=np.mean(allu),
                        ci95=tci(allu))
-            for node, (u, ta, _) in per_node.items():
+            for node, (u, ta, _, ta0) in per_node.items():
                 row[f"{node}_raw"] = np.mean(u.get(cap, [np.nan]))
                 row[f"{node}_n"] = len(u.get(cap, []))
                 row[f"{node}_tadj"] = ta.get(cap, np.nan)
+                row[f"{node}_tadj0"] = ta0.get(cap, np.nan)
             rows.append(row)
     r = pd.DataFrame(rows)
     r.to_csv(f"{RES}/apps_units.csv", index=False)

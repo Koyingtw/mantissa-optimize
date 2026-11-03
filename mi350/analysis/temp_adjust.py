@@ -4,6 +4,7 @@
 ABBA 能抵消線性漂移，抵消不了這種非線性的散熱狀態；以溫度為共變量可以估計「溫度相同時」的效果。
 usage: temp_adjust.py <result id> [--logdir logs] [--kind hpl]
   kind=hpl：results/<id>_raw.csv（hpl_summary.py 的輸出），每次執行一列，溫度取窗口內（去頭 30 s、去尾 15 s）8 卡平均 t_hot
+  第八輪審查：平均溫度含截斷本身的降溫（中介變數），另以開始溫度 T0（執行開始前 2 s 到開始的 8 卡平均）重做 → adj0_pct
 """
 import argparse
 import os
@@ -46,11 +47,14 @@ def main():
     d = d[d.passed & (d.pass_ != "W")]
     s = load_smi(f"{a.logdir}/{a.id}_smi.csv")
     d["T"] = [s[(s.t >= r.t_begin + 30) & (s.t <= r.t_end - 15)].t_hot.mean() for r in d.itertuples()]
+    d["T0"] = [s[(s.t >= r.t_begin - 2) & (s.t <= r.t_begin)].t_hot.mean() for r in d.itertuples()]
     native = "native" if (d.bench == "mxp").all() else "53:53"
     rows = []
     for cap, g in d.groupby("cap"):
+        a0 = adjust(g, native, temp="T0")
         for v, (raw, adj, hw, tc) in adjust(g, native).items():
             rows.append(dict(cap=cap, variant=v, n=int((g.variant.astype(str) == v).sum()), raw_pct=raw, adj_pct=adj,
+                             adj0_pct=a0[v][1] if v in a0 else np.nan, adj0_hw=a0[v][2] if v in a0 else np.nan,
                              adj_hw=hw, temp_coef_pct_per_C=tc, T_native=g[g.variant.astype(str) == native]["T"].mean(),
                              T_variant=g[g.variant.astype(str) == v]["T"].mean()))
     o = pd.DataFrame(rows).sort_values(["cap", "variant"], ascending=[False, True])

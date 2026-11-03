@@ -11,6 +11,8 @@
 // FP64 only: --load-a / --load-b FILE[@offset] read an operand from a raw little-endian FP64 file (column-major in the
 // stored layout: A m x k, or k x m with --ta; B k x n, or n x k with --tb; offset in elements) instead of generating it,
 // and keep --frac bits of it on the GPU (kernel-level calibration of the power model with an application's operands).
+// FP64 only: --beta 1 accumulates into C (C = A B + C, as a trailing update that reads and writes the full-precision
+// matrix it updates); the default 0 only writes C.
 #include <hip/hip_bf16.h>
 #include <hip/hip_fp8.h>
 #include <hip/hip_runtime.h>
@@ -267,6 +269,7 @@ int main(int argc, char** argv) {
   std::string dtype = "fp64", tag = "run";
   int stats_only = 0;
   std::string load_a, load_b;
+  double beta = 0;
   int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0, spread_mode = 0;
   double spread = 0;
   long m = 32768, n = 32768, k = 2048;
@@ -293,6 +296,7 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--stats-only")) stats_only = 1;  // FP64: print per-bit-position flips and exit    // relative error vs FP64 on the unreduced data
     else if (!strcmp(argv[i], "--load-a")) load_a = next();
     else if (!strcmp(argv[i], "--load-b")) load_b = next();
+    else if (!strcmp(argv[i], "--beta")) beta = atof(next());
     else if (!strcmp(argv[i], "--spread")) spread = atof(next());  // exponent spread in binades (see g_spread)
     else if (!strcmp(argv[i], "--spread-mode")) spread_mode = !strcmp(next(), "row");  // elem | row
     else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const | krep | mrep | sorted | shuffled
@@ -318,6 +322,7 @@ int main(int argc, char** argv) {
     fprintf(stderr, "--low krep|mrep|sorted|shuffled needs --dtype fp64, a power-of-two k, no --ta/--tb/--spread/--check\n");
     return 2;
   }
+  if (beta != 0 && (!is64 || check)) { fprintf(stderr, "--beta needs --dtype fp64 without --check\n"); return 2; }
   if ((!load_a.empty() || !load_b.empty()) && (!is64 || low_mode != 0 || spread != 0 || check)) {
     fprintf(stderr, "--load-a/--load-b need --dtype fp64 with the zero layout, no --spread/--check\n");
     return 2;
@@ -416,7 +421,7 @@ int main(int argc, char** argv) {
       CB(hipblasLtMatmul(lt, op, &onef, A, la, B, lb, &zerof, C, lc, C, lc, &heur.algo, ws, ws_size, 0));
     else if (is64)
       CB(hipblasDgemm(h, ta ? HIPBLAS_OP_T : HIPBLAS_OP_N, tb ? HIPBLAS_OP_T : HIPBLAS_OP_N, m, n, k, &one,
-                      (double*)A, ta ? k : m, (double*)B, tb ? n : k, &zero, (double*)C, m));
+                      (double*)A, ta ? k : m, (double*)B, tb ? n : k, &beta, (double*)C, m));
     else if (is32)
       CB(hipblasSgemm(h, HIPBLAS_OP_N, HIPBLAS_OP_N, m, n, k, &onef, (float*)A, m, (float*)B, k, &zerof, (float*)C, m));
     else

@@ -7,13 +7,14 @@
 #   GP：gp_chol --dump-panel 寫出的 L21（第 J 欄那一步，(n−J−nb)×nb），trailing update 是 L21·L21ᵀ（--tb）；
 #       J ∈ JS、range ∈ GP_RANGES 各一組；位元數 36、28。
 #   sbatch -w p01-r01-n02 --export=ALL,SCRIPT=kcal.sh mi350/slurm/run.sbatch
+#   只跑 DF-MP2 的另一個呼叫：JS= MP2_I=50 MP2_TAG=kcalmp2i50
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 cd "$ROOT"
 source env.sh
 SCLK=${SCLK:-1300}
 MP2=${MP2:-/tmp/mp2_113_Taxol}
-JS=${JS:-"16384 40960"}
+JS=${JS-"16384 40960"}  # 設成空字串（JS=）就只跑 DF-MP2
 GP_RANGES=${GP_RANGES:-"0.02 0.08"}
 GPDIR=/tmp/gp_panels
 restore_clk() { for g in 0 1 2 3 4 5 6 7; do sudo -n amd-smi reset -g "$g" -c >/dev/null 2>&1 || true; done; }
@@ -28,7 +29,7 @@ done
 for g in 0 1 2 3 4 5 6 7; do sudo -n amd-smi set -g "$g" -L sclk max "$SCLK" >/dev/null; done
 read -r nocc nvir naux < <(sed -E 's/.*nocc=([0-9]+) nvir=([0-9]+) naux=([0-9]+).*/\1 \2 \3/' "$MP2/meta.txt")
 I=${MP2_I:-150}
-CAPS=1000 TAG=kcalmp2 CONFIGS="fp64:52 fp64:32 fp64:20" SHAPES="${nvir}x$(( (I + 1) * nvir ))x$naux" \
+CAPS=1000 TAG=${MP2_TAG:-kcalmp2} CONFIGS="fp64:52 fp64:32 fp64:20" SHAPES="${nvir}x$(( (I + 1) * nvir ))x$naux" \
   EXTRA_ARGS="--round nearest --ta --load-a $MP2/B.bin@$(( I * nvir * naux )) --load-b $MP2/B.bin" \
   scripts/e1_gemm_tdp.sh
 for J in $JS; do

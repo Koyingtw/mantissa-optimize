@@ -4,7 +4,8 @@
 #   BENCH=mxp nohup mi350/scripts/hpl_tdp.sh >/dev/null 2>&1 &
 #   BENCH=hpl nohup mi350/scripts/hpl_tdp.sh >/dev/null 2>&1 &
 # 環境變數：CAPS、VARIANTS（mxp：保留的 BF16 小數位元 native|3|0…，對應 build_mi350_bf16_mant<k>；
-#   hpl：A_BITS:B_BITS，53 = 原生 binary64；g8m<k> = GEMMul8 k moduli）、N、NB、REPEAT、START_TEMP、COOL_MAX、TAG、WARMUP=1（先跑一次不計）
+#   hpl：A_BITS:B_BITS，53 = 原生 binary64；g8m<k> = GEMMul8 k moduli；變體後加 @N:P:Q:NB 可改用另一組設定，
+#   讓不同格網的方法在同一個 job 內配對）、N、NB、REPEAT、START_TEMP、COOL_MAX、TAG、WARMUP=1（先跑一次不計）
 # 每次執行的輸出以 "=== RUN ..." / "=== END ..." 包起來，附 Unix 時間，供 analysis 與功耗 log 對齊。
 set -euo pipefail
 ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
@@ -49,7 +50,9 @@ else
   # 計算，運算元保留 53 bits；HPL_GEMMUL8_NT（預設 12288，先前 MI350 紀錄 docs/13 的設定）
   BIN_G8=${HPL_BIN_G8:-$SW/rocHPL-amd/build-mi350-g8/bin/rochpl}
   run_variant() {
-    local bin=$BIN
+    local bin=$BIN v=$1 n=$N p=$P q=$Q nb=$NB
+    if [[ $v == *@* ]]; then IFS=: read -r n p q nb <<<"${v#*@}"; v=${v%@*}; fi
+    set -- "$v"
     if [[ $1 == g8m* ]]; then
       bin=$BIN_G8
       export HPL_QUANT_A_BITS=53 HPL_QUANT_B_BITS=53 HPL_QUANT_B_BITS_ALT=53
@@ -64,7 +67,7 @@ else
     local d="logs/${ID}_run/$(date +%s)"
     mkdir -p "$d"
     (cd "$d" && mpirun -np 8 "${MPI_ARGS[@]}" bash -c 'export ROCR_VISIBLE_DEVICES=$OMPI_COMM_WORLD_LOCAL_RANK; exec "$@"' \
-      wrap "$bin" -P "$P" -Q "$Q" -p "$P" -q "$Q" -N "$N" -NB "$NB" -f "$F")
+      wrap "$bin" -P "$p" -Q "$q" -p "$p" -q "$q" -N "$n" -NB "$nb" -f "$F")
     local rc=$?
     cat "$d/HPL.out"
     return $rc
