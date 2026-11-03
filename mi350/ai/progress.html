@@ -126,18 +126,18 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 14:15 UTC（台灣 22:15）</p>
+  <p class="meta">最後更新：2026-11-03 16:10 UTC（台灣 11-04 00:10）</p>
 </header>
 
 <section>
   <h2>現在走到哪</h2>
   <div class="now">
-    <p class="headline">第一個完整結果出來了：七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。速度面的收益很小（推論只截權重 3～4%、微調 2.5%）且被 FP8 支配。你決定先量「推論能不能省電」，再決定論文主軸。</p>
+    <p class="headline">MI350X 上的主要實驗都量完了，結論很一致：截位元在 AI 上只能省 2–6% 的時間或電，而直接換成 FP8 就能省約三成。論文方向需要你決定（見「需要你處理」）。以下是先前的摘要：第一個完整結果是七個模型在 19 種位元設定下「會不會變笨」的表，而且和 GH200 幾乎完全一致。速度面的收益很小（推論只截權重 3～4%、微調 2.5%）且被 FP8 支配。你決定先量「推論能不能省電」，再決定論文主軸。</p>
     <div class="phases" role="list">
       <div class="ph" role="listitem"><div class="bar"><span class="fill-ok" style="width:100%"></span></div>
         <div class="name">1　準備</div><div class="st">完成：環境、7 個模型、資料、實驗程式</div></div>
-      <div class="ph" role="listitem"><div class="bar"><span class="fill-run" style="width:45%"></span></div>
-        <div class="name">2　實驗</div><div class="st">6 項中 2 項完成、微調速度已量，推論待做</div></div>
+      <div class="ph" role="listitem"><div class="bar"><span class="fill-run" style="width:70%"></span></div>
+        <div class="name">2　實驗</div><div class="st">精度、矩陣乘法、微調速度、推論耗電都完成</div></div>
       <div class="ph" role="listitem"><div class="bar"><span style="width:0"></span></div>
         <div class="name">3　分析</div><div class="st">尚未開始</div></div>
       <div class="ph" role="listitem"><div class="bar"><span style="width:0"></span></div>
@@ -145,7 +145,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     </div>
     <div class="next">
       <p><b>今天已完成</b>　七個模型 × 19 種設定的精度表（W3）。</p>
-      <p><b>接下來</b>　推論省電實驗 W4：產生文字時每秒幾個 token、每個 token 耗多少電。量測程式修好並確認量到的是 GPU 而不是 Python 開銷，完整版已送出（job 391，約 40 分鐘，等節點）。微調收斂先不跑。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
+      <p><b>接下來</b>　等你決定論文主軸：「界線論文」、「數值論文」或兩者合併。微調收斂先不跑。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
       <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
     </div>
   </div>
@@ -166,8 +166,8 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <div class="vrow"><div class="k">新在哪裡</div><div>
       <p>這篇預計提出四件事，前兩件決定論文的分量：</p>
       <ol class="contrib">
-        <li><span>在「出廠就被電卡住」的 GPU 上，量出 AI 推論與微調實際能快多少、精度掉多少，並畫出划算的界線（截幾位還划算、什麼工作值得做）。<span class="st run">精度完成，速度實驗中</span></span></li>
-        <li><span>誠實比較「截位元」與「直接換更小格式」（FP8、MXFP6／MXFP4）：能換格式的時候截位元還有沒有意義。這是審稿人一定會問的。<span class="st todo">待做</span></span></li>
+        <li><span>在「出廠就被電卡住」的 GPU 上，量出 AI 推論與微調實際能快多少、精度掉多少，並畫出划算的界線。結果：只有 2–6%，而且只在 BF16 有效。<span class="st ok">完成（結果偏負面）</span></span></li>
+        <li><span>誠實比較「截位元」與「直接換更小格式」。已知：FP8 比 BF16 少約三成能量、快 10–44%，截位元被支配；MXFP6／MXFP4 尚未量。<span class="st run">FP8 已比較</span></span></li>
         <li><span>微調的代價：GH200 上截權重讓每步快 1%，卻要多看 22～39% 的資料才達標。MI350X 整台每步也只快 2.5%，很可能同樣是負面結果。<span class="st run">速度已量，收斂暫緩</span></span></li>
         <li><span>FP8 attention 的數值陷阱與修正（GH200 上已完成）：截位元會把無害的誤差變成有方向的偏差，我們的修正能消除。<span class="st ok">已完成</span></span></li>
       </ol>
@@ -180,6 +180,21 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 
 <section>
   <h2>最新發現</h2>
+  <div class="finding" style="border-left-color:var(--wait)">
+    <h3>推論省電：截位元只省 2–6%，FP8 本身省約三成</h3>
+    <p>用 Llama 2 7B 的真實權重模擬產生文字（每個 token 讀一次所有權重），整台 8 張卡同一設定（job 391）。</p>
+    <div class="tbl"><table>
+      <thead><tr><th>1000 W（出廠），每 token 耗電</th><th class="r">batch 1</th><th class="r">batch 16</th><th class="r">batch 64</th><th class="r">batch 256</th></tr></thead>
+      <tbody>
+        <tr><td>BF16 留 4 位</td><td class="r">−1.7%</td><td class="r">−1.8%</td><td class="r">−1.8%</td><td class="r">−4.5%</td></tr>
+        <tr><td>BF16 留 3 位</td><td class="r">−2.3%</td><td class="r">−2.8%</td><td class="r">−3.3%</td><td class="r">−6.3%</td></tr>
+        <tr><td>FP8 只截權重到 2 位</td><td class="r">−0.9%</td><td class="r">約 0</td><td class="r">約 0</td><td class="r">約 −1%</td></tr>
+        <tr><td><b>原生 FP8 對原生 BF16</b></td><td class="r"><b>−29%</b></td><td class="r" colspan="3">（且 batch 256 快 43%）</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>白話：</b>產生文字時，截 BF16 權重能省的電很少（小 batch 約 2–3%）；只有大 batch、電被頂住時才有 5–6%。直接用 FP8 就能少約三成。所以「截位元省電」不足以撑起一篇論文的主軸。</p>
+    <p><b>保留：</b>這裡的矩陣乘法讀權重只用到記憶體頻寬的約三分之一；真正的推論引擎更有效率，記憶體耗電的占比會更高，省電可能大一些，但不太可能追上 FP8。</p>
+  </div>
   <div class="finding" style="border-left-color:var(--wait)">
     <h3>推論只截權重：矩陣乘法快 3～4%，但 FP8 本身快 2.4 倍</h3>
     <div class="tbl"><table>
@@ -233,6 +248,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <div class="fig"><div class="big">+7.9%</div><div class="cap">MI350X 出廠 1000 W，BF16 矩陣乘法只留 3 個尾數位元（兩邊都截，亂數資料；第一篇）</div></div>
     <div class="fig"><div class="big">+3.2%</div><div class="cap">同上但只截「權重」那一邊（單卡試跑，LLM 的矩陣大小）</div></div>
     <div class="fig"><div class="big">+0.09～0.45%</div><div class="cap">BF16 只留 4 位時，7 個模型的困惑度變差幅度（MI350X，和 GH200 一致）</div></div>
+    <div class="fig"><div class="big">−2～6%</div><div class="cap">推論產生文字時，BF16 權重留 3～4 位每個 token 省的電（FP8 本身省約 29%）</div></div>
     <div class="fig"><div class="big">+2.5%</div><div class="cap">Llama 2 7B LoRA 微調，權重留 3 位時整台 8 張卡每步的加速（只開 2 張卡時 4～5%）</div></div>
   </div>
 </section>
@@ -249,7 +265,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     <div class="item"><span class="pill ok">完成</span><div>
       <div class="what">W1　只截權重 vs 兩邊都截（矩陣乘法速度）</div>
       <div class="why">Llama-3-8B 的矩陣大小，1000 W 與 700 W。第一次送出時每次量測都等滿 2 分鐘降溫、要 7 小時以上，已精簡成約 2.5 小時（job 312，n02）。結果：只截權重約拿到兩邊都截的一半，1000 W 下 BF16 留 4 位 +3%、留 3 位 +4%。<b>論文用途：</b>推論只截權重值不值得。</div></div></div>
-    <div class="item"><span class="pill run">進行中</span><div>
+    <div class="item"><span class="pill ok">完成</span><div>
       <div class="what">W4　推論的速度與耗電，對照直接換格式</div>
       <div class="why">產生文字時，每個 token 都要把整個模型的權重從記憶體讀一遍，速度卡在記憶體。截權重未必變快，但讀進來的位元切換變少，可能明顯省電。用 Llama 2 7B 的真實權重模擬這個過程，量 BF16（留 7／4／3 位）與 FP8（留 3／2 位）、batch 1～256、1000 W 與 600 W。錄製 GPU 指令圖再重播在這個軟體版本會崩，改成直接執行；用 profiler 確認 BF16 全程是 GPU 在算、FP8 小 batch 有約 25% 在等指令（兩邊一樣，不影響原生 vs 截斷的比較）。完整版 job 391 已送出。<b>論文用途：</b>決定論文主軸。</div></div></div>
     <div class="item"><span class="pill todo">待做</span><div>
@@ -263,7 +279,10 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 
 <section>
   <h2>需要你處理</h2>
-  <p>目前沒有。你已決定：先量推論省電、微調收斂先不跑。W4 量完後會請你決定論文主軸（省電、數值、或界線）。</p>
+  <div style="border:1.5px solid var(--wait);border-radius:10px;padding:14px 16px;display:grid;gap:8px;background:var(--surface)">
+    <h3 style="color:var(--wait)">論文主軸要怎麼定？</h3>
+    <p>「截位元讓 AI 變快或省電」的數字都很小（2–6%），而且被 FP8 支配。可以寫成：(1) 界線論文（誠實回答「有沒有用」）；(2) 以 GH200 上已完成的 FP8 attention 數值研究為主軸；(3) 兩者合併。等你決定。</p>
+  </div>
 </section>
 
 <section>
@@ -294,6 +313,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 16:10</div><p>推論省電實驗完成：BF16 截成 3～4 位每 token 省 2–6%，FP8 省不到；但 FP8 本身比 BF16 少約三成。論文主軸待定。</p></div>
     <div class="ev"><div class="when">11-03 14:15</div><p>推論省電的量測程式修好、驗證過，完整版送出。順帶量到：batch 256 時 FP8 每秒 43.5k token、BF16 31.3k。</p></div>
     <div class="ev"><div class="when">11-03 12:45</div><p>推論省電實驗的程式會崩，定位到「重播一個很大的 GPU 指令圖」；改成每層一個小圖，並比較不用圖時的速度。</p></div>
     <div class="ev"><div class="when">11-03 11:10</div><p>你決定先量推論省電。寫好 decode 模擬程式（整台同一設定、ABBA），短測試排隊中。</p></div>

@@ -1,0 +1,25 @@
+job=387 host=p01-r01-n01 script=ai_decode_debug.sh dir=/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350 start=Tue Nov  3 12:54:13 PM UTC 2026
+== mode eager
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 0, "fmt": "bf16:7", "batch": 1, "mode": "eager", "passes": 610, "tokens_per_s": 203.11517226273767, "pass_ms": 4.9233151263877994, "t_begin": 1793710494.0031285, "t_end": 1793710497.0063508}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 1, "fmt": "fp8:3", "batch": 1, "mode": "eager", "passes": 160, "tokens_per_s": 50.63713932971923, "pass_ms": 19.748350977897644, "t_begin": 1793710500.0135713, "t_end": 1793710503.1733074}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 2, "fmt": "fp8:3", "batch": 1, "mode": "eager", "passes": 160, "tokens_per_s": 50.21968697436717, "pass_ms": 19.912509620189667, "t_begin": 1793710506.0083885, "t_end": 1793710509.19439}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 3, "fmt": "bf16:7", "batch": 1, "mode": "eager", "passes": 610, "tokens_per_s": 201.94664367778714, "pass_ms": 4.9518030197893985, "t_begin": 1793710512.000379, "t_end": 1793710515.020979}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 4, "fmt": "bf16:7", "batch": 64, "mode": "eager", "passes": 610, "tokens_per_s": 12974.500298837462, "pass_ms": 4.9327525936189245, "t_begin": 1793710518.0008006, "t_end": 1793710521.0097797}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 5, "fmt": "fp8:3", "batch": 64, "mode": "eager", "passes": 160, "tokens_per_s": 3214.4989721757734, "pass_ms": 19.90979015827179, "t_begin": 1793710524.0044293, "t_end": 1793710527.1899958}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 6, "fmt": "fp8:3", "batch": 64, "mode": "eager", "passes": 160, "tokens_per_s": 3237.40000805022, "pass_ms": 19.76895034313202, "t_begin": 1793710530.0058684, "t_end": 1793710533.1689005}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 7, "fmt": "bf16:7", "batch": 64, "mode": "eager", "passes": 620, "tokens_per_s": 13029.248816716583, "pass_ms": 4.912025313223562, "t_begin": 1793710536.001048, "t_end": 1793710539.0465038}
+END
+rc=0
+== mode layergraph
+Fatal Python error: Segmentation fault
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 107 in step
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 153 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 166 in <module>
+rc=139
+== mode graph
+Fatal Python error: Segmentation fault
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 107 in step
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 147 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 166 in <module>
+rc=139
+rc=0 end=Tue Nov  3 12:57:02 PM UTC 2026

@@ -1,0 +1,102 @@
+job=384 host=p01-r01-n01 script=ai_decode_debug.sh dir=/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350 start=Tue Nov  3 12:35:04 PM UTC 2026
+== single process
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 0, "bdf": "0000:79:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x000072e57b5c3300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+rc=139
+== 8 processes
+scripts/ai_decode_debug.sh: line 18: 1487564 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487566 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487568 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487565 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487567 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487571 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487569 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+scripts/ai_decode_debug.sh: line 18: 1487570 Segmentation fault      (core dumped) "$PY" -X faulthandler ai/decode_bench.py --device "$g" --t0 "$t0" "${args[@]}" > "logs/decodedbg_gpu$g.log" 2>&1
+-- gpu0
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 0, "bdf": "0000:79:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x00007460b62da300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu1
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 1, "bdf": "0000:09:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x00007b01aeba0300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu2
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 2, "bdf": "0000:69:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x00007864f0720300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu3
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 3, "bdf": "0000:19:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x000078ad42131300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu4
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 4, "bdf": "0000:f9:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x000071ae30b24300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu5
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 5, "bdf": "0000:89:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x000074d0772d4300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu6
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 6, "bdf": "0000:e9:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x00007623105ec300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+-- gpu7
+START {"tag": "run", "model": "meta-llama/Llama-2-7b-hf", "device": 7, "bdf": "0000:99:00.0", "linears": 224, "bf16_gbytes": 12.952010752, "windows": 4, "period": 5.0}
+Fatal Python error: Segmentation fault
+
+Current thread 0x000076632e44f300 (most recent call first):
+  File "/home/cust_nthu/koying/sw/ai-venv/lib/python3.12/site-packages/torch/cuda/graphs.py", line 186 in replay
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 127 in main
+  File "/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/decode_bench.py", line 146 in <module>
+
+Extension modules: numpy._core._multiarray_umath, numpy.linalg._umath_linalg, torch._C, torch._C._dynamo.autograd_compiler, torch._C._dynamo.eval_frame, torch._C._dynamo.guards, torch._C._dynamo.utils, torch._C._fft, torch._C._linalg, torch._C._nested, torch._C._nn, torch._C._sparse, torch._C._special (total: 13)
+rc=0 end=Tue Nov  3 12:36:53 PM UTC 2026

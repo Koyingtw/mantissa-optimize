@@ -1,0 +1,28 @@
+job=388 host=p01-r01-n01 script=ai_decode_debug.sh dir=/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350 start=Tue Nov  3 02:05:34 PM UTC 2026
+PROF {"window": 0, "fmt": "bf16:7", "batch": 1, "kernel_ms": 4.881711999999997, "wall_ms": 5.978250503540039}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 0, "fmt": "bf16:7", "batch": 1, "mode": "eager", "passes": 610, "tokens_per_s": 202.921118203608, "pass_ms": 4.928023307049861, "t_begin": 179371
+PROF {"window": 1, "fmt": "fp8:3", "batch": 1, "kernel_ms": 3.192390600000011, "wall_ms": 7.029962539672852}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 1, "fmt": "fp8:3", "batch": 1, "mode": "eager", "passes": 680, "tokens_per_s": 226.33449243927987, "pass_ms": 4.418239523382748, "t_begin": 17937
+PROF {"window": 2, "fmt": "fp8:3", "batch": 1, "kernel_ms": 3.234205399999991, "wall_ms": 6.932878494262695}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 2, "fmt": "fp8:3", "batch": 1, "mode": "eager", "passes": 680, "tokens_per_s": 226.5374369841677, "pass_ms": 4.414281424354105, "t_begin": 179371
+PROF {"window": 3, "fmt": "bf16:7", "batch": 1, "kernel_ms": 5.006025399999993, "wall_ms": 5.778026580810547}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 3, "fmt": "bf16:7", "batch": 1, "mode": "eager", "passes": 610, "tokens_per_s": 202.0827658327528, "pass_ms": 4.948467504782755, "t_begin": 17937
+PROF {"window": 4, "fmt": "bf16:7", "batch": 64, "kernel_ms": 4.799718000000009, "wall_ms": 5.865573883056641}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 4, "fmt": "bf16:7", "batch": 64, "mode": "eager", "passes": 620, "tokens_per_s": 13171.80487302222, "pass_ms": 4.858863353729248, "t_begin": 1793
+PROF {"window": 5, "fmt": "fp8:3", "batch": 64, "kernel_ms": 3.3793024000000003, "wall_ms": 6.621694564819336}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 5, "fmt": "fp8:3", "batch": 64, "mode": "eager", "passes": 720, "tokens_per_s": 15300.355797432276, "pass_ms": 4.182909263504876, "t_begin": 1793
+PROF {"window": 6, "fmt": "fp8:3", "batch": 64, "kernel_ms": 3.4784589999999893, "wall_ms": 6.3045501708984375}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 6, "fmt": "fp8:3", "batch": 64, "mode": "eager", "passes": 690, "tokens_per_s": 14564.620582441821, "pass_ms": 4.394209903219472, "t_begin": 1793
+PROF {"window": 7, "fmt": "bf16:7", "batch": 64, "kernel_ms": 4.947569400000001, "wall_ms": 5.861425399780273}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 7, "fmt": "bf16:7", "batch": 64, "mode": "eager", "passes": 620, "tokens_per_s": 13066.080373321107, "pass_ms": 4.898178961969191, "t_begin": 179
+PROF {"window": 8, "fmt": "bf16:7", "batch": 256, "kernel_ms": 8.092647199999984, "wall_ms": 8.294248580932617}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 8, "fmt": "bf16:7", "batch": 256, "mode": "eager", "passes": 370, "tokens_per_s": 31468.378816145487, "pass_ms": 8.135150574349069, "t_begin": 17
+PROF {"window": 9, "fmt": "fp8:3", "batch": 256, "kernel_ms": 5.845040999999999, "wall_ms": 6.588935852050781}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 9, "fmt": "fp8:3", "batch": 256, "mode": "eager", "passes": 520, "tokens_per_s": 43579.11970834744, "pass_ms": 5.8743729041172905, "t_begin": 179
+PROF {"window": 10, "fmt": "fp8:3", "batch": 256, "kernel_ms": 5.871761399999992, "wall_ms": 6.387996673583984}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 10, "fmt": "fp8:3", "batch": 256, "mode": "eager", "passes": 510, "tokens_per_s": 43412.45655669144, "pass_ms": 5.896924991233676, "t_begin": 179
+PROF {"window": 11, "fmt": "bf16:7", "batch": 256, "kernel_ms": 8.188663999999987, "wall_ms": 8.31441879272461}
+RESULT {"tag": "run", "bdf": "0000:79:00.0", "window": 11, "fmt": "bf16:7", "batch": 256, "mode": "eager", "passes": 370, "tokens_per_s": 31079.66631979371, "pass_ms": 8.236896669542467, "t_begin": 17
+END
+rc=0
+rc=0 end=Tue Nov  3 02:07:46 PM UTC 2026
