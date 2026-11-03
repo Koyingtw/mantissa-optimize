@@ -1,0 +1,65 @@
+job=210 host=p01-r01-n02 start=Mon Nov  2 09:23:28 AM UTC 2026
+RESULT_LAYER api=hipblas m=n=65535 k=1024 stride=4294836225 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=0 bad_batch1=0
+RESULT_LAYER api=hipblas m=n=65536 k=1024 stride=4294967296 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=7 bad_batch1=7
+RESULT_LAYER api=hipblas m=n=65537 k=1024 stride=4295098369 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=4 bad_batch1=7
+ROCBLAS_USE_HIPBLASLT=0
+RESULT_LAYER api=rocblas m=n=65535 k=1024 stride=4294836225 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=0 bad_batch1=0
+RESULT_LAYER api=rocblas m=n=65536 k=1024 stride=4294967296 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=7 bad_batch1=7
+RESULT_LAYER api=rocblas m=n=65537 k=1024 stride=4295098369 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=5 bad_batch1=7
+ROCBLAS_USE_HIPBLASLT=1
+RESULT_LAYER api=rocblas m=n=65535 k=1024 stride=4294836225 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=0 bad_batch1=0
+RESULT_LAYER api=rocblas m=n=65536 k=1024 stride=4294967296 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=7 bad_batch1=7
+RESULT_LAYER api=rocblas m=n=65537 k=1024 stride=4295098369 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=4 bad_batch1=7
+RESULT_LAYER api=lt m=n=65535 k=1024 stride=4294836225 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=0 bad_batch1=0
+RESULT_LAYER api=lt m=n=65536 k=1024 stride=4294967296 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=7 bad_batch1=7
+RESULT_LAYER api=lt m=n=65537 k=1024 stride=4295098369 stride_over_2^32=1.0000 status=0 checked=14 bad_batch0=5 bad_batch1=7
+RESULT_I8 m=n=65536 k=1024 batch=1 mn_over_2^32=1.0000 status=0 checked=7 bad=0
+RESULT_I8 m=n=46341 k=1024 batch=2 mn_over_2^32=0.5000 status=0 checked=14 bad=0
+RESULT_I8 m=n=50000 k=1024 batch=3 mn_over_2^32=0.5821 status=0 checked=21 bad=0
+RESULT_I8 m=n=65535 k=1024 batch=2 mn_over_2^32=1.0000 status=0 checked=14 bad=0
+  mismatch batch 1 C[0,0] got=2139062143 ref=-555272
+  mismatch batch 1 C[65535,0] got=2139062143 ref=-552505
+  mismatch batch 1 C[0,65535] got=2139062143 ref=-500930
+  mismatch batch 1 C[65535,65535] got=2139062143 ref=-564667
+  mismatch batch 1 C[32768,32768] got=2139062143 ref=-557487
+  mismatch batch 1 C[123,65534] got=2139062143 ref=-496694
+  mismatch batch 1 C[65529,21845] got=2139062143 ref=-170617
+RESULT_I8 m=n=65536 k=1024 batch=2 mn_over_2^32=1.0000 status=0 checked=14 bad=7
+  mismatch batch 0 C[0,65536] got=-176800 ref=-211778
+  mismatch batch 0 C[32768,32768] got=486209 ref=-557487
+  mismatch batch 0 C[123,65535] got=340319 ref=-510380
+  mismatch batch 1 C[0,0] got=-491330 ref=-555272
+  mismatch batch 1 C[65536,0] got=-211778 ref=-216641
+  mismatch batch 1 C[0,65536] got=2139062143 ref=-211778
+  mismatch batch 1 C[65536,65536] got=2139062143 ref=-551597
+  mismatch batch 1 C[32768,32768] got=2139062143 ref=-557487
+  mismatch batch 1 C[123,65535] got=2139062143 ref=-510380
+  mismatch batch 1 C[65530,21845] got=2139062143 ref=381358
+RESULT_I8 m=n=65537 k=1024 batch=2 mn_over_2^32=1.0000 status=0 checked=14 bad=10
+== direct API, stock 3.5.4
+RESULT_G8 m=65535 n=65535 k=1024 mn=4294836225 mn_over_2^32=1.0000 moduli=14 workspace_GB=74.93 status=ok rel_err=1.636e-15 nonfinite=0 max_abs_err=2.629e-13
+RESULT_G8 m=65536 n=65536 k=1024 mn=4294967296 mn_over_2^32=1.0000 moduli=14 workspace_GB=74.93 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.303e+02
+RESULT_G8 m=65537 n=65537 k=1024 mn=4295098369 mn_over_2^32=1.0000 moduli=14 workspace_GB=75.22 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.336e+02
+RESULT_G8 m=78976 n=78976 k=1024 mn=6237208576 mn_over_2^32=1.4522 moduli=14 workspace_GB=108.50 status=ok rel_err=3.100e+01 nonfinite=0 max_abs_err=6.290e+02
+== direct API, fixed
+RESULT_G8 m=65535 n=65535 k=1024 mn=4294836225 mn_over_2^32=1.0000 moduli=14 workspace_GB=74.93 status=ok rel_err=1.636e-15 nonfinite=0 max_abs_err=2.629e-13
+RESULT_G8 m=65536 n=65536 k=1024 mn=4294967296 mn_over_2^32=1.0000 moduli=14 workspace_GB=74.93 status=ok rel_err=1.636e-15 nonfinite=0 max_abs_err=2.700e-13
+RESULT_G8 m=65537 n=65537 k=1024 mn=4295098369 mn_over_2^32=1.0000 moduli=14 workspace_GB=75.22 status=ok rel_err=1.636e-15 nonfinite=0 max_abs_err=2.558e-13
+RESULT_G8 m=78976 n=78976 k=1024 mn=6237208576 mn_over_2^32=1.4522 moduli=14 workspace_GB=108.50 status=ok rel_err=1.636e-15 nonfinite=0 max_abs_err=2.629e-13
+== hook stock m=n=65535 k=1024
+tag=hook_stock m=65535 k=1024 tflops=49.935 rel_err=4.016e-13 
+== hook stock m=n=65536 k=1024
+tag=hook_stock m=65536 k=1024 tflops=50.570 rel_err=4.838e+01 
+== hook stock m=n=65535 k=4096
+tag=hook_stock m=65535 k=4096 tflops=106.245 rel_err=8.035e-13 
+== hook stock m=n=65536 k=4096
+tag=hook_stock m=65536 k=4096 tflops=107.557 rel_err=9.673e+01 
+== hook fix m=n=65535 k=1024
+tag=hook_fix m=65535 k=1024 tflops=49.004 rel_err=4.016e-13 
+== hook fix m=n=65536 k=1024
+tag=hook_fix m=65536 k=1024 tflops=50.440 rel_err=4.016e-13 
+== hook fix m=n=65535 k=4096
+tag=hook_fix m=65535 k=4096 tflops=105.521 rel_err=8.035e-13 
+== hook fix m=n=65536 k=4096
+tag=hook_fix m=65536 k=4096 tflops=106.561 rel_err=8.036e-13 
+rc=0 end=Mon Nov  2 09:26:18 AM UTC 2026
