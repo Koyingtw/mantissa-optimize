@@ -8,6 +8,9 @@
 // in the TN layout, FP32 accumulation and BF16 output, `--frac` keeping 0..3 of the E4M3 fraction bits.
 // The measured window's wall-clock bounds are printed as Unix times so the amdsmi power log
 // (mi350/tools/smi_sampler.py) can be joined to it.
+// FP64 only: --load-a / --load-b FILE[@offset] read an operand from a raw little-endian FP64 file (column-major in the
+// stored layout: A m x k, or k x m with --ta; B k x n, or n x k with --tb; offset in elements) instead of generating it,
+// and keep --frac bits of it on the GPU (kernel-level calibration of the power model with an application's operands).
 #include <hip/hip_bf16.h>
 #include <hip/hip_fp8.h>
 #include <hip/hip_runtime.h>
@@ -99,6 +102,24 @@ __device__ __forceinline__ double spread_scale(uint64_t seed, size_t i, size_t l
   const size_t key = g_spread_mode == 0 ? i : (col_key ? i / ld : i % ld);
   const double u = (double)(splitmix64(splitmix64(seed + 0x5eedull) ^ (key * 0xd1b54a32d192ed03ull)) >> 11) * 0x1.0p-53;
   return exp2((u - 0.5) * g_spread);
+}
+
+__global__ void reduce_inplace64(double* x, size_t n, int frac, int round) {
+  for (size_t i = blockIdx.x * (size_t)blockDim.x + threadIdx.x; i < n; i += (size_t)gridDim.x * blockDim.x)
+    x[i] = reduce64(x[i], frac, round);
+}
+
+// Read n doubles at element offset `off` of spec = FILE[@offset] into device memory.
+static void load64(const std::string& spec, double* d, size_t n) {
+  const size_t at = spec.find('@');
+  const std::string path = spec.substr(0, at);
+  const size_t off = at == std::string::npos ? 0 : strtoull(spec.c_str() + at + 1, nullptr, 10);
+  FILE* f = fopen(path.c_str(), "rb");
+  if (!f || fseeko(f, (off_t)(off * 8), SEEK_SET) != 0) { fprintf(stderr, "cannot open %s\n", spec.c_str()); exit(1); }
+  std::vector<double> h(n);
+  if (fread(h.data(), 8, n, f) != n) { fprintf(stderr, "%s: fewer than %zu values after offset %zu\n", path.c_str(), n, off); exit(1); }
+  fclose(f);
+  CK(hipMemcpy(d, h.data(), n * 8, hipMemcpyHostToDevice));
 }
 
 __global__ void fill64(double* x, size_t n, uint64_t seed, int frac, int round, size_t ld, int col_key) {
@@ -245,6 +266,7 @@ static double now_unix() {
 int main(int argc, char** argv) {
   std::string dtype = "fp64", tag = "run";
   int stats_only = 0;
+  std::string load_a, load_b;
   int frac = -1, round = 0, only_a = 0, only_b = 0, low_mode = 0, check = 0, device = 0, ta = 0, tb = 0, spread_mode = 0;
   double spread = 0;
   long m = 32768, n = 32768, k = 2048;
@@ -269,6 +291,8 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--tb")) tb = 1;  // FP64 only: B stored n x k, op(B) = B^T
     else if (!strcmp(argv[i], "--check")) check = 1;
     else if (!strcmp(argv[i], "--stats-only")) stats_only = 1;  // FP64: print per-bit-position flips and exit    // relative error vs FP64 on the unreduced data
+    else if (!strcmp(argv[i], "--load-a")) load_a = next();
+    else if (!strcmp(argv[i], "--load-b")) load_b = next();
     else if (!strcmp(argv[i], "--spread")) spread = atof(next());  // exponent spread in binades (see g_spread)
     else if (!strcmp(argv[i], "--spread-mode")) spread_mode = !strcmp(next(), "row");  // elem | row
     else if (!strcmp(argv[i], "--low")) {  // fill of the dropped bits: zero | ones | const | krep | mrep | sorted | shuffled
@@ -294,6 +318,10 @@ int main(int argc, char** argv) {
     fprintf(stderr, "--low krep|mrep|sorted|shuffled needs --dtype fp64, a power-of-two k, no --ta/--tb/--spread/--check\n");
     return 2;
   }
+  if ((!load_a.empty() || !load_b.empty()) && (!is64 || low_mode != 0 || spread != 0 || check)) {
+    fprintf(stderr, "--load-a/--load-b need --dtype fp64 with the zero layout, no --spread/--check\n");
+    return 2;
+  }
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_kdim), &k, sizeof(long)));
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_low_mode), &low_mode, sizeof(int)));
   CK(hipMemcpyToSymbol(HIP_SYMBOL(g_spread), &spread, sizeof(double)));
@@ -307,8 +335,16 @@ int main(int argc, char** argv) {
   CK(hipMalloc(&C, (size_t)m * n * csz));
   CK(hipMemset(C, 0, (size_t)m * n * csz));
   if (is64) {
-    fill64<<<4096, 256>>>((double*)A, (size_t)m * k, 1, only_b ? native : frac, round, m, 0);
-    fill64<<<4096, 256>>>((double*)B, (size_t)k * n, 2, only_a ? native : frac, round, k, 1);
+    if (load_a.empty()) fill64<<<4096, 256>>>((double*)A, (size_t)m * k, 1, only_b ? native : frac, round, m, 0);
+    else {
+      load64(load_a, (double*)A, (size_t)m * k);
+      reduce_inplace64<<<4096, 256>>>((double*)A, (size_t)m * k, only_b ? native : frac, round);
+    }
+    if (load_b.empty()) fill64<<<4096, 256>>>((double*)B, (size_t)k * n, 2, only_a ? native : frac, round, k, 1);
+    else {
+      load64(load_b, (double*)B, (size_t)k * n);
+      reduce_inplace64<<<4096, 256>>>((double*)B, (size_t)k * n, only_a ? native : frac, round);
+    }
     if (!ta && !tb) {
       unsigned long long* acc;
       CK(hipMalloc(&acc, 12 * sizeof(unsigned long long)));

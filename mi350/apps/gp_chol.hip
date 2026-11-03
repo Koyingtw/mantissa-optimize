@@ -14,6 +14,10 @@
 //   direct API with M moduli and one preallocated workspace; build with -DWITH_GEMMUL8); a variant listed twice
 //   is its B pass. --hipblas runs the trailing DGEMM through hipblasDgemm instead of rocblas_dgemm, so that
 //   GEMMul8's LD_PRELOAD hook (which intercepts hipBLAS) can replace it with INT8 emulation.
+//   --dump-panel J:PREFIX: in every native factorization of the ranges loop, write the panel L21 of the step at column J
+//   ((n - J - nb) x nb, column-major, raw FP64) to PREFIX_range<r>.bin, the operand of that step's trailing DGEMM
+//   (kernel-level calibration of the power model, bench/gemm_mant_bench --load-a).
+//   GP_PROF=1 (environment): time each trailing update with HIP events and print its share of the variant's wall time.
 //   Prints one RESULT_GP line per variant (log-likelihoods, deviation from the first native
 //   run, wall time, Unix start/end).
 //   --mle: instead of evaluating fixed ranges, each variant fits all three Matern-3/2 parameters by maximum likelihood:
@@ -98,6 +102,11 @@ struct Ctx {
   void* work = nullptr;   // GEMMul8 workspace for the largest trailing update
 };
 
+static long g_dump_j = -1;
+static bool g_prof = false;      // GP_PROF=1: time every trailing update with HIP events
+static double g_gemm_ms = 0;     // summed trailing-update time since the last reset
+static std::string g_dump_file;  // set per factorization; empty = no dump
+
 // Returns false if the matrix is not positive definite (POTRF info != 0).
 static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
   const long n = c.n;
@@ -121,6 +130,21 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
     CR(rocblas_dtrsm(c.h, rocblas_side_right, rocblas_fill_lower, rocblas_operation_transpose,
                      rocblas_diagonal_non_unit, r, b, &one, D, n, A + (j + b) + j * n, n));
     copy_reduce<<<4096, 256>>>(A + (j + b) + j * n, n, c.Lt, r, b, add, mask);
+    hipEvent_t pe0 = nullptr, pe1 = nullptr;
+    if (g_prof) {
+      CK(hipEventCreate(&pe0));
+      CK(hipEventCreate(&pe1));
+      CK(hipEventRecord(pe0));
+    }
+    if (j == g_dump_j && !g_dump_file.empty()) {
+      std::vector<double> hp((size_t)r * b);
+      CK(hipMemcpy(hp.data(), c.Lt, hp.size() * 8, hipMemcpyDeviceToHost));
+      FILE* f = fopen(g_dump_file.c_str(), "wb");
+      if (!f || fwrite(hp.data(), 8, hp.size(), f) != hp.size()) { fprintf(stderr, "cannot write %s\n", g_dump_file.c_str()); exit(1); }
+      fclose(f);
+      printf("DUMP file=%s m=%ld k=%ld j=%ld\n", g_dump_file.c_str(), r, b, j);
+      fflush(stdout);
+    }
     if (c.emu) {
 #ifdef WITH_GEMMUL8
       gemmul8::gemm<double, gemmul8::Backend::INT8>(c.hb, HIPBLAS_OP_N, HIPBLAS_OP_T, r, r, b, &mone, c.Lt, r, c.Lt, r,
@@ -132,6 +156,15 @@ static bool cholesky(Ctx& c, double* A, int bits, bool nearest) {
     } else {
       CR(rocblas_dgemm(c.h, rocblas_operation_none, rocblas_operation_transpose, r, r, b, &mone, c.Lt, r, c.Lt, r,
                        &one, A + (j + b) + (j + b) * n, n));
+    }
+    if (g_prof) {
+      CK(hipEventRecord(pe1));
+      CK(hipEventSynchronize(pe1));
+      float ms;
+      CK(hipEventElapsedTime(&ms, pe0, pe1));
+      g_gemm_ms += ms;
+      CK(hipEventDestroy(pe0));
+      CK(hipEventDestroy(pe1));
     }
   }
   CK(hipDeviceSynchronize());
@@ -172,6 +205,8 @@ int main(int argc, char** argv) {
   int device = 0, use_hipblas = 0, mle = 0;
   uint64_t seed = 1;
   double nugget = 1e-4;
+  std::string dump_prefix;
+  g_prof = getenv("GP_PROF") && atoi(getenv("GP_PROF"));
   std::string variants = "native", ranges_s = "0.02 0.03 0.04 0.05 0.06 0.08", tag = "run";
   for (int i = 1; i < argc; ++i) {
     auto next = [&]() { if (i + 1 >= argc) { fprintf(stderr, "missing value for %s\n", argv[i]); exit(2); } return argv[++i]; };
@@ -185,6 +220,11 @@ int main(int argc, char** argv) {
     else if (!strcmp(argv[i], "--tag")) tag = next();
     else if (!strcmp(argv[i], "--hipblas")) use_hipblas = 1;
     else if (!strcmp(argv[i], "--mle")) mle = 1;
+    else if (!strcmp(argv[i], "--dump-panel")) {
+      const std::string a = next();
+      g_dump_j = atol(a.c_str());
+      dump_prefix = a.substr(a.find(':') + 1);
+    }
     else { fprintf(stderr, "unknown option %s\n", argv[i]); return 2; }
   }
   std::vector<double> ranges;
@@ -314,10 +354,14 @@ int main(int argc, char** argv) {
     }
     std::vector<double> lls;
     bool ok = true;
+    g_gemm_ms = 0;
     const double t0 = now_unix();
     for (double rg : ranges) {
       covariance<<<8192, 256>>>(A, xy, n, std::sqrt(3.0) / rg, nugget);
+      g_dump_file = g_dump_j >= 0 && v == "native" && bits == 52 && !c.emu
+                        ? dump_prefix + "_range" + std::to_string(rg).substr(0, 4) + ".bin" : "";
       if (!cholesky(c, A, bits, nearest)) { lls.push_back(NAN); ok = false; continue; }
+      g_dump_file.clear();
       lls.push_back(loglik(c, A, y, z, acc));
     }
     const double t1 = now_unix();
@@ -332,6 +376,9 @@ int main(int argc, char** argv) {
     }
     printf("RESULT_GP tag=%s gpu=%d variant=%s pass=%c status=%s loglik=[%s] dll=[%s] wall=%.3fs t_begin=%.3f t_end=%.3f\n",
            tag.c_str(), device, v.c_str(), pas, ok ? "ok" : "notpd", ll.str().c_str(), dl.str().c_str(), t1 - t0, t0, t1);
+    if (g_prof)
+      printf("PROF_GP gpu=%d variant=%s gemm_s=%.3f wall=%.3f share=%.4f\n", device, v.c_str(), g_gemm_ms * 1e-3, t1 - t0,
+             g_gemm_ms * 1e-3 / (t1 - t0));
     fflush(stdout);
   }
   rocblas_destroy_handle(c.h);

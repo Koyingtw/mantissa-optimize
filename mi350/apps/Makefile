@@ -14,3 +14,8 @@ $(BIN)/gp_chol: gp_chol.hip
 	$(HIPCC) -o $@ $< -lrocblas -lrocsolver -lhipblas
 $(BIN)/g8_repro: g8_repro.hip
 	$(HIPCC) -o $@ $< $(G8) -lhipblas
+
+# GEMMul8 v3.5.4 (git worktree in ~/koying/sw/GEMMul8-v3.5.4): post-hoc FP64 spot check of an emulated GEMM
+G8V354 ?= $(HOME)/koying/sw/GEMMul8-v3.5.4
+$(BIN)/g8_spot: g8_spot.hip
+	$(HIPCC) -o $@ $< -DWITH_GEMMUL8 -I$(G8V354)/include -L$(G8V354)/lib -Wl,-rpath=$(G8V354)/lib -lgemmul8 -lhipblas

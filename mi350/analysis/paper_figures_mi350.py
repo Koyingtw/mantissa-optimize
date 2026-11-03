@@ -98,13 +98,24 @@ def fig_model():
         e = (g.pred_gain - g.meas_gain).abs()
         ax.scatter(g.meas_gain, g.pred_gain, s=10, color=c, marker=mk, alpha=0.8, lw=0,
                    label=f"{lab}\n(mean |err| {e.mean():.1f}, max {e.max():.1f} pts)")
+    # MI350X FP64 with R and sigma predicted from the operands' bit flips (no run of the truncated variant;
+    # 3 bit counts x 7 caps, so three independent predictions of R)
+    f = pd.read_csv(f"{RES}/switching_model.csv")
+    e = f.err_flips.abs()
+    ax.scatter(f.meas, f.pred_flips, s=14, facecolors="none", edgecolors=C[2], marker="D", lw=0.7,
+               label=f"MI350X FP64: $R$ from bit flips, 3 bit counts\n(mean |err| {e.mean():.1f}, max {e.max():.1f} pts)")
+    # DF-MP2 and GP from a locked-clock GEMM on their own operands, weighted by the GEMM's share of run time
+    k = pd.read_csv(f"{RES}/kernel_cal.csv")
+    e = k.err_kernel.abs()
+    ax.scatter(k.meas_pct, k.pred_kernel, s=14, color=C[3], marker="^", lw=0,
+               label=f"DF-MP2, GP: GEMM on own operands\n(mean |err| {e.mean():.1f}, max {e.max():.1f} pts)")
     lim = [0, max(d.meas_gain.max(), d.pred_gain.max()) * 1.05]
     ax.plot(lim, lim, color="#999999", lw=0.6)
     ax.set_xlim(lim)
     ax.set_ylim(lim)
     ax.set_xlabel("Measured speedup (%)")
     ax.set_ylabel("Predicted speedup (%)")
-    ax.legend(frameon=False, loc="upper left", fontsize=6)
+    ax.legend(frameon=False, loc="upper left", fontsize=5.5)
     save(fig, "mi350_model.pdf")
 
 

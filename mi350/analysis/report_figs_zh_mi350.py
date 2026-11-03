@@ -72,6 +72,14 @@ def fig_model():
         e = (g.pred_gain - g.meas_gain).abs()
         ax.scatter(g.meas_gain, g.pred_gain, s=12, color=c, marker=mk, alpha=0.85, lw=0,
                    label=f"{lab}\n平均誤差 {e.mean():.1f}、最大 {e.max():.1f} 個百分點", zorder=3)
+    f = pd.read_csv(f"{RES}/switching_model.csv")  # R 由位元翻轉預測（3 個位數 × 7 個上限）
+    e = f.err_flips.abs()
+    ax.scatter(f.meas, f.pred_flips, s=16, facecolors="none", edgecolors="#4f9a6b", marker="D", lw=0.8, zorder=4,
+               label=f"MI350X FP64：$R$ 由位元翻轉預測（3 個位數）\n平均誤差 {e.mean():.1f}、最大 {e.max():.1f} 個百分點")
+    k = pd.read_csv(f"{RES}/kernel_cal.csv")  # 兩個應用：以自己的運算元做鎖頻矩陣乘法校正
+    e = k.err_kernel.abs()
+    ax.scatter(k.meas_pct, k.pred_kernel, s=16, color="#8d6cab", marker="^", lw=0, zorder=4,
+               label=f"DF-MP2、高斯過程：以自己的運算元校正\n平均誤差 {e.mean():.1f}、最大 {e.max():.1f} 個百分點")
     top = 10 * np.ceil(max(d.meas_gain.max(), d.pred_gain.max()) / 10)
     lim = [0, top]
     ax.set_xticks(np.arange(0, top + 1, 10))
@@ -82,7 +90,7 @@ def fig_model():
     ax.set_aspect("equal")
     ax.set_xlabel("實測加速（%）")
     ax.set_ylabel("模型預測的加速（%）")
-    ax.legend(loc="upper left", fontsize=7)
+    ax.legend(loc="upper left", fontsize=6)
     save(fig, "fig6_02_model.pdf")
 
 

@@ -419,6 +419,139 @@ System & Setting & Time & Energy & $\Delta E$ (Ry) & SCF \\
 \end{tabular}
 \end{table}
 
+\section{Mechanism Controls on MI350X: All Layouts}\label{sec:mechall}
+
+Table~\ref{tab:mechall} lists all 15 operand layouts of the switching controls of paper Section~IV (the paper's Table~III
+shows ten) in the three runs used for the regression: node n01 at 1300 and 1700\,MHz and node n02 at 1300\,MHz. The
+leave-one-layout-out fits of the paper use all 15 rows of each run; the flip counts are those of the generated operands
+and identical across runs.
+
+\begin{table}[t]
+\caption{MI350X, FP64 GEMM ($32768^2\times2048$) at locked clocks, 1000\W: mean bit flips per neighbouring pair along $k$
+and across rows of $A$ / columns of $B$, set bits per element, and energy per operation relative to native in the same
+pass and GPU (8 GPUs $\times$ ABBA; 95\pct{} intervals within $\pm$0.5 points). Shuffled and sorted hold the same values
+per row and column; ones and const fill the dropped bits with ones or one fixed pattern; krep / mrep fill them with
+random bits that repeat along $k$ / across rows.}\label{tab:mechall}
+\centering\footnotesize\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}rlrrrrrr@{}}
+\toprule
+& & \multicolumn{3}{c}{Flips / set bits} & \multicolumn{3}{c}{Energy/op (\%), node/GHz} \\
+\cmidrule(lr){3-5}\cmidrule(l){6-8}
+Bits & Layout & $k$ & Row & Set & n01/1.3 & n01/1.7 & n02/1.3 \\
+\midrule
+52 & zero (native) & 27.0 & 27.0 & 34.3 & $0.0$ & $0.0$ & $0.0$ \\
+52 & shuffled & 27.2 & 27.2 & 34.5 & $+0.6$ & $+0.7$ & $+0.8$ \\
+52 & sorted & 23.2 & 21.2 & 34.5 & $-7.3$ & $-8.6$ & $-7.2$ \\
+\midrule
+27 & zero & 15.1 & 15.1 & 22.8 & $-8.4$ & $-9.6$ & $-8.2$ \\
+27 & shuffled & 15.1 & 15.1 & 22.8 & $-7.9$ & $-9.0$ & $-7.6$ \\
+27 & sorted & 11.5 & 9.5 & 22.8 & $-15.9$ & $-18.6$ & $-15.6$ \\
+27 & ones & 15.1 & 15.1 & 47.8 & $-7.1$ & $-8.2$ & $-6.8$ \\
+27 & const & 15.1 & 15.1 & 34.8 & $-6.3$ & $-7.4$ & $-6.1$ \\
+27 & krep & 15.1 & 27.6 & 35.3 & $-0.6$ & $-0.5$ & $-0.4$ \\
+27 & mrep & 27.6 & 15.1 & 35.3 & $-3.7$ & $-4.2$ & $-3.5$ \\
+\midrule
+0 & zero & 1.6 & 1.6 & 9.3 & $-24.4$ & $-28.6$ & $-24.1$ \\
+0 & shuffled & 1.6 & 1.6 & 9.3 & $-24.6$ & $-28.8$ & $-24.3$ \\
+0 & sorted & 0.0 & 0.0 & 9.3 & $-32.0$ & $-38.1$ & $-32.1$ \\
+0 & krep & 1.6 & 27.6 & 35.3 & $-1.5$ & $-1.7$ & $-1.3$ \\
+0 & mrep & 27.7 & 1.6 & 35.3 & $-11.4$ & $-13.4$ & $-11.2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{HPL Scaled Residuals by Bit Count}\label{sec:hplres}
+
+Table~\ref{tab:hpl} gives the residuals behind the bit counts of paper Section~VI-B.
+
+\begin{table}[t]
+\caption{HPL scaled residuals (threshold 16; repeated runs reproduce exactly). Kept fraction bits, rounded to nearest even. GH200: 8 nodes at 1000\W, $N=286720$ is the tuned
+configuration of the cap sweep; MI350X: one node of 8 GPUs at 1000\W. (F): fails the check; bold: the failures that
+rule out 27 bits.}\label{tab:hpl}
+\centering\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+$N$ & Native & 35 bits & 31 bits & 29 bits & 27 bits & 23 bits \\
+\midrule
+\multicolumn{7}{@{}l}{\emph{GH200}} \\
+131072 & $\ee{1.5}{-4}$ & 0.16 & --- & --- & 13.97 & 456 (F) \\
+196608 & $\ee{1.3}{-4}$ & 0.072 & --- & --- & \textbf{18.09 (F)} & 462 (F) \\
+262144 & $\ee{2.6}{-5}$ & 0.042 & --- & --- & 14.70 & 91 (F) \\
+286720 & $\ee{7.6}{-5}$ & 0.038 & --- & --- & 15.40 & --- \\
+\multicolumn{7}{@{}l}{\emph{MI350X}} \\
+262144 & $\ee{5.4}{-5}$ & 0.46 & 11.1 & 84 (F) & \textbf{514 (F)} & --- \\
+393216 & $\ee{4.6}{-5}$ & 0.15 & 12.0 & 20.2 (F) & \textbf{104 (F)} & --- \\
+540672 & $\ee{7.8}{-6}$ & 0.27 & 3.5 & 17.3 (F) & \textbf{102 (F)} & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Kernel-Level Calibration, Spot Check and Tolerance Chain (MI350X)}\label{sec:kcal}
+
+Table~\ref{tab:kcal} gives the kernel-level calibration of paper Section~V: the GEMM microbenchmark at a 1300\,MHz lock
+and 1000\W{} on the applications' own operands (8 GPUs $\times$ ABBA on node n02), the GEMM's share $f$ of the native
+run time at the same lock, and the prediction errors over 500--1000\W{} against the whole-program calibration.
+Table~\ref{tab:spot} gives the post-hoc spot check of paper Section~VII-B and Table~\ref{tab:gptol} the tolerance chain
+of Section~VII-C.
+
+\begin{table}[t]
+\caption{Kernel-level calibration. $R$, $\sigma$: GEMM on the applications' operands (DF-MP2: call $i=150$, $2002\times
+302302\times5477$, TN; GP: trailing update $L_{21}L_{21}^T$ at steps 16384 and 40960 for ranges 0.02 and 0.08, range of
+the four given); $R_\mathrm{app}=1-f(1-R)$; error: mean / largest absolute error of the predicted speedup over 4 caps
+(percentage points).}\label{tab:kcal}
+\centering\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}lrrrrrrrr@{}}
+\toprule
+& & & & & & & \multicolumn{2}{c}{Error} \\
+\cmidrule(l){8-9}
+App & Bits & $R$ & $\sigma$ & $f$ & $R_\mathrm{app}$ & $R_\mathrm{whole}$ & Kernel & Whole \\
+\midrule
+DF-MP2 & 32 & 0.910 & 1.015 & 0.96 & 0.914 & 0.921 & 1.1 / 1.6 & 0.8 / 1.6 \\
+DF-MP2 & 20 & 0.844 & 1.026 & 0.96 & 0.850 & 0.862 & 1.7 / 3.6 & 1.2 / 2.4 \\
+GP & 36 & 0.925--0.928 & 1.011 & 0.90 & 0.934 & 0.956 & 0.4 / 1.1 & 1.6 / 2.3 \\
+GP & 28 & 0.884--0.887 & 1.018 & 0.90 & 0.897 & 0.933 & 0.8 / 1.0 & 3.0 / 3.6 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table*}[t]
+\caption{Post-hoc spot check of GEMMul8 3.5.4 (INT8, direct API): normwise error of $C$ for 10 / 12 / 14 moduli, ratio
+of the estimate from 64 random rows (DF-MP2: columns) to it, and the check's time relative to the emulated call. Span:
+share of elements of $\mathrm{op}(A)$ more than $2^{-32}$ below their row maximum (the span check rejects above 1\pct).
+Synthetic: $16384^2\times2048$, half of $k$ scaled by $2^{-40}$ in $A$ and (hidden) in the other half of $B$. $^{a}$Largest of the four panels (smallest: $\ee{8}{-12}$, $\ee{5}{-14}$, $\ee{3}{-16}$).}\label{tab:spot}
+\centering\footnotesize\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}lrlrr@{}}
+\toprule
+Case & Span & Error (10 / 12 / 14) & Ratio & Cost \\
+\midrule
+Synthetic, hidden & 0.50 & 1.0 / 0.25 / $\ee{1}{-3}$ & 1.00 & 0.9--1.5\pct \\
+Synthetic, benign & 0.50 & $\ee{1}{-10}$ / $\ee{5}{-13}$ / $\ee{3}{-15}$ & 1.00 & 0.9--1.3\pct \\
+DF-MP2, $i=150$ & 0.00 & $\ee{1}{-10}$ / $\ee{6}{-13}$ / $\ee{4}{-15}$ & 0.99--1.01 & 0.2--0.3\pct \\
+GP panels (4) & 0.87--0.97 & $\ee{2}{-11}$ / $\ee{1}{-13}$ / $\ee{7}{-16}$$^{a}$ & 1.28--1.93 & 0.15--0.64\pct \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{table}[t]
+\caption{Tolerance chain for the Gaussian-process likelihood ($n=64000$, block 2048; 2 rounds $\times$ 8 GPUs $\times$ ABBA
+per cap): tolerance $\tau$ on $|\Delta\ell|$, product tolerance $\varepsilon=\tau/\kappa$ with $\kappa=\ee{4.1}{6}$, the
+settings the selector takes, the largest measured $|\Delta\ell|$, and measured speedups over native at 1000 / 500\W{}
+(predicted from the GEMM sweep at $k=2048$ in parentheses). Bold: exceeds $\tau$.}\label{tab:gptol}
+\centering\footnotesize\setlength{\tabcolsep}{2pt}
+\begin{tabular}{@{}rrllrr@{}}
+\toprule
+$\tau$ & $\varepsilon$ & Setting & $|\Delta\ell|$ & 1000\W{} (\%) & 500\W{} (\%) \\
+\midrule
+$10^{-2}$ & $\ee{2.4}{-9}$ & 28 bits & $\ee{2.1}{-3}$ & 6.8 (8.6) & 12.1 (15.9) \\
+ & & 10 moduli & $\ee{8.8}{-5}$ & 39.5 (60.3) & $-6.2$ ($-2.4$) \\
+$10^{-4}$ & $\ee{2.4}{-11}$ & 36 bits & $\ee{5.2}{-6}$ & 3.5 (4.9) & 6.7 (9.5) \\
+ & & 11 moduli & $\ee{3.6}{-6}$ & 30.0 (46.8) & $-14.4$ ($-10.3$) \\
+$10^{-6}$ & $\ee{2.4}{-13}$ & 40 bits & $\mathbf{\ee{1.2}{-6}}$ & 2.6 (2.9) & 4.2 (6.6) \\
+ & & 13 moduli & $\ee{2.2}{-8}$ & 14.1 (24.1) & $-27.1$ ($-24.0$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \section{Artifact Description}\label{app:artifact}
 
 \textbf{Hardware and power control.} GH200: fourteen nodes, each with one NVIDIA GH200 480GB superchip (aarch64), 200\,Gb/s
@@ -451,7 +584,12 @@ environment variables, summarized by \path{gh200/analysis/crossover.py}; the MI3
 \path{mi350/slurm/run.sbatch} and summarized by \path{mi350/analysis/e1_summary.py}, \path{hpl_summary.py},
 \path{gp_summary.py} and \path{mp2_summary.py}; the model is \path{mi350/analysis/power_model.py}, evaluated with the
 idle $P_0$ by \path{model_eval.py} and on the two applications (locked-clock runs of \path{lockclk_apps.sh}) by
-\path{model_apps.py}. Intervals over analysis units are \path{apps_units.py}; the HPL comparison under common residual thresholds is
+\path{model_apps.py}; the switching controls are \path{mech_toggle.py} and \path{mech_regress.py}, the flip-based
+prediction \path{switching_model.py}, and the kernel-level calibration \path{mi350/scripts/kcal.sh} (operands via
+\path{gemm_mant_bench --load-a/--load-b} and \path{gp_chol --dump-panel}) with \path{gemmshare.sh} for $f$, summarized by
+\path{kernel_cal.py}. The selector is \path{selector.py} (GH200: \path{selector_gh200.py}), the spot check
+\path{mi350/apps/g8_spot.hip} run by \path{spot.sh} and summarized by \path{spot_summary.py}, and the tolerance chain
+\path{gp_tdp.sh} with \path{gptol.py}. Intervals over analysis units are \path{apps_units.py}; the HPL comparison under common residual thresholds is
 \path{hpl_threshold.py}; temperature adjustment is
 \path{temp_adjust.py}; the controlled thermal checks are \path{e1_gemm_tdp.sh} with a 4-minute warm-up and no cool-down,
 and \path{hpl_tdp.sh} with \path{PAIRWISE=1 PRECOND=180}. The GEMMul8 size failure is reproduced in isolation by
