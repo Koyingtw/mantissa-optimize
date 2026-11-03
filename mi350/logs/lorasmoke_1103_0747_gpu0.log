@@ -1,0 +1,29 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:  23%|██▎       | 67/291 [00:00<00:00, 669.85it/s]Loading weights:  54%|█████▍    | 158/291 [00:00<00:00, 808.48it/s]Loading weights:  82%|████████▏ | 239/291 [00:00<00:00, 798.92it/s]Loading weights: 100%|██████████| 291/291 [00:00<00:00, 790.87it/s]
+START {"tag": "gpu=0,bits=7,seed=1", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 1, "device": 0, "bdf": "0000:79:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/lora.py:144: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:822.)
+  loss_sum += float(out.loss) / acc
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 1, "samples": 8, "loss": 4.573656499385834, "seconds": 9.873359441757202, "t_begin": 1793692125.2432086, "t_end": 1793692135.116568}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 2, "samples": 16, "loss": 4.505827069282532, "seconds": 6.809746742248535, "t_begin": 1793692135.1167245, "t_end": 1793692141.9264712}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 3, "samples": 24, "loss": 4.182569801807404, "seconds": 6.681039094924927, "t_begin": 1793692141.9268517, "t_end": 1793692148.6078908}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 4, "samples": 32, "loss": 3.9721058905124664, "seconds": 7.101116418838501, "t_begin": 1793692148.608264, "t_end": 1793692155.7093804}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 5, "samples": 40, "loss": 3.772665411233902, "seconds": 6.746228456497192, "t_begin": 1793692155.7094862, "t_end": 1793692162.4557147}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 6, "samples": 48, "loss": 3.617179423570633, "seconds": 6.811641693115234, "t_begin": 1793692162.4563513, "t_end": 1793692169.267993}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 7, "samples": 56, "loss": 3.6047447323799133, "seconds": 7.09545111656189, "t_begin": 1793692169.2681544, "t_end": 1793692176.3636055}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 8, "samples": 64, "loss": 3.481963127851486, "seconds": 6.96006178855896, "t_begin": 1793692176.3640704, "t_end": 1793692183.3241322}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 9, "samples": 72, "loss": 3.3650936484336853, "seconds": 6.731556177139282, "t_begin": 1793692183.324397, "t_end": 1793692190.0559533}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 10, "samples": 80, "loss": 3.2269798517227173, "seconds": 6.903292417526245, "t_begin": 1793692190.056293, "t_end": 1793692196.9595854}
+EVAL {"tag": "gpu=0,bits=7,seed=1", "step": 10, "samples": 80, "eval_loss": 2.7338105910542585, "seconds": 0.8168685436248779}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 11, "samples": 88, "loss": 3.1597457826137543, "seconds": 6.963542938232422, "t_begin": 1793692197.7806718, "t_end": 1793692204.7442148}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 12, "samples": 96, "loss": 3.0924465656280518, "seconds": 6.757855415344238, "t_begin": 1793692204.744936, "t_end": 1793692211.5027914}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 13, "samples": 104, "loss": 3.14328134059906, "seconds": 7.219779968261719, "t_begin": 1793692211.5028946, "t_end": 1793692218.7226746}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 14, "samples": 112, "loss": 3.092475086450577, "seconds": 7.062483072280884, "t_begin": 1793692218.7227945, "t_end": 1793692225.7852776}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 15, "samples": 120, "loss": 3.0199908316135406, "seconds": 6.958039999008179, "t_begin": 1793692225.7857342, "t_end": 1793692232.7437742}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 16, "samples": 128, "loss": 2.908974677324295, "seconds": 7.151857852935791, "t_begin": 1793692232.7443311, "t_end": 1793692239.896189}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 17, "samples": 136, "loss": 2.912705957889557, "seconds": 7.0771167278289795, "t_begin": 1793692239.8966756, "t_end": 1793692246.9737923}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 18, "samples": 144, "loss": 2.8596253395080566, "seconds": 7.109527826309204, "t_begin": 1793692246.9739528, "t_end": 1793692254.0834806}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 19, "samples": 152, "loss": 2.9512415528297424, "seconds": 7.0738139152526855, "t_begin": 1793692254.0841327, "t_end": 1793692261.1579466}
+STEP {"tag": "gpu=0,bits=7,seed=1", "step": 20, "samples": 160, "loss": 2.8344514071941376, "seconds": 7.078771352767944, "t_begin": 1793692261.1585612, "t_end": 1793692268.2373326}
+EVAL {"tag": "gpu=0,bits=7,seed=1", "step": 20, "samples": 160, "eval_loss": 2.528396093741027, "seconds": 0.8059406280517578}
+END {"tag": "gpu=0,bits=7,seed=1", "minutes": 2.3967376271883647}

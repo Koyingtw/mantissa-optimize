@@ -1,0 +1,18 @@
+id=loraswap_1103_0834 host=p01-r01-n01 model=meta-llama/Llama-2-7b-hf cap=1000 steps=20 runs=[3:1 7:1 3:2 7:2 3:3 7:3 3:4 7:4] extra=[--no-eval]
+START {"tag": "gpu=0,bits=3,seed=1", "model": "meta-llama/Llama-2-7b-hf", "bits": 3, "round": "nearest", "seed": 1, "device": 0, "bdf": "0000:79:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=0,bits=3,seed=1", "minutes": 2.1051137685775756}
+START {"tag": "gpu=1,bits=7,seed=1", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 1, "device": 1, "bdf": "0000:09:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=1,bits=7,seed=1", "minutes": 2.5410709182421365}
+START {"tag": "gpu=2,bits=3,seed=2", "model": "meta-llama/Llama-2-7b-hf", "bits": 3, "round": "nearest", "seed": 2, "device": 2, "bdf": "0000:69:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=2,bits=3,seed=2", "minutes": 2.1594476540883383}
+START {"tag": "gpu=3,bits=7,seed=2", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 2, "device": 3, "bdf": "0000:19:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=3,bits=7,seed=2", "minutes": 2.6447924256324766}
+START {"tag": "gpu=4,bits=3,seed=3", "model": "meta-llama/Llama-2-7b-hf", "bits": 3, "round": "nearest", "seed": 3, "device": 4, "bdf": "0000:f9:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=4,bits=3,seed=3", "minutes": 2.1215036670366922}
+START {"tag": "gpu=5,bits=7,seed=3", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 3, "device": 5, "bdf": "0000:89:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=5,bits=7,seed=3", "minutes": 2.5625016967455547}
+START {"tag": "gpu=6,bits=3,seed=4", "model": "meta-llama/Llama-2-7b-hf", "bits": 3, "round": "nearest", "seed": 4, "device": 6, "bdf": "0000:e9:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=6,bits=3,seed=4", "minutes": 2.1826731165250144}
+START {"tag": "gpu=7,bits=7,seed=4", "model": "meta-llama/Llama-2-7b-hf", "bits": 7, "round": "nearest", "seed": 4, "device": 7, "bdf": "0000:99:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+END {"tag": "gpu=7,bits=7,seed=4", "minutes": 2.5924806435902914}
+ai_lora done rc=0

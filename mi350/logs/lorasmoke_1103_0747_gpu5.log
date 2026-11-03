@@ -1,0 +1,29 @@
+Loading weights:   0%|          | 0/291 [00:00<?, ?it/s]Loading weights:   6%|▌         | 17/291 [00:00<00:01, 165.20it/s]Loading weights:  13%|█▎        | 39/291 [00:00<00:01, 193.07it/s]Loading weights:  20%|██        | 59/291 [00:00<00:01, 177.49it/s]Loading weights:  28%|██▊       | 81/291 [00:00<00:01, 184.88it/s]Loading weights:  35%|███▍      | 101/291 [00:00<00:01, 186.75it/s]Loading weights:  41%|████      | 120/291 [00:00<00:00, 183.94it/s]Loading weights:  48%|████▊     | 139/291 [00:00<00:00, 174.61it/s]Loading weights:  56%|█████▌    | 163/291 [00:00<00:00, 189.95it/s]Loading weights:  65%|██████▍   | 188/291 [00:00<00:00, 202.78it/s]Loading weights:  72%|███████▏  | 209/291 [00:01<00:00, 191.73it/s]Loading weights:  79%|███████▊  | 229/291 [00:01<00:00, 192.10it/s]Loading weights:  86%|████████▌ | 249/291 [00:01<00:00, 187.24it/s]Loading weights:  94%|█████████▍| 274/291 [00:01<00:00, 198.68it/s]Loading weights: 100%|██████████| 291/291 [00:01<00:00, 194.86it/s]
+START {"tag": "gpu=5,bits=3,seed=3", "model": "meta-llama/Llama-2-7b-hf", "bits": 3, "round": "nearest", "seed": 3, "device": 5, "bdf": "0000:89:00.0", "reduced_linears": 224, "trainable": 16777216, "gbs": 8, "micro": 1, "max_steps": 20, "torch": "2.13.0+rocm7.1"}
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/ai-fp8-paper/mi350/ai/lora.py:144: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:822.)
+  loss_sum += float(out.loss) / acc
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 1, "samples": 8, "loss": 4.612891793251038, "seconds": 8.36265778541565, "t_begin": 1793692266.180358, "t_end": 1793692274.5430157}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 2, "samples": 16, "loss": 4.349986255168915, "seconds": 5.985904932022095, "t_begin": 1793692274.5431142, "t_end": 1793692280.529019}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 3, "samples": 24, "loss": 4.0523465275764465, "seconds": 6.013934373855591, "t_begin": 1793692280.5290995, "t_end": 1793692286.5430338}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 4, "samples": 32, "loss": 3.9568894803524017, "seconds": 6.123291492462158, "t_begin": 1793692286.5431242, "t_end": 1793692292.6664157}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 5, "samples": 40, "loss": 3.7064732909202576, "seconds": 5.991902828216553, "t_begin": 1793692292.6665113, "t_end": 1793692298.6584141}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 6, "samples": 48, "loss": 3.6138850152492523, "seconds": 6.038946628570557, "t_begin": 1793692298.658504, "t_end": 1793692304.6974506}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 7, "samples": 56, "loss": 3.671114206314087, "seconds": 6.115440845489502, "t_begin": 1793692304.6975431, "t_end": 1793692310.812984}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 8, "samples": 64, "loss": 3.4451478123664856, "seconds": 5.999338626861572, "t_begin": 1793692310.8130727, "t_end": 1793692316.8124113}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 9, "samples": 72, "loss": 3.3793861865997314, "seconds": 6.010181665420532, "t_begin": 1793692316.8124704, "t_end": 1793692322.822652}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 10, "samples": 80, "loss": 3.309641033411026, "seconds": 6.158141374588013, "t_begin": 1793692322.8227587, "t_end": 1793692328.9809}
+EVAL {"tag": "gpu=5,bits=3,seed=3", "step": 10, "samples": 80, "eval_loss": 2.7436005430531103, "seconds": 0.7877693176269531}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 11, "samples": 88, "loss": 3.266480714082718, "seconds": 6.02577018737793, "t_begin": 1793692329.7730358, "t_end": 1793692335.798806}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 12, "samples": 96, "loss": 3.114263594150543, "seconds": 6.03920578956604, "t_begin": 1793692335.798898, "t_end": 1793692341.8381038}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 13, "samples": 104, "loss": 3.1557832062244415, "seconds": 6.352086544036865, "t_begin": 1793692341.8382235, "t_end": 1793692348.19031}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 14, "samples": 112, "loss": 3.0219964683055878, "seconds": 6.109398365020752, "t_begin": 1793692348.190417, "t_end": 1793692354.2998154}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 15, "samples": 120, "loss": 3.0275294482707977, "seconds": 6.14610481262207, "t_begin": 1793692354.2999468, "t_end": 1793692360.4460516}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 16, "samples": 128, "loss": 2.915258377790451, "seconds": 6.194820165634155, "t_begin": 1793692360.446165, "t_end": 1793692366.6409853}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 17, "samples": 136, "loss": 2.8280049264431, "seconds": 6.109766960144043, "t_begin": 1793692366.6411068, "t_end": 1793692372.7508738}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 18, "samples": 144, "loss": 2.96381077170372, "seconds": 6.106971740722656, "t_begin": 1793692372.7509606, "t_end": 1793692378.8579323}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 19, "samples": 152, "loss": 2.8850364983081818, "seconds": 6.4151506423950195, "t_begin": 1793692378.8582103, "t_end": 1793692385.273361}
+STEP {"tag": "gpu=5,bits=3,seed=3", "step": 20, "samples": 160, "loss": 2.901968151330948, "seconds": 6.1250224113464355, "t_begin": 1793692385.2734613, "t_end": 1793692391.3984838}
+EVAL {"tag": "gpu=5,bits=3,seed=3", "step": 20, "samples": 160, "eval_loss": 2.5367176895764167, "seconds": 0.791602611541748}
+END {"tag": "gpu=5,bits=3,seed=3", "minutes": 2.1002368251482646}
