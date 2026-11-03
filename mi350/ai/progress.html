@@ -126,7 +126,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <header>
   <div class="eyebrow">第二篇論文 · AI 部分 · 分支 ai-fp8-paper</div>
   <h1>少用幾個位元，AI 能不能在電力受限的 GPU 上跑得更快？</h1>
-  <p class="meta">最後更新：2026-11-03 12:45 UTC（台灣 20:45）</p>
+  <p class="meta">最後更新：2026-11-03 14:15 UTC（台灣 22:15）</p>
 </header>
 
 <section>
@@ -145,7 +145,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
     </div>
     <div class="next">
       <p><b>今天已完成</b>　七個模型 × 19 種設定的精度表（W3）。</p>
-      <p><b>接下來</b>　推論省電實驗 W4：產生文字時每秒幾個 token、每個 token 耗多少電。程式在重播錄好的 GPU 指令時崩溃，已找到位置，正在試修法（job 387）；修好後跑完整版約 40 分鐘。微調收斂先不跑。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
+      <p><b>接下來</b>　推論省電實驗 W4：產生文字時每秒幾個 token、每個 token 耗多少電。量測程式修好並確認量到的是 GPU 而不是 Python 開銷，完整版已送出（job 391，約 40 分鐘，等節點）。微調收斂先不跑。只截權重的速度表（W1，已在 n02 跑，約今晚 7 點前完成）。原因確定後才跑到收斂的完整微調。</p>
       <p><b>卡住的地方</b>　兩個節點都很滿：n02 前面排了第一篇的一長串實驗，n01 在跑你的 coldgemm。完整微調要連續好幾個小時，屆時會先問你放哪裡。</p>
     </div>
   </div>
@@ -251,7 +251,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
       <div class="why">Llama-3-8B 的矩陣大小，1000 W 與 700 W。第一次送出時每次量測都等滿 2 分鐘降溫、要 7 小時以上，已精簡成約 2.5 小時（job 312，n02）。結果：只截權重約拿到兩邊都截的一半，1000 W 下 BF16 留 4 位 +3%、留 3 位 +4%。<b>論文用途：</b>推論只截權重值不值得。</div></div></div>
     <div class="item"><span class="pill run">進行中</span><div>
       <div class="what">W4　推論的速度與耗電，對照直接換格式</div>
-      <div class="why">產生文字時，每個 token 都要把整個模型的權重從記憶體讀一遍，速度卡在記憶體。截權重未必變快，但讀進來的位元切換變少，可能明顯省電。用 Llama 2 7B 的真實權重模擬這個過程，量 BF16（留 7／4／3 位）與 FP8（留 3／2 位）、batch 1～256、1000 W 與 600 W。短測試發現程式會崩：把整個流程錄成一個大的 GPU 指令圖再重播時出錯，改成每層錄一個小的，測試中。<b>論文用途：</b>決定論文主軸。</div></div></div>
+      <div class="why">產生文字時，每個 token 都要把整個模型的權重從記憶體讀一遍，速度卡在記憶體。截權重未必變快，但讀進來的位元切換變少，可能明顯省電。用 Llama 2 7B 的真實權重模擬這個過程，量 BF16（留 7／4／3 位）與 FP8（留 3／2 位）、batch 1～256、1000 W 與 600 W。錄製 GPU 指令圖再重播在這個軟體版本會崩，改成直接執行；用 profiler 確認 BF16 全程是 GPU 在算、FP8 小 batch 有約 25% 在等指令（兩邊一樣，不影響原生 vs 截斷的比較）。完整版 job 391 已送出。<b>論文用途：</b>決定論文主軸。</div></div></div>
     <div class="item"><span class="pill todo">待做</span><div>
       <div class="what">W2　用真實模型的權重量矩陣乘法</div>
       <div class="why">目前的速度來自亂數資料；真實權重的位元分佈不同，省電效果可能不一樣。<b>論文用途：</b>讓微基準數字可信。</div></div></div>
@@ -294,6 +294,7 @@ pre { margin: 0; font-family: var(--f-mono); font-size: 13.5px; background: var(
 <section>
   <h2>時間軸</h2>
   <div class="tl">
+    <div class="ev"><div class="when">11-03 14:15</div><p>推論省電的量測程式修好、驗證過，完整版送出。順帶量到：batch 256 時 FP8 每秒 43.5k token、BF16 31.3k。</p></div>
     <div class="ev"><div class="when">11-03 12:45</div><p>推論省電實驗的程式會崩，定位到「重播一個很大的 GPU 指令圖」；改成每層一個小圖，並比較不用圖時的速度。</p></div>
     <div class="ev"><div class="when">11-03 11:10</div><p>你決定先量推論省電。寫好 decode 模擬程式（整台同一設定、ABBA），短測試排隊中。</p></div>
     <div class="ev"><div class="when">11-03 10:50</div><p>W1 完成：只截權重約拿到一半的加速（1000 W 下 BF16 留 3 位 +4%）。FP8 本身快 2.4 倍，截 BF16 在能換 FP8 時被支配。</p></div>
