@@ -12,6 +12,7 @@ Formats (one per measurement window):
   fp8:<k>    FP8 E4M3 weights per output channel keeping k of 3 bits, activations quantized per token once (outside
              the pass), torch._scaled_mm (the dynamic FP8 recipe of gh200/infer/ppl_eval.py, fmt fp8c, weights only
              reduced)
+  int8:<enc> INT8 x INT8 -> INT32 GEMMs, enc = w8a8 | w7 | w7off | w7offc (see build_int8; for the cold-gemm session)
 Every GPU runs the same schedule from a shared start time T0, so all GPUs of the node are in the same format at the same
 time (mixing formats across GPUs of one node biased the LoRA runs); a window is warm-up + measurement + idle gap.
 
@@ -53,11 +54,19 @@ def load_linears(model, dev):
     return [ws[k].to(dev) for k in sorted(ws, key=order)]
 
 
+def pad_rows(x, m):
+    """Pad a batch of token rows to m rows by repeating the real rows cyclically (not zeros: zero rows switch less
+    and would bias the padded formats, as the cold-gemm session pointed out)."""
+    return x if x.shape[0] == m else x[torch.arange(m, device=x.device) % x.shape[0]]
+
+
 def build(ws, fmt, batch, dev):
     """Return one zero-argument callable per weight (in layer order), plus the tensors they need (kept alive)."""
     kind, k = fmt.split(":")
-    k = int(k)
     xs = {w.shape[1]: torch.randn(batch, w.shape[1], device=dev, dtype=torch.bfloat16) for w in ws}
+    if kind == "int8":
+        return build_int8(ws, k, batch, xs, dev)
+    k = int(k)
     if kind == "bf16":
         wr = [reduce_bf16(w, k, "nearest") for w in ws]
 
@@ -69,17 +78,69 @@ def build(ws, fmt, batch, dev):
         s = w.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / fmax
         wq.append(to_fp8(w, s, k, "nearest"))
         sc.append(s.reshape(1, -1).contiguous())
-    m = batch + (-batch) % 16  # _scaled_mm needs rows in multiples of 16
+    m = batch + (-batch) % 16  # _scaled_mm needs rows in multiples of 16 (repeated rows; job 391 padded with zeros)
     # activations quantized once per input width, outside the timed pass: an inference engine fuses this into the
     # preceding kernel, and quantizing per call in eager mode costs 5 extra launches per GEMM (FP8 then measured 4x
     # slower than BF16, job 387); the pass then reads every weight once with one kernel per weight, as for BF16
     xq, sa = {}, {}
     for K, x in xs.items():
-        xpad = F.pad(x, (0, 0, 0, m - batch))
+        xpad = pad_rows(x, m)
         sa[K] = xpad.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / E4M3_KMAX[3]
         xq[K] = (xpad.float() / sa[K]).clamp(-448, 448).to(torch.float8_e4m3fn)
     return [lambda w=w, s=s: torch._scaled_mm(xq[w.shape[1]], w.t(), scale_a=sa[w.shape[1]], scale_b=s,
                                                out_dtype=torch.bfloat16) for w, s in zip(wq, sc)], (wq, sc, xq, sa)
+
+
+def build_int8(ws, enc, batch, xs, dev):
+    """INT8 GEMMs with int32 accumulation (torch._int_mm -> hipBLASLt I8II), for the cold-gemm session:
+      w8a8    weights per output channel symmetric 8-bit, round(W/s) in [-127, 127]
+      w7      control: symmetric 7-bit, round(W/s) in [-63, 63] (same lost bit as w7off, signed)
+      w7off   w7 plus 64, W' = round(W/s) + 64 in [1, 127] (non-negative); the correction
+              y[i, j] -= 64 * r[i], r[i] = sum_k Xq[i, k] (int32), is assumed fused into the epilogue and not run
+      w7offc  as w7off with the correction run as a separate kernel on every call
+    Activations: per-token symmetric 8-bit, quantized once outside the pass (as for FP8); the activations X are
+    standard normal BF16 (torch.randn, unseeded), not real model activations. torch._int_mm needs more than
+    16 rows (int8_probe.py), so the batch is padded to max(batch, 17) rounded up to a multiple of 8 (24 for batch <= 16)
+    by repeating the real rows; decode reads the same weights, so the padding costs compute, not memory traffic.
+    CHECK lines, before any measurement: for w7off / w7offc the corrected int32 result must equal w7 bit for bit for
+    every weight; for w8a8 / w7 the first weight against the exact float64 product."""
+    m = max(batch, 17)
+    m += (-m) % 8
+    bits, off = (8, 0) if enc == "w8a8" else (7, 64 if enc.startswith("w7off") else 0)
+    qmax = 2 ** (bits - 1) - 1
+    wq, w7 = [], []
+    for w in ws:
+        s = w.float().abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / qmax
+        q = (w.float() / s).round().clamp(-qmax, qmax)
+        wq.append((q + off).to(torch.int8))
+        if off:
+            w7.append(q.to(torch.int8))
+    xq, rs = {}, {}
+    for K, x in xs.items():
+        xp = pad_rows(x, m).float()
+        sa = xp.abs().amax(dim=1, keepdim=True).clamp(min=1e-12) / 127
+        xq[K] = (xp / sa).round().clamp(-127, 127).to(torch.int8)
+        rs[K] = (off * xq[K].to(torch.int32).sum(dim=1, keepdim=True)).contiguous()  # [m, 1], broadcast over j
+    if off:
+        bad = sum(int(not torch.equal(torch._int_mm(xq[a.shape[1]], a.t()) - rs[a.shape[1]],
+                                      torch._int_mm(xq[b.shape[1]], b.t()))) for a, b in zip(wq, w7))
+        print("CHECK", json.dumps(dict(enc=enc, batch=batch, rows=m, vs="w7 int32", weights=len(wq),
+                                       mismatched=bad, exact=bad == 0)), flush=True)
+        if bad:
+            raise SystemExit(f"{enc}: corrected result differs from w7 for {bad} weights")
+        del w7
+    else:
+        w0 = wq[0]
+        ref = xq[w0.shape[1]].double() @ w0.double().t()
+        print("CHECK", json.dumps(dict(enc=enc, batch=batch, rows=m, vs="float64",
+                                       exact=bool((torch._int_mm(xq[w0.shape[1]], w0.t()).double() == ref).all()))),
+              flush=True)
+    if enc == "w7offc":
+        def op(w):
+            y = torch._int_mm(xq[w.shape[1]], w.t())
+            y.sub_(rs[w.shape[1]])
+        return [lambda w=w: op(w) for w in wq], (wq, xq, rs)
+    return [lambda w=w: torch._int_mm(xq[w.shape[1]], w.t()) for w in wq], (wq, xq, rs)
 
 
 def executor(ops, mode, chunk=7):

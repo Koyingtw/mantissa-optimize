@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "analysis"))
 from e1_summary import BDF, ci  # noqa: E402
 from smi import load_smi, window_stats  # noqa: E402
 
-NATIVE = {"bf16": "bf16:7", "fp8": "fp8:3"}
+NATIVE = {"bf16": "bf16:7", "fp8": "fp8:3", "int8": "int8:w8a8"}  # int8: encodings vs w8a8
 
 
 def main():
