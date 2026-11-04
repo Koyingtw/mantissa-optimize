@@ -427,7 +427,7 @@ leave-one-layout-out fits of the paper use all 15 rows of each run; the flip cou
 and identical across runs.
 
 \begin{table}[t]
-\caption{MI350X, FP64 GEMM ($32768^2\times2048$) at locked clocks, 1000\W: mean bit flips per neighbouring pair along $k$
+\caption{MI350X, FP64 GEMM ($32768^2\times2048$) at locked clocks, 1000\W: mean bit flips per neighboring pair along $k$
 and across rows of $A$ / columns of $B$, set bits per element, and energy per operation relative to native in the same
 pass and GPU (8 GPUs $\times$ ABBA; 95\pct{} intervals within $\pm$0.5 points). Shuffled and sorted hold the same values
 per row and column; ones and const fill the dropped bits with ones or one fixed pattern; krep / mrep fill them with
@@ -545,7 +545,7 @@ Valinomycin MO, $131072\times300\times2958$ & 0.77 / 0 & $\ee{4}{-11}$ / $\ee{1}
 \end{table*}
 
 \begin{table}[t]
-\caption{Tolerance chain for the Gaussian-process likelihood ($n=64000$, block 2048; 2 rounds $\times$ 8 GPUs $\times$ ABBA
+\caption{Tolerance chain for the GP likelihood ($n=64000$, block 2048; 2 rounds $\times$ 8 GPUs $\times$ ABBA
 per cap): tolerance $\tau$ on $|\Delta\ell|$, product tolerance $\varepsilon=\tau/\kappa$ with $\kappa=\ee{4.1}{6}$ from
 truncated runs (for emulation's own $\kappa_e=\ee{5.2}{5}$: $\varepsilon_e=\ee{1.9}{-8}$, $\ee{1.9}{-10}$, $\ee{1.9}{-12}$),
 the settings the selector takes, the largest measured $|\Delta\ell|$, and measured speedups (\%) over native at 1000 / 500\W{}
@@ -575,9 +575,9 @@ Fig.~\ref{fig:mi350apps} paper Section~VI; they were in the paper's body in earl
 
 \begin{figure}[t]
 \centering\includegraphics[width=\columnwidth]{figs/mi350_apps.pdf}
-\caption{MI350X: speedup of the in-program truncated variant over the unmodified program under each package cap, both
+\caption{MI350X: speedup of the in-program truncated variant over native under each package cap, both
 nodes pooled. Bars: 95\pct{} $t$ intervals over analysis units, node-wide runs (HPL, HPL-MxP) or rounds of 8 GPUs
-(GP, DF-MP2), with $n$ in the legend; per-node and temperature-adjusted values in paper Table~III.}\label{fig:mi350apps}
+(GP, DF-MP2), with $n$ in the legend; per-node and temperature-adjusted values in paper Table~VI.}\label{fig:mi350apps}
 \end{figure}
 
 \begin{table}[t]
