@@ -1,0 +1,235 @@
+W20261104 06:17:13.588193 124742520756288 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000483 sec
+W20261104 06:17:13.610554 124742520756288 simple_timer.cpp:55] [rocprofv3] '/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test --gtest_filter=*stride_2e32*i8*' ::     0.000000 sec
+rocBLAS info: client (OPENMP) reduced omp_set_num_threads to 254
+rocBLAS warning: LD_LIBRARY_PATH override may use incompatible rocblas 
+rocBLAS info: Using reference library '/usr/lib/x86_64-linux-gnu/libopenblas.so'
+rocBLAS version: 5.2.0.dabb6df2b9
+rocBLAS-commit-hash: 135ed8014b4582567de2f9d95986a72504950df2
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+W20261104 06:17:13.781570 124742520756288 tool.cpp:2422] HSA version 8.20.3 initialized (instance=0)
+Query device success: there are 8 devices
+-------------------------------------------------------------------------------
+Device ID 0 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 1 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 2 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 3 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 4 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 5 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 6 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 7 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+info: parsing of test data may take a couple minutes before any test output appears...
+
+Note: Google Test filter = *stride_2e32*i8*
+[==========] Running 6 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 6 tests from _/gemm_strided_batched_ex
+W20261104 06:17:44.091099 133274802110016 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000698 sec
+W20261104 06:17:44.091181 133274802110016 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.165217 124346939293248 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000777 sec
+W20261104 06:17:44.165286 124346939293248 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.165368 124346939293248 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000083 sec
+W20261104 06:17:44.166582 124346939293248 simple_timer.cpp:55] [rocprofv3] output generation ::     0.001092 sec
+W20261104 06:17:44.166604 124346939293248 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001203 sec
+W20261104 06:17:44.243287 131253985885760 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000771 sec
+W20261104 06:17:44.243356 131253985885760 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.315720 133084928613952 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000666 sec
+W20261104 06:17:44.315784 133084928613952 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.315875 133084928613952 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000092 sec
+W20261104 06:17:44.316971 133084928613952 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000985 sec
+W20261104 06:17:44.316995 133084928613952 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001081 sec
+W20261104 06:17:44.393003 135945002434112 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000666 sec
+W20261104 06:17:44.393067 135945002434112 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.464117 130208599068224 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000687 sec
+W20261104 06:17:44.464191 130208599068224 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.464274 130208599068224 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000083 sec
+W20261104 06:17:44.465358 130208599068224 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000974 sec
+W20261104 06:17:44.465382 130208599068224 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001074 sec
+W20261104 06:17:44.536282 128760956407360 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000603 sec
+W20261104 06:17:44.536343 128760956407360 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.605289 130656562912832 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000582 sec
+W20261104 06:17:44.605339 130656562912832 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:44.605414 130656562912832 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000074 sec
+W20261104 06:17:44.606478 130656562912832 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000956 sec
+W20261104 06:17:44.606500 130656562912832 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001055 sec
+W20261104 06:17:56.287832 134709505179200 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000805 sec
+W20261104 06:17:56.287902 134709505179200 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.357663 131133723729472 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000814 sec
+W20261104 06:17:56.357726 131133723729472 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.357803 131133723729472 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000077 sec
+W20261104 06:17:56.358869 131133723729472 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000950 sec
+W20261104 06:17:56.358895 131133723729472 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001062 sec
+W20261104 06:17:56.431131 125404982820416 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000895 sec
+W20261104 06:17:56.431217 125404982820416 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.500807 130886283193920 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000858 sec
+W20261104 06:17:56.500867 130886283193920 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.500952 130886283193920 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000085 sec
+W20261104 06:17:56.502035 130886283193920 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000964 sec
+W20261104 06:17:56.502061 130886283193920 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001078 sec
+W20261104 06:17:56.573700 128777863253568 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000706 sec
+W20261104 06:17:56.573768 128777863253568 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.643373 126329302564416 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000666 sec
+W20261104 06:17:56.643430 126329302564416 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.643503 126329302564416 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000073 sec
+W20261104 06:17:56.644548 126329302564416 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000949 sec
+W20261104 06:17:56.644574 126329302564416 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001042 sec
+W20261104 06:17:56.716371 124433354935872 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000709 sec
+W20261104 06:17:56.716439 124433354935872 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.781001 131437332606528 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000618 sec
+W20261104 06:17:56.781048 131437332606528 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:17:56.781112 131437332606528 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000064 sec
+W20261104 06:17:56.782139 131437332606528 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000949 sec
+W20261104 06:17:56.782162 131437332606528 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001017 sec
+W20261104 06:18:08.765463 128695404944960 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000820 sec
+W20261104 06:18:08.765528 128695404944960 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:08.836684 133238948392512 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000746 sec
+W20261104 06:18:08.836742 133238948392512 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:08.836818 133238948392512 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000076 sec
+W20261104 06:18:08.837871 133238948392512 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000940 sec
+W20261104 06:18:08.837896 133238948392512 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001050 sec
+W20261104 06:18:08.908851 135182794387008 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000707 sec
+W20261104 06:18:08.908916 135182794387008 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:08.978578 125111756344896 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000716 sec
+W20261104 06:18:08.978635 125111756344896 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:08.978719 125111756344896 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000084 sec
+W20261104 06:18:08.979775 125111756344896 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000955 sec
+W20261104 06:18:08.979802 125111756344896 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001051 sec
+W20261104 06:18:09.047985 130264227372608 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000655 sec
+W20261104 06:18:09.048045 130264227372608 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:09.117152 128673137573440 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000684 sec
+W20261104 06:18:09.117211 128673137573440 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:09.117288 128673137573440 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000077 sec
+W20261104 06:18:09.118356 128673137573440 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000951 sec
+W20261104 06:18:09.118382 128673137573440 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001063 sec
+W20261104 06:18:09.189075 128485541035584 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000689 sec
+W20261104 06:18:09.189161 128485541035584 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:09.257117 128473924640320 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000713 sec
+W20261104 06:18:09.257183 128473924640320 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:09.257258 128473924640320 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000075 sec
+W20261104 06:18:09.258313 128473924640320 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000947 sec
+W20261104 06:18:09.258339 128473924640320 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001052 sec
+W20261104 06:18:23.954402 123811859267136 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000749 sec
+W20261104 06:18:23.954464 123811859267136 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.025263 127573194133056 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000794 sec
+W20261104 06:18:24.025322 127573194133056 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.025399 127573194133056 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000077 sec
+W20261104 06:18:24.026491 127573194133056 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000946 sec
+W20261104 06:18:24.026517 127573194133056 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001057 sec
+W20261104 06:18:24.097288 128663171907136 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000784 sec
+W20261104 06:18:24.097422 128663171907136 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.165745 123238655286848 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000770 sec
+W20261104 06:18:24.165807 123238655286848 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.165890 123238655286848 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000082 sec
+W20261104 06:18:24.166946 123238655286848 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000946 sec
+W20261104 06:18:24.166973 123238655286848 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001052 sec
+W20261104 06:18:24.237849 133769181199936 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000647 sec
+W20261104 06:18:24.237914 133769181199936 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.305453 131235616144960 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000634 sec
+W20261104 06:18:24.305509 131235616144960 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.305581 131235616144960 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000072 sec
+W20261104 06:18:24.306620 131235616144960 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000945 sec
+W20261104 06:18:24.306644 131235616144960 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001035 sec
+W20261104 06:18:24.377309 130741460225600 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000722 sec
+W20261104 06:18:24.377372 130741460225600 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.440850 125850364485184 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000626 sec
+W20261104 06:18:24.440900 125850364485184 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:24.440962 125850364485184 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000062 sec
+W20261104 06:18:24.442016 125850364485184 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000961 sec
+W20261104 06:18:24.442037 125850364485184 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001050 sec
+W20261104 06:18:41.626301 130175994142272 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000632 sec
+W20261104 06:18:41.626367 130175994142272 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:41.696590 133462542151232 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000716 sec
+W20261104 06:18:41.696652 133462542151232 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:41.696726 133462542151232 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000075 sec
+W20261104 06:18:41.697787 133462542151232 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000946 sec
+W20261104 06:18:41.697813 133462542151232 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001058 sec
+W20261104 06:18:41.769892 128090897468992 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000706 sec
+W20261104 06:18:41.769959 128090897468992 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:41.838997 139942910787136 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000710 sec
+W20261104 06:18:41.839056 139942910787136 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:41.839141 139942910787136 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000085 sec
+W20261104 06:18:41.840206 139942910787136 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000946 sec
+W20261104 06:18:41.840232 139942910787136 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001059 sec
+W20261104 06:18:41.909219 136393467903552 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000643 sec
+W20261104 06:18:41.909270 136393467903552 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:41.975980 127511010729536 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000602 sec
+W20261104 06:18:41.976028 127511010729536 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:41.976094 127511010729536 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000066 sec
+W20261104 06:18:41.977122 127511010729536 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000926 sec
+W20261104 06:18:41.977148 127511010729536 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001029 sec
+W20261104 06:18:42.046163 130568937684544 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000652 sec
+W20261104 06:18:42.046225 130568937684544 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:42.110524 136300046073408 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000619 sec
+W20261104 06:18:42.110566 136300046073408 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:42.110624 136300046073408 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000058 sec
+W20261104 06:18:42.111612 136300046073408 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000925 sec
+W20261104 06:18:42.111630 136300046073408 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.000984 sec
+W20261104 06:18:59.602959 131150050041408 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000807 sec
+W20261104 06:18:59.603021 131150050041408 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:59.672934 136035810963008 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000758 sec
+W20261104 06:18:59.672994 136035810963008 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:59.673071 136035810963008 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000077 sec
+W20261104 06:18:59.674232 136035810963008 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000945 sec
+W20261104 06:18:59.674258 136035810963008 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001159 sec
+W20261104 06:18:59.745582 133874143940160 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000710 sec
+W20261104 06:18:59.745653 133874143940160 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:59.815373 139031376838208 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000723 sec
+W20261104 06:18:59.815431 139031376838208 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:59.815514 139031376838208 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000083 sec
+W20261104 06:18:59.816564 139031376838208 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000949 sec
+W20261104 06:18:59.816590 139031376838208 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001044 sec
+W20261104 06:18:59.887459 135414801571392 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000668 sec
+W20261104 06:18:59.887527 135414801571392 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:59.954962 133503853616704 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000643 sec
+W20261104 06:18:59.955020 133503853616704 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:18:59.955097 133503853616704 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000077 sec
+W20261104 06:18:59.956144 133503853616704 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000941 sec
+W20261104 06:18:59.956170 133503853616704 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001044 sec
+W20261104 06:19:00.026300 131127107259968 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000656 sec
+W20261104 06:19:00.026368 131127107259968 simple_timer.cpp:55] [rocprofv3] 'sh -c -- cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:19:00.096365 137624957500992 simple_timer.cpp:55] [rocprofv3] tool initialization ::     0.000755 sec
+W20261104 06:19:00.096425 137624957500992 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000000 sec
+W20261104 06:19:00.096499 137624957500992 simple_timer.cpp:55] [rocprofv3] 'cat /proc/meminfo' ::     0.000074 sec
+W20261104 06:19:00.097567 137624957500992 simple_timer.cpp:55] [rocprofv3] output generation ::     0.000961 sec
+W20261104 06:19:00.097592 137624957500992 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.001064 sec
+[----------] 6 tests from _/gemm_strided_batched_ex (92059 ms total)
+
+[----------] Global test environment tear-down
+[==========] 6 tests from 1 test suite ran. (92077 ms total)
+[  PASSED  ] 6 tests.
+rocBLAS version: 5.2.0.dabb6df2b9
+rocBLAS-commit-hash: 135ed8014b4582567de2f9d95986a72504950df2
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+command line: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test --gtest_filter=*stride_2e32*i8* 
+W20261104 06:19:16.112099 124742520756288 simple_timer.cpp:55] [rocprofv3] '/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test --gtest_filter=*stride_2e32*i8*' ::   122.501545 sec
+E20261104 06:19:16.167277 124742520756288 output_stream.cpp:111] Opened result file: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/mi350/logs/rocblas_kernel_trace_502/gtest/trace_kernel_trace.csv
+E20261104 06:19:16.172366 124742520756288 output_stream.cpp:111] Opened result file: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/mi350/logs/rocblas_kernel_trace_502/gtest/trace_agent_info.csv
+W20261104 06:19:16.173405 124742520756288 simple_timer.cpp:55] [rocprofv3] output generation ::     0.029710 sec
+W20261104 06:19:16.175063 124742520756288 simple_timer.cpp:55] [rocprofv3] tool finalization ::     0.031397 sec

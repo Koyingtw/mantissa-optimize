@@ -42,6 +42,13 @@ is negligible at these sizes (each batch is >= 2^32 output elements).
 - Built rocBLAS from the `rocm-7.2.3` tag plus this patch (gfx950, Tensile + hipBLASLt), ran the reproducer
   against stock and patched `librocblas.so`. The patch cherry-picks onto develop without conflicts.
   I did not build develop, because it needs a newer hipBLASLt than ROCm 7.2.3 ships.
+- Regression gtest `gemm_strided_batched_ex_stride_2e32` (category `stress`, Linux) in
+  `gemm_strided_batched_gtest.yaml`: 64x64x64, batch 2, `rand_int` data (different results per batch),
+  stride_c = stride_d = 2^32 - 1 (control), 2^32 and 2^32 + 1, int8 -> int32 and half with float compute,
+  `use_hipblaslt: [0, 1]`. Only the device pointer mode runs, because `testing_gemm_strided_batched_ex`
+  computes the reference and both modes' checks inside its `pointer_mode_device` branch (a host-only
+  entry is never checked). Needs about 128 GB of host and 32 GB of device memory.
+  Run: `rocblas-test --gtest_filter='*stride_2e32*'`.
 
 ## Test Result
 
@@ -54,6 +61,15 @@ MI350X, ROCm 7.2.3, k = 1024, batch 2, number of the 7 probes per batch that are
 | 65537 | 1.00003 | 5 / 7 | 3 / 7 | 0 / 0 |
 
 These are the same for the rocBLAS and hipBLAS entry points. All calls return status 0.
+
+`rocblas-test --gtest_filter='*stride_2e32*'` (12 tests, rocblas-test built from this branch's 7.2.3 base):
+
+| library | 2^32 - 1 (4 tests) | 2^32 (4 tests) | 2^32 + 1 (4 tests) |
+|---|---|---|---|
+| stock 7.2.3 `librocblas.so` | pass | fail | fail |
+| patched | pass | pass | pass |
+
+Every failure is a `unit_check` mismatch (status is success), for both `use_hipblaslt` values and both types.
 
 ## Submission Checklist
 - [x] Look over the contributing guidelines at https://github.com/ROCm/TheRock/blob/main/GOVERNANCE.md#pull-requests.

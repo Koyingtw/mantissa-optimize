@@ -1,0 +1,29 @@
+host=p01-r01-n02 lib=fix rocblas=	librocblas.so.5 => /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/install/lib/librocblas.so.5 (0x0000765fa77b6000)
+rocBLAS info: client (OPENMP) reduced omp_set_num_threads to 254
+rocBLAS warning: LD_LIBRARY_PATH override may use incompatible rocblas 
+rocBLAS info: Using reference library '/usr/lib/x86_64-linux-gnu/libopenblas.so'
+rocBLAS version: 5.2.0.dabb6df2b9-dirty
+rocBLAS-commit-hash: 88c46d51d9af8f7023046c51f95f00a7554e9123
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+Query device success: there are 8 devices
+info: parsing of test data may take a couple minutes before any test output appears...
+
+Note: Google Test filter = *stride_2e32*
+[==========] Running 12 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 12 tests from _/gemm_strided_batched_ex
+[----------] 12 tests from _/gemm_strided_batched_ex (85526 ms total)
+
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test suite ran. (85544 ms total)
+[  PASSED  ] 12 tests.
+rocBLAS version: 5.2.0.dabb6df2b9-dirty
+rocBLAS-commit-hash: 88c46d51d9af8f7023046c51f95f00a7554e9123
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+command line: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test --gtest_filter=*stride_2e32* 
+--- tool, same env
+RESULT_SIZES op=NN m=64 n=64 k=64 stride=4294967296 hipblaslt=default beta=1 status=0 bad_batch0=0 bad_batch1=0

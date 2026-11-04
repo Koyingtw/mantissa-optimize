@@ -1,0 +1,14 @@
+job=483 host=p01-r01-n01 start=Wed Nov  4 02:20:13 AM UTC 2026
+[ 89%] Built target rocblas_clients_testing_common
+[ 89%] Built target rocblas-test-data
+[100%] Built target rocblas-test
+24
+=== RUN lib=stock
+loaded: 	librocblas.so.5 => /opt/rocm-7.2.3/lib/librocblas.so.5 (0x00007a2748600000)
+[  PASSED  ] 24 tests.
+=== END lib=stock
+=== RUN lib=fix
+loaded: 	librocblas.so.5 => /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/install/lib/librocblas.so.5 (0x000079c668c00000)
+[  PASSED  ] 24 tests.
+=== END lib=fix
+end=Wed Nov  4 02:25:06 AM UTC 2026

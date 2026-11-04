@@ -1,0 +1,120 @@
+host=p01-r01-n02 lib=stock rocblas=	librocblas.so.5 => /opt/rocm-7.2.3/lib/librocblas.so.5 (0x000077ca5ac00000)
+rocBLAS info: client (OPENMP) reduced omp_set_num_threads to 254
+rocBLAS warning: LD_LIBRARY_PATH override may use incompatible rocblas 
+rocBLAS info: Using reference library '/usr/lib/x86_64-linux-gnu/libopenblas.so'
+rocBLAS version: 5.2.0.dabb6df2b9
+rocBLAS-commit-hash: 88c46d51d9af8f7023046c51f95f00a7554e9123
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+Query device success: there are 8 devices
+info: parsing of test data may take a couple minutes before any test output appears...
+
+Note: Google Test filter = *stride_2e32*
+[==========] Running 12 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 12 tests from _/gemm_strided_batched_ex
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:296: Failure
+Expected equality of these values:
+  hCPU[i + idx]
+    Which is: -14
+  hGPU[i + idx]
+    Which is: 6
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+ (9306 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:296: Failure
+Expected equality of these values:
+  hCPU[i + idx]
+    Which is: 37
+  hGPU[i + idx]
+    Which is: 26
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+ (9153 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:236: Failure
+Expected equality of these values:
+  float(hCPU[i + idx])
+    Which is: -1
+  float(hGPU[i + idx])
+    Which is: 8
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+ (4627 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:236: Failure
+Expected equality of these values:
+  float(hCPU[i + idx])
+    Which is: -5
+  float(hGPU[i + idx])
+    Which is: -18
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+ (4555 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:296: Failure
+Expected equality of these values:
+  hCPU[i + idx]
+    Which is: 22
+  hGPU[i + idx]
+    Which is: 19
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+ (9258 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:296: Failure
+Expected equality of these values:
+  hCPU[i + idx]
+    Which is: -17
+  hGPU[i + idx]
+    Which is: 25
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+ (9230 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:236: Failure
+Expected equality of these values:
+  float(hCPU[i + idx])
+    Which is: -35
+  float(hGPU[i + idx])
+    Which is: 11
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+ (4638 ms)
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/unit.hpp:236: Failure
+Expected equality of these values:
+  float(hCPU[i + idx])
+    Which is: -21
+  float(hGPU[i + idx])
+    Which is: 11
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+ (4610 ms)
+[----------] 12 tests from _/gemm_strided_batched_ex (84149 ms total)
+
+[----------] Global test environment tear-down
+[==========] 12 tests from 1 test suite ran. (84168 ms total)
+[  PASSED  ] 4 tests.
+[  FAILED  ] 8 tests, listed below:
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967296_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967296, stride_d: 4294967296, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_i8_ri8_ri32_ri32_ri32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: i8_r, b_type: i8_r, c_type: i_r32, d_type: i_r32, compute_type: i_r32, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 0 }
+
+[  FAILED  ] _/gemm_strided_batched_ex.blas3_tensile/stress_gemm_strided_batched_ex_stride_2e32_f16_rf16_rf16_rf16_rf32_r_NN_64_64_64_1_64_64_1_64_64_2_4096_4096_4294967297_t2, where GetParam() = { function: "gemm_strided_batched_ex", name: "gemm_strided_batched_ex_stride_2e32", category: "stress", known_bug_platforms: "", beta: 1.0, stride_a: 4096, stride_b: 4096, stride_c: 4294967297, stride_d: 4294967297, M: 64, N: 64, K: 64, lda: 64, ldb: 64, ldc: 64, ldd: 64, batch_count: 2, a_type: f16_r, b_type: f16_r, c_type: f16_r, d_type: f16_r, initialization: rand_int, os_flags: 1, gpu_arch: "", flush_batch_count: 1, transA: 'N', transB: 'N', pointer_mode_host: false, use_hipblaslt: 1 }
+
+
+ 8 FAILED TESTS
+rocBLAS version: 5.2.0.dabb6df2b9
+rocBLAS-commit-hash: 88c46d51d9af8f7023046c51f95f00a7554e9123
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+command line: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test --gtest_filter=*stride_2e32* 
+--- tool, same env
+RESULT_SIZES op=NN m=64 n=64 k=64 stride=4294967296 hipblaslt=default beta=1 status=0 bad_batch0=4096 bad_batch1=4096

@@ -1,0 +1,709 @@
+[  0%] Generating libraries with TensileCreateLibrary
+[  1%] Built target rocblas-common
+[  2%] Built target rocblas-test-files
+[  2%] Built target rocblas_device_malloc
+[  2%] Generating ../staging/rocblas_gtest.data
+[  3%] Built target rocblas_proto_templates
+> UserWarning: Found `amdclang++` but in a non-default ROCm location: 
+/opt/rocm-7.2.3/llvm/bin/amdclang++
+> UserWarning: Did not detect SupportedISA: [(8, 0, 3), (9, 0, 0), (9, 0, 6), 
+(9, 0, 8), (9, 0, 10), (9, 4, 2), (9, 5, 0), (10, 1, 0), (10, 1, 1), (10, 1, 2),
+(10, 3, 0), (10, 3, 1), (10, 3, 2), (11, 0, 0), (11, 0, 1), (11, 0, 2), (11, 0, 
+3), (11, 5, 0), (11, 5, 1), (12, 0, 0), (12, 0, 1)]; cannot benchmark assembly 
+kernels.This warning can be safely ignored for TensileCreateLibrary builds.
+                                                                                  # Reading logic files: 48 thread(s), 168 tasks .                              3.6%                                                                                  # Reading logic files: 48 thread(s), 168 tasks ..                             7.1%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ...                            10.1%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ....                           13.7%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .....                          16.7%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ......                         20.2%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .......                        23.8%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ........                       26.8%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .........                      30.4%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ..........                     33.3%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ...........                    36.9%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ............                   40.5%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .............                  43.5%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ..............                 47.0%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ...............                50.0%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ................               53.6%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .................              57.1%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ..................             60.1%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ...................            63.7%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ....................           66.7%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .....................          70.2%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ......................         73.8%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .......................        76.8%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ........................       80.4%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .........................      83.3%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ..........................     86.9%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ...........................    90.5%                                                                                   # Reading logic files: 48 thread(s), 168 tasks ............................   93.5%                                                                                   # Reading logic files: 48 thread(s), 168 tasks .............................  97.0%                                                                                    # Reading logic files: 48 thread(s), 168 tasks .............................. 100.0% (took 1.8 secs)
+                                                                                  # Generating kernels: 48 thread(s), 4466 tasks .                              3.3%                                                                                  # Generating kernels: 48 thread(s), 4466 tasks ..                             6.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ...                            10.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ....                           13.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .....                          16.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ......                         20.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .......                        23.4%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ........                       26.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .........                      30.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ..........                     33.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ...........                    36.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ............                   40.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .............                  43.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ..............                 46.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ...............                50.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ................               53.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .................              56.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ..................             60.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ...................            63.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ....................           66.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .....................          70.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ......................         73.4%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .......................        76.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ........................       80.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .........................      83.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ..........................     86.7%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ...........................    90.0%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks ............................   93.3%                                                                                   # Generating kernels: 48 thread(s), 4466 tasks .............................  96.7%                                                                                    # Generating kernels: 48 thread(s), 4466 tasks .............................. 100.0% (took 13.4 secs)
+                                                              # Compiling source kernels .                              3.6%                                                              # Compiling source kernels ..                             7.3%                                                               # Compiling source kernels ...                            10.9%                                                               # Compiling source kernels ....                           14.5%                                                               # Compiling source kernels .....                          18.2%                                                               # Compiling source kernels ......                         20.0%                                                               # Compiling source kernels .......                        23.6%                                                               # Compiling source kernels ........                       27.3%                                                               # Compiling source kernels .........                      30.9%                                                               # Compiling source kernels ..........                     34.5%                                                               # Compiling source kernels ...........                    38.2%                                                               # Compiling source kernels ............                   40.0%                                                               # Compiling source kernels .............                  43.6%                                                               # Compiling source kernels ..............                 47.3%                                                               # Compiling source kernels ...............                50.9%                                                               # Compiling source kernels ................               54.5%                                                               # Compiling source kernels .................              58.2%                                                               # Compiling source kernels ..................             60.0%                                                               # Compiling source kernels ...................            63.6%                                                               # Compiling source kernels ....................           67.3%                                                               # Compiling source kernels .....................          70.9%                                                               # Compiling source kernels ......................         74.5%                                                               # Compiling source kernels .......................        78.2%                                                               # Compiling source kernels ........................       80.0%                                                               # Compiling source kernels .........................      83.6%                                                               # Compiling source kernels ..........................     87.3%                                                               # Compiling source kernels ...........................    90.9%                                                               # Compiling source kernels ............................   94.5%                                                               # Compiling source kernels .............................  98.2%                                                                # Compiling source kernels .............................. 100.0% (took 0.0 secs)
+[  3%] Verifying files in /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/Tensile/library/TensileManifest.txt were generated
+> UserWarning: Found `amdclang++` but in a non-default ROCm location: 
+/opt/rocm-7.2.3/llvm/bin/amdclang++
+> UserWarning: Did not detect SupportedISA: [(8, 0, 3), (9, 0, 0), (9, 0, 6), 
+(9, 0, 8), (9, 0, 10), (9, 4, 2), (9, 5, 0), (10, 1, 0), (10, 1, 1), (10, 1, 2),
+(10, 3, 0), (10, 3, 1), (10, 3, 2), (11, 0, 0), (11, 0, 1), (11, 0, 2), (11, 0, 
+3), (11, 5, 0), (11, 5, 1), (12, 0, 0), (12, 0, 1)]; cannot benchmark assembly 
+kernels.This warning can be safely ignored for TensileCreateLibrary builds.
+[  3%] Built target TENSILE_LIBRARY_TARGET
+[  6%] Built target TensileHost
+[ 79%] Built target rocblas
+[ 81%] Built target rocblas_clients_common
+[ 81%] Building CXX object clients/common/CMakeFiles/rocblas_clients_testing_common.dir/blas_ex/common_gemm_ex.cpp.o
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:23:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:25:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/testing_common.hpp:27:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/cblas_interface.hpp:35:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/lapack_utilities.hpp:74:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/rocblas_vector.hpp:25:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/d_vector.hpp:27:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/rocblas_test.hpp:29:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/../../library/src/include/handle.hpp:150:13: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  150 |             hipGetDevice(&old_device_id);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/../../library/src/include/handle.hpp:152:17: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  152 |                 hipSetDevice(device_id);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/../../library/src/include/handle.hpp:159:17: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  159 |                 hipSetDevice(old_device_id);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:33:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<signed char, int, int>' requested here
+   33 | INSTANTIATE_MIX(signed char, int, int)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:21:1: note: expanded from here
+   21 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:33:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<signed char, int, int>' requested here
+   33 | INSTANTIATE_MIX(signed char, int, int)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:24:1: note: expanded from here
+   24 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:34:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_bfloat16, rocblas_bfloat16, float>' requested here
+   34 | INSTANTIATE_MIX(rocblas_bfloat16, rocblas_bfloat16, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:30:1: note: expanded from here
+   30 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:34:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_bfloat16, rocblas_bfloat16, float>' requested here
+   34 | INSTANTIATE_MIX(rocblas_bfloat16, rocblas_bfloat16, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:33:1: note: expanded from here
+   33 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:35:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<_Float16, _Float16, float>' requested here
+   35 | INSTANTIATE_MIX(rocblas_half, rocblas_half, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:39:1: note: expanded from here
+   39 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:35:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<_Float16, _Float16, float>' requested here
+   35 | INSTANTIATE_MIX(rocblas_half, rocblas_half, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:42:1: note: expanded from here
+   42 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:36:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_bfloat16, float, float>' requested here
+   36 | INSTANTIATE_MIX(rocblas_bfloat16, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:48:1: note: expanded from here
+   48 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:36:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_bfloat16, float, float>' requested here
+   36 | INSTANTIATE_MIX(rocblas_bfloat16, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:51:1: note: expanded from here
+   51 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:37:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<_Float16, float, float>' requested here
+   37 | INSTANTIATE_MIX(rocblas_half, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:57:1: note: expanded from here
+   57 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:37:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<_Float16, float, float>' requested here
+   37 | INSTANTIATE_MIX(rocblas_half, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:60:1: note: expanded from here
+   60 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:44:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<_Float16, _Float16, _Float16>' requested here
+   44 | INSTANTIATE(rocblas_half)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:66:1: note: expanded from here
+   66 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:44:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<_Float16, _Float16, _Float16>' requested here
+   44 | INSTANTIATE(rocblas_half)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:69:1: note: expanded from here
+   69 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:45:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<float, float, float>' requested here
+   45 | INSTANTIATE(float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:75:1: note: expanded from here
+   75 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:45:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<float, float, float>' requested here
+   45 | INSTANTIATE(float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:78:1: note: expanded from here
+   78 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:46:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<double, double, double>' requested here
+   46 | INSTANTIATE(double)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:84:1: note: expanded from here
+   84 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:46:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<double, double, double>' requested here
+   46 | INSTANTIATE(double)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:87:1: note: expanded from here
+   87 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:47:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_complex_num<float>, rocblas_complex_num<float>, rocblas_complex_num<float>>' requested here
+   47 | INSTANTIATE(rocblas_float_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:93:1: note: expanded from here
+   93 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:47:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_complex_num<float>, rocblas_complex_num<float>, rocblas_complex_num<float>>' requested here
+   47 | INSTANTIATE(rocblas_float_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:96:1: note: expanded from here
+   96 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:48:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_complex_num<double>, rocblas_complex_num<double>, rocblas_complex_num<double>>' requested here
+   48 | INSTANTIATE(rocblas_double_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:102:1: note: expanded from here
+  102 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:48:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_complex_num<double>, rocblas_complex_num<double>, rocblas_complex_num<double>>' requested here
+   48 | INSTANTIATE(rocblas_double_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:105:1: note: expanded from here
+  105 | testing_gemm_batched_ex_bad_arg
+      | ^
+23 warnings generated when compiling for gfx950.
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:23:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:25:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/testing_common.hpp:27:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/cblas_interface.hpp:35:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/lapack_utilities.hpp:74:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/rocblas_vector.hpp:25:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/d_vector.hpp:27:
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/rocblas_test.hpp:29:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/../../library/src/include/handle.hpp:150:13: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  150 |             hipGetDevice(&old_device_id);
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/../../library/src/include/handle.hpp:152:17: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  152 |                 hipSetDevice(device_id);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/../../library/src/include/handle.hpp:159:17: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  159 |                 hipSetDevice(old_device_id);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:33:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<signed char, int, int>' requested here
+   33 | INSTANTIATE_MIX(signed char, int, int)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:21:1: note: expanded from here
+   21 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:33:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<signed char, int, int>' requested here
+   33 | INSTANTIATE_MIX(signed char, int, int)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:24:1: note: expanded from here
+   24 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:34:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_bfloat16, rocblas_bfloat16, float>' requested here
+   34 | INSTANTIATE_MIX(rocblas_bfloat16, rocblas_bfloat16, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:30:1: note: expanded from here
+   30 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:34:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_bfloat16, rocblas_bfloat16, float>' requested here
+   34 | INSTANTIATE_MIX(rocblas_bfloat16, rocblas_bfloat16, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:33:1: note: expanded from here
+   33 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:35:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<_Float16, _Float16, float>' requested here
+   35 | INSTANTIATE_MIX(rocblas_half, rocblas_half, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:39:1: note: expanded from here
+   39 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:35:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<_Float16, _Float16, float>' requested here
+   35 | INSTANTIATE_MIX(rocblas_half, rocblas_half, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:42:1: note: expanded from here
+   42 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:36:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_bfloat16, float, float>' requested here
+   36 | INSTANTIATE_MIX(rocblas_bfloat16, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:48:1: note: expanded from here
+   48 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:36:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_bfloat16, float, float>' requested here
+   36 | INSTANTIATE_MIX(rocblas_bfloat16, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:51:1: note: expanded from here
+   51 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:37:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<_Float16, float, float>' requested here
+   37 | INSTANTIATE_MIX(rocblas_half, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:29:5: note: expanded from macro 'INSTANTIATE_MIX'
+   29 |     INSTANTIATE_TESTS(gemm_ex, Ti_, To_, Tc_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:57:1: note: expanded from here
+   57 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:37:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<_Float16, float, float>' requested here
+   37 | INSTANTIATE_MIX(rocblas_half, float, float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:30:5: note: expanded from macro 'INSTANTIATE_MIX'
+   30 |     INSTANTIATE_TESTS(gemm_batched_ex, Ti_, To_, Tc_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:60:1: note: expanded from here
+   60 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:44:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<_Float16, _Float16, _Float16>' requested here
+   44 | INSTANTIATE(rocblas_half)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:66:1: note: expanded from here
+   66 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:44:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<_Float16, _Float16, _Float16>' requested here
+   44 | INSTANTIATE(rocblas_half)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:69:1: note: expanded from here
+   69 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:45:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<float, float, float>' requested here
+   45 | INSTANTIATE(float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:75:1: note: expanded from here
+   75 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:45:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<float, float, float>' requested here
+   45 | INSTANTIATE(float)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:78:1: note: expanded from here
+   78 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:46:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<double, double, double>' requested here
+   46 | INSTANTIATE(double)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:84:1: note: expanded from here
+   84 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:46:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<double, double, double>' requested here
+   46 | INSTANTIATE(double)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:87:1: note: expanded from here
+   87 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:47:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_complex_num<float>, rocblas_complex_num<float>, rocblas_complex_num<float>>' requested here
+   47 | INSTANTIATE(rocblas_float_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:93:1: note: expanded from here
+   93 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:47:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_complex_num<float>, rocblas_complex_num<float>, rocblas_complex_num<float>>' requested here
+   47 | INSTANTIATE(rocblas_float_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:96:1: note: expanded from here
+   96 | testing_gemm_batched_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:25:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_ex.hpp:105:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  105 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:48:1: note: in instantiation of function template specialization 'testing_gemm_ex_bad_arg<rocblas_complex_num<double>, rocblas_complex_num<double>, rocblas_complex_num<double>>' requested here
+   48 | INSTANTIATE(rocblas_double_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:40:5: note: expanded from macro 'INSTANTIATE'
+   40 |     INSTANTIATE_TESTS(gemm_ex, T_, T_, T_)         \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:102:1: note: expanded from here
+  102 | testing_gemm_ex_bad_arg
+      | ^
+In file included from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:24:
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/../include/blas_ex/testing_gemm_batched_ex.hpp:106:9: warning: ignoring return value of type 'hipError_t' declared with 'nodiscard' attribute [-Wunused-value]
+  106 |         dC.transfer_from(hC);
+      |         ^~~~~~~~~~~~~~~~~~~~
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:48:1: note: in instantiation of function template specialization 'testing_gemm_batched_ex_bad_arg<rocblas_complex_num<double>, rocblas_complex_num<double>, rocblas_complex_num<double>>' requested here
+   48 | INSTANTIATE(rocblas_double_complex)
+      | ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/common_gemm_ex.cpp:41:5: note: expanded from macro 'INSTANTIATE'
+   41 |     INSTANTIATE_TESTS(gemm_batched_ex, T_, T_, T_) \
+      |     ^
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/projects/rocblas/clients/common/blas_ex/../common_helpers.hpp:28:19: note: expanded from macro 'INSTANTIATE_TESTS'
+   28 |     template void testing_##NAME##_bad_arg<__VA_ARGS__>(const Arguments& arg); \
+      |                   ^
+<scratch space>:105:1: note: expanded from here
+  105 | testing_gemm_batched_ex_bad_arg
+      | ^
+23 warnings generated when compiling for host.
+[ 89%] Built target rocblas_clients_testing_common
+[ 89%] Built target rocblas-test-data
+[ 89%] Linking CXX executable ../staging/rocblas-test
+[100%] Built target rocblas-test

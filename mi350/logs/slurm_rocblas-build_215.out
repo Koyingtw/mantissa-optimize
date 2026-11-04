@@ -1,0 +1,78 @@
+job=215 host=p01-r01-n01 cpus=48 start=Tue Nov  3 01:39:12 AM UTC 2026
+-- The CXX compiler identification is Clang 22.0.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /opt/rocm-7.2.3/llvm/bin/amdclang++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CXX_COMPILER_SUPPORTS_OFFLOAD_COMPRESS
+-- Performing Test CXX_COMPILER_SUPPORTS_OFFLOAD_COMPRESS - Success
+-- Use amdclang to build for amdgpu backend
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- OS detected is ubuntu
+-- ROCM Platform Version:  is not set, using latest supported gfx list
+-- Performing Test COMPILER_HAS_TARGET_ID_gfx950
+-- Performing Test COMPILER_HAS_TARGET_ID_gfx950 - Success
+-- FOUND hipBLASLt, INCLUDE_DIR: 
+/usr/bin/python3 -m venv /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/virtualenv --system-site-packages --clear
+virtualenv python version: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/virtualenv/bin/python3
+Python 3.12.3
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/virtualenv/bin/python3 -m pip install /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/shared/tensile
+Processing ./rocm-libraries/shared/tensile
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Collecting joblib (from Tensile==4.45.0)
+  Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting msgpack (from Tensile==4.45.0)
+  Downloading msgpack-1.2.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)
+Requirement already satisfied: pyyaml in /usr/lib/python3/dist-packages (from Tensile==4.45.0) (6.0.1)
+Requirement already satisfied: rich in /usr/lib/python3/dist-packages (from Tensile==4.45.0) (13.7.1)
+Collecting cloudpickle>=3.0 (from joblib->Tensile==4.45.0)
+  Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Requirement already satisfied: markdown-it-py>=2.2.0 in /usr/lib/python3/dist-packages (from rich->Tensile==4.45.0) (3.0.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /usr/lib/python3/dist-packages (from rich->Tensile==4.45.0) (2.17.2)
+Requirement already satisfied: mdurl~=0.1 in /usr/lib/python3/dist-packages (from markdown-it-py>=2.2.0->rich->Tensile==4.45.0) (0.1.2)
+Downloading joblib-1.6.0-py3-none-any.whl (306 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 306.1/306.1 kB 3.7 MB/s eta 0:00:00
+Downloading msgpack-1.2.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (475 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 475.7/475.7 kB 14.6 MB/s eta 0:00:00
+Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Building wheels for collected packages: Tensile
+  Building wheel for Tensile (setup.py): started
+  Building wheel for Tensile (setup.py): finished with status 'done'
+  Created wheel for Tensile: filename=Tensile-4.45.0-py3-none-any.whl size=4265400 sha256=c79744c13332ef8ab67e3a127de61d09d5120abab958995b54b5ffff97a99b76
+  Stored in directory: /tmp/pip-ephem-wheel-cache-r1tq9h3_/wheels/19/12/4d/7d18b7eca939612f3f6c37b30d9d2b8427caee1b3b0bd28d94
+Successfully built Tensile
+Installing collected packages: msgpack, cloudpickle, joblib, Tensile
+Successfully installed Tensile-4.45.0 cloudpickle-3.1.2 joblib-1.6.0 msgpack-1.2.4
+-- using local Tensile from /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocm-libraries/shared/tensile, copied to 
+-- Adding /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/virtualenv to CMAKE_PREFIX_PATH
+-- The C compiler identification is Clang 22.0.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /opt/rocm-7.2.3/llvm/bin/amdclang - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Building for GPU targets: gfx950
+-- Performing Test HIP_CLANG_SUPPORTS_PARALLEL_JOBS
+-- Performing Test HIP_CLANG_SUPPORTS_PARALLEL_JOBS - Success
+-- Could NOT find msgpack-cxx (missing: msgpack-cxx_DIR)
+CMake Error at /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/virtualenv/lib/python3.12/site-packages/Tensile/Source/lib/CMakeLists.txt:100 (find_package):
+  Could not find a package configuration file provided by "msgpackc-cxx" with
+  any of the following names:
+
+    msgpackc-cxxConfig.cmake
+    msgpackc-cxx-config.cmake
+    msgpackConfig.cmake
+    msgpack-config.cmake
+
+  Add the installation prefix of "msgpackc-cxx" to CMAKE_PREFIX_PATH or set
+  "msgpackc-cxx_DIR" to a directory containing one of the above files.  If
+  "msgpackc-cxx" provides a separate development package or SDK, be sure it
+  has been installed.
+
+
+-- Configuring incomplete, errors occurred!

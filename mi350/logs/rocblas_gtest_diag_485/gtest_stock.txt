@@ -1,0 +1,59 @@
+rocBLAS info: client (OPENMP) reduced omp_set_num_threads to 254
+rocBLAS warning: LD_LIBRARY_PATH override may use incompatible rocblas 
+rocBLAS info: Using reference library '/usr/lib/x86_64-linux-gnu/libopenblas.so'
+rocBLAS version: 5.2.0.dabb6df2b9
+rocBLAS-commit-hash: 135ed8014b4582567de2f9d95986a72504950df2
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+Query device success: there are 8 devices
+-------------------------------------------------------------------------------
+Device ID 0 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 1 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 2 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 3 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 4 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 5 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 6 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+Device ID 7 : AMD Radeon Graphics gfx950:sramecc+:xnack-
+with 309.2 GB memory, max. SCLK 2200 MHz, max. MCLK 2000 MHz, memoryBusWidth 1024 Bytes, compute capability 9.5
+maxGridDimX 2147483647, sharedMemPerBlock 163.8 KB, maxThreadsPerBlock 1024, warpSize 64
+-------------------------------------------------------------------------------
+info: parsing of test data may take a couple minutes before any test output appears...
+
+Note: Google Test filter = *stride_2e32*i8*
+[==========] Running 6 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 6 tests from _/gemm_strided_batched_ex
+[----------] 6 tests from _/gemm_strided_batched_ex (68431 ms total)
+
+[----------] Global test environment tear-down
+[==========] 6 tests from 1 test suite ran. (68450 ms total)
+[  PASSED  ] 6 tests.
+rocBLAS version: 5.2.0.dabb6df2b9
+rocBLAS-commit-hash: 135ed8014b4582567de2f9d95986a72504950df2
+Tensile-commit-hash: 
+hipBLASLt version: 1.2.2 commit-hash: dabb6df2b9
+rocBLAS warning: client rocblas commit differs from library rocblas commit: d1b03cfb1a42c3f178f0eee75397c37f7a8b7077
+command line: /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test --gtest_filter=*stride_2e32*i8* 

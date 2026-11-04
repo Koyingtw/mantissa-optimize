@@ -1,0 +1,16 @@
+job=390 host=p01-r01-n02 start=Tue Nov  3 07:15:07 PM UTC 2026
+rocblas-test=/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test
+=== RUN lib=stock ROCBLAS_USE_HIPBLASLT=0
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test: error while loading shared libraries: libopenblas.so.0: cannot open shared object file: No such file or directory
+=== END lib=stock ROCBLAS_USE_HIPBLASLT=0
+=== RUN lib=stock ROCBLAS_USE_HIPBLASLT=1
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test: error while loading shared libraries: libopenblas.so.0: cannot open shared object file: No such file or directory
+=== END lib=stock ROCBLAS_USE_HIPBLASLT=1
+=== RUN lib=fix ROCBLAS_USE_HIPBLASLT=0
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test: error while loading shared libraries: libopenblas.so.0: cannot open shared object file: No such file or directory
+=== END lib=fix ROCBLAS_USE_HIPBLASLT=0
+=== RUN lib=fix ROCBLAS_USE_HIPBLASLT=1
+/home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/clients/staging/rocblas-test: error while loading shared libraries: libopenblas.so.0: cannot open shared object file: No such file or directory
+=== END lib=fix ROCBLAS_USE_HIPBLASLT=1
+loaded(fix): 	librocblas.so.5 => /home/cust_nthu/koying/mantissa-optimize/.claude/worktrees/g8-overflow/rocblas-build/install/lib/librocblas.so.5 (0x000073733ebac000)
+end=Tue Nov  3 07:15:07 PM UTC 2026
